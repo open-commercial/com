@@ -1,0 +1,52 @@
+.sic-com-carrito-compra {
+  background-color: white;
+
+  .sic-com-ir-listado {
+    height: 40px;
+    cursor: pointer;
+  }
+
+  .sic-com-totalizadores {
+    height: 60px;
+    font-weight: bold;
+  }
+
+  .sic-com-botonera {
+    height: 80px;
+  }
+
+  .sic-com-renglones-items {
+    border-bottom: 1px solid #ccc;
+  }
+
+  .sic-com-img-avatar {
+    width: 75px;
+    height: 75px;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+  }
+
+  .sic-com-codigo-producto {
+    font-size: 12px;
+  }
+
+  .sic-com-descripcion-producto {
+    color: #ff5722;
+    font-weight: bold;
+    font-size: 15px;
+    cursor: pointer;
+  }
+
+  .sic-com-input-cantidad {
+    width: 100px;
+    min-width: 60px;
+    padding: 0 10px;
+  }
+
+  .sic-com-mas-resultados {
+    color: #ff5722;
+    cursor: pointer;
+    height: 90px;
+  }
+}

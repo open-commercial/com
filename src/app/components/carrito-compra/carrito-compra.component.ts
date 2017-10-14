@@ -1,0 +1,136 @@
+import {Component, OnInit} from '@angular/core';
+import {CarritoCompraService} from '../../services/carrito-compra.service';
+import {MatDialog} from '@angular/material';
+import {CheckoutDialogComponent} from './checkoutDialog/checkout-dialog.component';
+import {ClientesService} from '../../services/clientes.service';
+import {ClientesDialogComponent} from './clientesDialog/clientes-dialog.component';
+import {AvisoService} from '../../services/aviso.service';
+
+@Component({
+  selector: 'sic-com-carrito-compra',
+  templateUrl: './carrito-compra.component.html',
+  styleUrls: ['./carrito-compra.component.scss']
+})
+export class CarritoCompraComponent implements OnInit {
+
+  itemsCarritoCompra = [];
+  totalLista = 0;
+  cantidadArticulos = 0;
+  cantidadRenglones = 0;
+  clienteSeleccionado = [];
+  pagina = 0;
+  tamanioPagina = 10;
+  totalPaginas = 0;
+  loadingPedido = false;
+  loadingRenglones = false;
+
+  constructor(private carritoCompraService: CarritoCompraService, private clientesService: ClientesService,
+              private dialog: MatDialog, private avisoService: AvisoService) {}
+
+  ngOnInit() {
+    this.loadingPedido = true;
+    this.cargarPedido();
+    this.clienteSeleccionado = this.clientesService.getClienteSeleccionado();
+    this.clientesService.clienteSeleccionado.subscribe(data => this.clienteSeleccionado = data);
+    this.carritoCompraService.getCantidadRenglones().subscribe(
+      data => {
+        this.cantidadRenglones = Number(data);
+        this.carritoCompraService.setCantidadItemsEnCarrito(Number(data));
+      },
+      err => this.avisoService.openSnackBar(err.error, '', 3500));
+  }
+
+  openDialogCliente() {
+    this.dialog.open(ClientesDialogComponent);
+  }
+
+  openDialogCheckout() {
+    const dialogRef = this.dialog.open(CheckoutDialogComponent);
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.itemsCarritoCompra = [];
+        this.cantidadArticulos = 0;
+        this.totalLista = 0;
+      }
+    });
+  }
+
+  vaciarPedido() {
+    if (confirm('Se esta por vaciar el pedido. Esta seguro de hacerlo?')) {
+      this.cantidadArticulos = 0;
+      this.carritoCompraService.eliminarTodosLosItems().subscribe(
+        data => {
+          this.avisoService.openSnackBar('Se borraron todos los articulos del listado', '', 3500);
+          this.itemsCarritoCompra = [];
+          this.clientesService.deleteClienteSeleccionado();
+          this.carritoCompraService.setCantidadItemsEnCarrito(0);
+        },
+        err => this.avisoService.openSnackBar(err.error, '', 3500));
+    }
+  }
+
+  cargarPedido() {
+    this.carritoCompraService.getItems(this.pagina, this.tamanioPagina).subscribe(
+      data => {
+        data['content'].forEach(item => this.itemsCarritoCompra.push(item));
+        this.totalPaginas = data['totalPages'];
+        this.sumarTotales();
+        this.loadingPedido = false;
+        this.loadingRenglones = false;
+      },
+      err => this.avisoService.openSnackBar(err.error, '', 3500));
+  }
+
+  sumarTotales() {
+    this.carritoCompraService.getTotalImportePedido().subscribe(
+      data => {
+        this.totalLista = 0;
+        if (data !== null) {
+          this.totalLista = parseFloat(data.toString());
+          this.carritoCompraService.getCantidadArticulos().subscribe(
+            cantArt => this.cantidadArticulos = Number(cantArt),
+            err => this.avisoService.openSnackBar(err.error, '', 3500));
+        }
+      },
+      err => this.avisoService.openSnackBar(err.error, '', 3500));
+  }
+
+  eliminarItemDelCarrito(itemCarritoCompra) {
+    if (confirm('Seguro desea eliminar el producto?')) {
+      this.carritoCompraService.eliminarItem(itemCarritoCompra.producto.id_Producto).subscribe(
+        data => {
+          this.avisoService.openSnackBar('Se eliminó el articulo del listado', '', 3500);
+          this.sumarTotales();
+          const id = this.itemsCarritoCompra.map(function(e) {return e}).indexOf(itemCarritoCompra);
+          this.itemsCarritoCompra.splice(id, 1);
+          this.cantidadArticulos = this.itemsCarritoCompra.length;
+          this.carritoCompraService.setCantidadItemsEnCarrito(this.itemsCarritoCompra.length);
+        },
+        err => this.avisoService.openSnackBar(err.error, '', 3500));
+    }
+  }
+
+  editCantidadProducto(producto, cantidad, direccion) {
+    let cant = cantidad;
+    if (direccion === 2) {
+      cant = cantidad - producto.cantidad;
+    }
+    producto.cantidad = cant + producto.cantidad;
+    this.carritoCompraService.agregarQuitarAlPedido(producto.producto, cant).subscribe(
+      data => {
+       producto.descuento_porcentaje = 0;
+       producto.descuento_neto = 0;
+       producto.subTotal = cantidad * producto.producto.precioLista;
+       this.sumarTotales();
+      },
+      err => this.avisoService.openSnackBar(err.error, '', 3500));
+  }
+
+  masProductosPedido() {
+    this.loadingRenglones = true;
+    if ((this.pagina + 1) < this.totalPaginas) {
+      this.pagina++;
+      this.cargarPedido();
+    }
+  }
+}

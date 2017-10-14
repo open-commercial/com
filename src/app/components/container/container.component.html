@@ -1,0 +1,12 @@
+<div fxLayout="column" class="sic-com-container">
+  <div>
+    <sic-com-navbar></sic-com-navbar>
+  </div>
+  <div>
+    <div fxFlex.gt-sm="10" fxHide.lt-md class="sic-com-barra-lateral"></div>
+    <div fxFlex.gt-sm="80" class="sic-com-contenido-central">
+      <router-outlet></router-outlet>
+    </div>
+    <div fxFlex.gt-sm="10" fxHide.lt-md class="sic-com-barra-lateral"></div>
+  </div>
+</div>

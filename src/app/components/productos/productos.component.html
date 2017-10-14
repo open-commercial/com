@@ -1,0 +1,45 @@
+<div fxLayout="column" class="sic-com-productos">
+  <mat-expansion-panel hideToggle="true">
+    <mat-expansion-panel-header>
+      <mat-panel-description>
+        <span *ngIf="!nombreRubroSeleccionado">Sin filtros seleccionados</span>
+        <span *ngIf="nombreRubroSeleccionado">Filtrado por rubro: <strong>{{nombreRubroSeleccionado | lowercase}}</strong></span>
+      </mat-panel-description>
+      <mat-icon>filter_list</mat-icon>
+    </mat-expansion-panel-header>
+    <mat-form-field>
+      <mat-select placeholder="Rubro" [(ngModel)]="nombreRubroSeleccionado" (change)="filtrarPorRubro(nombreRubroSeleccionado)">
+        <mat-option>(ninguno)</mat-option>
+        <mat-option *ngFor="let r of rubros" [value]="r.nombre">{{r.nombre | lowercase}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </mat-expansion-panel>
+  <div fxLayoutAlign="center center" *ngIf="loadingProducts && (productos.length === 0)">
+    <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
+  </div>
+  <div class="sic-com-sin-resultados" *ngIf="!loadingProducts && (productos.length === 0)">
+    <span fxLayoutAlign="center center">
+      <mat-icon color="primary">sentiment_neutral</mat-icon>
+      &nbsp;Sin Resultados
+    </span>
+  </div>
+  <mat-nav-list class="sic-com-listado">
+    <div *ngFor="let p of productos">
+      <mat-list-item [routerLink]="['/producto/' + p.id_Producto]">
+        <img mat-list-avatar class="sic-com-avatar" src="../../assets/no-image.png">
+        <p mat-line class="sic-com-codigo">{{p.codigo}}</p>
+        <p mat-line class="sic-com-descripcion"><strong>{{p.descripcion}}</strong></p>
+        <p mat-line>{{p.cantidad | number:'1.2'}} / {{p.medida.nombre}}</p>
+        <p mat-line><strong>{{p.precioLista | sicComCurrency }}</strong></p>
+      </mat-list-item>
+      <mat-divider></mat-divider>
+    </div>
+  </mat-nav-list>
+  <div class="sic-com-mas-resultados" fxLayoutAlign="center center" (click)="masProductos()"
+       *ngIf="(productos.length > 0) && (totalPaginas > (pagina + 1))">
+    <span *ngIf="(productos.length > 0) && (totalPaginas > (pagina + 1)) && !loadingProducts">
+      <strong>MAS RESULTADOS</strong>
+    </span>
+    <mat-spinner [diameter]="50" [strokeWidth]="6" *ngIf="loadingProducts && (productos.length > 0)"></mat-spinner>
+  </div>
+</div>

@@ -1,0 +1,44 @@
+<div fxLayout="column" class="sic-com-producto">
+  <div fxLayoutAlign="center center" *ngIf="loadingProducto">
+    <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
+  </div>
+  <div *ngIf="!loadingProducto">
+    <div fxLayoutAlign="start center" class="sic-com-ir-listado" (click)="irAlListado()">
+      <mat-icon>keyboard_arrow_left</mat-icon>
+      <strong>Ir al listado</strong>
+    </div>
+    <div fxLayout="column" fxLayoutAlign="start center">
+      <img class="sic-com-img-producto" src="../../../assets/no-image.png">
+      <div class="sic-com-detalle-producto">
+        <div fxLayout="column">
+          <span class="sic-com-codigo-producto">{{producto.codigo}}</span>
+          <span class="sic-com-descripcion-producto">{{producto.descripcion}}</span><br>
+          <span class="sic-com-precio-producto">{{producto.precioLista | sicComCurrency}}</span>
+          <span>Disponible <strong>{{producto.cantidad}} | {{producto.medida.nombre}}</strong></span>
+          <span>Cantidad Minima <strong>{{producto.ventaMinima}}</strong></span>
+          <span>Rubro <strong>{{producto.rubro.nombre}}</strong></span>
+          <span *ngIf="(producto.nota.length > 0)">Nota <strong>{{producto.nota}}</strong></span>
+        </div>
+        <div fxLayoutAlign="center center" class="sic-com-controles-cantidad">
+          <button mat-mini-fab color="accent" disabled="{{(cantidad <= producto.ventaMinima)}}"
+                  (click)="cambiarCantidad(cantidad, 0)">
+            <mat-icon>remove</mat-icon>
+          </button>
+          <mat-form-field class="sic-com-input-cantidad">
+            <input matInput autofocus type="number" [(ngModel)]='cantidad'
+                   placeholder="Cantidad" min="{{producto.ventaMinima}}">
+          </mat-form-field>
+          <button mat-mini-fab color="primary" (click)="cambiarCantidad(cantidad, 1)">
+            <mat-icon>add</mat-icon>
+          </button>
+        </div>
+        <div fxLayoutAlign="center center">
+          <button mat-raised-button color="primary" class="sic-com-boton-agregar"
+                  (click)="cargarAlCarrito()" disabled="{{(cantidad < producto.ventaMinima)}}">
+            <mat-icon>add_shopping_cart</mat-icon>Agregar al Carrito
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

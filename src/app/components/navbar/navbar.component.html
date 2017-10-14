@@ -1,0 +1,41 @@
+<div class="sic-com-navbar">
+  <mat-toolbar color="primary">
+    <div fxHide.lt-md fxFlex.gt-sm="10"></div>
+    <div fxFlex="20" fxLayoutAlign="center center">
+      <img fxHide.lt-md src="assets/header-grandeTrans.png" class="sic-com-logo-grande" (click)="buscarProductos(busquedaCriteria)">
+      <img fxHide.gt-sm src="assets/logo-GD_bco.png" class="sic-com-logo-chico" (click)="buscarProductos(busquedaCriteria)">
+    </div>
+    <div fxFlex fxLayoutAlign="center center">
+      <input class="sic-com-buscador-input" [(ngModel)]="busquedaCriteria"
+             type="search" (keyup.enter)="buscarProductos(busquedaCriteria)">
+      <mat-icon class="sic-com-buscador-icon" (click)="buscarProductos(busquedaCriteria)">search</mat-icon>
+    </div>
+    <div fxFlex.lt-md="15" fxFlex.gt-sm="20" fxLayoutAlign="center center">
+      <div fxHide.lt-md>
+        <button mat-icon-button [routerLink]="['/carrito-compra']" matTooltip="Ir al carrito">
+          <mat-icon>shopping_cart</mat-icon>
+          <span class="sic-com-contador-carrito" *ngIf="(cantidadItemsEnCarrito > 0)">{{cantidadItemsEnCarrito}}</span>
+        </button>
+      </div>
+      <div fxHide.lt-md>
+        <button mat-icon-button (click)="logout()" matTooltip="Salir ({{usuarioConectado}})">
+          <mat-icon>power_settings_new</mat-icon>
+        </button>
+      </div>
+      <button mat-icon-button fxHide.gt-sm [matMenuTriggerFor]="menu">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu" fxHide.gt-sm [overlapTrigger]="false">
+        <button mat-menu-item [routerLink]="['/carrito-compra']">
+          <mat-icon>shopping_cart</mat-icon>
+          <span>Ir al carrito</span>
+        </button>
+        <button mat-menu-item (click)="logout()">
+          <mat-icon>power_settings_new</mat-icon>
+          <span>Salir ({{usuarioConectado}})</span>
+        </button>
+      </mat-menu>
+    </div>
+    <div fxHide.lt-md fxFlex.gt-sm="10"></div>
+  </mat-toolbar>
+</div>

@@ -1,0 +1,47 @@
+.sic-com-productos {
+  height: 100%;
+  background-color: white;
+
+  .sic-com-filtro {
+    padding: 20px 0 0 25px;
+    color: gray;
+  }
+
+  .sic-com-sin-resultados {
+
+    span {
+      height: 200px;
+      color: #ff5722;
+      font-size: 30px;
+
+      mat-icon {
+        font-size: 30px;
+      }
+    }
+  }
+
+  .sic-com-listado {
+    padding-top: 0;
+  }
+
+  .sic-com-avatar {
+    height: 75px;
+    width: 75px;
+  }
+
+  .sic-com-codigo {
+    font-size: 12px;
+  }
+
+  .sic-com-descripcion {
+    white-space: normal;
+    font-size: 15px;
+    color: #ff5722;
+  }
+
+  .sic-com-mas-resultados {
+    cursor: pointer;
+    height: 90px;
+    color: #ff5722;
+  }
+}

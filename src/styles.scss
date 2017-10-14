@@ -1,0 +1,56 @@
+// buscar la manera de pedirle el primary color a la paleta seteada en theme.scss
+$color-primario: #ff5722;
+
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+.sic-com-index {
+  display: flex;
+  height: 100%;
+  background-color: $color-primario;
+
+  .sic-com-spinner {
+    margin: auto;
+    text-align: center;
+    vertical-align: middle;
+
+    img {
+      top: -222px;
+      position: relative;
+      height: 90px;
+      width: 90px;
+    }
+
+    .sic-com-circulo-spinner {
+      width: 150px;
+      height: 150px;
+      position: relative;
+      margin: 100px auto;
+      background-color: #cccccc;
+      border-radius: 100%;
+      -webkit-animation: sk-scaleout 2.0s infinite ease-in-out;
+      animation: sk-scaleout 1.0s infinite ease-in-out;
+    }
+
+    @-webkit-keyframes sk-scaleout {
+      0% { -webkit-transform: scale(0) }
+      100% {
+        -webkit-transform: scale(1.0);
+        opacity: 0;
+      }
+    }
+
+    @keyframes sk-scaleout {
+      0% {
+        -webkit-transform: scale(0);
+        transform: scale(0);
+      } 100% {
+          -webkit-transform: scale(1.0);
+          transform: scale(1.0);
+          opacity: 0;
+        }
+    }
+  }
+}

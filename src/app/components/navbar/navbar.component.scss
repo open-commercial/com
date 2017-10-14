@@ -1,0 +1,51 @@
+.sic-com-navbar {
+  /*position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 100px;*/
+
+  .sic-com-buscador-input {
+    width: 100%;
+    border: none;
+    padding: 10px;
+    font-size: 18px;
+    -webkit-border-radius: 10px 0 0 10px;
+    -moz-border-radius: 10px 0 0 10px;
+    border-radius: 10px 0 0 10px;
+  }
+
+  .sic-com-buscador-icon {
+    background: #e03906;
+    padding: 9px;
+    -webkit-border-radius: 0 10px 10px 0;
+    -moz-border-radius: 0 10px 10px 0;
+    border-radius: 0 10px 10px 0;
+    cursor: pointer;
+  }
+
+  .sic-com-logo-grande {
+    width: 150px;
+    height: 50px;
+    cursor: pointer;
+  }
+
+  .sic-com-logo-chico {
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+  }
+
+  .sic-com-contador-carrito {
+    border-radius: 200px 200px 200px 200px;
+    -moz-border-radius: 200px 200px 200px 200px;
+    -webkit-border-radius: 200px 200px 200px 200px;
+    border: 1px solid #fff;
+    position: absolute;
+    background-color: green;
+    top: -8px;
+    right: -5px;
+    padding: 0 6px;
+    line-height: 20px;
+  }
+}

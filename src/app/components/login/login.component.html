@@ -1,0 +1,34 @@
+<div fxFlex fxLayoutAlign="center center" class="sic-com-login">
+  <form class="sic-com-form" #f="ngForm" name="form" (ngSubmit)="f.form.valid && login()" novalidate
+        fxLayout="column" fxLayoutAlign="center center">
+    <img src="assets/loginLogoTrans.png">
+    <br>
+    <div [ngClass]="{'has-error': f.submitted && !username.valid}">
+      <mat-form-field class="sic-com-full-width">
+        <input matInput placeholder="Usuario" type="text" name="username"
+               [(ngModel)]="model.username" #username required autofocus>
+        <mat-error [hidden]="username.valid || username.pristine">
+          <span>Requerido</span>
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <br>
+    <div [ngClass]="{'has-error': f.submitted && !password.valid}">
+      <mat-form-field class="sic-com-full-width">
+        <input matInput placeholder="Contraseña" type="password" name="password"
+               [(ngModel)]="model.password" #password required>
+        <mat-error [hidden]="password.valid || password.pristine">
+          <span>Requerido</span>
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <br>
+    <div class="sic-com-submit" fxLayoutAlign="center center">
+      <button [disabled]="loading" mat-raised-button color="primary"
+              type="submit" *ngIf="!loading">
+        Ingresar
+      </button>
+      <mat-spinner [diameter]="50" [strokeWidth]="6" *ngIf="loading"></mat-spinner>
+    </div>
+  </form>
+</div>

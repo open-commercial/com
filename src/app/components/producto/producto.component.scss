@@ -1,0 +1,47 @@
+.sic-com-producto {
+  background-color: white;
+
+  .sic-com-ir-listado {
+    height: 40px;
+    cursor: pointer;
+  }
+
+  .sic-com-img-producto {
+    height: 200px;
+  }
+
+  .sic-com-detalle-producto {
+    border-top: 1px solid #ccc;
+    padding: 20px 15px;
+    max-width: 60%;
+  }
+
+  .sic-com-codigo-producto {
+    font-size: 12px;
+  }
+
+  .sic-com-descripcion-producto {
+    color: #ff5722;
+    font-weight: bold;
+    font-size: 18px;
+  }
+
+  .sic-com-precio-producto {
+    font-weight: bold;
+    font-size: 20px;
+  }
+
+  .sic-com-controles-cantidad {
+    padding: 22px 0;
+  }
+
+  .sic-com-input-cantidad {
+    width: 100px;
+    padding: 0 10px;
+  }
+
+  .sic-com-boton-agregar {
+    width: 200px;
+    height: 40px;
+  }
+}
