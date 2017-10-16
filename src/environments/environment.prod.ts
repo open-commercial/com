@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
-  apiUrl: 'http://192.168.5.4:8080',
+  apiUrl: 'https://globo-sic-api-development.herokuapp.com',
   idEmpresa: 1
 };
