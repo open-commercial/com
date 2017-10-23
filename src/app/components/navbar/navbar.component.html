@@ -28,7 +28,7 @@
       <mat-menu #menu="matMenu" fxHide.gt-sm [overlapTrigger]="false">
         <button mat-menu-item [routerLink]="['/carrito-compra']">
           <mat-icon>shopping_cart</mat-icon>
-          <span>Ir al carrito</span>
+          <span>Ir al carrito ({{cantidadItemsEnCarrito}})</span>
         </button>
         <button mat-menu-item (click)="logout()">
           <mat-icon>power_settings_new</mat-icon>
