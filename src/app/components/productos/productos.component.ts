@@ -78,7 +78,7 @@ export class ProductosComponent implements OnInit, OnDestroy {
           this.loadingProducts = false;
         },
         err => {
-          err => this.avisoService.openSnackBar(err.error, '', 3500)
+          this.avisoService.openSnackBar(err.error, '', 3500);
           this.loadingProducts = false;
         });
   }
