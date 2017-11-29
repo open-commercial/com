@@ -48,6 +48,7 @@ export class CheckoutDialogComponent implements OnInit {
     const observaciones = this.observaciones ? this.observaciones : defaultMsj;
     const fecha = new Date();
     const pedido = {
+      'id_Pedido': 0,
       'fecha': fecha.getTime() - (fecha.getTimezoneOffset() * 60000),
       'observaciones': observaciones,
       'empresa': this.empresa,
