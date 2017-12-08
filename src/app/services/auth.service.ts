@@ -19,7 +19,7 @@ export class AuthService {
       .map(data => {
         localStorage.setItem('token', data);
         localStorage.setItem('username', username);
-        const decodedToken = this.jwtHelper.decodeToken(data);        
+        const decodedToken = this.jwtHelper.decodeToken(data);
         localStorage.setItem('id_Usuario', decodedToken.idUsuario);
       }).catch(err => {
         let msjError;
@@ -47,5 +47,9 @@ export class AuthService {
 
   getUsername(): string {
     return localStorage.getItem('username');
+  }
+
+  getLoggedInIdUsuario(): string {
+    return localStorage.getItem('id_Usuario');
   }
 }

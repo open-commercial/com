@@ -39,13 +39,8 @@ export class CarritoCompraService {
     return this.http.delete(urlDeleteItem);
   }
 
-  getInfoUsuario() {
-    const urlUsuario = this.url + '/usuarios/busqueda?nombre=' + localStorage.getItem('username');
-    return this.http.get(urlUsuario);
-  }
-
-  enviarOrden(pedido) {
-    const urlPedido = this.url + '/carrito-compra';
+  enviarOrden(pedido, idEmpresa, idUsuario, idCliente) {
+    const urlPedido = this.url + `/carrito-compra?idEmpresa=${idEmpresa}&idUsuario=${idUsuario}&idCliente=${idCliente}`;
     return this.http.post(urlPedido, pedido, {responseType: 'text'});
   }
 

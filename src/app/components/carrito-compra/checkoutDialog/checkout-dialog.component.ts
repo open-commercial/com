@@ -2,8 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {CarritoCompraService} from '../../../services/carrito-compra.service';
 import {ClientesService} from '../../../services/clientes.service';
 import {MatDialogRef} from '@angular/material';
-import {EmpresasService} from '../../../services/empresas.service';
 import {AvisoService} from '../../../services/aviso.service';
+import {AuthService} from '../../../services/auth.service';
 
 @Component({
   selector: 'sic-com-checkout',
@@ -12,31 +12,24 @@ import {AvisoService} from '../../../services/aviso.service';
 })
 export class CheckoutDialogComponent implements OnInit {
 
-  razonSocial = '';
   cliente;
   total = 0;
   cantArt = 0;
   observaciones;
   empresa;
-  usuarios;
+  loggedInIdUsuario;
   loadingData = false;
 
-  constructor(private carritoCompraService: CarritoCompraService, private empresasService: EmpresasService,
+  constructor(private carritoCompraService: CarritoCompraService, private authService: AuthService,
               private clientesService: ClientesService, private avisoService: AvisoService,
               private dialogRef: MatDialogRef<CheckoutDialogComponent>) {}
 
   ngOnInit() {
     this.cliente = this.clientesService.getClienteSeleccionado();
-    this.razonSocial = this.cliente.razonSocial;
     this.carritoCompraService.getTotalImportePedido().subscribe(
       data => this.total = parseFloat(data.toString()),
       err => this.avisoService.openSnackBar(err.error, '', 3500));
-    this.empresasService.getEmpresa(this.cliente.empresa['id_Empresa']).subscribe(
-      data => this.empresa = data,
-      err => this.avisoService.openSnackBar(err.error, '', 3500));
-    this.carritoCompraService.getInfoUsuario().subscribe(
-      data => this.usuarios = data,
-      err => this.avisoService.openSnackBar(err.error, '', 3500));
+    this.loggedInIdUsuario = this.authService.getLoggedInIdUsuario();
     this.carritoCompraService.getCantidadArticulos().subscribe(
       data => this.cantArt = Number(data),
       err => this.avisoService.openSnackBar(err.error, '', 3500));
@@ -51,13 +44,10 @@ export class CheckoutDialogComponent implements OnInit {
       'id_Pedido': 0,
       'fecha': fecha.getTime() - (fecha.getTimezoneOffset() * 60000),
       'observaciones': observaciones,
-      'empresa': this.empresa,
-      'cliente': this.cliente,
-      'usuario': this.usuarios,
-      'totalEstimado': this.total,
-      'totalActual': 0
+      'totalEstimado': this.total
     };
-    this.carritoCompraService.enviarOrden(pedido).subscribe(
+    this.carritoCompraService.enviarOrden(pedido, this.cliente.empresa['id_Empresa'],
+      this.loggedInIdUsuario, this.cliente['id_Cliente']).subscribe(
       data => {
         data = JSON.parse(data);
         this.loadingData = false;
@@ -65,9 +55,6 @@ export class CheckoutDialogComponent implements OnInit {
         const accion = 'OK';
         const duracion = 0;
         this.avisoService.openSnackBar(mensaje, accion, duracion);
-        this.cliente = [];
-        this.empresa = [];
-        this.usuarios = [];
         this.clientesService.deleteClienteSeleccionado();
         this.carritoCompraService.setCantidadItemsEnCarrito(0);
         this.cerrarDialog(true);
@@ -77,7 +64,7 @@ export class CheckoutDialogComponent implements OnInit {
         const accion = 'OK';
         const duracion = 0;
         if (error.status === 404) {
-           mensaje = 'No se encontró el servidor. Error: ' + error.status;
+          mensaje = 'No se encontró el servidor. Error: ' + error.status;
         } else if (error.status === 0) {
           mensaje = 'No se pudo enviar el pedido ';
         } else {
