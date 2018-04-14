@@ -28,7 +28,7 @@
       </div>
     </div>
     <div *ngFor="let icc of itemsCarritoCompra" fxLayout.lt-md="column" class="sic-com-renglones-items">
-      <div fxFlex.lt-md="100" fxFlex.gt-sm="60">
+      <div fxLayout fxFlex.lt-md="100" fxFlex.gt-sm="60">
         <div fxFlex="25" fxLayoutAlign="center center">
           <img class="sic-com-img-avatar" src="../../assets/no-image.png">
         </div>
@@ -39,7 +39,7 @@
           <strong>{{icc.producto.precioLista | sicComCurrency }}</strong>
         </div>
       </div>
-      <div fxFlex.lt-md="100" fxFlex.gt-sm="40">
+      <div fxLayout fxFlex.lt-md="100" fxFlex.gt-sm="40">
         <div fxFlex="50" fxLayoutAlign="center center">
           <button mat-mini-fab color="accent" (click)="editCantidadProducto(icc, -1, 1)"
                   disabled="{{(icc.cantidad <= icc.producto.ventaMinima)}}">

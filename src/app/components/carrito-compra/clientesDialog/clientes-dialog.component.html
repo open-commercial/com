@@ -1,6 +1,6 @@
 <div class="sic-com-clientes" fxLayout="column">
   <h2 mat-dialog-title>Clientes</h2>
-  <mat-dialog-content>
+  <mat-dialog-content fxLayout>
     <mat-form-field fxFlex>
       <input #buscarCliente type="text" matInput placeholder="Nombre" autofocus
              (keyup.enter)="getClientes(buscarCliente.value, 0, true)">
@@ -22,8 +22,8 @@
       <div fxLayoutAlign="center center" class="sic-com-mas-resultados"
            (click)="getClientes(buscarCliente.value, (pagina + 1), false)"
            *ngIf="(clientes.length > 0) && (totalPaginas > (pagina + 1)) && !loadingClientes">
-        <strong>MAS RESULTADOS</strong>        
-      </div>      
+        <strong>MAS RESULTADOS</strong>
+      </div>
     </mat-nav-list>
     <div fxLayoutAlign="center center">
       <mat-spinner [diameter]="50" [strokeWidth]="6" *ngIf="loadingClientes"></mat-spinner>
