@@ -21,7 +21,10 @@ export class NavbarComponent implements OnInit {
               private avisoService: AvisoService) {}
 
   ngOnInit() {
-    this.usuarioConectado = this.authService.getUsername();
+    this.authService.getLoggedInUsuario().subscribe(
+      data => this.usuarioConectado = data['nombre'] + ' ' + data['apellido'],
+      err => this.avisoService.openSnackBar(err.error, '', 3500)
+    );
     this.carritoCompraService.getCantidadRenglones().subscribe(
       data => this.carritoCompraService.setCantidadItemsEnCarrito(Number(data)),
       err => this.avisoService.openSnackBar(err.error, '', 3500));

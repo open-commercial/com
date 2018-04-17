@@ -9,6 +9,7 @@ import {Router} from '@angular/router';
 export class AuthService {
 
   url = environment.apiUrl + '/api/v1/login';
+  urlUsuario = environment.apiUrl + '/api/v1/usuarios';
   jwtHelper = new JwtHelper();
 
   constructor(private http: HttpClient, private router: Router) {}
@@ -18,7 +19,6 @@ export class AuthService {
     return this.http.post(this.url, credential, {responseType: 'text'})
       .map(data => {
         localStorage.setItem('token', data);
-        localStorage.setItem('username', username);
         const decodedToken = this.jwtHelper.decodeToken(data);
         localStorage.setItem('id_Usuario', decodedToken.idUsuario);
       }).catch(err => {
@@ -45,8 +45,8 @@ export class AuthService {
     return tokenNotExpired();
   }
 
-  getUsername(): string {
-    return localStorage.getItem('username');
+  getLoggedInUsuario() {
+    return this.http.get(this.urlUsuario + '/' + localStorage.getItem('id_Usuario'));
   }
 
   getLoggedInIdUsuario(): string {
