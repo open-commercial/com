@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ClientesService} from '../../../services/clientes.service';
 import {MatDialogRef} from '@angular/material';
 import {AvisoService} from 'app/services/aviso.service';
+import {AuthService} from '../../../services/auth.service';
 
 @Component({
   selector: 'sic-com-clientes-dialog',
@@ -10,13 +11,13 @@ import {AvisoService} from 'app/services/aviso.service';
 })
 export class ClientesDialogComponent implements OnInit {
 
-  public cliente;
-  public clientes = [];
-  public loadingClientes = false;
-  public pagina = 0;
-  public tamanioPagina = 10;
-  public totalPaginas = 0;
-  public totalElementos = 0;
+  cliente;
+  clientes = [];
+  loadingClientes = false;
+  pagina = 0;
+  tamanioPagina = 10;
+  totalPaginas = 0;
+  totalElementos = 0;
 
   constructor(private dialogRef: MatDialogRef<ClientesDialogComponent>, private avisoService: AvisoService,
               private clientesService: ClientesService) {}
@@ -48,6 +49,7 @@ export class ClientesDialogComponent implements OnInit {
   seleccionarCliente(id_Cliente) {
     const cli = this.getClienteBusqueda(id_Cliente);
     this.clientesService.addClienteSeleccionado(cli);
+    this.avisoService.openSnackBar('Se seleccionó el cliente: ' + cli.razonSocial, '', 3500);
     this.cliente = this.clientesService.getClienteSeleccionado();
     this.cerrarDialog();
   }
