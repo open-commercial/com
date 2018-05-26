@@ -54,7 +54,7 @@ import {ClientesDialogComponent} from '../components/carrito-compra/clientesDial
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
     AuthService,
-    AuthGuard,    
+    AuthGuard,
     ProductosService,
     RubrosService,
     CarritoCompraService,

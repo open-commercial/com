@@ -1,8 +1,9 @@
 import {Injectable} from '@angular/core';
 import {environment} from '../../environments/environment';
 import {HttpClient} from '@angular/common/http';
-import {Observable} from 'rxjs/Observable';
-import {JwtHelper, tokenNotExpired} from 'angular2-jwt';
+import {throwError} from 'rxjs';
+import {map, catchError} from 'rxjs/operators';
+import {JwtHelperService} from '@auth0/angular-jwt';
 import {Router} from '@angular/router';
 
 @Injectable()
@@ -10,26 +11,27 @@ export class AuthService {
 
   url = environment.apiUrl + '/api/v1/login';
   urlUsuario = environment.apiUrl + '/api/v1/usuarios';
-  jwtHelper = new JwtHelper();
+  jwtHelper = new JwtHelperService();
 
   constructor(private http: HttpClient, private router: Router) {}
 
   login(username: string, password: string) {
     const credential = {username: username, password: password};
     return this.http.post(this.url, credential, {responseType: 'text'})
-      .map(data => {
+      .pipe(map(data => {
         localStorage.setItem('token', data);
         const decodedToken = this.jwtHelper.decodeToken(data);
         localStorage.setItem('id_Usuario', decodedToken.idUsuario);
-      }).catch(err => {
+      }),
+      catchError(err => {
         let msjError;
         if (err.status === 0) {
           msjError = 'Servicio no disponible :(';
         } else {
           msjError = err.error;
         }
-        return Observable.throw(msjError);
-      });
+        return throwError(msjError);
+      }));
   }
 
   logout() {
@@ -42,7 +44,7 @@ export class AuthService {
   }
 
   isAuthenticated(): boolean {
-    return tokenNotExpired();
+    return !this.jwtHelper.isTokenExpired(localStorage.getItem('token'));
   }
 
   getLoggedInUsuario() {
