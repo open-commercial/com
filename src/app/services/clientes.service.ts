@@ -39,6 +39,6 @@ export class ClientesService {
   }
 
   getClienteDelUsuario(idUsuario) {
-    return this.http.get(this.uriClientes + '/usuarios/' + idUsuario);
+    return this.http.get(this.uriClientes + '/usuarios/' + idUsuario + '/empresas/' + environment.idEmpresa);
   }
 }
