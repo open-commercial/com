@@ -5,6 +5,7 @@ import {CheckoutDialogComponent} from './checkoutDialog/checkout-dialog.componen
 import {ClientesService} from '../../services/clientes.service';
 import {ClientesDialogComponent} from './clientesDialog/clientes-dialog.component';
 import {AvisoService} from '../../services/aviso.service';
+import {AuthService} from '../../services/auth.service';
 
 @Component({
   selector: 'sic-com-carrito-compra',
@@ -23,15 +24,27 @@ export class CarritoCompraComponent implements OnInit {
   totalPaginas = 0;
   loadingPedido = false;
   loadingRenglones = false;
+  mostrarBotonAsignarCliente = true;
 
   constructor(private carritoCompraService: CarritoCompraService, private clientesService: ClientesService,
-              private dialog: MatDialog, private avisoService: AvisoService) {}
+              private dialog: MatDialog, private avisoService: AvisoService, private authService: AuthService) {}
 
   ngOnInit() {
     this.loadingPedido = true;
     this.cargarPedido();
     this.clienteSeleccionado = this.clientesService.getClienteSeleccionado();
-    this.clientesService.clienteSeleccionado.subscribe(data => this.clienteSeleccionado = data);
+    this.clientesService.clienteSeleccionado.subscribe(
+      data => this.clienteSeleccionado = data);
+    this.authService.getLoggedInUsuario().subscribe(
+      data => {
+        if (data['roles'].indexOf('CLIENTE') !== -1 && data['roles'].length === 1) {
+          this.mostrarBotonAsignarCliente = false;
+          this.clientesService.getClienteDelUsuario(data['id_Usuario']).subscribe(
+            cliente => this.clientesService.addClienteSeleccionado(cliente)
+          );
+        }
+      }
+    );
     this.carritoCompraService.getCantidadRenglones().subscribe(
       data => {
         this.cantidadRenglones = Number(data);
