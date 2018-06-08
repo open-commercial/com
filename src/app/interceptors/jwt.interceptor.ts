@@ -20,6 +20,6 @@ export class JwtInterceptor implements HttpInterceptor {
           auth.logout();
         }
         return throwError(err);
-      }))
+      }));
     }
 }
