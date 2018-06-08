@@ -114,7 +114,7 @@ export class CarritoCompraComponent implements OnInit {
         data => {
           this.avisoService.openSnackBar('Se eliminó el articulo del listado', '', 3500);
           this.sumarTotales();
-          const id = this.itemsCarritoCompra.map(function(e) {return e}).indexOf(itemCarritoCompra);
+          const id = this.itemsCarritoCompra.map(function(e) {return e; }).indexOf(itemCarritoCompra);
           this.itemsCarritoCompra.splice(id, 1);
           this.cantidadArticulos = this.itemsCarritoCompra.length;
           this.carritoCompraService.setCantidadItemsEnCarrito(this.itemsCarritoCompra.length);
