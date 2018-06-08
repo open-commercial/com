@@ -82,7 +82,7 @@ export class CarritoCompraComponent implements OnInit {
           this.clientesService.deleteClienteSeleccionado();
           this.carritoCompraService.setCantidadItemsEnCarrito(0);
         },
-        err => this.avisoService.openSnackBar(err.error, '', 3500));  
+        err => this.avisoService.openSnackBar(err.error, '', 3500));
       }
     });
   }
