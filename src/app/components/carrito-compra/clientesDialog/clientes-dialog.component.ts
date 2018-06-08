@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {ClientesService} from '../../../services/clientes.service';
 import {MatDialogRef} from '@angular/material';
 import {AvisoService} from 'app/services/aviso.service';
-import {AuthService} from '../../../services/auth.service';
 
 @Component({
   selector: 'sic-com-clientes-dialog',
@@ -42,7 +41,7 @@ export class ClientesDialogComponent implements OnInit {
       },
       err => {
         this.loadingClientes = false;
-        this.avisoService.openSnackBar(err.error, '', 3500)
+        this.avisoService.openSnackBar(err.error, '', 3500);
       });
   }
 

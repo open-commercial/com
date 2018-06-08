@@ -6,6 +6,7 @@ import {ClientesService} from '../../services/clientes.service';
 import {ClientesDialogComponent} from './clientesDialog/clientes-dialog.component';
 import {AvisoService} from '../../services/aviso.service';
 import {AuthService} from '../../services/auth.service';
+import {ConfirmationDialogComponent} from '../../components/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'sic-com-carrito-compra',
@@ -69,9 +70,12 @@ export class CarritoCompraComponent implements OnInit {
   }
 
   vaciarPedido() {
-    if (confirm('Se esta por vaciar el pedido. Esta seguro de hacerlo?')) {
-      this.cantidadArticulos = 0;
-      this.carritoCompraService.eliminarTodosLosItems().subscribe(
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent);
+    dialogRef.componentInstance.titulo = '¿Está seguro de quitar todos los productos del carrito?';
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.cantidadArticulos = 0;
+        this.carritoCompraService.eliminarTodosLosItems().subscribe(
         data => {
           this.avisoService.openSnackBar('Se borraron todos los articulos del listado', '', 3500);
           this.itemsCarritoCompra = [];
@@ -79,7 +83,8 @@ export class CarritoCompraComponent implements OnInit {
           this.carritoCompraService.setCantidadItemsEnCarrito(0);
         },
         err => this.avisoService.openSnackBar(err.error, '', 3500));
-    }
+      }
+    });
   }
 
   cargarPedido() {
@@ -109,18 +114,22 @@ export class CarritoCompraComponent implements OnInit {
   }
 
   eliminarItemDelCarrito(itemCarritoCompra) {
-    if (confirm('Seguro desea eliminar el producto?')) {
-      this.carritoCompraService.eliminarItem(itemCarritoCompra.producto.id_Producto).subscribe(
-        data => {
-          this.avisoService.openSnackBar('Se eliminó el articulo del listado', '', 3500);
-          this.sumarTotales();
-          const id = this.itemsCarritoCompra.map(function(e) {return e}).indexOf(itemCarritoCompra);
-          this.itemsCarritoCompra.splice(id, 1);
-          this.cantidadArticulos = this.itemsCarritoCompra.length;
-          this.carritoCompraService.setCantidadItemsEnCarrito(this.itemsCarritoCompra.length);
-        },
-        err => this.avisoService.openSnackBar(err.error, '', 3500));
-    }
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent);
+    dialogRef.componentInstance.titulo = '¿Está seguro de quitar el producto?';
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.carritoCompraService.eliminarItem(itemCarritoCompra.producto.id_Producto).subscribe(
+          data => {
+            this.avisoService.openSnackBar('Se eliminó el articulo del listado', '', 3500);
+            this.sumarTotales();
+            const id = this.itemsCarritoCompra.map(function(e) {return e; }).indexOf(itemCarritoCompra);
+            this.itemsCarritoCompra.splice(id, 1);
+            this.cantidadArticulos = this.itemsCarritoCompra.length;
+            this.carritoCompraService.setCantidadItemsEnCarrito(this.itemsCarritoCompra.length);
+          },
+          err => this.avisoService.openSnackBar(err.error, '', 3500));
+      }
+    });
   }
 
   editCantidadProducto(producto, cantidad, direccion) {
