@@ -19,6 +19,14 @@
     border-bottom: 1px solid #ccc;
   }
 
+  .mat-list .mat-list-item.sic-com-renglones-items {
+    height: auto;
+  }
+
+  .mat-list .mat-list-item.sic-com-renglones-items .mat-line {
+    white-space: normal;
+  }
+
   .sic-com-img-avatar {
     width: 75px;
     height: 75px;
