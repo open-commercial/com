@@ -4,6 +4,7 @@ $color-primario: #ff5722;
 html, body {
   height: 100%;
   margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
 .sic-com-index {
@@ -53,4 +54,8 @@ html, body {
         }
     }
   }
+}
+
+.mat-list .mat-list-item.sic-com-renglones-items .mat-list-item-content {
+  padding: 0;
 }
