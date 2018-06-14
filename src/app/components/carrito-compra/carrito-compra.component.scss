@@ -17,6 +17,10 @@
 
   .sic-com-renglones-items {
     border-bottom: 1px solid #ccc;
+    height: auto;
+    .mat-line {
+      white-space: normal;
+    }
   }
 
   .sic-com-img-avatar {
