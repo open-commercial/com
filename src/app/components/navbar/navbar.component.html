@@ -2,14 +2,13 @@
   <mat-toolbar color="primary">
     <div fxHide.lt-md fxFlex.gt-sm="10"></div>
     <div fxFlex="20" fxLayoutAlign="center center">
-      <img fxHide.lt-md src="assets/header-grandeTrans.png" class="sic-com-logo-grande" (click)="buscarProductos(busquedaCriteria)">
-      <img fxHide.gt-sm src="assets/logo-GD_bco.png" class="sic-com-logo-chico" (click)="buscarProductos(busquedaCriteria)">
+      <img fxHide.lt-md src="assets/header-grandeTrans.png" class="sic-com-logo-grande" (click)="buscarProductos(busquedaForm.get('criteriaControl').value)">
+      <img fxHide.gt-sm src="assets/logo-GD_bco.png" class="sic-com-logo-chico" (click)="buscarProductos(busquedaForm.get('criteriaControl').value)">
     </div>
-    <div fxFlex fxLayoutAlign="center center">
-      <input class="sic-com-buscador-input" [(ngModel)]="busquedaCriteria"
-             type="search" (keyup.enter)="buscarProductos(busquedaCriteria)">
-      <mat-icon class="sic-com-buscador-icon" (click)="buscarProductos(busquedaCriteria)">search</mat-icon>
-    </div>
+    <form fxFlex fxLayoutAlign="center center" [formGroup]="busquedaForm">
+      <input class="sic-com-buscador-input" type="search" formControlName="criteriaControl">
+      <mat-icon class="sic-com-buscador-icon" (click)="buscarProductos(busquedaForm.get('criteriaControl').value)">search</mat-icon>
+    </form>
     <div fxFlex.lt-md="15" fxFlex.gt-sm="20" fxLayoutAlign="center center">
       <div fxHide.lt-md>
         <button mat-icon-button [routerLink]="['/carrito-compra']" matTooltip="Ir al carrito">
