@@ -5,7 +5,7 @@ import {CarritoCompraService} from '../../services/carrito-compra.service';
 import {AuthService} from '../../services/auth.service';
 import {Router} from '@angular/router';
 import {AvisoService} from '../../services/aviso.service';
-import { debounceTime } from 'rxjs/operators';
+import {debounceTime} from 'rxjs/operators';
 
 @Component({
   selector: 'sic-com-navbar',
@@ -24,7 +24,10 @@ export class NavbarComponent implements OnInit {
   constructor(private authService: AuthService, private productosService: ProductosService,
               private carritoCompraService: CarritoCompraService, private router: Router,
               private avisoService: AvisoService) {
-    this.busquedaCriteriaChange();
+    const criteriaControl = this.busquedaForm.get('criteriaControl');
+    criteriaControl.valueChanges.pipe(debounceTime(700)).subscribe(
+      data => this.buscarProductos(data)
+    );
   }
 
   ngOnInit() {
@@ -46,12 +49,5 @@ export class NavbarComponent implements OnInit {
 
   logout() {
     this.authService.logout();
-  }
-
-  busquedaCriteriaChange() {
-    const criteriaControl = this.busquedaForm.get('criteriaControl');
-    criteriaControl.valueChanges.pipe(debounceTime(1000)).subscribe(
-      data => this.buscarProductos(data)
-    );
   }
 }
