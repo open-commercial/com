@@ -46,9 +46,9 @@ export class ClientesDialogComponent implements OnInit {
   }
 
   seleccionarCliente(id_Cliente) {
-    const cli = this.getClienteBusqueda(id_Cliente);
-    this.clientesService.addClienteSeleccionado(cli);
-    this.avisoService.openSnackBar('Se seleccionó el cliente: ' + cli.razonSocial, '', 3500);
+    const cliente = this.getClienteBusqueda(id_Cliente);
+    this.clientesService.setClienteSeleccionado(cliente);
+    this.avisoService.openSnackBar('Se seleccionó el cliente: ' + cliente.razonSocial, '', 3500);
     this.cliente = this.clientesService.getClienteSeleccionado();
     this.cerrarDialog();
   }
