@@ -19,7 +19,7 @@ export class ClientesService {
     return this.http.get(uri);
   }
 
-  addClienteSeleccionado(cliente) {
+  setClienteSeleccionado(cliente) {
     localStorage.setItem('clientePedido', JSON.stringify(cliente));
     this.clienteSeleccionadoSubject.next(cliente);
   }

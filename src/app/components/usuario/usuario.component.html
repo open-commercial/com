@@ -1,0 +1,60 @@
+<form [formGroup]="usuarioForm" (ngSubmit)="submit()" *ngIf="!readonly">
+    <h2 class="mat-h2">Detalles de la Cuenta</h2>
+    <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.7rem">
+        <mat-form-field fxFlex="50">
+            <input matInput placeholder="Usuario" formControlName="nombreUsuario">
+            <mat-error *ngIf="usuarioForm.get('nombreUsuario').hasError('required')">
+                Requerido
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field fxFlex="50">
+            <input matInput placeholder="Email" type="email" formControlName="email">
+            <mat-error *ngIf="usuarioForm.get('email').hasError('email') && !usuarioForm.get('email').hasError('required')">
+                Por favor, ingrese un email válido
+            </mat-error>
+            <mat-error *ngIf="usuarioForm.get('email').hasError('required')">
+                Requerido
+            </mat-error>
+        </mat-form-field>
+    </div>
+    <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.7rem">
+        <mat-form-field fxFlex="50" >
+            <input matInput placeholder="Apellido" formControlName="apellido">
+            <mat-error *ngIf="usuarioForm.get('apellido').hasError('required')">
+                Requerido
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field fxFlex="50">
+            <input matInput placeholder="Nombre" formControlName="nombre">
+            <mat-error *ngIf="usuarioForm.get('nombre').hasError('required')">
+                Requerido
+            </mat-error>
+        </mat-form-field>
+    </div>
+    <br><h2 class="mat-h2">Seguridad</h2>
+    <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.7rem">
+        <mat-form-field fxFlex="50" >
+            <input matInput placeholder="Contraseña" type="password" formControlName="contrasenia">
+        </mat-form-field>
+        <mat-form-field fxFlex="50">
+            <input matInput placeholder="Repita la Contraseña" type="password" formControlName="repeticionContrasenia">
+        </mat-form-field>
+    </div>
+    <mat-error *ngIf="usuarioForm.get('contrasenia').value !== usuarioForm.get('repeticionContrasenia').value">
+        Las contraseñas deben coincidir
+    </mat-error>  
+</form>
+<div *ngIf="usuario && readonly">
+    <div fxLayout="row" fxLayoutGap="0.4rem" fxLayoutAlign="start center">
+        <mat-icon>person</mat-icon>
+        <span>{{ usuario.username }} ({{ usuario.apellido}}, {{ usuario.nombre }})</span>
+    </div><br>
+    <div fxLayout="row" fxLayoutGap="0.4rem" fxLayoutAlign="start center">
+        <mat-icon>email</mat-icon>
+        <span>{{ usuario.email }}</span>
+    </div><br>  
+    <div fxLayout="row" fxLayoutGap="0.4rem" fxLayoutAlign="start center">
+        <mat-icon>local_offer</mat-icon>
+        <span *ngFor="let r of usuario.roles">{{ r }}</span>
+    </div>
+</div>
