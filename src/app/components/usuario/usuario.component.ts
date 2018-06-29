@@ -1,8 +1,9 @@
 import {Component, OnInit, Input} from '@angular/core';
-import {FormBuilder, FormControl, Validators, FormGroup, FormGroupDirective, NgForm} from '@angular/forms';
+import {FormBuilder, FormControl, Validators, FormGroup, FormGroupDirective, NgForm, ValidatorFn, ValidationErrors} from '@angular/forms';
 import { Usuario } from '../../models/usuario';
 import { UsuariosService } from '../../services/usuarios.service';
 import { AvisoService } from '../../services/aviso.service';
+import { PasswordValidation } from '../../validators/PasswordValidation';
 
 @Component({
   selector: 'sic-com-usuario',
@@ -13,65 +14,80 @@ export class UsuarioComponent implements OnInit {
     usuarioForm: FormGroup;
     @Input()
     readonly = true;
+    inEdition = false;
     private _usuario: Usuario = null;
 
     constructor(private fb: FormBuilder, private usuariosService: UsuariosService, private avisoService: AvisoService) {
         this.createForm();
     }
 
+    @Input()
+    set usuario(usuario: Usuario|null) {
+        this._usuario = usuario || null;
+        if (this._usuario) {
+            this.usuarioForm.setValue({
+                username: this._usuario.username || '' ,
+                apellido: this._usuario.apellido || '',
+                nombre: this._usuario.nombre || '',
+                email: this._usuario.email || '',
+                password: '',
+                repeatPassword: '',
+            });
+        }
+    }
+
+    get usuario(): Usuario|null { return this._usuario; }
+
     createForm() {
         this.usuarioForm = this.fb.group({
-            nombreUsuario: ['', Validators.required ],
+            username: ['', Validators.required ],
             apellido: ['', Validators.required ],
             nombre: ['', Validators.required ],
             email: ['', [Validators.required, Validators.email]],
-            contrasenia: '',
-            repeticionContrasenia: '',
+            password: '',
+            repeatPassword: ''
         });
+        this.usuarioForm.setValidators(PasswordValidation.MatchPassword);
     }
+
     ngOnInit() {
     }
 
     toggleEdit() {
-        this.readonly = !this.readonly;
+        this.inEdition = !this.inEdition;
     }
 
     submit() {
         if (this.usuarioForm.valid) {
             this.assignFormValues();
             this.usuariosService.saveUsuario(this._usuario).subscribe(
-                data => this.readonly = true,
+                data => this.updateInterface(),
                 err => this.avisoService.openSnackBar(err.error, '', 3500)
             );
         }
     }
 
     assignFormValues() {
-        this._usuario.username = this.usuarioForm.get('nombreUsuario').value;
+        this._usuario.username = this.usuarioForm.get('username').value;
         this._usuario.apellido = this.usuarioForm.get('apellido').value;
         this._usuario.nombre = this.usuarioForm.get('nombre').value;
         this._usuario.email = this.usuarioForm.get('email').value;
-        // if (this.usuarioForm.get('contrasenia').value) {
-            this._usuario.password = this.usuarioForm.get('contrasenia').value;
-        // }
+        this._usuario.password = this.usuarioForm.get('password').value;
     }
 
-    @Input()
-    set usuario(usuario: Usuario|null) {
-        this._usuario = usuario || null;
-        // console.log(usuario);
-        if (this._usuario) {
-            console.log(usuario);
-            this.usuarioForm.setValue({
-                nombreUsuario: this._usuario.username || '' ,
-                apellido: this._usuario.apellido || '',
-                nombre: this._usuario.nombre || '',
-                email: this._usuario.email || '',
-                contrasenia: '',
-                repeticionContrasenia: '',
-            });
-        }
+    updateInterface() {
+        this.rebuildForm();
+        this.toggleEdit();
     }
 
-    get usuario(): Usuario|null { return this._usuario; }
+    rebuildForm() {
+        this.usuarioForm.reset({
+            username: this._usuario.username,
+            apellido: this._usuario.apellido,
+            nombre: this._usuario.nombre,
+            email: this._usuario.email,
+            password: '',
+            repeatPassword: '',
+        });
+    }
 }

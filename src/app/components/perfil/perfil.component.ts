@@ -8,11 +8,8 @@ import { Usuario } from '../../models/usuario';
     templateUrl: 'perfil.component.html',
 })
 export class PerfilComponent implements OnInit {
-    @ViewChild(UsuarioComponent)
-    private usuarioComponent: UsuarioComponent;
-
     usuario: Usuario = null;
-    usuarioReadonly = true;
+    usuarioReadonly = false;
     constructor(private authService: AuthService) {}
     ngOnInit() {
         this.authService.getLoggedInUsuario().subscribe(
@@ -24,7 +21,6 @@ export class PerfilComponent implements OnInit {
         this.usuarioReadonly = !this.usuarioReadonly;
     }
 
-    saveUsuario() {
-        this.usuarioComponent.submit();
+    onCollapse() {
     }
 }
