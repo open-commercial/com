@@ -14,10 +14,12 @@ export class ProductosService {
   constructor(private http: HttpClient) {}
 
   buscarProductos(criteria: string) {
+    criteria = criteria === null ? '' : criteria;
     this.buscarProductosSubject.next(criteria);
   }
 
   getProductos(descripcionCriteria: string, idRubro: number, pagina: number, tamanioPagina: number) {
+    descripcionCriteria = descripcionCriteria === null ? '' : descripcionCriteria;
     let criteria = '&descripcion=' + descripcionCriteria + '&pagina=' + pagina + '&tamanio=' + tamanioPagina;
     if (idRubro) {
       criteria += '&idRubro=' + idRubro;

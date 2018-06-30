@@ -16,7 +16,7 @@ export class NavbarComponent implements OnInit {
 
   cantidadItemsEnCarrito = 0;
   usuarioConectado = '';
-  busquedaCriteria;
+  busquedaCriteria = '';
   busquedaForm = new FormGroup ({
     criteriaControl: new FormControl()
   });
@@ -43,6 +43,7 @@ export class NavbarComponent implements OnInit {
   }
 
   buscarProductos(criteria: string) {
+    criteria = criteria === null ? '' : criteria;
     this.productosService.buscarProductos(criteria);
     this.router.navigate(['/productos', {busqueda: criteria}]);
   }
