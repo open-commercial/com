@@ -10,6 +10,7 @@
     border: none;
     padding: 10px;
     font-size: 18px;
+    -webkit-appearance: none;
     -webkit-border-top-left-radius: 10px;
     -webkit-border-bottom-left-radius: 10px;
     -moz-border-radius-topleft: 10px;
@@ -21,9 +22,13 @@
   .sic-com-buscador-icon {
     background: #e03906;
     padding: 9px;
-    -webkit-border-radius: 0 10px 10px 0;
-    -moz-border-radius: 0 10px 10px 0;
-    border-radius: 0 10px 10px 0;
+    -webkit-appearance: none;
+    -webkit-border-top-right-radius: 10px;
+    -webkit-border-bottom-right-radius: 10px;
+    -moz-border-radius-topright: 10px;
+    -moz-border-radius-bottomright: 10px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
     cursor: pointer;
   }
 
