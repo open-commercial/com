@@ -44,7 +44,7 @@
               <mat-form-field class="sic-com-input-cantidad">
                 <input matInput #cantCart type="number" placeholder="Cantidad"
                         value="{{icc.cantidad}}" min="{{icc.producto.ventaMinima}}"
-                        (keyup.enter)="editCantidadProducto(icc, cantCart.value, 2)">
+                        (change)="editCantidadProducto(icc, cantCart.value, 2)">
               </mat-form-field>
             </div>
             <div fxFlex="40" fxLayoutAlign="center center">
