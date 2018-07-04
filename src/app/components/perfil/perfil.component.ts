@@ -1,6 +1,5 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { AuthService } from '../../services/auth.service';
-import { UsuarioComponent } from '../usuario/usuario.component';
 import { Usuario } from '../../models/usuario';
 
 @Component({
@@ -9,18 +8,12 @@ import { Usuario } from '../../models/usuario';
 })
 export class PerfilComponent implements OnInit {
     usuario: Usuario = null;
-    usuarioReadonly = false;
+
     constructor(private authService: AuthService) {}
+
     ngOnInit() {
         this.authService.getLoggedInUsuario().subscribe(
             data => { this.usuario = data; }
         );
-    }
-
-    toggleUsuarioEdit() {
-        this.usuarioReadonly = !this.usuarioReadonly;
-    }
-
-    onCollapse() {
     }
 }

@@ -1,9 +1,9 @@
 import {Component, OnInit, Input} from '@angular/core';
-import {FormBuilder, FormControl, Validators, FormGroup, FormGroupDirective, NgForm, ValidatorFn, ValidationErrors} from '@angular/forms';
-import { Usuario } from '../../models/usuario';
-import { UsuariosService } from '../../services/usuarios.service';
-import { AvisoService } from '../../services/aviso.service';
-import { PasswordValidation } from '../../validators/PasswordValidation';
+import {FormBuilder, Validators, FormGroup} from '@angular/forms';
+import {Usuario} from '../../models/usuario';
+import {UsuariosService} from '../../services/usuarios.service';
+import {AvisoService} from '../../services/aviso.service';
+import {PasswordValidation} from '../../validators/PasswordValidation';
 
 @Component({
   selector: 'sic-com-usuario',
@@ -12,9 +12,7 @@ import { PasswordValidation } from '../../validators/PasswordValidation';
 })
 export class UsuarioComponent implements OnInit {
     usuarioForm: FormGroup;
-    @Input()
-    readonly = true;
-    inEdition = false;
+    @Input() inEdition = false;
     private _usuario: Usuario = null;
 
     constructor(private fb: FormBuilder, private usuariosService: UsuariosService, private avisoService: AvisoService) {
@@ -50,34 +48,35 @@ export class UsuarioComponent implements OnInit {
         this.usuarioForm.setValidators(PasswordValidation.MatchPassword);
     }
 
-    ngOnInit() {
-    }
+    ngOnInit() {}
 
     toggleEdit() {
         this.inEdition = !this.inEdition;
+        this.rebuildForm();
     }
 
     submit() {
         if (this.usuarioForm.valid) {
-            this.assignFormValues();
-            this.usuariosService.saveUsuario(this._usuario).subscribe(
-                data => this.updateInterface(),
-                err => this.avisoService.openSnackBar(err.error, '', 3500)
+            const usuario = this.getFormValues();
+            this.usuariosService.saveUsuario(usuario).subscribe(
+                data => { this._usuario = usuario; this.toggleEdit(); },
+                err => { this.avisoService.openSnackBar(err.error, '', 3500); }
             );
         }
     }
 
-    assignFormValues() {
-        this._usuario.username = this.usuarioForm.get('username').value;
-        this._usuario.apellido = this.usuarioForm.get('apellido').value;
-        this._usuario.nombre = this.usuarioForm.get('nombre').value;
-        this._usuario.email = this.usuarioForm.get('email').value;
-        this._usuario.password = this.usuarioForm.get('password').value;
-    }
-
-    updateInterface() {
-        this.rebuildForm();
-        this.toggleEdit();
+    getFormValues(): Usuario {
+        return {
+            id_Usuario: this._usuario.id_Usuario,
+            idEmpresaPredeterminada: this._usuario.idEmpresaPredeterminada,
+            username: this.usuarioForm.get('username').value,
+            apellido: this.usuarioForm.get('apellido').value,
+            nombre: this.usuarioForm.get('nombre').value,
+            email: this.usuarioForm.get('email').value,
+            password: this.usuarioForm.get('password').value,
+            roles: this._usuario.roles,
+            habilitado: this._usuario.habilitado
+        };
     }
 
     rebuildForm() {

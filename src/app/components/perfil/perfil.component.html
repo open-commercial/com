@@ -1,5 +1,5 @@
 <mat-accordion>
-    <mat-expansion-panel [expanded]="true" (closed)="onCollapse()" hideToggle>
+    <mat-expansion-panel [expanded]="true" hideToggle>
         <mat-expansion-panel-header>
             <mat-panel-title>
                 Usuario
@@ -9,7 +9,7 @@
             </mat-panel-description>
             <mat-icon>account_circle</mat-icon>
         </mat-expansion-panel-header>
-        <sic-com-usuario [usuario]="usuario" [readonly]="usuarioReadonly"></sic-com-usuario>   
+        <sic-com-usuario [usuario]="usuario" [inEdition]="inEdition"></sic-com-usuario>   
     </mat-expansion-panel>
     <!-- <mat-expansion-panel>
         <mat-expansion-panel-header>
