@@ -7,9 +7,7 @@ export interface Usuario {
     nombre: string;
     apellido: string;
     email: string;
-    token: string;
-    passwordRecoverykey: string;
-    habilitado: boolean;
-    eliminado: boolean;
+    idEmpresaPredeterminada: number;
     roles: Array<Rol>;
+    habilitado: boolean;
 }
