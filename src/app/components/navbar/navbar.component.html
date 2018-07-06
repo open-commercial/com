@@ -11,11 +11,16 @@
     </form>
     <div fxFlex.lt-md="15" fxFlex.gt-sm="20" fxLayoutAlign="center center">
       <div fxHide.lt-md>
+          <button mat-icon-button [routerLink]="['/perfil']" matTooltip="Mi Perfil">
+            <mat-icon>account_circle</mat-icon>
+          </button>
+      </div>
+        <div fxHide.lt-md>
         <button mat-icon-button [routerLink]="['/carrito-compra']" matTooltip="Ir al carrito">
           <mat-icon>shopping_cart</mat-icon>
           <span class="sic-com-contador-carrito" *ngIf="(cantidadItemsEnCarrito > 0)">{{cantidadItemsEnCarrito}}</span>
         </button>
-      </div>
+       </div>
       <div fxHide.lt-md>
         <button mat-icon-button (click)="logout()" matTooltip="Salir ({{usuarioConectado}})">
           <mat-icon>power_settings_new</mat-icon>
@@ -25,6 +30,10 @@
         <mat-icon>more_vert</mat-icon>
       </button>
       <mat-menu #menu="matMenu" fxHide.gt-sm [overlapTrigger]="false">
+        <button mat-menu-item [routerLink]="['/perfil']">
+          <mat-icon>account_circle</mat-icon>
+          <span>Mi Perfil</span>
+        </button>
         <button mat-menu-item [routerLink]="['/carrito-compra']">
           <mat-icon>shopping_cart</mat-icon>
           <span>Ir al carrito ({{cantidadItemsEnCarrito}})</span>

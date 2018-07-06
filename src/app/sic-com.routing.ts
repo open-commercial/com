@@ -5,6 +5,7 @@ import {CarritoCompraComponent} from './components/carrito-compra/carrito-compra
 import {ProductoComponent} from './components/producto/producto.component';
 import {ContainerComponent} from './components/container/container.component';
 import {ProductosComponent} from './components/productos/productos.component';
+import { PerfilComponent } from './components/perfil/perfil.component';
 
 const sicComRoutes: Routes = [
   {path: 'login', component: LoginComponent},
@@ -13,7 +14,8 @@ const sicComRoutes: Routes = [
     children: [
       {path: 'productos', component: ProductosComponent},
       {path: 'producto/:id', component: ProductoComponent},
-      {path: 'carrito-compra', component: CarritoCompraComponent}
+      {path: 'carrito-compra', component: CarritoCompraComponent},
+      {path: 'perfil', component: PerfilComponent}
     ]},
   {path: '**', redirectTo: 'productos'}
 ];

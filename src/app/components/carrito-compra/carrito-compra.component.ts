@@ -6,7 +6,8 @@ import {ClientesService} from '../../services/clientes.service';
 import {ClientesDialogComponent} from './clientesDialog/clientes-dialog.component';
 import {AvisoService} from '../../services/aviso.service';
 import {AuthService} from '../../services/auth.service';
-import {ConfirmationDialogComponent} from '../confirmation-dialog/confirmation-dialog.component';
+import {ConfirmationDialogComponent} from '../../components/confirmation-dialog/confirmation-dialog.component';
+import { Rol } from '../../models/rol';
 
 @Component({
   selector: 'sic-com-carrito-compra',
@@ -38,7 +39,7 @@ export class CarritoCompraComponent implements OnInit {
       data => this.clienteSeleccionado = data);
     this.authService.getLoggedInUsuario().subscribe(
       data => {
-        if (data['roles'].indexOf('COMPRADOR') !== -1 && data['roles'].length === 1) {
+        if (data['roles'].indexOf(Rol.COMPRADOR) !== -1 && data['roles'].length === 1) {
           this.mostrarBotonAsignarCliente = false;
           this.clientesService.getClienteDelUsuario(data['id_Usuario']).subscribe(
             cliente => this.clientesService.setClienteSeleccionado(cliente)

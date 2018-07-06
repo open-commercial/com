@@ -1,10 +1,12 @@
 import {Injectable} from '@angular/core';
 import {environment} from '../../environments/environment';
 import {HttpClient} from '@angular/common/http';
-import {throwError} from 'rxjs';
+import {throwError, Observable} from 'rxjs';
 import {map, catchError} from 'rxjs/operators';
 import {JwtHelperService} from '@auth0/angular-jwt';
 import {Router} from '@angular/router';
+import { Usuario } from '../models/usuario';
+import { UsuariosService } from './usuarios.service';
 
 @Injectable()
 export class AuthService {
@@ -13,7 +15,7 @@ export class AuthService {
   urlUsuario = environment.apiUrl + '/api/v1/usuarios';
   jwtHelper = new JwtHelperService();
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router, private usuariosService: UsuariosService) {}
 
   login(username: string, password: string) {
     const credential = {username: username, password: password};
@@ -47,8 +49,9 @@ export class AuthService {
     return !this.jwtHelper.isTokenExpired(localStorage.getItem('token'));
   }
 
-  getLoggedInUsuario() {
-    return this.http.get(this.urlUsuario + '/' + localStorage.getItem('id_Usuario'));
+  getLoggedInUsuario(): Observable<Usuario> {
+    return this.usuariosService.getUsuario(localStorage.getItem('id_Usuario'));
+    // return this.http.get<Usuario>(this.urlUsuario + '/' + localStorage.getItem('id_Usuario'));
   }
 
   getLoggedInIdUsuario(): string {

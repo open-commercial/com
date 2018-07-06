@@ -27,6 +27,9 @@ import {AvisoService} from '../services/aviso.service';
 import {ContainerComponent} from '../components/container/container.component';
 import {ClientesDialogComponent} from '../components/carrito-compra/clientesDialog/clientes-dialog.component';
 import {ConfirmationDialogComponent} from '../components/confirmation-dialog/confirmation-dialog.component';
+import {PerfilComponent} from '../components/perfil/perfil.component';
+import {UsuarioComponent} from '../components/usuario/usuario.component';
+import { UsuariosService } from '../services/usuarios.service';
 
 @NgModule({
   declarations: [
@@ -41,7 +44,9 @@ import {ConfirmationDialogComponent} from '../components/confirmation-dialog/con
     CarritoCompraComponent,
     SicComCurrencyPipe,
     SicComFilterPipe,
-    ConfirmationDialogComponent
+    ConfirmationDialogComponent,
+    PerfilComponent,
+    UsuarioComponent
   ],
   imports: [
     HttpClientModule,
@@ -62,7 +67,8 @@ import {ConfirmationDialogComponent} from '../components/confirmation-dialog/con
     CarritoCompraService,
     ClientesService,
     EmpresasService,
-    AvisoService
+    AvisoService,
+    UsuariosService
   ],
   entryComponents: [
     ClientesDialogComponent,
