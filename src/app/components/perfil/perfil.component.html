@@ -1,32 +1,20 @@
 <mat-accordion>
-    <mat-expansion-panel [expanded]="true" hideToggle>
+    <mat-expansion-panel hideToggle>
         <mat-expansion-panel-header>
             <mat-panel-title>
-                Usuario
+                Mi Cuenta de Usuario
             </mat-panel-title>
-            <mat-panel-description>
-                Cuenta de Usuario
-            </mat-panel-description>
             <mat-icon>account_circle</mat-icon>
         </mat-expansion-panel-header>
         <sic-com-usuario [usuario]="usuario" [inEdition]="inEdition"></sic-com-usuario>   
     </mat-expansion-panel>
-    <!-- <mat-expansion-panel>
+    <mat-expansion-panel *ngIf="cliente" hideToggle>
         <mat-expansion-panel-header>
-            CLIENTE 
+            <mat-panel-title>
+                Mis Pedidos
+            </mat-panel-title>
+            <mat-icon>shopping_basket</mat-icon>
         </mat-expansion-panel-header>
-        <p></p>
-        <mat-action-row>
-            <button mat-button>Guardar</button>
-        </mat-action-row>
+        <sic-com-pedidos [cliente]="cliente"></sic-com-pedidos>
     </mat-expansion-panel>
-    <mat-expansion-panel>
-        <mat-expansion-panel-header>
-            Mis Pedidos
-        </mat-expansion-panel-header>
-        <p></p>
-        <mat-action-row>
-            <button mat-button>Guardar</button>
-        </mat-action-row>
-    </mat-expansion-panel> -->
 </mat-accordion>

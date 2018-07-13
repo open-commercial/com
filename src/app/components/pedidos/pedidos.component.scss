@@ -1,0 +1,41 @@
+.sic-com-pedidos {
+    .pedido-row {
+        height: auto;
+        vertical-align: middle;
+        .mat-line {
+          white-space: normal;
+        }
+        .pedido-row-content {
+            padding: .5em;
+            .pedido-column-content {
+                text-align: center;
+                mat-chip-list {
+                    display: inline-block;
+                }
+            }
+        }
+    }
+
+    .mat-chip-list {
+        padding: .2em 0.1em;    
+    }
+
+    .mat-chip {
+        color: black;
+        &.abierto {
+            background-color: green;
+        }
+        &.activo {
+            background-color: yellow;
+        }
+        &.cerrado {
+            background-color: red;
+        }
+    }
+
+    .mas-resultados {
+        cursor: pointer;
+        height: 60px;
+        color: #ff5722;
+    }
+}
