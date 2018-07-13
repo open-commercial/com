@@ -29,7 +29,8 @@ import {ClientesDialogComponent} from '../components/carrito-compra/clientesDial
 import {ConfirmationDialogComponent} from '../components/confirmation-dialog/confirmation-dialog.component';
 import {PerfilComponent} from '../components/perfil/perfil.component';
 import {UsuarioComponent} from '../components/usuario/usuario.component';
-import { UsuariosService } from '../services/usuarios.service';
+import {UsuariosService} from '../services/usuarios.service';
+import {ClienteComponent} from '../components/cliente/cliente.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import { UsuariosService } from '../services/usuarios.service';
     SicComFilterPipe,
     ConfirmationDialogComponent,
     PerfilComponent,
-    UsuarioComponent
+    UsuarioComponent,
+    ClienteComponent
   ],
   imports: [
     HttpClientModule,
