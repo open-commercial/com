@@ -1,6 +1,5 @@
 <div class="sic-com-container">
     <form [formGroup]="usuarioForm" (ngSubmit)="submit()" *ngIf="inEdition">
-        <h2 class="mat-h2">Detalles de la Cuenta</h2>
         <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.7rem">
             <mat-form-field fxFlex="50">
                 <input matInput placeholder="Usuario" formControlName="username">
@@ -32,21 +31,22 @@
                 </mat-error>
             </mat-form-field>
         </div>
-        <br><h2 class="mat-h2">Seguridad</h2>
         <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.7rem">
             <mat-form-field fxFlex="50">
                 <input matInput placeholder="Contraseña" type="password" formControlName="password">
                 <mat-error *ngIf="usuarioForm.controls.password.errors?.MatchPassword">
                     Las contraseñas deben ser iguales
                 </mat-error>
+                <mat-hint>Dejar en blanco para mantener la actual</mat-hint>
             </mat-form-field>
             <mat-form-field fxFlex="50">
                 <input matInput placeholder="Repita la Contraseña" type="password" formControlName="repeatPassword">
                 <mat-error *ngIf="usuarioForm.controls.repeatPassword.errors?.MatchPassword">
                     Las contraseñas deben ser iguales
                 </mat-error>
+                <mat-hint>Dejar en blanco para mantener la actual</mat-hint>
             </mat-form-field>
-        </div>
+        </div><br>
         <mat-action-row *ngIf="inEdition">
             <button mat-button type="submit" color="primary">GUARDAR</button>
             <button mat-button type="button" (click)="toggleEdit()">CANCELAR</button>
@@ -61,7 +61,7 @@
             <div fxLayout="row" fxLayoutGap="0.4rem" fxLayoutAlign="start center">
                 <mat-icon>email</mat-icon>
                 <span>{{ usuario.email }}</span>
-            </div><br>  
+            </div><br>
             <div fxLayout="row" fxLayoutGap="0.4rem" fxLayoutAlign="start center">
                 <mat-icon>group</mat-icon>
                 <span *ngFor="let r of usuario.roles">{{ r }}</span>
