@@ -11,7 +11,7 @@ export class PedidosService {
 
     constructor(private http: HttpClient) {}
 
-    getPedidosCliente(cliente: Cliente, pagina: number = 1, tamanioPagina: number = 10) {
+    getPedidosCliente(cliente: Cliente, pagina: number = 1, tamanioPagina: number = 5) {
         return this.http.get(this.urlBusqueda + '&idCliente=' + cliente.id_Cliente + '&pagina=' + pagina + '&tamanio=' + tamanioPagina);
     }
 }
