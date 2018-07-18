@@ -4,9 +4,9 @@
             <div matLine fxLayoutAlign="space-around center" fxFill class="pedido-row-content">
                 <div fxFlex fxLayout="row" fxLayout.lt-sm="column">
                     <div fxFlex class="pedido-column-content">
-                        <mat-chip-list>
-                            <mat-chip [ngClass]="pedido.estado.toLowerCase()" selectable="false">{{ pedido.estado }}</mat-chip>
-                        </mat-chip-list>
+                        <span [ngClass]="pedido.estado.toLowerCase()">
+                            {{ pedido.estado }}
+                        </span>
                     </div>
                     <div fxFlex class="pedido-column-content">
                         Nº {{ pedido.nroPedido }}

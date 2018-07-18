@@ -52,25 +52,24 @@
             <button mat-button type="button" (click)="toggleEdit()">CANCELAR</button>
         </mat-action-row>
     </form>
-    <div *ngIf="usuario && !inEdition" class="info" fxLayout="row" fxFill>
-        <div fxFlex="90">
-            <div fxLayout="row" fxLayoutGap="0.4rem" fxLayoutAlign="start center">
-                <mat-icon>person</mat-icon>
-                <span>{{ usuario.nombre }} {{ usuario.apellido}} ({{ usuario.username }})</span>
-            </div><br>
-            <div fxLayout="row" fxLayoutGap="0.4rem" fxLayoutAlign="start center">
-                <mat-icon>email</mat-icon>
-                <span>{{ usuario.email }}</span>
-            </div><br>
-            <div fxLayout="row" fxLayoutGap="0.4rem" fxLayoutAlign="start center">
-                <mat-icon>group</mat-icon>
+    <div *ngIf="usuario && !inEdition" class="info">
+        <div fxLayout="row" fxLayoutGap="0.4rem" fxLayoutAlign="start center">
+            <mat-icon>person</mat-icon>
+            <span>{{ usuario.nombre }} {{ usuario.apellido}} ({{ usuario.username }})</span>
+        </div><br>
+        <div fxLayout="row" fxLayoutGap="0.4rem" fxLayoutAlign="start center">
+            <mat-icon>email</mat-icon>
+            <span class="user-email">{{ usuario.email }}</span>
+        </div><br>
+        <div fxLayout="row" fxLayoutGap="0.4rem" fxLayoutAlign="start center">
+            <mat-icon>group</mat-icon>
+            <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="0.4rem" fxLayoutAlign="start center">
                 <span *ngFor="let r of usuario.roles">{{ r }}</span>
             </div>
         </div>
-        <div fxFlex fxLayoutAlign="end start">
-            <button *ngIf="!inEdition" mat-mini-fab color="primary" id="edit-button" (click)="toggleEdit()">
-                <mat-icon aria-label="Editar usuario">edit</mat-icon>
-            </button>
-        </div>
+        <br>
+        <mat-action-row>
+            <button mat-button color="primary" (click)="toggleEdit()">MODIFICAR</button>
+        </mat-action-row>
     </div>
 </div>

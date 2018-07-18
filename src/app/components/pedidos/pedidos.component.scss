@@ -20,19 +20,17 @@
         padding: .2em 0.1em;    
     }
 
-    .mat-chip {
-        color: black;
-        &.abierto {
-            background-color: green;
-        }
-        &.activo {
-            background-color: yellow;
-        }
-        &.cerrado {
-            background-color: red;
-        }
+    .abierto {
+        color: green;
     }
-
+    
+    .activo {
+        color: blue;
+    }
+    .cerrado {
+        color: red;
+    }
+    
     .mas-resultados {
         cursor: pointer;
         height: 60px;
