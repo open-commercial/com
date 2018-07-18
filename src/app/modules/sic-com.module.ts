@@ -31,6 +31,11 @@ import {PerfilComponent} from '../components/perfil/perfil.component';
 import {UsuarioComponent} from '../components/usuario/usuario.component';
 import {UsuariosService} from '../services/usuarios.service';
 import {ClienteComponent} from '../components/cliente/cliente.component';
+import {PedidosComponent} from '../components/pedidos/pedidos.component';
+import {PedidosService} from '../services/pedidos.service';
+import {PaisesService} from '../services/paises.service';
+
+
 
 @NgModule({
   declarations: [
@@ -48,7 +53,8 @@ import {ClienteComponent} from '../components/cliente/cliente.component';
     ConfirmationDialogComponent,
     PerfilComponent,
     UsuarioComponent,
-    ClienteComponent
+    ClienteComponent,
+    PedidosComponent
   ],
   imports: [
     HttpClientModule,
@@ -70,7 +76,9 @@ import {ClienteComponent} from '../components/cliente/cliente.component';
     ClientesService,
     EmpresasService,
     AvisoService,
-    UsuariosService
+    UsuariosService,
+    PedidosService,
+    PaisesService
   ],
   entryComponents: [
     ClientesDialogComponent,

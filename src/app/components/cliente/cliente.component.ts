@@ -1,7 +1,13 @@
 import {Component, OnInit, Input} from '@angular/core';
 import {FormBuilder, Validators, FormGroup} from '@angular/forms';
-import { Cliente } from '../../models/cliente';
+
+import {Cliente} from '../../models/cliente';
+import {Pais} from '../../models/pais';
+
+import {ClientesService} from '../../services/clientes.service';
 import {AvisoService} from '../../services/aviso.service';
+import {PaisesService} from '../../services/paises.service';
+
 // import {Usuario} from '../../models/usuario';
 // import {UsuariosService} from '../../services/usuarios.service';
 
@@ -16,8 +22,12 @@ export class ClienteComponent implements OnInit {
     clienteForm: FormGroup;
     @Input() inEdition = false;
     private _cliente: Cliente = null;
+    private paises: Array<Pais> = [];
 
-    constructor(private fb: FormBuilder, private avisoService: AvisoService) {
+    constructor(
+        private fb: FormBuilder, private avisoService: AvisoService,
+        private paisesService: PaisesService
+    ) {
         this.createForm();
     }
 
@@ -43,7 +53,9 @@ export class ClienteComponent implements OnInit {
         // this.clenteForm.setValidators(PasswordValidation.MatchPassword);
     }
 
-    ngOnInit() {}
+    ngOnInit() {
+        this.getPaises();
+    }
 
     toggleEdit() {
         this.inEdition = !this.inEdition;
@@ -73,5 +85,9 @@ export class ClienteComponent implements OnInit {
         //     password: '',
         //     repeatPassword: '',
         // });
+    }
+
+    getPaises() {
+        this.paisesService.getPaises().subscribe((data: [Pais]) => { this.paises = data; console.log(data); });
     }
 }

@@ -1,0 +1,15 @@
+<div *ngIf="cliente && !inEdition" class="info" fxLayout="row" fxFill>
+    <div fxFlex="90">
+        <div fxLayout="column" fxLayoutGap="0.4rem" fxLayoutAlign="start start">
+            <span>Id Fiscal: {{ cliente.idFiscal }}</span>
+            <span>Razón Social: {{ cliente.razonSocial }}</span>
+            <span>Nombre Fantasía: {{ cliente.nombreFantasia }}</span>
+            <span>Condición IVA: </span>
+        </div>
+    </div>
+    <div fxFlex fxLayoutAlign="end start">
+        <button *ngIf="!inEdition" mat-mini-fab color="primary" id="edit-button" (click)="toggleEdit()">
+            <mat-icon aria-label="Editar usuario">edit</mat-icon>
+        </button>
+    </div>
+</div>
