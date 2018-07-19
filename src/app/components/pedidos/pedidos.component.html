@@ -1,4 +1,10 @@
 <div class="sic-com-pedidos">
+  <div class="sic-com-sin-cliente" *ngIf="!cliente">
+    <span fxLayoutAlign="center center">
+      <mat-icon color="primary">sentiment_neutral</mat-icon>
+      &nbsp;No posee una cuenta de cliente para realizar pedidos
+    </span>
+  </div>
     <mat-nav-list>
         <mat-list-item *ngFor="let pedido of pedidos" class="pedido-row">
             <div matLine fxLayoutAlign="space-around center" fxFill class="pedido-row-content">
@@ -24,8 +30,7 @@
             <mat-divider></mat-divider>
         </mat-list-item>
     </mat-nav-list>
-    <div class="mas-resultados" fxLayoutAlign="center center" (click)="loadMore()"
-       *ngIf="pedidos.length && !esUltimaPagina">
+    <div class="mas-resultados" fxLayoutAlign="center center" (click)="loadMore()" *ngIf="pedidos.length && !esUltimaPagina">
     <span *ngIf="pedidos.length && !esUltimaPagina && !loading">
       <strong>MAS RESULTADOS</strong>
     </span>

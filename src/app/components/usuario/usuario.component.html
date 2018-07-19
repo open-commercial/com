@@ -1,5 +1,5 @@
 <div class="sic-com-container">
-    <form [formGroup]="usuarioForm" (ngSubmit)="submit()" *ngIf="inEdition">
+    <form fxLayout="column" [formGroup]="usuarioForm" (ngSubmit)="submit()" *ngIf="inEdition" fxLayoutGap="0.7rem">
         <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.7rem">
             <mat-form-field fxFlex="50">
                 <input matInput placeholder="Usuario" formControlName="username">

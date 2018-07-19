@@ -1,27 +1,11 @@
-import {Component, OnInit} from '@angular/core';
-import { AuthService } from '../../services/auth.service';
-import { Usuario } from '../../models/usuario';
-import { Cliente } from '../../models/cliente';
-import { ClientesService } from '../../services/clientes.service';
+import {Component} from '@angular/core';
 
 @Component({
-    selector: 'sic-com-perfil',
-    templateUrl: 'perfil.component.html',
+  selector: 'sic-com-perfil',
+  templateUrl: 'perfil.component.html',
 })
-export class PerfilComponent implements OnInit {
-    usuario: Usuario = null;
-    cliente: Cliente = null;
+export class PerfilComponent {
 
-    constructor(private authService: AuthService, private clientesService: ClientesService) {}
+  constructor() {}
 
-    ngOnInit() {
-        this.authService.getLoggedInUsuario().subscribe(
-            (data: Usuario) => {
-                this.usuario = data;
-                this.clientesService.getClienteDelUsuario(this.usuario.id_Usuario).subscribe(
-                    (data1: Cliente) =>  { this.cliente = data1; }
-                );
-            }
-        );
-    }
 }

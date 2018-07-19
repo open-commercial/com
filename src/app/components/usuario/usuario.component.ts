@@ -4,6 +4,7 @@ import {Usuario} from '../../models/usuario';
 import {UsuariosService} from '../../services/usuarios.service';
 import {AvisoService} from '../../services/aviso.service';
 import {PasswordValidation} from '../../validators/PasswordValidation';
+import {AuthService} from '../../services/auth.service';
 
 @Component({
   selector: 'sic-com-usuario',
@@ -11,30 +12,36 @@ import {PasswordValidation} from '../../validators/PasswordValidation';
   styleUrls: ['usuario.component.scss']
 })
 export class UsuarioComponent implements OnInit {
+
+    @Input()
+    inEdition = false;
+
+    usuario: Usuario;
     usuarioForm: FormGroup;
-    @Input() inEdition = false;
     private _usuario: Usuario = null;
 
-    constructor(private fb: FormBuilder, private usuariosService: UsuariosService, private avisoService: AvisoService) {
+    constructor(private fb: FormBuilder, private usuariosService: UsuariosService,
+                private avisoService: AvisoService, private authService: AuthService) {
         this.createForm();
     }
 
-    @Input()
-    set usuario(usuario: Usuario|null) {
-        this._usuario = usuario || null;
-        if (this._usuario) {
+    ngOnInit() {
+      this.authService.getLoggedInUsuario().subscribe(
+        (usuario: Usuario) => {
+          this.usuario = usuario;
+          this._usuario = usuario || null;
+          if (this._usuario) {
             this.usuarioForm.setValue({
-                username: this._usuario.username || '' ,
-                apellido: this._usuario.apellido || '',
-                nombre: this._usuario.nombre || '',
-                email: this._usuario.email || '',
-                password: '',
-                repeatPassword: '',
+              username: this._usuario.username || '' ,
+              apellido: this._usuario.apellido || '',
+              nombre: this._usuario.nombre || '',
+              email: this._usuario.email || '',
+              password: '',
+              repeatPassword: '',
             });
-        }
+          }
+        });
     }
-
-    get usuario(): Usuario|null { return this._usuario; }
 
     createForm() {
         this.usuarioForm = this.fb.group({
@@ -48,7 +55,7 @@ export class UsuarioComponent implements OnInit {
         this.usuarioForm.setValidators(PasswordValidation.MatchPassword);
     }
 
-    ngOnInit() {}
+
 
     toggleEdit() {
         this.inEdition = !this.inEdition;
@@ -59,8 +66,11 @@ export class UsuarioComponent implements OnInit {
         if (this.usuarioForm.valid) {
             const usuario = this.getFormValues();
             this.usuariosService.saveUsuario(usuario).subscribe(
-                data => { this._usuario = usuario; this.toggleEdit(); },
-                err => { this.avisoService.openSnackBar(err.error, '', 3500); }
+                data => {
+                  this._usuario = usuario;
+                  this.toggleEdit();
+                },
+                err => this.avisoService.openSnackBar(err.error, '', 3500)
             );
         }
     }

@@ -16,21 +16,29 @@
         }
     }
 
+  .sic-com-sin-cliente {
+    span {
+      height: 100px;
+      color: #ff5722;
+      font-size: 18px;
+    }
+  }
+
     .mat-chip-list {
-        padding: .2em 0.1em;    
+        padding: .2em 0.1em;
     }
 
     .abierto {
         color: lime;
     }
-    
+
     .activo {
         color: blue;
     }
     .cerrado {
         color: red;
     }
-    
+
     .mas-resultados {
         cursor: pointer;
         height: 60px;
