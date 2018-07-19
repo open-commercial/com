@@ -3,7 +3,7 @@ import {ProductosService} from '../../services/productos.service';
 import {RubrosService} from '../../services/rubros.service';
 import {ActivatedRoute} from '@angular/router';
 import {Subscription} from 'rxjs';
-import {AvisoService} from 'app/services/aviso.service';
+import {AvisoService} from '../../services/aviso.service';
 
 @Component({
   selector: 'sic-com-productos',

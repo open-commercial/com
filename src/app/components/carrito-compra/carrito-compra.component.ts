@@ -6,7 +6,7 @@ import {ClientesService} from '../../services/clientes.service';
 import {ClientesDialogComponent} from './clientesDialog/clientes-dialog.component';
 import {AvisoService} from '../../services/aviso.service';
 import {AuthService} from '../../services/auth.service';
-import {ConfirmationDialogComponent} from '../../components/confirmation-dialog/confirmation-dialog.component';
+import {ConfirmationDialogComponent} from '../confirmation-dialog/confirmation-dialog.component';
 import { Rol } from '../../models/rol';
 
 @Component({

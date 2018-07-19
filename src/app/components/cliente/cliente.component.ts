@@ -7,11 +7,8 @@ import {Pais} from '../../models/pais';
 import {ClientesService} from '../../services/clientes.service';
 import {AvisoService} from '../../services/aviso.service';
 import {PaisesService} from '../../services/paises.service';
-
-// import {Usuario} from '../../models/usuario';
-// import {UsuariosService} from '../../services/usuarios.service';
-
-// import {PasswordValidation} from '../../validators/PasswordValidation';
+import { Provincia } from '../../models/provincia';
+import { ProvinciasService } from '../../services/provincias.service';
 
 @Component({
   selector: 'sic-com-cliente',
@@ -23,10 +20,12 @@ export class ClienteComponent implements OnInit {
     @Input() inEdition = false;
     private _cliente: Cliente = null;
     private paises: Array<Pais> = [];
+    private provincias:  Array<Provincia> = [];
 
     constructor(
         private fb: FormBuilder, private avisoService: AvisoService,
-        private paisesService: PaisesService
+        private paisesService: PaisesService,
+        private provinciasService: ProvinciasService
     ) {
         this.createForm();
     }
@@ -36,6 +35,7 @@ export class ClienteComponent implements OnInit {
         this._cliente = cliente || null;
         if (this._cliente) {
             // this.clenteForm.setValue({});
+            console.log(this._cliente);
         }
     }
 
@@ -88,6 +88,10 @@ export class ClienteComponent implements OnInit {
     }
 
     getPaises() {
-        this.paisesService.getPaises().subscribe((data: [Pais]) => { this.paises = data; console.log(data); });
+        this.paisesService.getPaises().subscribe((data: [Pais]) => { this.paises = data; });
+    }
+
+    getProvincias(idPais) {
+        this.provinciasService.getProvincias(idPais).subscribe((data: [Provincia]) => { this.provincias = data; });
     }
 }

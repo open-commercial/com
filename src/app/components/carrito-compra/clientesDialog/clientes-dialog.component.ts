@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ClientesService} from '../../../services/clientes.service';
 import {MatDialogRef} from '@angular/material';
-import {AvisoService} from 'app/services/aviso.service';
+import {AvisoService} from '../../../services/aviso.service';
 
 @Component({
   selector: 'sic-com-clientes-dialog',

@@ -1,15 +1,30 @@
-<div *ngIf="cliente && !inEdition" class="info" fxLayout="row" fxFill>
-    <div fxFlex="90">
-        <div fxLayout="column" fxLayoutGap="0.4rem" fxLayoutAlign="start start">
-            <span>Id Fiscal: {{ cliente.idFiscal }}</span>
-            <span>Razón Social: {{ cliente.razonSocial }}</span>
-            <span>Nombre Fantasía: {{ cliente.nombreFantasia }}</span>
-            <span>Condición IVA: </span>
+<form *ngIf="!cliente || (cliente && inEdition)">
+
+</form>
+<div *ngIf="cliente && !inEdition" class="info">
+    <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="1rem">
+        <div fxFlex fxLayout="column" fxLayoutGap="0.4rem" fxLayoutAlign="start start">
+            <span><strong>Id Fiscal:</strong> {{ cliente.idFiscal }}</span>
+            <span><strong>Razón Social:</strong> {{ cliente.razonSocial }}</span>
+            <span><strong>Nombre Fantasía:</strong> {{ cliente.nombreFantasia }}</span>
+            <span><strong>Condición IVA:</strong> {{ cliente.nombreCondicionIVA }}</span>
+        </div>
+        <div fxFlex fxLayout="column" fxLayoutGap="0.4rem" fxLayoutAlign="start start">
+            <span><strong>Dirección:</strong> {{ cliente.direccion }}</span>
+            <span><strong>País:</strong> {{ cliente.nombrePais }}</span>
+            <span><strong>Provincia:</strong> {{ cliente.nombreProvincia }}</span>
+            <span><strong>Localidad:</strong> {{ cliente.nombreLocalidad }}</span>
+        </div>
+        <div fxFlex fxLayout="column" fxLayoutGap="0.4rem" fxLayoutAlign="start start">
+            <span><strong>Viajante:</strong> {{ cliente.nombreViajante }}</span>
+            <span><strong>Teléfono #1:</strong> {{ cliente.telPrimario }}</span>
+            <span><strong>Teléfono #2:</strong> {{ cliente.telSecundario }}</span>
+            <span><strong>Contacto:</strong> {{ cliente.contacto }}</span>
+            <span><strong>Email:</strong> {{ cliente.email }}</span>
+            <span><strong>Fecha de Alta:</strong> {{ cliente.fechaAlta | date: 'dd/MM/yyyy' }}</span>
         </div>
     </div>
-    <div fxFlex fxLayoutAlign="end start">
-        <button *ngIf="!inEdition" mat-mini-fab color="primary" id="edit-button" (click)="toggleEdit()">
-            <mat-icon aria-label="Editar usuario">edit</mat-icon>
-        </button>
-    </div>
+    <mat-action-row>
+        <button mat-button color="primary" (click)="toggleEdit()">MODIFICAR</button>
+    </mat-action-row>
 </div>

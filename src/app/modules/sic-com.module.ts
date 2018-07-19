@@ -34,6 +34,9 @@ import {ClienteComponent} from '../components/cliente/cliente.component';
 import {PedidosComponent} from '../components/pedidos/pedidos.component';
 import {PedidosService} from '../services/pedidos.service';
 import {PaisesService} from '../services/paises.service';
+import {ProvinciasService} from '../services/provincias.service';
+import {LocalidadesService} from '../services/localidades.service';
+import {CondicionesIVAService} from '../services/condicionesIVA.service';
 
 
 
@@ -78,7 +81,10 @@ import {PaisesService} from '../services/paises.service';
     AvisoService,
     UsuariosService,
     PedidosService,
-    PaisesService
+    PaisesService,
+    ProvinciasService,
+    LocalidadesService,
+    CondicionesIVAService
   ],
   entryComponents: [
     ClientesDialogComponent,
