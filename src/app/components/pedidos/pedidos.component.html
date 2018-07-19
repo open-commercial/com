@@ -1,0 +1,39 @@
+<div class="sic-com-pedidos">
+  <div class="sic-com-sin-cliente" *ngIf="!cliente">
+    <span fxLayoutAlign="center center">
+      <mat-icon color="primary">sentiment_neutral</mat-icon>
+      &nbsp;No posee una cuenta de cliente para realizar pedidos
+    </span>
+  </div>
+    <mat-nav-list>
+        <mat-list-item *ngFor="let pedido of pedidos" class="pedido-row">
+            <div matLine fxLayoutAlign="space-around center" fxFill class="pedido-row-content">
+                <div fxFlex fxLayout="row" fxLayout.lt-sm="column">
+                    <div fxFlex class="pedido-column-content">
+                        <span [ngClass]="pedido.estado.toLowerCase()">
+                            {{ pedido.estado }}
+                        </span>
+                    </div>
+                    <div fxFlex class="pedido-column-content">
+                        Nº {{ pedido.nroPedido }}
+                    </div>
+                </div>
+                <div fxFlex fxLayout="row" fxLayout.lt-sm="column">
+                    <div fxFlex class="pedido-column-content">
+                        <span>{{ pedido.fecha | date: 'dd/MM/yyyy' }}</span>
+                    </div>
+                    <div fxFlex class="pedido-column-content">
+                        <strong>{{ pedido.totalActual | sicComCurrency }}</strong>
+                    </div>
+                </div>
+            </div>
+            <mat-divider></mat-divider>
+        </mat-list-item>
+    </mat-nav-list>
+    <div class="mas-resultados" fxLayoutAlign="center center" (click)="loadMore()" *ngIf="pedidos.length && !esUltimaPagina">
+    <span *ngIf="pedidos.length && !esUltimaPagina && !loading">
+      <strong>MAS RESULTADOS</strong>
+    </span>
+    <mat-spinner [diameter]="50" [strokeWidth]="6" *ngIf="loading && pedidos.length"></mat-spinner>
+  </div>
+</div>

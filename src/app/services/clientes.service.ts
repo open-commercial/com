@@ -1,7 +1,8 @@
 import {Injectable} from '@angular/core';
 import {environment} from '../../environments/environment';
-import {Subject} from 'rxjs';
+import {Subject, Observable} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
+import { Cliente } from '../models/cliente';
 
 @Injectable()
 export class ClientesService {
@@ -38,7 +39,7 @@ export class ClientesService {
     this.clienteSeleccionadoSubject.next('');
   }
 
-  getClienteDelUsuario(idUsuario) {
-    return this.http.get(this.uriClientes + '/usuarios/' + idUsuario + '/empresas/' + environment.idEmpresa);
+  getClienteDelUsuario(idUsuario): Observable<Cliente> {
+    return this.http.get<Cliente>(this.uriClientes + '/usuarios/' + idUsuario + '/empresas/' + environment.idEmpresa);
   }
 }
