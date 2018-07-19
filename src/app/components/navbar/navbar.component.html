@@ -10,29 +10,30 @@
       <mat-icon class="sic-com-buscador-icon" (click)="buscarProductos(busquedaForm.get('criteriaControl').value)">search</mat-icon>
     </form>
     <div fxFlex.lt-md="15" fxFlex.gt-sm="20" fxLayoutAlign="center center">
-      <div fxHide.lt-md>
-          <button mat-icon-button [routerLink]="['/perfil']" matTooltip="Mi Perfil">
-            <mat-icon>account_circle</mat-icon>
-          </button>
-      </div>
-        <div fxHide.lt-md>
-        <button mat-icon-button [routerLink]="['/carrito-compra']" matTooltip="Ir al carrito">
-          <mat-icon>shopping_cart</mat-icon>
-          <span class="sic-com-contador-carrito" *ngIf="(cantidadItemsEnCarrito > 0)">{{cantidadItemsEnCarrito}}</span>
-        </button>
-       </div>
-      <div fxHide.lt-md>
-        <button mat-icon-button (click)="logout()" matTooltip="Salir ({{usuarioConectado}})">
-          <mat-icon>power_settings_new</mat-icon>
-        </button>
-      </div>
-      <button mat-icon-button fxHide.gt-sm [matMenuTriggerFor]="menu">
-        <mat-icon>more_vert</mat-icon>
+      <button mat-icon-button fxHide.lt-md [matMenuTriggerFor]="menuReducido" matTooltip="Mi Perfil ({{usuarioConectado}})">
+        <mat-icon>account_circle</mat-icon>
       </button>
-      <mat-menu #menu="matMenu" fxHide.gt-sm [overlapTrigger]="false">
+      <mat-menu #menuReducido="matMenu" fxHide.lt-md [overlapTrigger]="false">
         <button mat-menu-item [routerLink]="['/perfil']">
           <mat-icon>account_circle</mat-icon>
           <span>Mi Perfil</span>
+        </button>
+        <button mat-menu-item (click)="logout()">
+          <mat-icon>power_settings_new</mat-icon>
+          <span>Cerrar Sesión</span>
+        </button>
+      </mat-menu>
+      <button mat-icon-button fxHide.lt-md [routerLink]="['/carrito-compra']" matTooltip="Ir al carrito">
+        <mat-icon>shopping_cart</mat-icon>
+        <span class="sic-com-contador-carrito" *ngIf="(cantidadItemsEnCarrito > 0)">{{cantidadItemsEnCarrito}}</span>
+      </button>
+      <button mat-icon-button fxHide.gt-sm [matMenuTriggerFor]="menuCompleto">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <mat-menu #menuCompleto="matMenu" fxHide.gt-sm [overlapTrigger]="false">
+        <button mat-menu-item [routerLink]="['/perfil']">
+          <mat-icon>account_circle</mat-icon>
+          <span>Mi Perfil ({{usuarioConectado}})</span>
         </button>
         <button mat-menu-item [routerLink]="['/carrito-compra']">
           <mat-icon>shopping_cart</mat-icon>
@@ -40,7 +41,7 @@
         </button>
         <button mat-menu-item (click)="logout()">
           <mat-icon>power_settings_new</mat-icon>
-          <span>Salir ({{usuarioConectado}})</span>
+          <span>Cerrar Sesión</span>
         </button>
       </mat-menu>
     </div>
