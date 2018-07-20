@@ -21,6 +21,7 @@ export class ProductosService {
   getProductos(descripcionCriteria: string, idRubro: number, pagina: number, tamanioPagina: number) {
     descripcionCriteria = descripcionCriteria === null ? '' : descripcionCriteria;
     let criteria = '&descripcion=' + descripcionCriteria + '&pagina=' + pagina + '&tamanio=' + tamanioPagina;
+    criteria += '&publicos=true';
     if (idRubro) {
       criteria += '&idRubro=' + idRubro;
     }
