@@ -16,5 +16,26 @@
     <img src="assets/logo-GD_bco.png"/>
   </div>
 </sic-com>
+<!-- WhatsHelp.io widget -->
+<script type="text/javascript">
+  (function () {
+    let options = {
+      whatsapp: "+5493794834638",
+      call_to_action: "¿Necesita ayuda?",
+      position: "left",
+    };
+    let proto = document.location.protocol, host = "whatshelp.io", url = proto + "//static." + host;
+    let s = document.createElement('script');
+    s.type = 'text/javascript';
+    s.async = true;
+    s.src = url + '/widget-send-button/js/init.js';
+    s.onload = function () {
+      WhWidgetSendButton.init(host, proto, options);
+    };
+    let x = document.getElementsByTagName('script')[0];
+    x.parentNode.insertBefore(s, x);
+  })();
+</script>
+<!-- /WhatsHelp.io widget -->
 </body>
 </html>
