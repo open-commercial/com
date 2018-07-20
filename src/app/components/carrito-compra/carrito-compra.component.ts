@@ -8,6 +8,7 @@ import {AvisoService} from '../../services/aviso.service';
 import {AuthService} from '../../services/auth.service';
 import {ConfirmationDialogComponent} from '../../components/confirmation-dialog/confirmation-dialog.component';
 import { Rol } from '../../models/rol';
+import { CantidadProductoDialogComponent } from './cantidadProductoDialog/cantidad-producto-dialog.component';
 
 @Component({
   selector: 'sic-com-carrito-compra',
@@ -133,8 +134,25 @@ export class CarritoCompraComponent implements OnInit {
     });
   }
 
-  editCantidadProducto(producto, cantidad, direccion) {
-    let cant = cantidad;
+  editCantidadProducto(itemCarritoCompra) {
+    const dialogRef = this.dialog.open(CantidadProductoDialogComponent);
+    dialogRef.componentInstance.itemCarritoCompra = itemCarritoCompra;
+    // dialogRef.componentInstance.cantidad = cantidad;
+    dialogRef.afterClosed().subscribe(data => {
+      console.log(data);
+      // console.log(cantidad);
+      /* this.carritoCompraService.agregarQuitarAlPedido(itemCarritoCompra.producto, cantidad).subscribe(
+        data => {
+          itemCarritoCompra.descuento_porcentaje = 0;
+          itemCarritoCompra.descuento_neto = 0;
+          itemCarritoCompra.subTotal = cantidad * itemCarritoCompra.producto.precioLista;
+          this.sumarTotales();
+        },
+        err => this.avisoService.openSnackBar(err.error, '', 3500)); */
+    });
+
+    /* let cant = cantidad;
+
     if (direccion === 2) {
       cant = cantidad - producto.cantidad;
     }
@@ -146,7 +164,7 @@ export class CarritoCompraComponent implements OnInit {
        producto.subTotal = cantidad * producto.producto.precioLista;
        this.sumarTotales();
       },
-      err => this.avisoService.openSnackBar(err.error, '', 3500));
+      err => this.avisoService.openSnackBar(err.error, '', 3500)); */
   }
 
   masProductosPedido() {
