@@ -5,7 +5,7 @@
     <br>
     <div [ngClass]="{'has-error': f.submitted && !username.valid}">
       <mat-form-field class="sic-com-full-width">
-        <input matInput placeholder="Usuario" type="text" name="username"
+        <input matInput placeholder="Email o Usuario" type="text" name="username"
                [(ngModel)]="model.username" #username required autofocus>
         <mat-error [hidden]="username.valid || username.pristine">
           <span>Requerido</span>
