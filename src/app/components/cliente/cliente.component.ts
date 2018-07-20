@@ -43,6 +43,14 @@ export class ClienteComponent implements OnInit {
 
     createForm() {
         this.clienteForm = this.fb.group({
+            idFiscal: '',
+            razonSocial: ['', Validators.required],
+            nombreFantasia: '',
+            idCondicionIVA: [null, Validators.required],
+            direccion: '',
+            idPais: [null, Validators.required],
+            idProvincia: [null, Validators.required],
+            idLocalidad: [null, Validators.required],
             // username: ['', Validators.required ],
             // apellido: ['', Validators.required ],
             // nombre: ['', Validators.required ],
