@@ -137,34 +137,11 @@ export class CarritoCompraComponent implements OnInit {
   editCantidadProducto(itemCarritoCompra) {
     const dialogRef = this.dialog.open(CantidadProductoDialogComponent);
     dialogRef.componentInstance.itemCarritoCompra = itemCarritoCompra;
-    // dialogRef.componentInstance.cantidad = cantidad;
     dialogRef.afterClosed().subscribe(data => {
-      console.log(data);
-      // console.log(cantidad);
-      /* this.carritoCompraService.agregarQuitarAlPedido(itemCarritoCompra.producto, cantidad).subscribe(
-        data => {
-          itemCarritoCompra.descuento_porcentaje = 0;
-          itemCarritoCompra.descuento_neto = 0;
-          itemCarritoCompra.subTotal = cantidad * itemCarritoCompra.producto.precioLista;
-          this.sumarTotales();
-        },
-        err => this.avisoService.openSnackBar(err.error, '', 3500)); */
+      if (data) {
+        this.sumarTotales();
+      }
     });
-
-    /* let cant = cantidad;
-
-    if (direccion === 2) {
-      cant = cantidad - producto.cantidad;
-    }
-    producto.cantidad = cant + producto.cantidad;
-    this.carritoCompraService.agregarQuitarAlPedido(producto.producto, cant).subscribe(
-      data => {
-       producto.descuento_porcentaje = 0;
-       producto.descuento_neto = 0;
-       producto.subTotal = cantidad * producto.producto.precioLista;
-       this.sumarTotales();
-      },
-      err => this.avisoService.openSnackBar(err.error, '', 3500)); */
   }
 
   masProductosPedido() {
