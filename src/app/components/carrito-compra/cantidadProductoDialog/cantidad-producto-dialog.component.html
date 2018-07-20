@@ -1,0 +1,28 @@
+<h2 mat-dialog-title>{{ itemCarritoCompra.producto.descripcion }}</h2>
+<mat-dialog-content>
+    <div fxLayoutAlign="center center" fxLayoutGap=".5rem">
+        <!-- <button mat-mini-fab color="accent" disabled="{{(cantidad <= producto.ventaMinima)}}"
+                (click)="cambiarCantidad(cantidad, 0)">
+            <mat-icon>remove</mat-icon>
+        </button> -->
+        <button mat-mini-fab color="accent">
+            <mat-icon>remove</mat-icon>
+        </button>
+       <!--  <mat-form-field class="sic-com-input-cantidad">
+            <input matInput autofocus type="number" [(ngModel)]='cantidad'
+                    placeholder="Cantidad" min="{{producto.ventaMinima}}">
+        </mat-form-field> -->
+        <mat-form-field class="sic-com-input-cantidad">
+                <input matInput autofocus type="number" [(ngModel)]='cantidad'
+                        placeholder="Cantidad" min="{{itemCarritoCompra.producto.ventaMinima}}">
+            </mat-form-field>
+        <button mat-mini-fab color="primary">
+            <mat-icon>add</mat-icon>
+        </button>
+    </div> 
+</mat-dialog-content>
+<mat-dialog-actions>
+  <!-- The mat-dialog-close directive optionally accepts a value as a result for the dialog. -->
+  <button mat-button color="primary" (click)="save()">ACEPTAR</button>
+  <button mat-button mat-dialog-close>CANCELAR</button>
+</mat-dialog-actions>
