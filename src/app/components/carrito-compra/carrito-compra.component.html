@@ -41,7 +41,7 @@
           </div>
           <div fxLayout fxFlex.gt-md="40">
             <div fxFlex="40" fxLayoutAlign="center center">
-              <button mat-stroked-button (click)="editCantidadProducto(icc)">Cantidad {{icc.cantidad}}</button>
+              <button mat-raised-button (click)="editCantidadProducto(icc)" color="primary">Cantidad {{icc.cantidad}}</button>
             </div>
             <div fxFlex="40" fxLayoutAlign="center center">
               <strong>{{ icc.importe | sicComCurrency }}</strong>
@@ -53,7 +53,7 @@
             </div>
           </div>
         </div>
-      </mat-list-item>  
+      </mat-list-item>
     </mat-list>
   </div>
   <div fxLayoutAlign="center center" class="sic-com-mas-resultados" (click)="masProductosPedido()"

@@ -1,25 +1,23 @@
 import {Component, OnInit} from '@angular/core';
-import { MatDialogRef } from '@angular/material';
-import { CarritoCompraService } from '../../../services/carrito-compra.service';
-import { AvisoService } from '../../../services/aviso.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {MatDialogRef} from '@angular/material';
+import {CarritoCompraService} from '../../../services/carrito-compra.service';
+import {AvisoService} from '../../../services/aviso.service';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 @Component({
     selector: 'sic-com-cantidad-producto-dialog',
     templateUrl: 'cantidad-producto-dialog.component.html',
 })
 export class CantidadProductoDialogComponent implements OnInit {
+
     itemCarritoCompra = null;
     cantidad = 0;
     minValue = 0;
     cantidadForm: FormGroup;
 
-    constructor(
-        private dialogRef: MatDialogRef<CantidadProductoDialogComponent>,
-        private carritoCompraService: CarritoCompraService,
-        private avisoService: AvisoService,
-        private fb: FormBuilder
-    ) {
+    constructor(private dialogRef: MatDialogRef<CantidadProductoDialogComponent>,
+                private carritoCompraService: CarritoCompraService,
+                private avisoService: AvisoService, private fb: FormBuilder) {
         dialogRef.disableClose = true;
     }
 
