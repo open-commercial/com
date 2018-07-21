@@ -40,6 +40,7 @@ export class NavbarComponent implements OnInit {
       err => this.avisoService.openSnackBar(err.error, '', 3500));
     this.carritoCompraService.cantidadItemsEnCarrito$.subscribe(data => this.cantidadItemsEnCarrito = data);
     this.productosService.buscarProductos$.subscribe(data => this.busquedaCriteria = data);
+    this.authService.nombreUsuarioLoggedIn$.subscribe(data => this.usuarioConectado = data);
   }
 
   buscarProductos(criteria: string) {

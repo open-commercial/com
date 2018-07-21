@@ -16,9 +16,8 @@ export class UsuarioComponent implements OnInit {
     @Input()
     inEdition = false;
 
-    usuario: Usuario;
     usuarioForm: FormGroup;
-    private _usuario: Usuario = null;
+    private usuario: Usuario = null;
 
     constructor(private fb: FormBuilder, private usuariosService: UsuariosService,
                 private avisoService: AvisoService, private authService: AuthService) {
@@ -28,14 +27,13 @@ export class UsuarioComponent implements OnInit {
     ngOnInit() {
       this.authService.getLoggedInUsuario().subscribe(
         (usuario: Usuario) => {
-          this.usuario = usuario;
-          this._usuario = usuario || null;
-          if (this._usuario) {
+          this.usuario = usuario || null;
+          if (this.usuario) {
             this.usuarioForm.setValue({
-              username: this._usuario.username || '' ,
-              apellido: this._usuario.apellido || '',
-              nombre: this._usuario.nombre || '',
-              email: this._usuario.email || '',
+              username: this.usuario.username || '' ,
+              apellido: this.usuario.apellido || '',
+              nombre: this.usuario.nombre || '',
+              email: this.usuario.email || '',
               password: '',
               repeatPassword: '',
             });
@@ -55,8 +53,6 @@ export class UsuarioComponent implements OnInit {
         this.usuarioForm.setValidators(PasswordValidation.MatchPassword);
     }
 
-
-
     toggleEdit() {
         this.inEdition = !this.inEdition;
         this.rebuildForm();
@@ -67,7 +63,8 @@ export class UsuarioComponent implements OnInit {
             const usuario = this.getFormValues();
             this.usuariosService.saveUsuario(usuario).subscribe(
                 data => {
-                  this._usuario = usuario;
+                  this.usuario = usuario;
+                  this.authService.setNombreUsuarioLoggedIn(usuario.nombre + ' ' + usuario.apellido);
                   this.toggleEdit();
                 },
                 err => this.avisoService.openSnackBar(err.error, '', 3500)
@@ -77,24 +74,24 @@ export class UsuarioComponent implements OnInit {
 
     getFormValues(): Usuario {
         return {
-            id_Usuario: this._usuario.id_Usuario,
-            idEmpresaPredeterminada: this._usuario.idEmpresaPredeterminada,
+            id_Usuario: this.usuario.id_Usuario,
+            idEmpresaPredeterminada: this.usuario.idEmpresaPredeterminada,
             username: this.usuarioForm.get('username').value,
             apellido: this.usuarioForm.get('apellido').value,
             nombre: this.usuarioForm.get('nombre').value,
             email: this.usuarioForm.get('email').value,
             password: this.usuarioForm.get('password').value,
-            roles: this._usuario.roles,
-            habilitado: this._usuario.habilitado
+            roles: this.usuario.roles,
+            habilitado: this.usuario.habilitado
         };
     }
 
     rebuildForm() {
         this.usuarioForm.reset({
-            username: this._usuario.username,
-            apellido: this._usuario.apellido,
-            nombre: this._usuario.nombre,
-            email: this._usuario.email,
+            username: this.usuario.username,
+            apellido: this.usuario.apellido,
+            nombre: this.usuario.nombre,
+            email: this.usuario.email,
             password: '',
             repeatPassword: '',
         });
