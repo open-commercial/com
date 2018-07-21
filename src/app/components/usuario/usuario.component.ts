@@ -17,7 +17,7 @@ export class UsuarioComponent implements OnInit {
     inEdition = false;
 
     usuarioForm: FormGroup;
-    private usuario: Usuario = null;
+    usuario: Usuario = null;
 
     constructor(private fb: FormBuilder, private usuariosService: UsuariosService,
                 private avisoService: AvisoService, private authService: AuthService) {
