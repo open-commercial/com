@@ -23,6 +23,12 @@ export class CarritoCompraService {
     return this.http.post(urlAddCarrito, {});
   }
 
+  actualizarAlPedido(producto, cantidad) {
+    const idUsuario = localStorage.getItem('id_Usuario');
+    const urlActCarrito = this.urlCarrito + idUsuario + '/productos/' + producto['id_Producto'] + '?cantidad=' + cantidad;
+    return this.http.put(urlActCarrito, {});
+  }
+
   getItems(pagina: number, tamanioPagina: number) {
     const idUsuario = localStorage.getItem('id_Usuario');
     const urlAllItems = this.urlCarrito + idUsuario + '/?pagina=' + pagina + '&tamanio=' + tamanioPagina;

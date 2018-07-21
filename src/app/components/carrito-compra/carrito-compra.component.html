@@ -41,14 +41,10 @@
           </div>
           <div fxLayout fxFlex.gt-md="40">
             <div fxFlex="40" fxLayoutAlign="center center">
-              <mat-form-field class="sic-com-input-cantidad">
-                <input matInput #cantCart type="number" placeholder="Cantidad"
-                        value="{{icc.cantidad}}" min="{{icc.producto.ventaMinima}}"
-                        (change)="editCantidadProducto(icc, cantCart.value, 2)">
-              </mat-form-field>
+              <button mat-raised-button (click)="editCantidadProducto(icc)" color="primary">Cantidad {{icc.cantidad}}</button>
             </div>
             <div fxFlex="40" fxLayoutAlign="center center">
-              <strong>{{cantCart.value * icc.producto.precioLista | sicComCurrency}}</strong>
+              <strong>{{ icc.importe | sicComCurrency }}</strong>
             </div>
             <div fxFlex="20" fxLayoutAlign="center center">
               <button mat-icon-button (click)="eliminarItemDelCarrito(icc)" matTooltip="Quitar del listado">
@@ -57,7 +53,7 @@
             </div>
           </div>
         </div>
-      </mat-list-item>  
+      </mat-list-item>
     </mat-list>
   </div>
   <div fxLayoutAlign="center center" class="sic-com-mas-resultados" (click)="masProductosPedido()"

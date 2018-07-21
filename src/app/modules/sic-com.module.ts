@@ -32,6 +32,7 @@ import {UsuarioComponent} from '../components/usuario/usuario.component';
 import {UsuariosService} from '../services/usuarios.service';
 import {PedidosComponent} from '../components/pedidos/pedidos.component';
 import {PedidosService} from '../services/pedidos.service';
+import {CantidadProductoDialogComponent} from '../components/carrito-compra/cantidadProductoDialog/cantidad-producto-dialog.component';
 
 
 
@@ -51,7 +52,8 @@ import {PedidosService} from '../services/pedidos.service';
     ConfirmationDialogComponent,
     PerfilComponent,
     UsuarioComponent,
-    PedidosComponent
+    PedidosComponent,
+    CantidadProductoDialogComponent
   ],
   imports: [
     HttpClientModule,
@@ -79,7 +81,8 @@ import {PedidosService} from '../services/pedidos.service';
   entryComponents: [
     ClientesDialogComponent,
     CheckoutDialogComponent,
-    ConfirmationDialogComponent
+    ConfirmationDialogComponent,
+    CantidadProductoDialogComponent
   ],
   bootstrap: [
     SicComComponent

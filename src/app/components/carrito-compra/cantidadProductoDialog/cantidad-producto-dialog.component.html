@@ -1,0 +1,27 @@
+<mat-dialog-content>
+  <form [formGroup]="cantidadForm" (ngSubmit)="save()">
+    <div fxLayoutAlign="center center" fxLayoutGap=".5rem">
+      <a mat-mini-fab color="accent" (click)="decrementarCantidad()">
+        <mat-icon>remove</mat-icon>
+      </a>
+      <mat-form-field fxFlex="50">
+        <input matInput autofocus name="cantidad" required type="number" formControlName="cantidad"
+               placeholder="Cantidad" min="{{ itemCarritoCompra.producto.ventaMinima }}">
+        <mat-error *ngIf="cantidadForm.get('cantidad').hasError('required')">
+          Requerido
+        </mat-error>
+        <mat-error *ngIf="cantidadForm.get('cantidad').hasError('min')">
+          Cant. mínima: {{ minValue }}
+        </mat-error>
+      </mat-form-field>
+      <a mat-mini-fab color="primary" (click)="incrementarCantidad()">
+        <mat-icon>add</mat-icon>
+      </a>
+    </div>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions fxLayoutAlign="center center">
+  <button mat-raised-button color="primary" (click)="save()" [disabled]="!cantidadForm.valid">Aceptar</button>
+  <button mat-raised-button mat-dialog-close>Cancelar</button>
+</mat-dialog-actions>
+

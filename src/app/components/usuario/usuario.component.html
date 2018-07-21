@@ -47,9 +47,9 @@
                 <mat-hint>Dejar en blanco para mantener la actual</mat-hint>
             </mat-form-field>
         </div><br>
-        <mat-action-row *ngIf="inEdition">
-            <button mat-button type="submit" color="primary">GUARDAR</button>
-            <button mat-button type="button" (click)="toggleEdit()">CANCELAR</button>
+        <mat-action-row fxLayoutGap="0.7rem" *ngIf="inEdition">
+            <button mat-raised-button type="submit" color="primary">Guardar</button>
+            <button mat-raised-button type="button" (click)="toggleEdit()">Cancelar</button>
         </mat-action-row>
     </form>
     <div *ngIf="usuario && !inEdition" class="info">
@@ -69,7 +69,7 @@
         </div>
         <br>
         <mat-action-row>
-            <button mat-button color="primary" (click)="toggleEdit()">MODIFICAR</button>
+            <button mat-raised-button color="primary" (click)="toggleEdit()">Modificar</button>
         </mat-action-row>
     </div>
 </div>
