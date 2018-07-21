@@ -1,9 +1,9 @@
 <mat-dialog-content>
   <form [formGroup]="cantidadForm" (ngSubmit)="save()">
     <div fxLayoutAlign="center center" fxLayoutGap=".5rem">
-      <a mat-mini-fab color="accent" (click)="decrementarCantidad()">
+      <button type="button" mat-mini-fab color="accent" (click)="decrementarCantidad()" [disabled]="deshabilitarBottonDecrementar()">
         <mat-icon>remove</mat-icon>
-      </a>
+      </button>
       <mat-form-field fxFlex="50">
         <input matInput autofocus name="cantidad" required type="number" formControlName="cantidad"
                placeholder="Cantidad" min="{{ itemCarritoCompra.producto.ventaMinima }}">
@@ -14,9 +14,9 @@
           Cant. mínima: {{ minValue }}
         </mat-error>
       </mat-form-field>
-      <a mat-mini-fab color="primary" (click)="incrementarCantidad()">
+      <button type="button" mat-mini-fab color="primary" (click)="incrementarCantidad()">
         <mat-icon>add</mat-icon>
-      </a>
+      </button>
     </div>
   </form>
 </mat-dialog-content>

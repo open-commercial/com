@@ -35,18 +35,28 @@ export class CantidadProductoDialogComponent implements OnInit {
 
     incrementarCantidad() {
         let value = parseInt(this.cantidadForm.get('cantidad').value, 10);
-        if (!isNaN(value)) {
+        if (isNaN(value)) {
+            value = this.minValue;
+        } else {
             value += 1;
-            this.cantidadForm.get('cantidad').setValue(value);
         }
+        this.cantidadForm.get('cantidad').setValue(value);
     }
 
     decrementarCantidad() {
         let value = parseInt(this.cantidadForm.get('cantidad').value, 10);
-        if (!isNaN(value) && value > 0) {
-            value -= 1;
-            this.cantidadForm.get('cantidad').setValue(value);
+        if (isNaN(value)) {
+            value = this.minValue;
         }
+        if (value > this.minValue) {
+            value -= 1;
+        }
+        this.cantidadForm.get('cantidad').setValue(value);
+    }
+
+    deshabilitarBottonDecrementar() {
+        const value = parseInt(this.cantidadForm.get('cantidad').value, 10);
+        return isNaN(value) || value <= this.minValue;
     }
 
     save() {
