@@ -1,8 +1,7 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ProductosService} from '../../services/productos.service';
 import {RubrosService} from '../../services/rubros.service';
 import {ActivatedRoute} from '@angular/router';
-import {Subscription} from 'rxjs';
 import {AvisoService} from 'app/services/aviso.service';
 
 @Component({
@@ -10,7 +9,7 @@ import {AvisoService} from 'app/services/aviso.service';
   templateUrl: './productos.component.html',
   styleUrls: ['./productos.component.scss']
 })
-export class ProductosComponent implements OnInit, OnDestroy {
+export class ProductosComponent implements OnInit {
 
   productos = [];
   loadingProducts = false;
@@ -20,7 +19,6 @@ export class ProductosComponent implements OnInit, OnDestroy {
   busquedaCriteria = '';
   rubros;
   nombreRubroSeleccionado;
-  buscarProductosSubscription: Subscription;
 
   constructor(private productosService: ProductosService, private rubrosService: RubrosService,
               private route: ActivatedRoute, private avisoService: AvisoService) {}
@@ -28,15 +26,11 @@ export class ProductosComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.busquedaCriteria = this.route.snapshot.paramMap.get('busqueda') || '';
     this.cargarRubros();
-    this.buscarProductosSubscription = this.productosService.buscarProductos$.subscribe(data => {
+    this.productosService.buscarProductos$.subscribe(data => {
       this.busquedaCriteria = data;
       this.cargarProductos(true);
     });
     this.productosService.buscarProductos(this.busquedaCriteria);
-  }
-
-  ngOnDestroy() {
-    this.buscarProductosSubscription.unsubscribe();
   }
 
   cargarRubros() {
