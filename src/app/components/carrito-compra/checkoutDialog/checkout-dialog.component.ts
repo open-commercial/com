@@ -46,7 +46,7 @@ export class CheckoutDialogComponent implements OnInit {
       'observaciones': observaciones,
       'totalEstimado': this.total
     };
-    this.carritoCompraService.enviarOrden(pedido, this.cliente.empresa['id_Empresa'],
+    this.carritoCompraService.enviarOrden(pedido, this.cliente['idEmpresa'],
       this.loggedInIdUsuario, this.cliente['id_Cliente']).subscribe(
       data => {
         data = JSON.parse(data);

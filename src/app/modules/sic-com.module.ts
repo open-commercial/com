@@ -37,8 +37,7 @@ import {PaisesService} from '../services/paises.service';
 import {ProvinciasService} from '../services/provincias.service';
 import {LocalidadesService} from '../services/localidades.service';
 import {CondicionesIVAService} from '../services/condicionesIVA.service';
-
-
+import {CantidadProductoDialogComponent} from '../components/carrito-compra/cantidadProductoDialog/cantidad-producto-dialog.component';
 
 @NgModule({
   declarations: [
@@ -57,7 +56,8 @@ import {CondicionesIVAService} from '../services/condicionesIVA.service';
     PerfilComponent,
     UsuarioComponent,
     ClienteComponent,
-    PedidosComponent
+    PedidosComponent,
+    CantidadProductoDialogComponent
   ],
   imports: [
     HttpClientModule,
@@ -89,7 +89,8 @@ import {CondicionesIVAService} from '../services/condicionesIVA.service';
   entryComponents: [
     ClientesDialogComponent,
     CheckoutDialogComponent,
-    ConfirmationDialogComponent
+    ConfirmationDialogComponent,
+    CantidadProductoDialogComponent
   ],
   bootstrap: [
     SicComComponent

@@ -8,6 +8,7 @@ import {AvisoService} from '../../services/aviso.service';
 import {AuthService} from '../../services/auth.service';
 import {ConfirmationDialogComponent} from '../confirmation-dialog/confirmation-dialog.component';
 import { Rol } from '../../models/rol';
+import { CantidadProductoDialogComponent } from './cantidadProductoDialog/cantidad-producto-dialog.component';
 
 @Component({
   selector: 'sic-com-carrito-compra',
@@ -133,20 +134,14 @@ export class CarritoCompraComponent implements OnInit {
     });
   }
 
-  editCantidadProducto(producto, cantidad, direccion) {
-    let cant = cantidad;
-    if (direccion === 2) {
-      cant = cantidad - producto.cantidad;
-    }
-    producto.cantidad = cant + producto.cantidad;
-    this.carritoCompraService.agregarQuitarAlPedido(producto.producto, cant).subscribe(
-      data => {
-       producto.descuento_porcentaje = 0;
-       producto.descuento_neto = 0;
-       producto.subTotal = cantidad * producto.producto.precioLista;
-       this.sumarTotales();
-      },
-      err => this.avisoService.openSnackBar(err.error, '', 3500));
+  editCantidadProducto(itemCarritoCompra) {
+    const dialogRef = this.dialog.open(CantidadProductoDialogComponent);
+    dialogRef.componentInstance.itemCarritoCompra = itemCarritoCompra;
+    dialogRef.afterClosed().subscribe(data => {
+      if (data) {
+        this.sumarTotales();
+      }
+    });
   }
 
   masProductosPedido() {
