@@ -6,13 +6,13 @@ import {Cliente} from '../models/cliente';
 @Injectable()
 export class PedidosService {
 
-    url = environment.apiUrl + '/api/v1/pedidos';
-    urlBusqueda = this.url + '/busqueda/criteria?idEmpresa=' + environment.idEmpresa;
+  url = environment.apiUrl + '/api/v1/pedidos';
+  urlBusqueda = this.url + '/busqueda/criteria?idEmpresa=' + environment.idEmpresa;
 
-    constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {}
 
-    getPedidosCliente(cliente: Cliente, pagina: number = 1, tamanioPagina: number = 5) {
-        return this.http.get(
-          this.urlBusqueda + '&idCliente=' + cliente.id_Cliente + '&pagina=' + pagina + '&tamanio=' + tamanioPagina);
-    }
+  getPedidosCliente(cliente: Cliente, pagina: number, tamanioPagina: number) {
+    return this.http.get(
+      this.urlBusqueda + '&idCliente=' + cliente.id_Cliente + '&pagina=' + pagina + '&tamanio=' + tamanioPagina);
+  }
 }
