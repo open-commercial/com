@@ -36,8 +36,7 @@ export class CarritoCompraComponent implements OnInit {
     this.loadingPedido = true;
     this.cargarPedido();
     this.clienteSeleccionado = this.clientesService.getClienteSeleccionado();
-    this.clientesService.clienteSeleccionado.subscribe(
-      data => this.clienteSeleccionado = data);
+    this.clientesService.clienteSeleccionado$.subscribe(data => this.clienteSeleccionado = data);
     this.authService.getLoggedInUsuario().subscribe(
       data => {
         if (data['roles'].indexOf(Rol.COMPRADOR) !== -1 && data['roles'].length === 1) {
