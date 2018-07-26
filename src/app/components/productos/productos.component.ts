@@ -1,15 +1,16 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ProductosService} from '../../services/productos.service';
 import {RubrosService} from '../../services/rubros.service';
 import {ActivatedRoute} from '@angular/router';
 import {AvisoService} from 'app/services/aviso.service';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'sic-com-productos',
   templateUrl: './productos.component.html',
   styleUrls: ['./productos.component.scss']
 })
-export class ProductosComponent implements OnInit {
+export class ProductosComponent implements OnInit, OnDestroy {
 
   productos = [];
   loadingProducts = false;
@@ -19,6 +20,7 @@ export class ProductosComponent implements OnInit {
   busquedaCriteria = '';
   rubros;
   nombreRubroSeleccionado;
+  buscarProductosSubscription: Subscription;
 
   constructor(private productosService: ProductosService, private rubrosService: RubrosService,
               private route: ActivatedRoute, private avisoService: AvisoService) {}
@@ -26,11 +28,15 @@ export class ProductosComponent implements OnInit {
   ngOnInit() {
     this.busquedaCriteria = this.route.snapshot.paramMap.get('busqueda') || '';
     this.cargarRubros();
-    this.productosService.buscarProductos$.subscribe(data => {
+    this.buscarProductosSubscription = this.productosService.buscarProductos$.subscribe(data => {
       this.busquedaCriteria = data;
       this.cargarProductos(true);
     });
     this.productosService.buscarProductos(this.busquedaCriteria);
+  }
+
+  ngOnDestroy() {
+    this.buscarProductosSubscription.unsubscribe();
   }
 
   cargarRubros() {
@@ -65,15 +71,15 @@ export class ProductosComponent implements OnInit {
     this.loadingProducts = true;
     this.productosService.getProductos(this.busquedaCriteria, this.rubrosService.idRubroSeleccionado,
       this.pagina, this.tamanioPagina).subscribe(
-        data => {
-          data['content'].forEach(p => this.productos.push(p));
-          this.totalPaginas = data['totalPages'];
-          this.loadingProducts = false;
-        },
-        err => {
-          this.avisoService.openSnackBar(err.error, '', 3500);
-          this.loadingProducts = false;
-        });
+      data => {
+        data['content'].forEach(p => this.productos.push(p));
+        this.totalPaginas = data['totalPages'];
+        this.loadingProducts = false;
+      },
+      err => {
+        this.avisoService.openSnackBar(err.error, '', 3500);
+        this.loadingProducts = false;
+      });
   }
 
   masProductos() {

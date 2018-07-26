@@ -23,12 +23,7 @@ export class NavbarComponent implements OnInit {
 
   constructor(private authService: AuthService, private productosService: ProductosService,
               private carritoCompraService: CarritoCompraService, private router: Router,
-              private avisoService: AvisoService) {
-    const criteriaControl = this.busquedaForm.get('criteriaControl');
-    criteriaControl.valueChanges.pipe(debounceTime(700)).subscribe(
-      data => this.buscarProductos(data)
-    );
-  }
+              private avisoService: AvisoService) {}
 
   ngOnInit() {
     this.authService.getLoggedInUsuario().subscribe(
@@ -41,6 +36,8 @@ export class NavbarComponent implements OnInit {
     this.carritoCompraService.cantidadItemsEnCarrito$.subscribe(data => this.cantidadItemsEnCarrito = data);
     this.productosService.buscarProductos$.subscribe(data => this.busquedaCriteria = data);
     this.authService.nombreUsuarioLoggedIn$.subscribe(data => this.usuarioConectado = data);
+    const criteriaControl = this.busquedaForm.get('criteriaControl');
+    criteriaControl.valueChanges.pipe(debounceTime(700)).subscribe(data => this.buscarProductos(data));
   }
 
   buscarProductos(criteria: string) {
