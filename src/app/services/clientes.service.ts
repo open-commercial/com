@@ -42,4 +42,27 @@ export class ClientesService {
   getClienteDelUsuario(idUsuario): Observable<Cliente> {
     return this.http.get<Cliente>(this.uriClientes + '/usuarios/' + idUsuario + '/empresas/' + environment.idEmpresa);
   }
+
+  saveCliente(cliente) {
+    const arr = ['idCondicionIVA=' + cliente.idCondicionIVA, 'idLocalidad=' + cliente.idLocalidad, 'idEmpresa=' + environment.idEmpresa ];
+
+    if (!cliente.id_Cliente) {
+      delete cliente['id_Cliente'];
+      arr.push('idUsuarioCredencial=' + cliente.idUsuarioCredencial);
+    }
+
+    const url = this.uriClientes + '?' + arr.join('&');
+
+    delete cliente['idUsuarioCredencial'];
+    delete cliente['idLocalidad'];
+    delete cliente['idCondicionIVA'];
+
+    console.log(url, cliente);
+
+    if (cliente.id_Cliente) {
+      return this.http.put(url, cliente);
+    } else {
+      return this.http.post(url, cliente);
+    }
+  }
 }

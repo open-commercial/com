@@ -1,45 +1,53 @@
-import {Component, OnInit, Input} from '@angular/core';
+import {Component, OnInit, OnDestroy, Input} from '@angular/core';
 import {FormBuilder, Validators, FormGroup} from '@angular/forms';
-
+import {Observable, Subscription} from 'rxjs';
+import {map, startWith} from 'rxjs/operators';
+import {Usuario} from '../../models/usuario';
+import {AuthService} from '../../services/auth.service';
 import {Cliente} from '../../models/cliente';
-import {Pais} from '../../models/pais';
-
 import {ClientesService} from '../../services/clientes.service';
 import {AvisoService} from '../../services/aviso.service';
+import {CondicionIVA} from '../../models/condicionIVA';
+import {CondicionesIVAService} from '../../services/condicionesIVA.service';
+import {Pais} from '../../models/pais';
 import {PaisesService} from '../../services/paises.service';
-import { Provincia } from '../../models/provincia';
-import { ProvinciasService } from '../../services/provincias.service';
+import {Provincia} from '../../models/provincia';
+import {ProvinciasService} from '../../services/provincias.service';
+import {Localidad} from '../../models/localidad';
+import {LocalidadesService} from '../../services/localidades.service';
 
 @Component({
   selector: 'sic-com-cliente',
   templateUrl: 'cliente.component.html',
   styleUrls: ['cliente.component.scss']
 })
-export class ClienteComponent implements OnInit {
+export class ClienteComponent implements OnInit, OnDestroy {
     clienteForm: FormGroup;
     @Input() inEdition = false;
-    private _cliente: Cliente = null;
+    private usuario: Usuario = null;
+    private cliente: Cliente = null;
+
+    private condicionesIVASubscription: Subscription;
+    private paisesSubscription: Subscription;
+    private provinciasSubscription: Subscription;
+    private localidadesSubscription: Subscription;
+
+    private condicionesIVA: Array<CondicionIVA> = [];
     private paises: Array<Pais> = [];
     private provincias:  Array<Provincia> = [];
+    private localidades:  Array<Localidad> = [];
 
     constructor(
+        private authService: AuthService,
         private fb: FormBuilder, private avisoService: AvisoService,
+        private clientesService: ClientesService,
+        private condicionesIVAService: CondicionesIVAService,
         private paisesService: PaisesService,
-        private provinciasService: ProvinciasService
+        private provinciasService: ProvinciasService,
+        private localidadesService: LocalidadesService
     ) {
         this.createForm();
     }
-
-    @Input()
-    set cliente(cliente: Cliente|null) {
-        this._cliente = cliente || null;
-        if (this._cliente) {
-            // this.clenteForm.setValue({});
-            console.log(this._cliente);
-        }
-    }
-
-    get cliente(): Cliente|null { return this._cliente; }
 
     createForm() {
         this.clienteForm = this.fb.group({
@@ -51,6 +59,10 @@ export class ClienteComponent implements OnInit {
             idPais: [null, Validators.required],
             idProvincia: [null, Validators.required],
             idLocalidad: [null, Validators.required],
+            telPrimario: '',
+            telSecundario: '',
+            contacto: '',
+            email: ''
             // username: ['', Validators.required ],
             // apellido: ['', Validators.required ],
             // nombre: ['', Validators.required ],
@@ -61,8 +73,34 @@ export class ClienteComponent implements OnInit {
         // this.clenteForm.setValidators(PasswordValidation.MatchPassword);
     }
 
+    getCliente() {
+        this.authService.getLoggedInUsuario().subscribe(
+            (usuario: Usuario) => {
+                this.usuario = usuario;
+                this.clientesService.getClienteDelUsuario(usuario.id_Usuario).subscribe(
+                    (cliente: Cliente) => {
+                        if (cliente) {
+                        this.cliente = cliente;
+                        }
+                    });
+            }
+        );
+    }
+
     ngOnInit() {
+        this.getCliente();
+        this.getCondicionesIVA();
         this.getPaises();
+        this.clienteForm.get('idPais').valueChanges.subscribe(
+            idPais => {
+                this.getProvincias(idPais);
+                // vacía el array de localidades. Esto también podria ser this.localidades = []
+                this.localidades.splice(0, this.localidades.length);
+            }
+        );
+        this.clienteForm.get('idProvincia').valueChanges.subscribe(
+            idProvincia => this.getLocalidades(idProvincia)
+        );
     }
 
     toggleEdit() {
@@ -73,33 +111,87 @@ export class ClienteComponent implements OnInit {
     submit() {
         if (this.clienteForm.valid) {
             const cliente = this.getFormValues();
-            // this.usuariosService.saveUsuario(cliente).subscribe(
-            //     data => { this._cliente = cliente; this.toggleEdit(); },
-            //     err => { this.avisoService.openSnackBar(err.error, '', 3500); }
-            // );
+            cliente.idUsuarioCredencial = this.usuario.id_Usuario;
+            this.clientesService.saveCliente(cliente).subscribe(
+                data => { this.getCliente(); this.toggleEdit(); },
+                err => { this.avisoService.openSnackBar(err.error, '', 3500); }
+            );
         }
     }
 
-    getFormValues(): Cliente {
-        return null;
+    getFormValues(): any {
+        const id = this.cliente ? this.cliente.id_Cliente : null;
+        return {
+            id_Cliente: id,
+            razonSocial: this.clienteForm.get('razonSocial').value,
+            nombreFantasia: this.clienteForm.get('nombreFantasia').value,
+            direccion: this.clienteForm.get('direccion').value,
+            idFiscal: this.clienteForm.get('idFiscal').value,
+            email: this.clienteForm.get('email').value,
+            telPrimario: this.clienteForm.get('telPrimario').value,
+            telSecundario: this.clienteForm.get('telSecundario').value,
+            contacto: this.clienteForm.get('contacto').value,
+            idLocalidad: this.clienteForm.get('idLocalidad').value,
+            idCondicionIVA: this.clienteForm.get('idCondicionIVA').value,
+        };
     }
 
     rebuildForm() {
-        // this.clienteForm.reset({
-        //     username: this._cliente.username,
-        //     apellido: this._cliente.apellido,
-        //     nombre: this._cliente.nombre,
-        //     email: this._cliente.email,
-        //     password: '',
-        //     repeatPassword: '',
-        // });
+        if (!this.cliente) {
+            this.clienteForm.reset();
+        } else {
+            this.clienteForm.reset({
+                idFiscal: this.cliente.idFiscal,
+                razonSocial: this.cliente.razonSocial,
+                nombreFantasia: this.cliente.nombreFantasia,
+                idCondicionIVA: this.cliente.idCondicionIVA,
+                direccion: this.cliente.direccion,
+                idPais: this.cliente.idPais,
+                idProvincia: this.cliente.idProvincia,
+                idLocalidad: this.cliente.idLocalidad,
+                telPrimario: this.cliente.telPrimario,
+                telSecundario: this.cliente.telSecundario,
+                contacto: this.cliente.contacto,
+                email: this.cliente.email
+            });
+        }
+    }
+
+    getCondicionesIVA() {
+        this.condicionesIVASubscription = this.condicionesIVAService.getCondicionesIVA()
+            .subscribe((data: [CondicionIVA]) => this.condicionesIVA = data);
     }
 
     getPaises() {
-        this.paisesService.getPaises().subscribe((data: [Pais]) => { this.paises = data; });
+        this.paisesSubscription = this.paisesService.getPaises()
+            .subscribe((data: Pais[]) => { this.paises = data; });
     }
 
     getProvincias(idPais) {
-        this.provinciasService.getProvincias(idPais).subscribe((data: [Provincia]) => { this.provincias = data; });
+        this.provinciasSubscription = this.provinciasService.getProvincias(idPais)
+            .subscribe((data: Provincia[]) => { this.provincias = data; });
+    }
+
+    getLocalidades(idProvincia) {
+        this.localidadesSubscription = this.localidadesService.getLocalidades(idProvincia)
+            .subscribe((data: Localidad[]) => this.localidades = data);
+    }
+
+    ngOnDestroy() {
+        if (this.condicionesIVASubscription instanceof Subscription)  {
+            this.condicionesIVASubscription.unsubscribe();
+        }
+
+        if (this.paisesSubscription instanceof Subscription)  {
+            this.paisesSubscription.unsubscribe();
+        }
+
+        if (this.provinciasSubscription instanceof Subscription)  {
+            this.provinciasSubscription.unsubscribe();
+        }
+
+        if (this.localidadesSubscription instanceof Subscription)  {
+            this.localidadesSubscription.unsubscribe();
+        }
     }
 }
