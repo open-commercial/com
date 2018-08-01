@@ -63,32 +63,22 @@ export class ClienteComponent implements OnInit, OnDestroy {
             telSecundario: '',
             contacto: '',
             email: ''
-            // username: ['', Validators.required ],
-            // apellido: ['', Validators.required ],
-            // nombre: ['', Validators.required ],
-            // email: ['', [Validators.required, Validators.email]],
-            // password: '',
-            // repeatPassword: ''
         });
-        // this.clenteForm.setValidators(PasswordValidation.MatchPassword);
     }
 
-    getCliente() {
+    ngOnInit() {
         this.authService.getLoggedInUsuario().subscribe(
             (usuario: Usuario) => {
                 this.usuario = usuario;
                 this.clientesService.getClienteDelUsuario(usuario.id_Usuario).subscribe(
                     (cliente: Cliente) => {
                         if (cliente) {
-                        this.cliente = cliente;
+                            this.cliente = cliente;
                         }
                     });
             }
         );
-    }
 
-    ngOnInit() {
-        this.getCliente();
         this.getCondicionesIVA();
         this.getPaises();
         this.clienteForm.get('idPais').valueChanges.subscribe(
@@ -111,18 +101,24 @@ export class ClienteComponent implements OnInit, OnDestroy {
     submit() {
         if (this.clienteForm.valid) {
             const cliente = this.getFormValues();
-            cliente.idUsuarioCredencial = this.usuario.id_Usuario;
             this.clientesService.saveCliente(cliente).subscribe(
-                data => { this.getCliente(); this.toggleEdit(); },
+                data => {
+                    this.clientesService.getClienteDelUsuario(this.usuario.id_Usuario).subscribe(
+                        (newcliente: Cliente) => {
+                            if (cliente) {
+                                this.cliente = newcliente;
+                                this.inEdition = false;
+                            }
+                        });
+                },
                 err => { this.avisoService.openSnackBar(err.error, '', 3500); }
             );
         }
     }
 
     getFormValues(): any {
-        const id = this.cliente ? this.cliente.id_Cliente : null;
         return {
-            id_Cliente: id,
+            id_Cliente: this.cliente ? this.cliente.id_Cliente : null,
             razonSocial: this.clienteForm.get('razonSocial').value,
             nombreFantasia: this.clienteForm.get('nombreFantasia').value,
             direccion: this.clienteForm.get('direccion').value,
@@ -133,6 +129,8 @@ export class ClienteComponent implements OnInit, OnDestroy {
             contacto: this.clienteForm.get('contacto').value,
             idLocalidad: this.clienteForm.get('idLocalidad').value,
             idCondicionIVA: this.clienteForm.get('idCondicionIVA').value,
+            idCredencial: this.usuario.id_Usuario,
+            idViajante: this.cliente ? this.cliente.idViajante : null,
         };
     }
 
@@ -167,12 +165,21 @@ export class ClienteComponent implements OnInit, OnDestroy {
             .subscribe((data: Pais[]) => { this.paises = data; });
     }
 
-    getProvincias(idPais) {
+    getProvincias(idPais: number) {
+        if (!idPais) {
+            this.provincias.splice(0, this.provincias.length);
+            this.localidades.splice(0, this.localidades.length);
+            return;
+        }
         this.provinciasSubscription = this.provinciasService.getProvincias(idPais)
             .subscribe((data: Provincia[]) => { this.provincias = data; });
     }
 
-    getLocalidades(idProvincia) {
+    getLocalidades(idProvincia: number) {
+        if (!idProvincia) {
+            this.localidades.splice(0, this.localidades.length);
+            return;
+        }
         this.localidadesSubscription = this.localidadesService.getLocalidades(idProvincia)
             .subscribe((data: Localidad[]) => this.localidades = data);
     }

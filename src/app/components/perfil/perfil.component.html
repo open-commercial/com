@@ -4,20 +4,26 @@
             <mat-panel-title>Mi Usuario</mat-panel-title>
             <mat-icon>fingerprint</mat-icon>
         </mat-expansion-panel-header>
-        <sic-com-usuario></sic-com-usuario>
+        <ng-template matExpansionPanelContent>
+            <sic-com-usuario></sic-com-usuario>
+        </ng-template>
     </mat-expansion-panel>
     <mat-expansion-panel hideToggle>
         <mat-expansion-panel-header>
             <mat-panel-title>Mi cuenta de Cliente</mat-panel-title>
             <mat-icon>how_to_reg</mat-icon>
         </mat-expansion-panel-header>
-        <sic-com-cliente></sic-com-cliente>
+        <ng-template matExpansionPanelContent>
+            <sic-com-cliente></sic-com-cliente>    
+        </ng-template>
     </mat-expansion-panel>
     <mat-expansion-panel hideToggle>
         <mat-expansion-panel-header>
             <mat-panel-title>Mis Pedidos</mat-panel-title>
             <mat-icon>list</mat-icon>
         </mat-expansion-panel-header>
-        <sic-com-pedidos></sic-com-pedidos>
+        <ng-template matExpansionPanelContent>
+            <sic-com-pedidos></sic-com-pedidos>
+        </ng-template>
     </mat-expansion-panel>
 </mat-accordion>

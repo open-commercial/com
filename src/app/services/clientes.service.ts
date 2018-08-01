@@ -44,20 +44,17 @@ export class ClientesService {
   }
 
   saveCliente(cliente) {
-    const arr = ['idCondicionIVA=' + cliente.idCondicionIVA, 'idLocalidad=' + cliente.idLocalidad, 'idEmpresa=' + environment.idEmpresa ];
+    const arr = ['idCondicionIVA=' + cliente.idCondicionIVA, 'idLocalidad=' + cliente.idLocalidad, 'idEmpresa=' + environment.idEmpresa];
 
-    if (!cliente.id_Cliente) {
-      delete cliente['id_Cliente'];
-      arr.push('idUsuarioCredencial=' + cliente.idUsuarioCredencial);
+    if (cliente.idCredencial) {
+      arr.push('idUsuarioCredencial=' + cliente.idCredencial);
+    }
+
+    if (cliente.idViajante) {
+      arr.push('idUsuarioViajante=' + cliente.idViajante);
     }
 
     const url = this.uriClientes + '?' + arr.join('&');
-
-    delete cliente['idUsuarioCredencial'];
-    delete cliente['idLocalidad'];
-    delete cliente['idCondicionIVA'];
-
-    console.log(url, cliente);
 
     if (cliente.id_Cliente) {
       return this.http.put(url, cliente);
