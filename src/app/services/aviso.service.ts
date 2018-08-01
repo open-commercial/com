@@ -9,6 +9,7 @@ export class AvisoService {
   openSnackBar(message: string, action: string, duration: number) {
     const config = new MatSnackBarConfig();
     config.duration = duration;
+    config.verticalPosition = 'top';
     this.snackBar.open(message, action, config);
   }
 }
