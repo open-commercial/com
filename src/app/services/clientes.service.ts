@@ -2,14 +2,14 @@ import {Injectable} from '@angular/core';
 import {environment} from 'environments/environment';
 import {Subject, Observable} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
-import { Cliente } from '../models/cliente';
+import {Cliente} from '../models/cliente';
 
 @Injectable()
 export class ClientesService {
 
   uriClientes = environment.apiUrl + '/api/v1/clientes';
   private clienteSeleccionadoSubject = new Subject<any>();
-  clienteSeleccionado = this.clienteSeleccionadoSubject.asObservable();
+  clienteSeleccionado$ = this.clienteSeleccionadoSubject.asObservable();
 
   constructor(private http: HttpClient) {}
 

@@ -2,8 +2,8 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ProductosService} from '../../services/productos.service';
 import {RubrosService} from '../../services/rubros.service';
 import {ActivatedRoute} from '@angular/router';
+import {AvisoService} from 'app/services/aviso.service';
 import {Subscription} from 'rxjs';
-import {AvisoService} from '../../services/aviso.service';
 
 @Component({
   selector: 'sic-com-productos',
@@ -71,15 +71,15 @@ export class ProductosComponent implements OnInit, OnDestroy {
     this.loadingProducts = true;
     this.productosService.getProductos(this.busquedaCriteria, this.rubrosService.idRubroSeleccionado,
       this.pagina, this.tamanioPagina).subscribe(
-        data => {
-          data['content'].forEach(p => this.productos.push(p));
-          this.totalPaginas = data['totalPages'];
-          this.loadingProducts = false;
-        },
-        err => {
-          this.avisoService.openSnackBar(err.error, '', 3500);
-          this.loadingProducts = false;
-        });
+      data => {
+        data['content'].forEach(p => this.productos.push(p));
+        this.totalPaginas = data['totalPages'];
+        this.loadingProducts = false;
+      },
+      err => {
+        this.avisoService.openSnackBar(err.error, '', 3500);
+        this.loadingProducts = false;
+      });
   }
 
   masProductos() {

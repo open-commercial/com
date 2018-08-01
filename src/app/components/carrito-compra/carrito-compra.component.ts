@@ -7,8 +7,8 @@ import {ClientesDialogComponent} from './clientesDialog/clientes-dialog.componen
 import {AvisoService} from '../../services/aviso.service';
 import {AuthService} from '../../services/auth.service';
 import {ConfirmationDialogComponent} from '../confirmation-dialog/confirmation-dialog.component';
-import { Rol } from '../../models/rol';
-import { CantidadProductoDialogComponent } from './cantidadProductoDialog/cantidad-producto-dialog.component';
+import {Rol} from '../../models/rol';
+import {CantidadProductoDialogComponent} from './cantidadProductoDialog/cantidad-producto-dialog.component';
 
 @Component({
   selector: 'sic-com-carrito-compra',
@@ -36,11 +36,10 @@ export class CarritoCompraComponent implements OnInit {
     this.loadingPedido = true;
     this.cargarPedido();
     this.clienteSeleccionado = this.clientesService.getClienteSeleccionado();
-    this.clientesService.clienteSeleccionado.subscribe(
-      data => this.clienteSeleccionado = data);
+    this.clientesService.clienteSeleccionado$.subscribe(data => this.clienteSeleccionado = data);
     this.authService.getLoggedInUsuario().subscribe(
       data => {
-        if (data['roles'].indexOf(Rol.COMPRADOR) !== -1 && data['roles'].length === 1) {
+        if (data.roles.indexOf(Rol[Rol.COMPRADOR.toString()]) !== -1 && data['roles'].length === 1) {
           this.mostrarBotonAsignarCliente = false;
           this.clientesService.getClienteDelUsuario(data['id_Usuario']).subscribe(
             cliente => this.clientesService.setClienteSeleccionado(cliente)
@@ -78,13 +77,14 @@ export class CarritoCompraComponent implements OnInit {
       if (result) {
         this.cantidadArticulos = 0;
         this.carritoCompraService.eliminarTodosLosItems().subscribe(
-        data => {
-          this.avisoService.openSnackBar('Se borraron todos los articulos del listado', '', 3500);
-          this.itemsCarritoCompra = [];
-          this.clientesService.deleteClienteSeleccionado();
-          this.carritoCompraService.setCantidadItemsEnCarrito(0);
-        },
-        err => this.avisoService.openSnackBar(err.error, '', 3500));
+          data => {
+            this.avisoService.openSnackBar('Se borraron todos los articulos del listado', '', 3500);
+            this.sumarTotales();
+            this.itemsCarritoCompra = [];
+            this.clientesService.deleteClienteSeleccionado();
+            this.carritoCompraService.setCantidadItemsEnCarrito(0);
+          },
+          err => this.avisoService.openSnackBar(err.error, '', 3500));
       }
     });
   }

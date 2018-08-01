@@ -1,0 +1,15 @@
+{
+  "name": "Globo Distribuciones",
+  "icons": [
+    {
+      "src": "/assets/logo-GD.png",
+      "sizes": "140x140",
+      "type": "image/png"
+    }
+  ],
+  "theme_color": "#ff5722",
+  "background_color": "#ff5722",
+  "start_url": "index.html",
+  "display": "standalone",
+  "orientation": "landscape"
+}

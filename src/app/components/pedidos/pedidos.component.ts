@@ -17,40 +17,51 @@ export class PedidosComponent implements OnInit {
   cliente: Cliente = null;
   pedidos: Array<Pedido> = [];
   pagina = 0;
-  esUltimaPagina = false;
+  totalPaginas = 0;
+  tamanioPagina = 5;
   loading = false;
 
   constructor(private pedidosService: PedidosService, private avisoService: AvisoService,
               private authService: AuthService, private clientesService: ClientesService) {}
 
   ngOnInit() {
-      this.authService.getLoggedInUsuario().subscribe(
-        (usuario: Usuario) => {
-          this.clientesService.getClienteDelUsuario(usuario.id_Usuario).subscribe(
-            (cliente: Cliente) => {
-              if (cliente) {
-                this.cliente = cliente;
-                this.loadMore();
-              }
-            });
-        }
-      );
+    this.authService.getLoggedInUsuario().subscribe(
+      (usuario: Usuario) => {
+        this.clientesService.getClienteDelUsuario(usuario.id_Usuario).subscribe(
+          (cliente: Cliente) => {
+            if (cliente) {
+              this.cliente = cliente;
+              this.cargarPedidos(true);
+            }
+          });
+      }
+    );
   }
 
-  loadMore() {
-    this.pagina += 1;
+  cargarPedidos(reset: boolean) {
+    if (reset) {
+      this.pedidos = [];
+      this.pagina = 0;
+    }
     this.loading = true;
-    this.pedidosService.getPedidosCliente(this.cliente, this.pagina).subscribe(
+    this.pedidosService.getPedidosCliente(this.cliente, this.pagina, this.tamanioPagina).subscribe(
       data => {
-        this.pedidos = this.pedidos.concat(data['content']);
-        this.esUltimaPagina = data['last'];
+        data['content'].forEach(p => this.pedidos.push(p));
+        this.totalPaginas = data['totalPages'];
+        this.loading = false;
       },
       err => {
         this.avisoService.openSnackBar(err.error, '', 3500);
-      },
-      () => {
         this.loading = false;
       }
     );
+  }
+
+  masPedidos() {
+    if ((this.pagina + 1) < this.totalPaginas) {
+      this.pagina++;
+      this.cargarPedidos(false);
+    }
+
   }
 }

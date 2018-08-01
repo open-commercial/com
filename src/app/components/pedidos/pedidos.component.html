@@ -30,10 +30,11 @@
             <mat-divider></mat-divider>
         </mat-list-item>
     </mat-nav-list>
-    <div class="mas-resultados" fxLayoutAlign="center center" (click)="loadMore()" *ngIf="pedidos.length && !esUltimaPagina">
-    <span *ngIf="pedidos.length && !esUltimaPagina && !loading">
+    <div class="mas-resultados" fxLayoutAlign="center center" (click)="masPedidos()"
+         *ngIf="(pedidos.length > 0) && (totalPaginas > (pagina + 1))">
+    <span *ngIf="(pedidos.length > 0) && (totalPaginas > (pagina + 1)) && !loading">
       <strong>MAS RESULTADOS</strong>
     </span>
-    <mat-spinner [diameter]="50" [strokeWidth]="6" *ngIf="loading && pedidos.length"></mat-spinner>
+    <mat-spinner [diameter]="50" [strokeWidth]="6" *ngIf="loading && (pedidos.length > 0)"></mat-spinner>
   </div>
 </div>
