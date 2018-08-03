@@ -1,19 +1,4 @@
 <div fxLayout="column" class="sic-com-productos">
-  <mat-expansion-panel hideToggle="true">
-    <mat-expansion-panel-header>
-      <mat-panel-description>
-        <span *ngIf="!nombreRubroSeleccionado">Sin filtros seleccionados</span>
-        <span *ngIf="nombreRubroSeleccionado">Filtrado por rubro: <strong>{{nombreRubroSeleccionado | lowercase}}</strong></span>
-      </mat-panel-description>
-      <mat-icon>filter_list</mat-icon>
-    </mat-expansion-panel-header>
-    <mat-form-field>
-      <mat-select placeholder="Rubro" [(ngModel)]="nombreRubroSeleccionado" (selectionChange)="filtrarPorRubro(nombreRubroSeleccionado)">
-        <mat-option>(ninguno)</mat-option>
-        <mat-option *ngFor="let r of rubros" [value]="r.nombre">{{r.nombre | lowercase}}</mat-option>
-      </mat-select>
-    </mat-form-field>
-  </mat-expansion-panel>
   <div fxLayoutAlign="center center" *ngIf="loadingProducts && (productos.length === 0)">
     <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
   </div>

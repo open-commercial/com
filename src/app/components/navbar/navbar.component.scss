@@ -1,35 +1,22 @@
 .sic-com-navbar {
-  /*position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  height: 100px;*/
+  #buscador-form {
+    position: relative;
 
-  .sic-com-buscador-input {
-    width: 100%;
-    border: none;
-    padding: 10px;
-    font-size: 18px;
-    -webkit-appearance: none;
-    -webkit-border-top-left-radius: 10px;
-    -webkit-border-bottom-left-radius: 10px;
-    -moz-border-radius-topleft: 10px;
-    -moz-border-radius-bottomleft: 10px;
-    border-top-left-radius: 10px;
-    border-bottom-left-radius: 10px;
-  }
+    .sic-com-buscador-input {
+      width: 100%;
+      border: none;
+      padding: 10px;
+      font-size: 18px;
+      -webkit-border-radius: 10px;
+      -moz-border-radius: 10px;
+      border-radius: 10px;
+      padding-left: 2em;
+    }
 
-  .sic-com-buscador-icon {
-    background: #e03906;
-    padding: 9px;
-    -webkit-appearance: none;
-    -webkit-border-top-right-radius: 10px;
-    -webkit-border-bottom-right-radius: 10px;
-    -moz-border-radius-topright: 10px;
-    -moz-border-radius-bottomright: 10px;
-    border-top-right-radius: 10px;
-    border-bottom-right-radius: 10px;
-    cursor: pointer;
+    #lupa-button {
+      position: absolute;
+      left: 0;
+    }
   }
 
   .sic-com-logo-grande {

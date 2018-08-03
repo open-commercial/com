@@ -4,7 +4,7 @@
   </div>
   <div *ngIf="!loadingPedido">
     <div fxLayout="column">
-      <div fxLayoutAlign="start center" class="sic-com-ir-listado" [routerLink]="['productos']">
+      <div fxLayoutAlign="start center" class="sic-com-ir-listado" (click)="irAlListado()">
         <mat-icon>keyboard_arrow_left</mat-icon>
         <strong>Ir al listado</strong>
       </div>

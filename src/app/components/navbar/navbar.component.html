@@ -5,9 +5,11 @@
       <img fxHide.lt-md src="assets/header-grandeTrans.png" class="sic-com-logo-grande" (click)="buscarProductos(busquedaForm.get('criteriaControl').value)">
       <img fxHide.gt-sm src="assets/logo-GD_bco.png" class="sic-com-logo-chico" (click)="buscarProductos(busquedaForm.get('criteriaControl').value)">
     </div>
-    <form fxFlex fxLayoutAlign="center center" [formGroup]="busquedaForm">
-      <input class="sic-com-buscador-input" type="search" formControlName="criteriaControl">
-      <mat-icon class="sic-com-buscador-icon" (click)="buscarProductos(busquedaForm.get('criteriaControl').value)">search</mat-icon>
+    <form id="buscador-form" fxFlex fxLayoutAlign="center center" [formGroup]="busquedaForm" (ngSubmit)="submit()">
+      <input class="sic-com-buscador-input" type="search" placeholder="¿Qué busca?" formControlName="criteriaControl">
+      <button id="lupa-button" mat-icon-button color="primary" type="submit">
+        <mat-icon>search</mat-icon>
+      </button>
     </form>
     <div fxFlex.lt-md="15" fxFlex.gt-sm="20" fxLayoutAlign="center center">
       <button mat-icon-button fxHide.lt-md [matMenuTriggerFor]="menuReducido" matTooltip="Mi Perfil ({{usuarioConectado}})">
