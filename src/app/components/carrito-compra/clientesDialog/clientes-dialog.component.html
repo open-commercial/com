@@ -11,7 +11,7 @@
       <div *ngFor="let c of clientes">
         <mat-list-item (click)="seleccionarCliente(c['id_Cliente'])"
                       [ngClass]="(c.razonSocial == cliente.razonSocial) ? 'sic-com-cliente-seleccionado' : ''">
-          <span mat-line class="sic-com-idFiscal-cliente">{{c.idFiscal}}</span>
+          <span mat-line class="sic-com-idFiscal-cliente">#{{c.nroCliente}}</span>
           <span mat-line>{{c.razonSocial}}</span>
           <span mat-line [ngClass]="(c.razonSocial == cliente.razonSocial) ? 'sic-com-cliente-seleccionado' : 'sic-com-nombre-fantasia-cliente'">
             {{c.nombreFantasia}}
