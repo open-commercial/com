@@ -33,8 +33,6 @@ import {PedidosComponent} from '../components/pedidos/pedidos.component';
 import {PedidosService} from '../services/pedidos.service';
 import {CantidadProductoDialogComponent} from '../components/carrito-compra/cantidadProductoDialog/cantidad-producto-dialog.component';
 
-
-
 @NgModule({
   declarations: [
     SicComComponent,
