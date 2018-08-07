@@ -9,7 +9,6 @@ import {NavbarComponent} from '../components/navbar/navbar.component';
 import {ProductosComponent} from '../components/productos/productos.component';
 import {ProductosService} from '../services/productos.service';
 import {AuthService} from '../services/auth.service';
-import {RubrosService} from '../services/rubros.service';
 import {sicComRouting} from '../sic-com.routing';
 import {SicComCurrencyPipe} from '../pipes/sic-com-currency.pipe';
 import {SicComMaterialModule} from './sic-com-material.module';
@@ -33,8 +32,6 @@ import {UsuariosService} from '../services/usuarios.service';
 import {PedidosComponent} from '../components/pedidos/pedidos.component';
 import {PedidosService} from '../services/pedidos.service';
 import {CantidadProductoDialogComponent} from '../components/carrito-compra/cantidadProductoDialog/cantidad-producto-dialog.component';
-
-
 
 @NgModule({
   declarations: [
@@ -70,7 +67,6 @@ import {CantidadProductoDialogComponent} from '../components/carrito-compra/cant
     AuthService,
     AuthGuard,
     ProductosService,
-    RubrosService,
     CarritoCompraService,
     ClientesService,
     EmpresasService,
