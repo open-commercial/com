@@ -16,7 +16,6 @@ export class CheckoutDialogComponent implements OnInit {
   total = 0;
   cantArt = 0;
   observaciones;
-  empresa;
   loggedInIdUsuario;
   loadingData = false;
 
@@ -52,17 +51,13 @@ export class CheckoutDialogComponent implements OnInit {
         data = JSON.parse(data);
         this.loadingData = false;
         const mensaje = 'El pedido Nro ' + data['nroPedido'] + ' fué generado correctamente';
-        const accion = 'OK';
-        const duracion = 0;
-        this.avisoService.openSnackBar(mensaje, accion, duracion);
+        this.avisoService.openSnackBar(mensaje, '', 3500);
         this.clientesService.deleteClienteSeleccionado();
         this.carritoCompraService.setCantidadItemsEnCarrito(0);
         this.cerrarDialog(true);
       },
       error => {
         let mensaje = '';
-        const accion = 'OK';
-        const duracion = 0;
         if (error.status === 404) {
           mensaje = 'No se encontró el servidor. Error: ' + error.status;
         } else if (error.status === 0) {
@@ -71,7 +66,7 @@ export class CheckoutDialogComponent implements OnInit {
           mensaje = error.error;
         }
         this.loadingData = false;
-        this.avisoService.openSnackBar(mensaje, accion, duracion);
+        this.avisoService.openSnackBar(mensaje, '', 3500);
       });
   }
 

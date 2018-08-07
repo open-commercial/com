@@ -9,6 +9,8 @@ import {AuthService} from '../../services/auth.service';
 import {ConfirmationDialogComponent} from '../confirmation-dialog/confirmation-dialog.component';
 import {Rol} from '../../models/rol';
 import {CantidadProductoDialogComponent} from './cantidadProductoDialog/cantidad-producto-dialog.component';
+import {ProductosService} from '../../services/productos.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'sic-com-carrito-compra',
@@ -30,7 +32,8 @@ export class CarritoCompraComponent implements OnInit {
   mostrarBotonAsignarCliente = true;
 
   constructor(private carritoCompraService: CarritoCompraService, private clientesService: ClientesService,
-              private dialog: MatDialog, private avisoService: AvisoService, private authService: AuthService) {}
+              private dialog: MatDialog, private avisoService: AvisoService, private authService: AuthService,
+              private productosService: ProductosService, private router: Router) {}
 
   ngOnInit() {
     this.loadingPedido = true;
@@ -150,5 +153,10 @@ export class CarritoCompraComponent implements OnInit {
       this.pagina++;
       this.cargarPedido();
     }
+  }
+
+  irAlListado() {
+    const criteria = this.productosService.getBusquedaCriteria();
+    this.router.navigate(['/productos', { busqueda: criteria }]);
   }
 }

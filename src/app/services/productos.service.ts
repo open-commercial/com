@@ -3,6 +3,8 @@ import {Subject} from 'rxjs';
 import {environment} from 'environments/environment';
 import {HttpClient} from '@angular/common/http';
 
+
+
 @Injectable()
 export class ProductosService {
 
@@ -10,25 +12,32 @@ export class ProductosService {
   urlBusqueda = this.url + 'busqueda/criteria?idEmpresa=' + environment.idEmpresa;
   private buscarProductosSubject = new Subject<string>();
   buscarProductos$ = this.buscarProductosSubject.asObservable();
+  private criteria = '';
 
   constructor(private http: HttpClient) {}
 
   buscarProductos(criteria: string) {
-    criteria = criteria === null ? '' : criteria;
-    this.buscarProductosSubject.next(criteria);
+    this.criteria = criteria === null ? '' : criteria;
+    this.buscarProductosSubject.next(this.criteria);
   }
 
-  getProductos(descripcionCriteria: string, idRubro: number, pagina: number, tamanioPagina: number) {
-    descripcionCriteria = descripcionCriteria === null ? '' : descripcionCriteria;
-    let criteria = '&descripcion=' + descripcionCriteria + '&pagina=' + pagina + '&tamanio=' + tamanioPagina;
-    criteria += '&publicos=true';
-    if (idRubro) {
-      criteria += '&idRubro=' + idRubro;
-    }
+  getProductos(pagina: number, tamanioPagina: number) {
+    const arr = [
+      'descripcion=' + this.getBusquedaCriteria(),
+      'pagina=' + pagina,
+      'tamanio=' + tamanioPagina,
+      'publicos=true'
+    ];
+
+    const criteria = '&' + arr.join('&');
     return this.http.get(this.urlBusqueda + criteria);
   }
 
   getProducto(idProducto: number) {
     return this.http.get(this.url + idProducto);
+  }
+
+  getBusquedaCriteria(): string {
+    return this.criteria;
   }
 }
