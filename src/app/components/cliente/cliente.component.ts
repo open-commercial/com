@@ -37,7 +37,7 @@ export class ClienteComponent implements OnInit, OnDestroy {
     private provincias:  Array<Provincia> = [];
     private localidades:  Array<Localidad> = [];
 
-    private isLoading = false;
+    private isLoading = true;
 
     constructor(
         private authService: AuthService,
@@ -62,8 +62,6 @@ export class ClienteComponent implements OnInit, OnDestroy {
             idProvincia: [null, Validators.required],
             idLocalidad: [null, Validators.required],
             telPrimario: '',
-            telSecundario: '',
-            contacto: '',
             email: ['', Validators.email],
         });
     }
@@ -71,18 +69,20 @@ export class ClienteComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.isLoading = true;
         this.authService.getLoggedInUsuario()
-            .pipe(
-                finalize(()  => this.isLoading = false)
-            )
             .subscribe(
                 (usuario: Usuario) => {
                     this.usuario = usuario;
-                    this.clientesService.getClienteDelUsuario(usuario.id_Usuario).subscribe(
-                        (cliente: Cliente) => {
-                            if (cliente) {
-                                this.cliente = cliente;
+                    this.clientesService.getClienteDelUsuario(usuario.id_Usuario)
+                        .pipe(
+                            finalize(()  => this.isLoading = false)
+                        )
+                        .subscribe(
+                            (cliente: Cliente) => {
+                                if (cliente) {
+                                    this.cliente = cliente;
+                                }
                             }
-                        });
+                        );
                 },
                 err => { this.avisoService.openSnackBar(err.error, '', 3500); }
             );
@@ -138,8 +138,8 @@ export class ClienteComponent implements OnInit, OnDestroy {
             idFiscal: this.clienteForm.get('idFiscal').value,
             email: this.clienteForm.get('email').value,
             telPrimario: this.clienteForm.get('telPrimario').value,
-            telSecundario: this.clienteForm.get('telSecundario').value,
-            contacto: this.clienteForm.get('contacto').value,
+            telSecundario: this.cliente ? this.cliente.telSecundario : '',
+            contacto: this.cliente ? this.cliente.contacto : '',
             idLocalidad: this.clienteForm.get('idLocalidad').value,
             idCondicionIVA: this.clienteForm.get('idCondicionIVA').value,
             idCredencial: this.usuario.id_Usuario,
