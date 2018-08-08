@@ -1,7 +1,7 @@
 import {Component, OnInit, OnDestroy, Input} from '@angular/core';
 import {FormBuilder, Validators, FormGroup} from '@angular/forms';
 import {Observable, Subscription} from 'rxjs';
-import {map, startWith} from 'rxjs/operators';
+import {map, startWith, finalize} from 'rxjs/operators';
 import {Usuario} from '../../models/usuario';
 import {AuthService} from '../../services/auth.service';
 import {Cliente} from '../../models/cliente';
@@ -37,6 +37,8 @@ export class ClienteComponent implements OnInit, OnDestroy {
     private provincias:  Array<Provincia> = [];
     private localidades:  Array<Localidad> = [];
 
+    private isLoading = false;
+
     constructor(
         private authService: AuthService,
         private fb: FormBuilder, private avisoService: AvisoService,
@@ -62,22 +64,28 @@ export class ClienteComponent implements OnInit, OnDestroy {
             telPrimario: '',
             telSecundario: '',
             contacto: '',
-            email: ''
+            email: ['', Validators.email],
         });
     }
 
     ngOnInit() {
-        this.authService.getLoggedInUsuario().subscribe(
-            (usuario: Usuario) => {
-                this.usuario = usuario;
-                this.clientesService.getClienteDelUsuario(usuario.id_Usuario).subscribe(
-                    (cliente: Cliente) => {
-                        if (cliente) {
-                            this.cliente = cliente;
-                        }
-                    });
-            }
-        );
+        this.isLoading = true;
+        this.authService.getLoggedInUsuario()
+            .pipe(
+                finalize(()  => this.isLoading = false)
+            )
+            .subscribe(
+                (usuario: Usuario) => {
+                    this.usuario = usuario;
+                    this.clientesService.getClienteDelUsuario(usuario.id_Usuario).subscribe(
+                        (cliente: Cliente) => {
+                            if (cliente) {
+                                this.cliente = cliente;
+                            }
+                        });
+                },
+                err => { this.avisoService.openSnackBar(err.error, '', 3500); }
+            );
 
         this.getCondicionesIVA();
         this.getPaises();
@@ -101,18 +109,23 @@ export class ClienteComponent implements OnInit, OnDestroy {
     submit() {
         if (this.clienteForm.valid) {
             const cliente = this.getFormValues();
-            this.clientesService.saveCliente(cliente).subscribe(
-                data => {
-                    this.clientesService.getClienteDelUsuario(this.usuario.id_Usuario).subscribe(
-                        (newcliente: Cliente) => {
-                            if (cliente) {
-                                this.cliente = newcliente;
-                                this.inEdition = false;
-                            }
-                        });
-                },
-                err => { this.avisoService.openSnackBar(err.error, '', 3500); }
-            );
+            this.isLoading = true;
+            this.clientesService.saveCliente(cliente)
+                .pipe(
+                    finalize(()  => this.isLoading = false)
+                )
+                .subscribe(
+                    data => {
+                        this.clientesService.getClienteDelUsuario(this.usuario.id_Usuario).subscribe(
+                            (newcliente: Cliente) => {
+                                if (cliente) {
+                                    this.cliente = newcliente;
+                                    this.inEdition = false;
+                                }
+                            });
+                    },
+                    err => { this.avisoService.openSnackBar(err.error, '', 3500); }
+                );
         }
     }
 

@@ -1,29 +1,29 @@
 <mat-accordion>
-    <mat-expansion-panel hideToggle>
+    <mat-expansion-panel hideToggle (closed)="isUsuarioPanelOpened=false" (opened)="isUsuarioPanelOpened=true">
         <mat-expansion-panel-header>
             <mat-panel-title>Mi Usuario</mat-panel-title>
             <mat-icon>fingerprint</mat-icon>
         </mat-expansion-panel-header>
         <ng-template matExpansionPanelContent>
-            <sic-com-usuario></sic-com-usuario>
+            <sic-com-usuario *ngIf="isUsuarioPanelOpened"></sic-com-usuario>
         </ng-template>
     </mat-expansion-panel>
-    <mat-expansion-panel hideToggle>
+    <mat-expansion-panel hideToggle (closed)="isClientePanelOpened=false" (opened)="isClientePanelOpened=true">
         <mat-expansion-panel-header>
             <mat-panel-title>Mi Cuenta de Cliente</mat-panel-title>
             <mat-icon>how_to_reg</mat-icon>
         </mat-expansion-panel-header>
         <ng-template matExpansionPanelContent>
-            <sic-com-cliente></sic-com-cliente>
+            <sic-com-cliente *ngIf="isClientePanelOpened"></sic-com-cliente>
         </ng-template>
     </mat-expansion-panel>
-    <mat-expansion-panel hideToggle>
+    <mat-expansion-panel hideToggle (closed)="isPedidosPanelOpened=false" (opened)="isPedidosPanelOpened=true">
         <mat-expansion-panel-header>
             <mat-panel-title>Mis Pedidos</mat-panel-title>
             <mat-icon>list</mat-icon>
         </mat-expansion-panel-header>
         <ng-template matExpansionPanelContent>
-            <sic-com-pedidos></sic-com-pedidos>
+            <sic-com-pedidos *ngIf="isPedidosPanelOpened"></sic-com-pedidos>
         </ng-template>
     </mat-expansion-panel>
 </mat-accordion>

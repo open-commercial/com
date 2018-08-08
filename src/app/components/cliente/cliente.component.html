@@ -1,6 +1,6 @@
 <div class="sic-com-container">
-    <form [formGroup]="clienteForm" (ngSubmit)="submit()" *ngIf="!cliente || (cliente && inEdition)">
-        <div fxLayout fxLayout.lt-sm="column" fxLayoutGap="0.7rem">
+    <form fxLayout="column" [formGroup]="clienteForm" (ngSubmit)="submit()" *ngIf="!isLoading && (!cliente || (cliente && inEdition))" fxLayoutGap="0.7rem">
+        <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.7rem">
             <mat-form-field fxFlex>
                 <input matInput placeholder="ID Fiscal" formControlName="idFiscal">
             </mat-form-field>
@@ -16,7 +16,7 @@
                 </mat-error>
             </mat-form-field>
         </div>
-        <div fxLayout fxLayout.lt-sm="column" fxLayoutGap="0.7rem">
+        <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.7rem">
             <mat-form-field fxFlex>
                 <input matInput placeholder="Razón Social" formControlName="razonSocial">
                 <mat-error *ngIf="clienteForm.get('razonSocial').hasError('required')">
@@ -27,7 +27,7 @@
                 <input matInput placeholder="Nombre de Fantasía" formControlName="nombreFantasia">
             </mat-form-field>
         </div>
-        <div fxLayout fxLayout.lt-sm="column" fxLayoutGap="0.7rem">
+        <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.7rem">
             <mat-form-field fxFlex>
                 <input matInput placeholder="Dirección" formControlName="direccion">
             </mat-form-field>
@@ -43,7 +43,7 @@
                 </mat-error>
             </mat-form-field>
         </div>
-        <div fxLayout fxLayout.lt-sm="column" fxLayoutGap="0.7rem">
+        <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.7rem">
             <mat-form-field fxFlex>
                 <mat-select placeholder="Provincia" formControlName="idProvincia" required>
                     <mat-option></mat-option>
@@ -67,7 +67,7 @@
                 </mat-error>
             </mat-form-field>
         </div>
-        <div fxLayout fxLayout.lt-sm="column" fxLayoutGap="0.7rem">
+        <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.7rem">
             <mat-form-field fxFlex>
                 <input matInput placeholder="Teléfono #1" formControlName="telPrimario">
             </mat-form-field>
@@ -75,45 +75,70 @@
                 <input matInput placeholder="Teléfono #2" formControlName="telSecundario">
             </mat-form-field>
         </div>
-        <div fxLayout fxLayout.lt-sm="column" fxLayoutGap="0.7rem">
+        <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.7rem">
             <mat-form-field fxFlex>
                 <input matInput placeholder="Contacto" formControlName="contacto">
             </mat-form-field>
             <mat-form-field fxFlex>
                 <input matInput placeholder="Email" formControlName="email">
+                <mat-error *ngIf="clienteForm.get('email').hasError('email')">
+                    Por favor, ingrese un email válido
+                </mat-error>
             </mat-form-field>
-        </div>
-        <br>
+        </div><br>
         <mat-action-row fxLayoutGap="0.7rem">
             <button mat-raised-button type="submit" color="primary">Guardar</button>
-            <button mat-raised-button type="button" (click)="toggleEdit()">Cancelar</button>
+            <button *ngIf="cliente" mat-raised-button type="button" (click)="toggleEdit()">Cancelar</button>
         </mat-action-row>
     </form>
-    <div *ngIf="cliente && !inEdition" class="info">
-        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="1rem">
-            <div fxFlex fxLayout="column" fxLayoutGap="0.4rem" fxLayoutAlign="start start">
-                <span><strong>ID Fiscal:</strong> {{ cliente.idFiscal }}</span>
-                <span><strong>Razón Social:</strong> {{ cliente.razonSocial }}</span>
-                <span><strong>Nombre Fantasía:</strong> {{ cliente.nombreFantasia }}</span>
-                <span><strong>Condición IVA:</strong> {{ cliente.nombreCondicionIVA }}</span>
+    <div *ngIf="!isLoading && cliente && !inEdition" class="info">
+        <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.4rem">
+            <div fxFlex fxLayout="column" fxLayoutGap="1rem" fxLayoutAlign="start start">
+                <span fxLayout="row" fxLayoutGap="0.4rem" fxLayoutAlign="start center">
+                    <mat-icon>assignment_ind</mat-icon>
+                    <span><strong>Nro Cliente: </strong>{{ cliente.nroCliente }}</span>
+                </span>
+                <span fxLayout="row" fxLayoutGap="0.4rem" fxLayoutAlign="start center">
+                    <mat-icon>assignment</mat-icon>
+                    <span><strong>ID Fiscal:</strong> {{ cliente.idFiscal }}</span>
+                </span>
+                <span fxLayout="row" fxLayoutGap="0.4rem" fxLayoutAlign="start center">
+                    <mat-icon>assignment</mat-icon>
+                    <span><strong>Razón Social:</strong> {{ cliente.razonSocial }}</span>
+                </span>
+                <span fxLayout="row" fxLayoutGap="0.4rem" fxLayoutAlign="start center">
+                    <mat-icon>assignment</mat-icon>
+                    <span><strong>Nombre Fantasía:</strong> {{ cliente.nombreFantasia }}</span>
+                </span>
+                <span fxLayout="row" fxLayoutGap="0.4rem" fxLayoutAlign="start center">
+                    <mat-icon>assignment</mat-icon>
+                    <span><strong>Condición IVA:</strong> {{ cliente.nombreCondicionIVA }}</span>
+                </span>
             </div>
-            <div fxFlex fxLayout="column" fxLayoutGap="0.4rem" fxLayoutAlign="start start">
-                <span><strong>Dirección:</strong> {{ cliente.direccion }}</span>
-                <span><strong>País:</strong> {{ cliente.nombrePais }}</span>
-                <span><strong>Provincia:</strong> {{ cliente.nombreProvincia }}</span>
-                <span><strong>Localidad:</strong> {{ cliente.nombreLocalidad }}</span>
-            </div>
-            <div fxFlex fxLayout="column" fxLayoutGap="0.4rem" fxLayoutAlign="start start">
-                <span><strong>Viajante:</strong> {{ cliente.nombreViajante }}</span>
-                <span><strong>Teléfono #1:</strong> {{ cliente.telPrimario }}</span>
-                <span><strong>Teléfono #2:</strong> {{ cliente.telSecundario }}</span>
-                <span><strong>Contacto:</strong> {{ cliente.contacto }}</span>
-                <span><strong>Email:</strong> {{ cliente.email }}</span>
-                <span><strong>Fecha de Alta:</strong> {{ cliente.fechaAlta | date: 'dd/MM/yyyy' }}</span>
+            <div fxFlex fxLayout="column" fxLayoutGap="1rem" fxLayoutAlign="start start">
+                <span fxLayout="row" fxLayoutGap="0.4rem" fxLayoutAlign="start center">
+                    <mat-icon>place</mat-icon>
+                    <span>
+                        <strong>Dirección:</strong>
+                        <span *ngIf="cliente.direccion"> {{ cliente.direccion }},</span>
+                        {{ cliente.nombrePais }}, {{ cliente.nombreProvincia }}, {{ cliente.nombreLocalidad }}
+                    </span>
+                </span>
+                <span fxLayout="row" fxLayoutGap="0.4rem" fxLayoutAlign="start center">
+                    <mat-icon>phone</mat-icon>
+                    <span><strong>Teléfono:</strong> {{ cliente.telPrimario }}</span>
+                </span>
+                <span fxLayout="row" fxLayoutGap="0.4rem" fxLayoutAlign="start center">
+                    <mat-icon>email</mat-icon>
+                    <span><strong>Email:</strong> {{ cliente.email }}</span>
+                </span>
             </div>
         </div>
         <mat-action-row>
             <button mat-raised-button color="primary" (click)="toggleEdit()">Modificar</button>
         </mat-action-row>
+    </div>
+    <div *ngIf="isLoading" fxLayout="row" fxLayoutAlign="center center">
+        <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
     </div>
 </div>

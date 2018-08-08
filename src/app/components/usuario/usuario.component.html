@@ -1,5 +1,5 @@
 <div class="sic-com-container">
-    <form fxLayout="column" [formGroup]="usuarioForm" (ngSubmit)="submit()" *ngIf="inEdition" fxLayoutGap="0.7rem">
+    <form fxLayout="column" [formGroup]="usuarioForm" (ngSubmit)="submit()" *ngIf="!isLoading && inEdition" fxLayoutGap="0.7rem">
         <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.7rem">
             <mat-form-field fxFlex="50">
                 <input matInput placeholder="Usuario" formControlName="username">
@@ -52,7 +52,7 @@
             <button mat-raised-button type="button" (click)="toggleEdit()">Cancelar</button>
         </mat-action-row>
     </form>
-    <div *ngIf="usuario && !inEdition" class="info">
+    <div *ngIf="!isLoading && usuario && !inEdition" class="info">
         <div fxLayout="row" fxLayoutGap="0.4rem" fxLayoutAlign="start center">
             <mat-icon>person</mat-icon>
             <span>{{ usuario.nombre }} {{ usuario.apellido}} ({{ usuario.username }})</span>
@@ -71,5 +71,9 @@
         <mat-action-row>
             <button mat-raised-button color="primary" (click)="toggleEdit()">Modificar</button>
         </mat-action-row>
+    </div>
+
+    <div *ngIf="isLoading" fxLayout="row" fxLayoutAlign="center center">
+        <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
     </div>
 </div>

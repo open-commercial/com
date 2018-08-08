@@ -6,6 +6,10 @@ import {Component} from '@angular/core';
 })
 export class PerfilComponent {
 
+  private isUsuarioPanelOpened = false;
+  private isClientePanelOpened = false;
+  private isPedidosPanelOpened = false;
+
   constructor() {}
 
 }

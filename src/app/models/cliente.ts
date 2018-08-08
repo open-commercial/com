@@ -26,4 +26,5 @@ export interface Cliente {
     predeterminado: boolean;
     saldoCuentaCorriente: number;
     fechaUltimoMovimiento: Date;
+    nroCliente: string;
 }

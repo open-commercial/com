@@ -5,6 +5,7 @@ import {UsuariosService} from '../../services/usuarios.service';
 import {AvisoService} from '../../services/aviso.service';
 import {PasswordValidation} from '../../validators/PasswordValidation';
 import {AuthService} from '../../services/auth.service';
+import {finalize} from 'rxjs/operators';
 
 @Component({
   selector: 'sic-com-usuario',
@@ -16,6 +17,8 @@ export class UsuarioComponent implements OnInit {
     @Input()
     inEdition = false;
 
+    private isLoading = false;
+
     usuarioForm: FormGroup;
     usuario: Usuario = null;
 
@@ -25,20 +28,27 @@ export class UsuarioComponent implements OnInit {
     }
 
     ngOnInit() {
-      this.authService.getLoggedInUsuario().subscribe(
-        (usuario: Usuario) => {
-          this.usuario = usuario || null;
-          if (this.usuario) {
-            this.usuarioForm.setValue({
-              username: this.usuario.username || '' ,
-              apellido: this.usuario.apellido || '',
-              nombre: this.usuario.nombre || '',
-              email: this.usuario.email || '',
-              password: '',
-              repeatPassword: '',
-            });
-          }
-        });
+      this.isLoading = true;
+      this.authService.getLoggedInUsuario()
+        .pipe(
+            finalize(()  => this.isLoading = false)
+        )
+        .subscribe(
+            (usuario: Usuario) => {
+                this.usuario = usuario || null;
+                if (this.usuario) {
+                this.usuarioForm.setValue({
+                    username: this.usuario.username || '' ,
+                    apellido: this.usuario.apellido || '',
+                    nombre: this.usuario.nombre || '',
+                    email: this.usuario.email || '',
+                    password: '',
+                    repeatPassword: '',
+                });
+                }
+            },
+            err => this.avisoService.openSnackBar(err.error, '', 3500),
+        );
     }
 
     createForm() {
@@ -61,14 +71,20 @@ export class UsuarioComponent implements OnInit {
     submit() {
         if (this.usuarioForm.valid) {
             const usuario = this.getFormValues();
-            this.usuariosService.saveUsuario(usuario).subscribe(
-                data => {
-                  this.usuario = usuario;
-                  this.authService.setNombreUsuarioLoggedIn(usuario.nombre + ' ' + usuario.apellido);
-                  this.toggleEdit();
-                },
-                err => this.avisoService.openSnackBar(err.error, '', 3500)
-            );
+            this.isLoading = true;
+            this.usuariosService.saveUsuario(usuario)
+                .pipe(
+                    finalize(()  => this.isLoading = false)
+                )
+                .subscribe(
+                    data => {
+                      this.usuario = usuario;
+                      this.authService.setNombreUsuarioLoggedIn(usuario.nombre + ' ' + usuario.apellido);
+                      this.toggleEdit();
+                    },
+                    err => this.avisoService.openSnackBar(err.error, '', 3500),
+                    () => this.isLoading = false
+                );
         }
     }
 
