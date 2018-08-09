@@ -45,7 +45,11 @@ export class CarritoCompraComponent implements OnInit {
         if (data.roles.indexOf(Rol[Rol.COMPRADOR.toString()]) !== -1 && data['roles'].length === 1) {
           this.mostrarBotonAsignarCliente = false;
           this.clientesService.getClienteDelUsuario(data['id_Usuario']).subscribe(
-            cliente => this.clientesService.setClienteSeleccionado(cliente)
+            cliente => {
+              if (cliente) {
+                this.clientesService.setClienteSeleccionado(cliente);
+              }
+            }
           );
         }
       }

@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {environment} from '../../environments/environment';
+import {environment} from 'environments/environment';
 import {Subject, Observable} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {Cliente} from '../models/cliente';
@@ -41,5 +41,25 @@ export class ClientesService {
 
   getClienteDelUsuario(idUsuario): Observable<Cliente> {
     return this.http.get<Cliente>(this.uriClientes + '/usuarios/' + idUsuario + '/empresas/' + environment.idEmpresa);
+  }
+
+  saveCliente(cliente) {
+    const arr = ['idCondicionIVA=' + cliente.idCondicionIVA, 'idLocalidad=' + cliente.idLocalidad, 'idEmpresa=' + environment.idEmpresa];
+
+    if (cliente.idCredencial) {
+      arr.push('idUsuarioCredencial=' + cliente.idCredencial);
+    }
+
+    if (cliente.idViajante) {
+      arr.push('idUsuarioViajante=' + cliente.idViajante);
+    }
+
+    const url = this.uriClientes + '?' + arr.join('&');
+
+    if (cliente.id_Cliente) {
+      return this.http.put(url, cliente);
+    } else {
+      return this.http.post(url, cliente);
+    }
   }
 }

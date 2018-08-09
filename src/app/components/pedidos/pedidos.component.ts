@@ -6,6 +6,7 @@ import {AvisoService} from '../../services/aviso.service';
 import {Usuario} from '../../models/usuario';
 import {ClientesService} from '../../services/clientes.service';
 import {AuthService} from '../../services/auth.service';
+import {finalize} from 'rxjs/operators';
 
 @Component({
   selector: 'sic-com-pedidos',
@@ -20,22 +21,29 @@ export class PedidosComponent implements OnInit {
   totalPaginas = 0;
   tamanioPagina = 5;
   loading = false;
+  isLoading = false;
 
   constructor(private pedidosService: PedidosService, private avisoService: AvisoService,
               private authService: AuthService, private clientesService: ClientesService) {}
 
   ngOnInit() {
-    this.authService.getLoggedInUsuario().subscribe(
-      (usuario: Usuario) => {
-        this.clientesService.getClienteDelUsuario(usuario.id_Usuario).subscribe(
-          (cliente: Cliente) => {
-            if (cliente) {
-              this.cliente = cliente;
-              this.cargarPedidos(true);
-            }
-          });
-      }
-    );
+    this.isLoading = true;
+    this.authService.getLoggedInUsuario()
+      .pipe(
+        finalize(()  => this.isLoading = false)
+      )
+      .subscribe(
+        (usuario: Usuario) => {
+          this.clientesService.getClienteDelUsuario(usuario.id_Usuario).subscribe(
+            (cliente: Cliente) => {
+              if (cliente) {
+                this.cliente = cliente;
+                this.cargarPedidos(true);
+              }
+            });
+        },
+        err => this.avisoService.openSnackBar(err.error, '', 3500)
+      );
   }
 
   cargarPedidos(reset: boolean) {
@@ -62,6 +70,5 @@ export class PedidosComponent implements OnInit {
       this.pagina++;
       this.cargarPedidos(false);
     }
-
   }
 }

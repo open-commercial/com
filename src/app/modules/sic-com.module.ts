@@ -29,8 +29,13 @@ import {ConfirmationDialogComponent} from '../components/confirmation-dialog/con
 import {PerfilComponent} from '../components/perfil/perfil.component';
 import {UsuarioComponent} from '../components/usuario/usuario.component';
 import {UsuariosService} from '../services/usuarios.service';
+import {ClienteComponent} from '../components/cliente/cliente.component';
 import {PedidosComponent} from '../components/pedidos/pedidos.component';
 import {PedidosService} from '../services/pedidos.service';
+import {PaisesService} from '../services/paises.service';
+import {ProvinciasService} from '../services/provincias.service';
+import {LocalidadesService} from '../services/localidades.service';
+import {CondicionesIVAService} from '../services/condicionesIVA.service';
 import {CantidadProductoDialogComponent} from '../components/carrito-compra/cantidadProductoDialog/cantidad-producto-dialog.component';
 
 @NgModule({
@@ -49,6 +54,7 @@ import {CantidadProductoDialogComponent} from '../components/carrito-compra/cant
     ConfirmationDialogComponent,
     PerfilComponent,
     UsuarioComponent,
+    ClienteComponent,
     PedidosComponent,
     CantidadProductoDialogComponent
   ],
@@ -72,7 +78,11 @@ import {CantidadProductoDialogComponent} from '../components/carrito-compra/cant
     EmpresasService,
     AvisoService,
     UsuariosService,
-    PedidosService
+    PedidosService,
+    PaisesService,
+    ProvinciasService,
+    LocalidadesService,
+    CondicionesIVAService
   ],
   entryComponents: [
     ClientesDialogComponent,
