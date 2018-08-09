@@ -45,17 +45,13 @@ export class ClientesService {
 
   saveCliente(cliente) {
     const arr = ['idCondicionIVA=' + cliente.idCondicionIVA, 'idLocalidad=' + cliente.idLocalidad, 'idEmpresa=' + environment.idEmpresa];
-
     if (cliente.idCredencial) {
-      arr.push('idUsuarioCredencial=' + cliente.idCredencial);
+      arr.push('idCredencial=' + cliente.idCredencial);
     }
-
     if (cliente.idViajante) {
-      arr.push('idUsuarioViajante=' + cliente.idViajante);
+      arr.push('idViajante=' + cliente.idViajante);
     }
-
     const url = this.uriClientes + '?' + arr.join('&');
-
     if (cliente.id_Cliente) {
       return this.http.put(url, cliente);
     } else {
