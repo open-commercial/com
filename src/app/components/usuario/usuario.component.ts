@@ -14,102 +14,102 @@ import {finalize} from 'rxjs/operators';
 })
 export class UsuarioComponent implements OnInit {
 
-    @Input()
-    inEdition = false;
+  @Input()
+  inEdition = false;
+  isLoading = false;
+  usuarioForm: FormGroup;
+  usuario: Usuario = null;
 
-    private isLoading = false;
+  constructor(private fb: FormBuilder,
+              private usuariosService: UsuariosService,
+              private avisoService: AvisoService,
+              private authService: AuthService) {
+    this.createForm();
+  }
 
-    usuarioForm: FormGroup;
-    usuario: Usuario = null;
+  ngOnInit() {
+    this.isLoading = true;
+    this.authService.getLoggedInUsuario()
+      .pipe(
+        finalize(() => this.isLoading = false)
+      )
+      .subscribe(
+        (usuario: Usuario) => {
+          this.usuario = usuario || null;
+          if (this.usuario) {
+            this.usuarioForm.setValue({
+              username: this.usuario.username || '',
+              apellido: this.usuario.apellido || '',
+              nombre: this.usuario.nombre || '',
+              email: this.usuario.email || '',
+              password: '',
+              repeatPassword: '',
+            });
+          }
+        },
+        err => this.avisoService.openSnackBar(err.error, '', 3500),
+      );
+  }
 
-    constructor(private fb: FormBuilder, private usuariosService: UsuariosService,
-                private avisoService: AvisoService, private authService: AuthService) {
-        this.createForm();
-    }
+  createForm() {
+    this.usuarioForm = this.fb.group({
+      username: ['', Validators.required],
+      apellido: ['', Validators.required],
+      nombre: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      password: '',
+      repeatPassword: ''
+    });
+    this.usuarioForm.setValidators(PasswordValidation.MatchPassword);
+  }
 
-    ngOnInit() {
+  toggleEdit() {
+    this.inEdition = !this.inEdition;
+    this.rebuildForm();
+  }
+
+  submit() {
+    if (this.usuarioForm.valid) {
+      const usuario = this.getFormValues();
       this.isLoading = true;
-      this.authService.getLoggedInUsuario()
+      this.usuariosService.saveUsuario(usuario)
         .pipe(
-            finalize(()  => this.isLoading = false)
+          finalize(() => this.isLoading = false)
         )
         .subscribe(
-            (usuario: Usuario) => {
-                this.usuario = usuario || null;
-                if (this.usuario) {
-                this.usuarioForm.setValue({
-                    username: this.usuario.username || '' ,
-                    apellido: this.usuario.apellido || '',
-                    nombre: this.usuario.nombre || '',
-                    email: this.usuario.email || '',
-                    password: '',
-                    repeatPassword: '',
-                });
-                }
-            },
-            err => this.avisoService.openSnackBar(err.error, '', 3500),
+          data => {
+            this.usuario = usuario;
+            this.authService.setNombreUsuarioLoggedIn(usuario.nombre + ' ' + usuario.apellido);
+            this.toggleEdit();
+          },
+          err => this.avisoService.openSnackBar(err.error, '', 3500),
+          () => this.isLoading = false
         );
     }
+  }
 
-    createForm() {
-        this.usuarioForm = this.fb.group({
-            username: ['', Validators.required ],
-            apellido: ['', Validators.required ],
-            nombre: ['', Validators.required ],
-            email: ['', [Validators.required, Validators.email]],
-            password: '',
-            repeatPassword: ''
-        });
-        this.usuarioForm.setValidators(PasswordValidation.MatchPassword);
-    }
+  getFormValues(): Usuario {
+    return {
+      id_Usuario: this.usuario.id_Usuario,
+      idEmpresaPredeterminada: this.usuario.idEmpresaPredeterminada,
+      username: this.usuarioForm.get('username').value,
+      apellido: this.usuarioForm.get('apellido').value,
+      nombre: this.usuarioForm.get('nombre').value,
+      email: this.usuarioForm.get('email').value,
+      password: this.usuarioForm.get('password').value,
+      roles: this.usuario.roles,
+      habilitado: this.usuario.habilitado
+    };
+  }
 
-    toggleEdit() {
-        this.inEdition = !this.inEdition;
-        this.rebuildForm();
-    }
-
-    submit() {
-        if (this.usuarioForm.valid) {
-            const usuario = this.getFormValues();
-            this.isLoading = true;
-            this.usuariosService.saveUsuario(usuario)
-                .pipe(
-                    finalize(()  => this.isLoading = false)
-                )
-                .subscribe(
-                    data => {
-                      this.usuario = usuario;
-                      this.authService.setNombreUsuarioLoggedIn(usuario.nombre + ' ' + usuario.apellido);
-                      this.toggleEdit();
-                    },
-                    err => this.avisoService.openSnackBar(err.error, '', 3500),
-                    () => this.isLoading = false
-                );
-        }
-    }
-
-    getFormValues(): Usuario {
-        return {
-            id_Usuario: this.usuario.id_Usuario,
-            idEmpresaPredeterminada: this.usuario.idEmpresaPredeterminada,
-            username: this.usuarioForm.get('username').value,
-            apellido: this.usuarioForm.get('apellido').value,
-            nombre: this.usuarioForm.get('nombre').value,
-            email: this.usuarioForm.get('email').value,
-            password: this.usuarioForm.get('password').value,
-            roles: this.usuario.roles,
-            habilitado: this.usuario.habilitado
-        };
-    }
-
-    rebuildForm() {
-        this.usuarioForm.reset({
-            username: this.usuario.username,
-            apellido: this.usuario.apellido,
-            nombre: this.usuario.nombre,
-            email: this.usuario.email,
-            password: '',
-            repeatPassword: '',
-        });
-    }
+  rebuildForm() {
+    this.usuarioForm.reset({
+      username: this.usuario.username,
+      apellido: this.usuario.apellido,
+      nombre: this.usuario.nombre,
+      email: this.usuario.email,
+      password: '',
+      repeatPassword: '',
+    });
+  }
 }

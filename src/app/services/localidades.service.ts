@@ -11,7 +11,7 @@ export class LocalidadesService {
 
   constructor(private http: HttpClient) {}
 
-  getLocalidades(idProvincia): Observable<[Localidad]> {
+  getLocalidades(idProvincia): Observable<Localidad[]> {
     return this.http.get<[Localidad]>(this.url + '/provincias/' + idProvincia);
   }
 }

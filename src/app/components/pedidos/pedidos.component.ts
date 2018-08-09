@@ -6,7 +6,7 @@ import {AvisoService} from '../../services/aviso.service';
 import {Usuario} from '../../models/usuario';
 import {ClientesService} from '../../services/clientes.service';
 import {AuthService} from '../../services/auth.service';
-import { finalize } from 'rxjs/operators';
+import {finalize} from 'rxjs/operators';
 
 @Component({
   selector: 'sic-com-pedidos',
@@ -21,8 +21,7 @@ export class PedidosComponent implements OnInit {
   totalPaginas = 0;
   tamanioPagina = 5;
   loading = false;
-
-  private isLoading = false;
+  isLoading = false;
 
   constructor(private pedidosService: PedidosService, private avisoService: AvisoService,
               private authService: AuthService, private clientesService: ClientesService) {}

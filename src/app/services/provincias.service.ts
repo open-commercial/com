@@ -11,7 +11,7 @@ export class ProvinciasService {
 
   constructor(private http: HttpClient) {}
 
-  getProvincias(idPais): Observable<[Provincia]> {
-    return this.http.get<[Provincia]>(this.url + '/paises/' + idPais);
+  getProvincias(idPais): Observable<Provincia[]> {
+    return this.http.get<Provincia[]>(this.url + '/paises/' + idPais);
   }
 }

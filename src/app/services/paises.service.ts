@@ -11,7 +11,7 @@ export class PaisesService {
 
   constructor(private http: HttpClient) {}
 
-  getPaises(): Observable<[Pais]> {
-    return this.http.get<[Pais]>(this.url);
+  getPaises(): Observable<Pais[]> {
+    return this.http.get<Pais[]>(this.url);
   }
 }

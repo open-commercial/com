@@ -1,5 +1,8 @@
 export interface CondicionIVA {
-    id_CondicionIVA: number;
-    nombre: string;
-    discriminaIVA: boolean;
+
+  id_CondicionIVA: number;
+  nombre: string;
+  discriminaIVA: boolean;
+
 }
+
