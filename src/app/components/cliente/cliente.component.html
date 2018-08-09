@@ -1,138 +1,144 @@
 <div class="sic-com-container">
-    <div *ngIf="!isLoading"> 
-        <form fxLayout="column" [formGroup]="clienteForm" (ngSubmit)="submit()" *ngIf="!cliente || (cliente && inEdition)" fxLayoutGap="0.7rem">
-            <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.7rem">
-                <mat-form-field fxFlex>
-                    <input matInput placeholder="ID Fiscal" formControlName="idFiscal">
-                </mat-form-field>
-                <mat-form-field fxFlex>
-                    <mat-select placeholder="Condición de IVA" formControlName="idCondicionIVA" required>
-                        <mat-option></mat-option>
-                        <mat-option *ngFor="let ci of condicionesIVA" [value]="ci.id_CondicionIVA">
-                            {{ ci.nombre }}
-                        </mat-option>
-                    </mat-select>
-                    <mat-error *ngIf="clienteForm.get('idCondicionIVA').hasError('required')">
-                        Requerido
-                    </mat-error>
-                </mat-form-field>
-            </div>
-            <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.7rem">
-                <mat-form-field fxFlex>
-                    <input matInput placeholder="Razón Social" formControlName="razonSocial">
-                    <mat-error *ngIf="clienteForm.get('razonSocial').hasError('required')">
-                        Requerido
-                    </mat-error>
-                </mat-form-field>
-                <mat-form-field fxFlex>
-                    <input matInput placeholder="Nombre de Fantasía" formControlName="nombreFantasia">
-                </mat-form-field>
-            </div>
-            <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.7rem">
-                <mat-form-field fxFlex>
-                    <input matInput placeholder="Dirección" formControlName="direccion">
-                </mat-form-field>
-                <mat-form-field fxFlex>
-                    <mat-select placeholder="País" formControlName="idPais" required>
-                        <mat-option></mat-option>
-                        <mat-option *ngFor="let p of paises" [value]="p.id_Pais">
-                            {{ p.nombre }}
-                        </mat-option>
-                    </mat-select>
-                    <mat-error *ngIf="clienteForm.get('idPais').hasError('required')">
-                        Requerido
-                    </mat-error>
-                </mat-form-field>
-            </div>
-            <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.7rem">
-                <mat-form-field fxFlex>
-                    <mat-select placeholder="Provincia" formControlName="idProvincia" required>
-                        <mat-option></mat-option>
-                        <mat-option *ngFor="let pr of provincias" [value]="pr.id_Provincia">
-                            {{ pr.nombre }}
-                        </mat-option>
-                    </mat-select>
-                    <mat-error *ngIf="clienteForm.get('idProvincia').hasError('required')">
-                        Requerido
-                    </mat-error>
-                </mat-form-field>
-                <mat-form-field fxFlex>
-                    <mat-select placeholder="Localidad" formControlName="idLocalidad" required>
-                        <mat-option></mat-option>
-                        <mat-option *ngFor="let l of localidades" [value]="l.id_Localidad">
-                            {{ l.nombre }}
-                        </mat-option>
-                    </mat-select>
-                    <mat-error *ngIf="clienteForm.get('idLocalidad').hasError('required')">
-                        Requerido
-                    </mat-error>
-                </mat-form-field>
-            </div>
-            <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.7rem">
-                <mat-form-field fxFlex>
-                    <input matInput placeholder="Teléfono" formControlName="telPrimario">
-                </mat-form-field>
-                <mat-form-field fxFlex>
-                    <input matInput placeholder="Email" formControlName="email">
-                    <mat-error *ngIf="clienteForm.get('email').hasError('email')">
-                        Por favor, ingrese un email válido
-                    </mat-error>
-                </mat-form-field>
-            </div><br>
-            <mat-action-row fxLayoutGap="0.7rem">
-                <button mat-raised-button type="submit" color="primary">Guardar</button>
-                <button *ngIf="cliente" mat-raised-button type="button" (click)="toggleEdit()">Cancelar</button>
-            </mat-action-row>
-        </form>
-        <div *ngIf="cliente && !inEdition" class="info">
-            <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.4rem">
-                <div fxFlex fxLayout="column" fxLayoutGap="1rem" fxLayoutAlign="start start">
-                    <span fxLayout="row" fxLayoutGap="0.4rem" fxLayoutAlign="start center">
-                        <mat-icon>assignment_ind</mat-icon>
-                        <span><strong>Nro Cliente: </strong>{{ cliente.nroCliente }}</span>
-                    </span>
-                    <span fxLayout="row" fxLayoutGap="0.4rem" fxLayoutAlign="start center">
-                        <mat-icon>assignment</mat-icon>
-                        <span><strong>ID Fiscal:</strong> {{ cliente.idFiscal }}</span>
-                    </span>
-                    <span fxLayout="row" fxLayoutGap="0.4rem" fxLayoutAlign="start center">
-                        <mat-icon>assignment</mat-icon>
-                        <span><strong>Razón Social:</strong> {{ cliente.razonSocial }}</span>
-                    </span>
-                    <span fxLayout="row" fxLayoutGap="0.4rem" fxLayoutAlign="start center">
-                        <mat-icon>assignment</mat-icon>
-                        <span><strong>Nombre Fantasía:</strong> {{ cliente.nombreFantasia }}</span>
-                    </span>
-                    <span fxLayout="row" fxLayoutGap="0.4rem" fxLayoutAlign="start center">
-                        <mat-icon>assignment</mat-icon>
-                        <span><strong>Condición IVA:</strong> {{ cliente.nombreCondicionIVA }}</span>
-                    </span>
-                </div>
-                <div fxFlex fxLayout="column" fxLayoutGap="1rem" fxLayoutAlign="start start">
-                    <span fxLayout="row" fxLayoutGap="0.4rem" fxLayoutAlign="start center">
-                        <mat-icon>place</mat-icon>
-                        <span>
-                            <strong>Dirección:</strong>
-                            <span *ngIf="cliente.direccion"> {{ cliente.direccion }},</span>
-                            {{ cliente.nombrePais }}, {{ cliente.nombreProvincia }}, {{ cliente.nombreLocalidad }}
-                        </span>
-                    </span>
-                    <span fxLayout="row" fxLayoutGap="0.4rem" fxLayoutAlign="start center">
-                        <mat-icon>phone</mat-icon>
-                        <span><strong>Teléfono:</strong> {{ cliente.telPrimario }}</span>
-                    </span>
-                    <span fxLayout="row" fxLayoutGap="0.4rem" fxLayoutAlign="start center">
-                        <mat-icon>email</mat-icon>
-                        <span><strong>Email:</strong> {{ cliente.email }}</span>
-                    </span>
-                </div>
-            </div>
-            <mat-action-row>
-                <button mat-raised-button color="primary" (click)="toggleEdit()">Modificar</button>
-            </mat-action-row>
+  <div *ngIf="!isLoading">
+    <form fxLayout="column" [formGroup]="clienteForm" (ngSubmit)="submit()" *ngIf="!cliente || (cliente && inEdition)" fxLayoutGap="0.7rem">
+      <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.7rem">
+        <mat-form-field fxFlex>
+          <input matInput type="number" placeholder="ID Fiscal" formControlName="idFiscal">
+          <mat-error *ngIf="clienteForm.get('idFiscal').hasError('pattern')">
+            Solo números
+          </mat-error>
+          <mat-hint>CUIL, CUIT o DNI según corresponda</mat-hint>
+        </mat-form-field>
+        <mat-form-field fxFlex>
+          <mat-select placeholder="Condición de IVA" formControlName="idCondicionIVA" required>
+            <mat-option></mat-option>
+            <mat-option *ngFor="let ci of condicionesIVA" [value]="ci.id_CondicionIVA">
+              {{ ci.nombre }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="clienteForm.get('idCondicionIVA').hasError('required')">
+            Requerido
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.7rem">
+        <mat-form-field fxFlex>
+          <input matInput placeholder="Razón Social" formControlName="razonSocial">
+          <mat-error *ngIf="clienteForm.get('razonSocial').hasError('required')">
+            Requerido
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field fxFlex>
+          <input matInput placeholder="Nombre de Fantasía" formControlName="nombreFantasia">
+        </mat-form-field>
+      </div>
+      <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.7rem">
+        <mat-form-field fxFlex>
+          <input matInput placeholder="Dirección" formControlName="direccion">
+        </mat-form-field>
+        <mat-form-field fxFlex>
+          <mat-select placeholder="País" formControlName="idPais" required>
+            <mat-option></mat-option>
+            <mat-option *ngFor="let p of paises" [value]="p.id_Pais">
+              {{ p.nombre }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="clienteForm.get('idPais').hasError('required')">
+            Requerido
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.7rem">
+        <mat-form-field fxFlex>
+          <mat-select placeholder="Provincia" formControlName="idProvincia" required>
+            <mat-option></mat-option>
+            <mat-option *ngFor="let pr of provincias" [value]="pr.id_Provincia">
+              {{ pr.nombre }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="clienteForm.get('idProvincia').hasError('required')">
+            Requerido
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field fxFlex>
+          <mat-select placeholder="Localidad" formControlName="idLocalidad" required>
+            <mat-option></mat-option>
+            <mat-option *ngFor="let l of localidades" [value]="l.id_Localidad">
+              {{ l.nombre }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="clienteForm.get('idLocalidad').hasError('required')">
+            Requerido
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.7rem">
+        <mat-form-field fxFlex>
+          <input matInput placeholder="Teléfono" formControlName="telPrimario">
+        </mat-form-field>
+        <mat-form-field fxFlex>
+          <input matInput placeholder="Email" formControlName="email">
+          <mat-error *ngIf="clienteForm.get('email').hasError('email')">
+            Email inválido
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <br>
+      <mat-action-row fxLayoutGap="0.7rem">
+        <button mat-raised-button type="submit" color="primary">Guardar</button>
+        <button *ngIf="cliente" mat-raised-button type="button" (click)="toggleEdit()">Cancelar</button>
+      </mat-action-row>
+    </form>
+    <div *ngIf="cliente && !inEdition" class="info">
+      <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.4rem">
+        <div fxFlex fxLayout="column" fxLayoutGap="1rem" fxLayoutAlign="start start">
+          <span fxLayout="row" fxLayoutGap="0.4rem" fxLayoutAlign="start center">
+            <mat-icon>assignment_ind</mat-icon>
+            <span>Nro Cliente: {{ cliente.nroCliente }}</span>
+          </span>
+          <span fxLayout="row" fxLayoutGap="0.4rem" fxLayoutAlign="start center">
+            <mat-icon>work</mat-icon>
+            <span>ID Fiscal: {{ cliente.idFiscal }}</span>
+          </span>
+          <span fxLayout="row" fxLayoutGap="0.4rem" fxLayoutAlign="start center">
+            <mat-icon>grade</mat-icon>
+            <span>Razón Social: {{ cliente.razonSocial }}</span>
+          </span>
+          <span fxLayout="row" fxLayoutGap="0.4rem" fxLayoutAlign="start center">
+            <mat-icon>copyright</mat-icon>
+            <span>Nombre Fantasía: {{ cliente.nombreFantasia }}</span>
+          </span>
+          <span fxLayout="row" fxLayoutGap="0.4rem" fxLayoutAlign="start center">
+            <mat-icon>account_balance</mat-icon>
+            <span>Condición IVA: {{ cliente.nombreCondicionIVA }}</span>
+          </span>
         </div>
+        <div fxFlex fxLayout="column" fxLayoutGap="1rem" fxLayoutAlign="start start">
+          <span fxLayout="row" fxLayoutGap="0.4rem" fxLayoutAlign="start center">
+            <mat-icon>place</mat-icon>
+            <span>
+                Dirección:
+                <span *ngIf="cliente.direccion"> {{ cliente.direccion }},</span>
+                {{ cliente.nombreLocalidad }}, {{ cliente.nombreProvincia }}, {{ cliente.nombrePais }}
+            </span>
+          </span>
+          <span fxLayout="row" fxLayoutGap="0.4rem" fxLayoutAlign="start center">
+            <mat-icon>phone</mat-icon>
+            <span>Teléfono: {{ cliente.telPrimario }}</span>
+          </span>
+          <span fxLayout="row" fxLayoutGap="0.4rem" fxLayoutAlign="start center">
+            <mat-icon>email</mat-icon>
+            <span>Email: {{ cliente.email }}</span>
+          </span>
+        </div>
+      </div>
+      <br>
+      <mat-action-row>
+        <button mat-raised-button color="primary" (click)="toggleEdit()">Modificar</button>
+      </mat-action-row>
     </div>
-    <div *ngIf="isLoading" fxLayout="row" fxLayoutAlign="center center">
-        <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
-    </div>
+  </div>
+  <div *ngIf="isLoading" fxLayout="row" fxLayoutAlign="center center">
+    <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
+  </div>
 </div>

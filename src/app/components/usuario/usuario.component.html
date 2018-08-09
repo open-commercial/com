@@ -1,79 +1,84 @@
 <div class="sic-com-container">
-    <form fxLayout="column" [formGroup]="usuarioForm" (ngSubmit)="submit()" *ngIf="!isLoading && inEdition" fxLayoutGap="0.7rem">
-        <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.7rem">
-            <mat-form-field fxFlex="50">
-                <input matInput placeholder="Usuario" formControlName="username">
-                <mat-error *ngIf="usuarioForm.get('username').hasError('required')">
-                    Requerido
-                </mat-error>
-            </mat-form-field>
-            <mat-form-field fxFlex="50">
-                <input matInput placeholder="Email" type="email" formControlName="email">
-                <mat-error *ngIf="usuarioForm.get('email').hasError('email') && !usuarioForm.get('email').hasError('required')">
-                    Por favor, ingrese un email válido
-                </mat-error>
-                <mat-error *ngIf="usuarioForm.get('email').hasError('required')">
-                    Requerido
-                </mat-error>
-            </mat-form-field>
-        </div>
-        <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.7rem">
-            <mat-form-field fxFlex="50">
-                <input matInput placeholder="Nombre" formControlName="nombre">
-                <mat-error *ngIf="usuarioForm.get('nombre').hasError('required')">
-                    Requerido
-                </mat-error>
-            </mat-form-field>
-            <mat-form-field fxFlex="50" >
-                <input matInput placeholder="Apellido" formControlName="apellido">
-                <mat-error *ngIf="usuarioForm.get('apellido').hasError('required')">
-                    Requerido
-                </mat-error>
-            </mat-form-field>
-        </div>
-        <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.7rem">
-            <mat-form-field fxFlex="50">
-                <input matInput placeholder="Contraseña" type="password" formControlName="password">
-                <mat-error *ngIf="usuarioForm.controls.password.errors?.MatchPassword">
-                    Las contraseñas deben ser iguales
-                </mat-error>
-                <mat-hint>Dejar en blanco para mantener la actual</mat-hint>
-            </mat-form-field>
-            <mat-form-field fxFlex="50">
-                <input matInput placeholder="Repita la Contraseña" type="password" formControlName="repeatPassword">
-                <mat-error *ngIf="usuarioForm.controls.repeatPassword.errors?.MatchPassword">
-                    Las contraseñas deben ser iguales
-                </mat-error>
-                <mat-hint>Dejar en blanco para mantener la actual</mat-hint>
-            </mat-form-field>
-        </div><br>
-        <mat-action-row fxLayoutGap="0.7rem" *ngIf="inEdition">
-            <button mat-raised-button type="submit" color="primary">Guardar</button>
-            <button mat-raised-button type="button" (click)="toggleEdit()">Cancelar</button>
-        </mat-action-row>
-    </form>
-    <div *ngIf="!isLoading && usuario && !inEdition" class="info">
-        <div fxLayout="row" fxLayoutGap="0.4rem" fxLayoutAlign="start center">
-            <mat-icon>person</mat-icon>
-            <span>{{ usuario.nombre }} {{ usuario.apellido}} ({{ usuario.username }})</span>
-        </div><br>
-        <div fxLayout="row" fxLayoutGap="0.4rem" fxLayoutAlign="start center">
-            <mat-icon>email</mat-icon>
-            <span class="user-email">{{ usuario.email }}</span>
-        </div><br>
-        <div fxLayout="row" fxLayoutGap="0.4rem" fxLayoutAlign="start center">
-            <mat-icon>group</mat-icon>
-            <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="0.4rem" fxLayoutAlign="start center">
-                <span *ngFor="let r of usuario.roles">{{ r }}</span>
-            </div>
-        </div>
-        <br>
-        <mat-action-row>
-            <button mat-raised-button color="primary" (click)="toggleEdit()">Modificar</button>
-        </mat-action-row>
+  <form fxLayout="column" [formGroup]="usuarioForm" (ngSubmit)="submit()" *ngIf="!isLoading && inEdition" fxLayoutGap="0.7rem">
+    <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.7rem">
+      <mat-form-field fxFlex="50">
+        <input matInput placeholder="Usuario" formControlName="username">
+        <mat-error *ngIf="usuarioForm.get('username').hasError('required')">
+          Requerido
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field fxFlex="50">
+        <input matInput placeholder="Email" type="email" formControlName="email">
+        <mat-error *ngIf="usuarioForm.get('email').hasError('email') && !usuarioForm.get('email').hasError('required')">
+          Por favor, ingrese un email válido
+        </mat-error>
+        <mat-error *ngIf="usuarioForm.get('email').hasError('required')">
+          Requerido
+        </mat-error>
+      </mat-form-field>
     </div>
-
-    <div *ngIf="isLoading" fxLayout="row" fxLayoutAlign="center center">
-        <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
+    <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.7rem">
+      <mat-form-field fxFlex="50">
+        <input matInput placeholder="Nombre" formControlName="nombre">
+        <mat-error *ngIf="usuarioForm.get('nombre').hasError('required')">
+          Requerido
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field fxFlex="50">
+        <input matInput placeholder="Apellido" formControlName="apellido">
+        <mat-error *ngIf="usuarioForm.get('apellido').hasError('required')">
+          Requerido
+        </mat-error>
+      </mat-form-field>
     </div>
+    <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.7rem">
+      <mat-form-field fxFlex="50">
+        <input matInput placeholder="Contraseña" type="password" formControlName="password">
+        <mat-error *ngIf="usuarioForm.controls.password.errors?.MatchPassword">
+          Las contraseñas deben ser iguales
+        </mat-error>
+        <mat-hint>Dejar en blanco para mantener la actual</mat-hint>
+      </mat-form-field>
+      <mat-form-field fxFlex="50">
+        <input matInput placeholder="Repita la Contraseña" type="password" formControlName="repeatPassword">
+        <mat-error *ngIf="usuarioForm.controls.repeatPassword.errors?.MatchPassword">
+          Las contraseñas deben ser iguales
+        </mat-error>
+        <mat-hint>Dejar en blanco para mantener la actual</mat-hint>
+      </mat-form-field>
+    </div>
+    <br>
+    <mat-action-row fxLayoutGap="0.7rem" *ngIf="inEdition">
+      <button mat-raised-button type="submit" color="primary">Guardar</button>
+      <button mat-raised-button type="button" (click)="toggleEdit()">Cancelar</button>
+    </mat-action-row>
+  </form>
+  <div *ngIf="!isLoading && usuario && !inEdition" class="info">
+    <div fxLayout="row" fxLayoutGap="0.4rem" fxLayoutAlign="start center">
+      <mat-icon>account_circle</mat-icon>
+      <span>Nombre de Usuario: {{ usuario.username }}</span>
+    </div>
+    <br>
+    <div fxLayout="row" fxLayoutGap="0.4rem" fxLayoutAlign="start center">
+      <mat-icon>person</mat-icon>
+      <span>Nombre y Apellido: {{ usuario.nombre }} {{ usuario.apellido}}</span>
+    </div>
+    <br>
+    <div fxLayout="row" fxLayoutGap="0.4rem" fxLayoutAlign="start center">
+      <mat-icon>email</mat-icon>
+      <span class="user-word-break">Email: {{ usuario.email }}</span>
+    </div>
+    <br>
+    <div fxLayout="row" fxLayoutGap="0.4rem" fxLayoutAlign="start center">
+      <mat-icon>group</mat-icon>
+      <span class="user-word-break">Roles: {{ usuario.roles }}</span>
+    </div>
+    <br>
+    <mat-action-row>
+      <button mat-raised-button color="primary" (click)="toggleEdit()">Modificar</button>
+    </mat-action-row>
+  </div>
+  <div *ngIf="isLoading" fxLayout="row" fxLayoutAlign="center center">
+    <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
+  </div>
 </div>
