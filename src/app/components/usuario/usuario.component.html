@@ -56,22 +56,22 @@
   <div *ngIf="!isLoading && usuario && !inEdition" class="info">
     <div fxLayout="row" fxLayoutGap="0.4rem" fxLayoutAlign="start center">
       <mat-icon>account_circle</mat-icon>
-      <span>Usuario: {{ usuario.username }}</span>
+      <span>{{ usuario.username }}</span>
     </div>
     <br>
     <div fxLayout="row" fxLayoutGap="0.4rem" fxLayoutAlign="start center">
       <mat-icon>person</mat-icon>
-      <span>Nombre y Apellido: {{ usuario.nombre }} {{ usuario.apellido}}</span>
+      <span>{{ usuario.nombre }} {{ usuario.apellido}}</span>
     </div>
     <br>
     <div fxLayout="row" fxLayoutGap="0.4rem" fxLayoutAlign="start center">
       <mat-icon>email</mat-icon>
-      <span class="user-word-break">Email: {{ usuario.email }}</span>
+      <span class="user-word-break">{{ usuario.email }}</span>
     </div>
     <br>
     <div fxLayout="row" fxLayoutGap="0.4rem" fxLayoutAlign="start center">
       <mat-icon>group</mat-icon>
-      <span class="user-word-break">Roles: {{ usuario.roles }}</span>
+      <span class="user-word-break">{{ usuario.roles }}</span>
     </div>
     <br>
     <mat-action-row>

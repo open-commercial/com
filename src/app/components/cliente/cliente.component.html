@@ -94,41 +94,40 @@
         <div fxFlex fxLayout="column" fxLayoutGap="1rem" fxLayoutAlign="start start">
           <span fxLayout="row" fxLayoutGap="0.4rem" fxLayoutAlign="start center">
             <mat-icon>assignment_ind</mat-icon>
-            <span>Nro Cliente: {{ cliente.nroCliente }}</span>
+            <span>#{{ cliente.nroCliente }}</span>
           </span>
           <span fxLayout="row" fxLayoutGap="0.4rem" fxLayoutAlign="start center">
             <mat-icon>work</mat-icon>
-            <span>ID Fiscal: {{ cliente.idFiscal }}</span>
+            <span>{{ cliente.idFiscal }}</span>
           </span>
           <span fxLayout="row" fxLayoutGap="0.4rem" fxLayoutAlign="start center">
             <mat-icon>grade</mat-icon>
-            <span>Razón Social: {{ cliente.razonSocial }}</span>
+            <span>{{ cliente.razonSocial }}</span>
           </span>
           <span fxLayout="row" fxLayoutGap="0.4rem" fxLayoutAlign="start center">
             <mat-icon>copyright</mat-icon>
-            <span>Nombre Fantasía: {{ cliente.nombreFantasia }}</span>
+            <span>{{ cliente.nombreFantasia }}</span>
           </span>
           <span fxLayout="row" fxLayoutGap="0.4rem" fxLayoutAlign="start center">
             <mat-icon>account_balance</mat-icon>
-            <span>Condición IVA: {{ cliente.nombreCondicionIVA }}</span>
+            <span>{{ cliente.nombreCondicionIVA }}</span>
           </span>
         </div>
         <div fxFlex fxLayout="column" fxLayoutGap="1rem" fxLayoutAlign="start start">
           <span fxLayout="row" fxLayoutGap="0.4rem" fxLayoutAlign="start center">
             <mat-icon>place</mat-icon>
             <span>
-                Dirección:
-                <span *ngIf="cliente.direccion"> {{ cliente.direccion }},</span>
-                {{ cliente.nombreLocalidad }}, {{ cliente.nombreProvincia }}, {{ cliente.nombrePais }}
+              <span *ngIf="cliente.direccion"> {{ cliente.direccion }},</span>
+              {{ cliente.nombreLocalidad }}, {{ cliente.nombreProvincia }}, {{ cliente.nombrePais }}
             </span>
           </span>
           <span fxLayout="row" fxLayoutGap="0.4rem" fxLayoutAlign="start center">
             <mat-icon>phone</mat-icon>
-            <span>Teléfono: {{ cliente.telPrimario }}</span>
+            <span>{{ cliente.telPrimario }}</span>
           </span>
           <span fxLayout="row" fxLayoutGap="0.4rem" fxLayoutAlign="start center">
             <mat-icon>email</mat-icon>
-            <span>Email: {{ cliente.email }}</span>
+            <span>{{ cliente.email }}</span>
           </span>
         </div>
       </div>
