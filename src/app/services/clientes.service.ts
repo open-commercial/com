@@ -15,7 +15,7 @@ export class ClientesService {
 
   getClientes(nombre, pagina, tamanioPagina) {
     const uri = this.uriClientes + '/busqueda/criteria?idEmpresa=' + environment.idEmpresa
-      + '&razonSocial=' + nombre + '&nombreFantasia=' + nombre
+      + '&razonSocial=' + nombre + '&nombreFantasia=' + nombre + '&nroCliente=' + nombre
       + '&pagina=' + pagina + '&tamanio=' + tamanioPagina;
     return this.http.get(uri);
   }
