@@ -14,7 +14,7 @@
         <img mat-list-avatar class="sic-com-avatar" src="../../assets/no-image.png">
         <p mat-line class="sic-com-codigo">{{p.codigo}}</p>
         <p mat-line class="sic-com-descripcion"><strong>{{p.descripcion}}</strong></p>
-        <p mat-line>{{p.cantidad | number:'1.2'}} / {{p.nombreMedida}}</p>
+        <p mat-line>{{p.cantidad | number:'1.2'}} {{p.nombreMedida}}</p>
         <p mat-line><strong>{{p.precioLista | sicComCurrency }}</strong></p>
       </mat-list-item>
       <mat-divider></mat-divider>
