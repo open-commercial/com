@@ -4,6 +4,7 @@ import {ProductosService} from '../../services/productos.service';
 import {CarritoCompraService} from '../../services/carrito-compra.service';
 import {ActivatedRoute} from '@angular/router';
 import {AvisoService} from '../../services/aviso.service';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'sic-com-producto',
@@ -15,6 +16,7 @@ export class ProductoComponent implements OnInit {
   producto;
   cantidad;
   loadingProducto = false;
+  estaCargandoAlCarrito = false;
 
   constructor(private productosService: ProductosService, private route: ActivatedRoute,
               private carritoCompraService: CarritoCompraService, private location: Location,
@@ -44,16 +46,27 @@ export class ProductoComponent implements OnInit {
   }
 
   cargarAlCarrito() {
-    this.carritoCompraService.agregarQuitarAlPedido(this.producto, this.cantidad).subscribe(
-      data => {
-        this.carritoCompraService.getCantidadRenglones().subscribe(
-          cant => {
-            this.carritoCompraService.setCantidadItemsEnCarrito(Number(cant));
-            this.irAlListado();
-          },
-          err => this.avisoService.openSnackBar(err.error, '', 3500));
-      },
-      err => this.avisoService.openSnackBar(err.error, '', 3500));
+    this.estaCargandoAlCarrito = true;
+    this.carritoCompraService.agregarQuitarAlPedido(this.producto, this.cantidad)
+      .subscribe(
+        data => {
+          this.carritoCompraService.getCantidadRenglones()
+            .pipe(
+              finalize(() => this.estaCargandoAlCarrito = false)
+            )
+            .subscribe(
+              cant => {
+                this.carritoCompraService.setCantidadItemsEnCarrito(Number(cant));
+                this.irAlListado();
+              },
+              err => this.avisoService.openSnackBar(err.error, '', 3500)
+            );
+        },
+        err => {
+          this.estaCargandoAlCarrito = false;
+          this.avisoService.openSnackBar(err.error, '', 3500);
+        }
+      );
   }
 
   cambiarCantidad(cantidad, masMenos) {

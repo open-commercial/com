@@ -24,35 +24,44 @@ export class PedidosComponent implements OnInit {
   isLoading = false;
 
   constructor(private pedidosService: PedidosService, private avisoService: AvisoService,
-              private authService: AuthService, private clientesService: ClientesService) {}
+              private authService: AuthService, private clientesService: ClientesService) {
+                this.isLoading = true;
+              }
 
   ngOnInit() {
     this.isLoading = true;
-    this.authService.getLoggedInUsuario()
-      .pipe(
-        finalize(()  => this.isLoading = false)
-      )
-      .subscribe(
-        (usuario: Usuario) => {
-          this.clientesService.getClienteDelUsuario(usuario.id_Usuario).subscribe(
-            (cliente: Cliente) => {
-              if (cliente) {
-                this.cliente = cliente;
-                this.cargarPedidos(true);
-              }
-            });
-        },
-        err => this.avisoService.openSnackBar(err.error, '', 3500)
-      );
+    this.clientesService.getClienteDelUsuario(this.authService.getLoggedInIdUsuario())
+    .pipe(
+      finalize(()  => {
+        if (this.cliente) {
+          this.cargarPedidos(true, () => this.isLoading = false);
+        }
+      })
+    )
+    .subscribe(
+      (cliente: Cliente) => {
+        if (cliente) {
+          this.cliente = cliente;
+        }
+      },
+      err => {
+        this.isLoading = false;
+        this.avisoService.openSnackBar(err.error, '', 3500);
+      }
+    );
   }
 
-  cargarPedidos(reset: boolean) {
+  cargarPedidos(reset: boolean, callback: Function = () => {}) {
     if (reset) {
       this.pedidos = [];
       this.pagina = 0;
     }
     this.loading = true;
-    this.pedidosService.getPedidosCliente(this.cliente, this.pagina, this.tamanioPagina).subscribe(
+    this.pedidosService.getPedidosCliente(this.cliente, this.pagina, this.tamanioPagina)
+    .pipe(
+      finalize(() => callback())
+    )
+    .subscribe(
       data => {
         data['content'].forEach(p => this.pedidos.push(p));
         this.totalPaginas = data['totalPages'];
@@ -70,5 +79,15 @@ export class PedidosComponent implements OnInit {
       this.pagina++;
       this.cargarPedidos(false);
     }
+  }
+
+  downloadPedidoPdf(pedido: Pedido) {
+    this.pedidosService.getPedidoPdf(pedido).subscribe(
+        (res) => {
+          const file = new Blob([res], { type: 'application/pdf' });
+          const fileURL = URL.createObjectURL(file);
+          window.open(fileURL);
+        }
+    );
   }
 }

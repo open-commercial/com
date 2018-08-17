@@ -96,7 +96,7 @@
             <mat-icon>assignment_ind</mat-icon>
             <span>#{{ cliente.nroCliente }}</span>
           </span>
-          <span fxLayout="row" fxLayoutGap="0.4rem" fxLayoutAlign="start center">
+          <span fxLayout="row" fxLayoutGap="0.4rem" fxLayoutAlign="start center" *ngIf="cliente.idFiscal">
             <mat-icon>work</mat-icon>
             <span>{{ cliente.idFiscal }}</span>
           </span>
@@ -104,7 +104,7 @@
             <mat-icon>grade</mat-icon>
             <span>{{ cliente.razonSocial }}</span>
           </span>
-          <span fxLayout="row" fxLayoutGap="0.4rem" fxLayoutAlign="start center">
+          <span fxLayout="row" fxLayoutGap="0.4rem" fxLayoutAlign="start center" *ngIf="cliente.nombreFantasia">
             <mat-icon>copyright</mat-icon>
             <span>{{ cliente.nombreFantasia }}</span>
           </span>
@@ -121,11 +121,11 @@
               {{ cliente.nombreLocalidad }}, {{ cliente.nombreProvincia }}, {{ cliente.nombrePais }}
             </span>
           </span>
-          <span fxLayout="row" fxLayoutGap="0.4rem" fxLayoutAlign="start center">
+          <span fxLayout="row" fxLayoutGap="0.4rem" fxLayoutAlign="start center" *ngIf="cliente.telPrimario">
             <mat-icon>phone</mat-icon>
             <span>{{ cliente.telPrimario }}</span>
           </span>
-          <span fxLayout="row" fxLayoutGap="0.4rem" fxLayoutAlign="start center">
+          <span fxLayout="row" fxLayoutGap="0.4rem" fxLayoutAlign="start center" *ngIf="cliente.email">
             <mat-icon>email</mat-icon>
             <span>{{ cliente.email }}</span>
           </span>

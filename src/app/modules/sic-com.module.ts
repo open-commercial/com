@@ -38,6 +38,16 @@ import {LocalidadesService} from '../services/localidades.service';
 import {CondicionesIVAService} from '../services/condicionesIVA.service';
 import {CantidadProductoDialogComponent} from '../components/carrito-compra/cantidadProductoDialog/cantidad-producto-dialog.component';
 
+import {registerLocaleData} from '@angular/common';
+import localeEs from '@angular/common/locales/es';
+import localeEsExtra from '@angular/common/locales/extra/es-AR';
+
+registerLocaleData(localeEs, 'es-AR', localeEsExtra);
+/* import localeFr from '@angular/common/locales/fr';
+import localeFrExtra from '@angular/common/locales/extra/fr';
+
+registerLocaleData(localeFr, 'fr-FR', localeFrExtra); */
+
 @NgModule({
   declarations: [
     SicComComponent,

@@ -1,7 +1,6 @@
 import {Component, OnInit, Input} from '@angular/core';
 import {FormBuilder, Validators, FormGroup} from '@angular/forms';
 import {finalize} from 'rxjs/operators';
-import {Usuario} from '../../models/usuario';
 import {AuthService} from '../../services/auth.service';
 import {Cliente} from '../../models/cliente';
 import {ClientesService} from '../../services/clientes.service';
@@ -24,7 +23,6 @@ export class ClienteComponent implements OnInit {
 
   clienteForm: FormGroup;
   @Input() inEdition = false;
-  usuario: Usuario = null;
   cliente: Cliente = null;
   condicionesIVA: Array<CondicionIVA> = [];
   paises: Array<Pais> = [];
@@ -60,24 +58,15 @@ export class ClienteComponent implements OnInit {
 
   ngOnInit() {
     this.isLoading = true;
-    this.authService.getLoggedInUsuario()
+    this.clientesService.getClienteDelUsuario(this.authService.getLoggedInIdUsuario())
+      .pipe(
+        finalize(() => this.isLoading = false)
+      )
       .subscribe(
-        (usuario: Usuario) => {
-          this.usuario = usuario;
-          this.clientesService.getClienteDelUsuario(usuario.id_Usuario)
-            .pipe(
-              finalize(() => this.isLoading = false)
-            )
-            .subscribe(
-              (cliente: Cliente) => {
-                if (cliente) {
-                  this.cliente = cliente;
-                }
-              }
-            );
-        },
-        err => {
-          this.avisoService.openSnackBar(err.error, '', 3500);
+        (cliente: Cliente) => {
+          if (cliente) {
+            this.cliente = cliente;
+          }
         }
       );
 
@@ -105,20 +94,23 @@ export class ClienteComponent implements OnInit {
       const cliente = this.getFormValues();
       this.isLoading = true;
       this.clientesService.saveCliente(cliente)
-        .pipe(
-          finalize(() => this.isLoading = false)
-        )
         .subscribe(
           data => {
-            this.clientesService.getClienteDelUsuario(this.usuario.id_Usuario).subscribe(
-              (newcliente: Cliente) => {
-                if (cliente) {
-                  this.cliente = newcliente;
-                  this.inEdition = false;
+            this.clientesService.getClienteDelUsuario(this.authService.getLoggedInIdUsuario())
+              .pipe(
+                finalize(() => this.isLoading = false)
+              )
+              .subscribe(
+                (newcliente: Cliente) => {
+                  if (cliente) {
+                    this.cliente = newcliente;
+                    this.inEdition = false;
+                  }
                 }
-              });
+              );
           },
           err => {
+            this.isLoading = false;
             this.avisoService.openSnackBar(err.error, '', 3500);
           }
         );
@@ -138,7 +130,7 @@ export class ClienteComponent implements OnInit {
       contacto: this.cliente ? this.cliente.contacto : '',
       idLocalidad: this.clienteForm.get('idLocalidad').value,
       idCondicionIVA: this.clienteForm.get('idCondicionIVA').value,
-      idCredencial: this.usuario.id_Usuario,
+      idCredencial: this.authService.getLoggedInIdUsuario(),
       idViajante: this.cliente ? this.cliente.idViajante : null,
     };
   }

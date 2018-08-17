@@ -14,7 +14,7 @@
           <span class="sic-com-codigo-producto">{{producto.codigo}}</span>
           <span class="sic-com-descripcion-producto">{{producto.descripcion}}</span><br>
           <span class="sic-com-precio-producto">{{producto.precioLista | sicComCurrency}}</span>
-          <span>Disponible <strong>{{producto.cantidad | number:'1.2'}} {{producto.nombreMedida}}</strong></span>
+          <span>Disponible <strong>{{producto.cantidad | number:'1.2-2':'es-AR'}} {{producto.nombreMedida}}</strong></span>
           <span>Cantidad Minima <strong>{{producto.ventaMinima}}</strong></span>
         </div>
         <div fxLayoutAlign="center center" class="sic-com-controles-cantidad">
@@ -32,9 +32,10 @@
         </div>
         <div fxLayoutAlign="center center">
           <button mat-raised-button color="primary" class="sic-com-boton-agregar"
-                  (click)="cargarAlCarrito()" disabled="{{(cantidad < producto.ventaMinima)}}">
-            <mat-icon>add_shopping_cart</mat-icon>Agregar al Carrito
+                  (click)="cargarAlCarrito()" [disabled]="(cantidad < producto.ventaMinima) || estaCargandoAlCarrito">
+            <mat-icon>add_shopping_cart</mat-icon> Agregar al Carrito
           </button>
+          &nbsp;<mat-spinner [diameter]="30" [strokeWidth]="5" *ngIf="estaCargandoAlCarrito"></mat-spinner>
         </div>
       </div>
     </div>
