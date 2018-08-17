@@ -90,42 +90,42 @@
       </mat-action-row>
     </form>
     <div *ngIf="cliente && !inEdition" class="info">
-      <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.4rem">
+      <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="1rem">
         <div fxFlex fxLayout="column" fxLayoutGap="1rem" fxLayoutAlign="start start">
-          <span fxLayout="row" fxLayoutGap="0.4rem" fxLayoutAlign="start center">
+          <span fxLayout="row" fxLayoutGap="1rem" fxLayoutAlign="start center">
             <mat-icon>assignment_ind</mat-icon>
             <span>#{{ cliente.nroCliente }}</span>
           </span>
-          <span fxLayout="row" fxLayoutGap="0.4rem" fxLayoutAlign="start center" *ngIf="cliente.idFiscal">
+          <span fxLayout="row" fxLayoutGap="1rem" fxLayoutAlign="start center" *ngIf="cliente.idFiscal">
             <mat-icon>work</mat-icon>
             <span>{{ cliente.idFiscal }}</span>
           </span>
-          <span fxLayout="row" fxLayoutGap="0.4rem" fxLayoutAlign="start center">
+          <span fxLayout="row" fxLayoutGap="1rem" fxLayoutAlign="start center">
             <mat-icon>grade</mat-icon>
             <span>{{ cliente.razonSocial }}</span>
           </span>
-          <span fxLayout="row" fxLayoutGap="0.4rem" fxLayoutAlign="start center" *ngIf="cliente.nombreFantasia">
+          <span fxLayout="row" fxLayoutGap="1rem" fxLayoutAlign="start center" *ngIf="cliente.nombreFantasia">
             <mat-icon>copyright</mat-icon>
             <span>{{ cliente.nombreFantasia }}</span>
           </span>
-          <span fxLayout="row" fxLayoutGap="0.4rem" fxLayoutAlign="start center">
+          <span fxLayout="row" fxLayoutGap="1rem" fxLayoutAlign="start center">
             <mat-icon>account_balance</mat-icon>
             <span>{{ cliente.nombreCondicionIVA }}</span>
           </span>
         </div>
         <div fxFlex fxLayout="column" fxLayoutGap="1rem" fxLayoutAlign="start start">
-          <span fxLayout="row" fxLayoutGap="0.4rem" fxLayoutAlign="start center">
+          <span fxLayout="row" fxLayoutGap="1rem" fxLayoutAlign="start center">
             <mat-icon>place</mat-icon>
             <span>
               <span *ngIf="cliente.direccion"> {{ cliente.direccion }},</span>
               {{ cliente.nombreLocalidad }}, {{ cliente.nombreProvincia }}, {{ cliente.nombrePais }}
             </span>
           </span>
-          <span fxLayout="row" fxLayoutGap="0.4rem" fxLayoutAlign="start center" *ngIf="cliente.telPrimario">
+          <span fxLayout="row" fxLayoutGap="1rem" fxLayoutAlign="start center" *ngIf="cliente.telPrimario">
             <mat-icon>phone</mat-icon>
             <span>{{ cliente.telPrimario }}</span>
           </span>
-          <span fxLayout="row" fxLayoutGap="0.4rem" fxLayoutAlign="start center" *ngIf="cliente.email">
+          <span fxLayout="row" fxLayoutGap="1rem" fxLayoutAlign="start center" *ngIf="cliente.email">
             <mat-icon>email</mat-icon>
             <span>{{ cliente.email }}</span>
           </span>

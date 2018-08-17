@@ -3,10 +3,10 @@ import {Pedido} from '../../models/pedido';
 import {Cliente} from '../../models/cliente';
 import {PedidosService} from '../../services/pedidos.service';
 import {AvisoService} from '../../services/aviso.service';
-import {Usuario} from '../../models/usuario';
 import {ClientesService} from '../../services/clientes.service';
 import {AuthService} from '../../services/auth.service';
 import {finalize} from 'rxjs/operators';
+import { saveAs } from 'file-saver/FileSaver';
 
 @Component({
   selector: 'sic-com-pedidos',
@@ -85,8 +85,7 @@ export class PedidosComponent implements OnInit {
     this.pedidosService.getPedidoPdf(pedido).subscribe(
         (res) => {
           const file = new Blob([res], { type: 'application/pdf' });
-          const fileURL = URL.createObjectURL(file);
-          window.open(fileURL);
+          saveAs(file, `pedido-${pedido.nroPedido}.pdf`);
         }
     );
   }
