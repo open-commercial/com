@@ -32,10 +32,10 @@
         </div>
         <div fxLayoutAlign="center center">
           <button mat-raised-button color="primary" class="sic-com-boton-agregar"
-                  (click)="cargarAlCarrito()" [disabled]="(cantidad < producto.ventaMinima) || estaCargandoAlCarrito" *ngIf="!estaCargandoAlCarrito">
+                  (click)="cargarAlCarrito()" [disabled]="(cantidad < producto.ventaMinima) || cargandoAlCarrito" *ngIf="!cargandoAlCarrito">
             <mat-icon>add_shopping_cart</mat-icon> Agregar al Carrito
           </button>
-          <mat-spinner [diameter]="50" [strokeWidth]="6" *ngIf="estaCargandoAlCarrito"></mat-spinner>
+          <mat-spinner [diameter]="50" [strokeWidth]="6" *ngIf="cargandoAlCarrito"></mat-spinner>
         </div>
       </div>
     </div>

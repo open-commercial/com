@@ -1,6 +1,5 @@
 import {Component, OnInit, Input} from '@angular/core';
 import {FormBuilder, Validators, FormGroup} from '@angular/forms';
-import {finalize} from 'rxjs/operators';
 import {AuthService} from '../../services/auth.service';
 import {Cliente} from '../../models/cliente';
 import {ClientesService} from '../../services/clientes.service';
@@ -21,8 +20,8 @@ import {LocalidadesService} from '../../services/localidades.service';
 })
 export class ClienteComponent implements OnInit {
 
-  clienteForm: FormGroup;
   @Input() inEdition = false;
+  clienteForm: FormGroup;
   cliente: Cliente = null;
   condicionesIVA: Array<CondicionIVA> = [];
   paises: Array<Pais> = [];
@@ -58,24 +57,20 @@ export class ClienteComponent implements OnInit {
 
   ngOnInit() {
     this.isLoading = true;
-    this.clientesService.getClienteDelUsuario(this.authService.getLoggedInIdUsuario())
-      .pipe(
-        finalize(() => this.isLoading = false)
-      )
-      .subscribe(
-        (cliente: Cliente) => {
-          if (cliente) {
-            this.cliente = cliente;
-          }
+    this.clientesService.getClienteDelUsuario(this.authService.getLoggedInIdUsuario()).subscribe(
+      (cliente: Cliente) => {
+        if (cliente) {
+          this.cliente = cliente;
         }
-      );
-
+        this.isLoading = false;
+      },
+      error => this.isLoading = false
+    );
     this.getCondicionesIVA();
     this.getPaises();
     this.clienteForm.get('idPais').valueChanges.subscribe(
       idPais => {
         this.getProvincias(idPais);
-        // vacía el array de localidades. Esto también podria ser this.localidades = []
         this.localidades.splice(0, this.localidades.length);
       }
     );
@@ -93,27 +88,24 @@ export class ClienteComponent implements OnInit {
     if (this.clienteForm.valid) {
       const cliente = this.getFormValues();
       this.isLoading = true;
-      this.clientesService.saveCliente(cliente)
-        .subscribe(
-          data => {
-            this.clientesService.getClienteDelUsuario(this.authService.getLoggedInIdUsuario())
-              .pipe(
-                finalize(() => this.isLoading = false)
-              )
-              .subscribe(
-                (newcliente: Cliente) => {
-                  if (cliente) {
-                    this.cliente = newcliente;
-                    this.inEdition = false;
-                  }
+      this.clientesService.saveCliente(cliente).subscribe(
+        data => {
+          this.clientesService.getClienteDelUsuario(this.authService.getLoggedInIdUsuario())
+            .subscribe(
+              (newcliente: Cliente) => {
+                if (cliente) {
+                  this.cliente = newcliente;
+                  this.inEdition = false;
                 }
-              );
-          },
-          err => {
-            this.isLoading = false;
-            this.avisoService.openSnackBar(err.error, '', 3500);
-          }
-        );
+                this.isLoading = false;
+              }
+            );
+        },
+        err => {
+          this.isLoading = false;
+          this.avisoService.openSnackBar(err.error, '', 3500);
+        }
+      );
     }
   }
 

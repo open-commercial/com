@@ -23,7 +23,7 @@
       </div>
       <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.7rem">
         <mat-form-field fxFlex>
-          <input matInput placeholder="Razón Social" formControlName="razonSocial">
+          <input matInput placeholder="Razón Social" formControlName="razonSocial" required>
           <mat-error *ngIf="clienteForm.get('razonSocial').hasError('required')">
             Requerido
           </mat-error>

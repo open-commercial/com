@@ -5,8 +5,7 @@ import {PedidosService} from '../../services/pedidos.service';
 import {AvisoService} from '../../services/aviso.service';
 import {ClientesService} from '../../services/clientes.service';
 import {AuthService} from '../../services/auth.service';
-import {finalize} from 'rxjs/operators';
-import { saveAs } from 'file-saver/FileSaver';
+import {saveAs} from 'file-saver/FileSaver';
 
 @Component({
   selector: 'sic-com-pedidos',
@@ -20,58 +19,50 @@ export class PedidosComponent implements OnInit {
   pagina = 0;
   totalPaginas = 0;
   tamanioPagina = 5;
-  loading = false;
   isLoading = false;
 
   constructor(private pedidosService: PedidosService, private avisoService: AvisoService,
               private authService: AuthService, private clientesService: ClientesService) {
-                this.isLoading = true;
-              }
+    this.isLoading = true;
+  }
 
   ngOnInit() {
     this.isLoading = true;
     this.clientesService.getClienteDelUsuario(this.authService.getLoggedInIdUsuario())
-    .pipe(
-      finalize(()  => {
-        if (this.cliente) {
-          this.cargarPedidos(true, () => this.isLoading = false);
+      .subscribe(
+        (cliente: Cliente) => {
+          if (cliente) {
+            this.cliente = cliente;
+            this.cargarPedidos(true);
+          } else {
+            this.isLoading = false;
+          }
+        },
+        err => {
+          this.isLoading = false;
+          this.avisoService.openSnackBar(err.error, '', 3500);
         }
-      })
-    )
-    .subscribe(
-      (cliente: Cliente) => {
-        if (cliente) {
-          this.cliente = cliente;
-        }
-      },
-      err => {
-        this.isLoading = false;
-        this.avisoService.openSnackBar(err.error, '', 3500);
-      }
-    );
+      );
   }
 
-  cargarPedidos(reset: boolean, callback: Function = () => {}) {
+  cargarPedidos(reset: boolean) {
     if (reset) {
       this.pedidos = [];
       this.pagina = 0;
     }
-    this.loading = true;
+    this.isLoading = true;
     this.pedidosService.getPedidosCliente(this.cliente, this.pagina, this.tamanioPagina)
-    .pipe(
-      finalize(() => callback())
-    )
-    .subscribe(
-      data => {
-        data['content'].forEach(p => this.pedidos.push(p));
-        this.totalPaginas = data['totalPages'];
-        this.loading = false;
-      },
-      err => {
-        this.avisoService.openSnackBar(err.error, '', 3500);
-        this.loading = false;
-      }
-    );
+      .subscribe(
+        data => {
+          data['content'].forEach(p => this.pedidos.push(p));
+          this.totalPaginas = data['totalPages'];
+          this.isLoading = false;
+        },
+        err => {
+          this.avisoService.openSnackBar(err.error, '', 3500);
+          this.isLoading = false;
+        }
+      );
   }
 
   masPedidos() {
@@ -83,10 +74,10 @@ export class PedidosComponent implements OnInit {
 
   downloadPedidoPdf(pedido: Pedido) {
     this.pedidosService.getPedidoPdf(pedido).subscribe(
-        (res) => {
-          const file = new Blob([res], { type: 'application/pdf' });
-          saveAs(file, `pedido-${pedido.nroPedido}.pdf`);
-        }
+      (res) => {
+        const file = new Blob([res], {type: 'application/pdf'});
+        saveAs(file, `pedido-${pedido.nroPedido}.pdf`);
+      }
     );
   }
 }

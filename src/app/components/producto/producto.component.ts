@@ -4,7 +4,6 @@ import {ProductosService} from '../../services/productos.service';
 import {CarritoCompraService} from '../../services/carrito-compra.service';
 import {ActivatedRoute} from '@angular/router';
 import {AvisoService} from '../../services/aviso.service';
-import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'sic-com-producto',
@@ -16,7 +15,7 @@ export class ProductoComponent implements OnInit {
   producto;
   cantidad;
   loadingProducto = false;
-  estaCargandoAlCarrito = false;
+  cargandoAlCarrito = false;
 
   constructor(private productosService: ProductosService, private route: ActivatedRoute,
               private carritoCompraService: CarritoCompraService, private location: Location,
@@ -46,24 +45,25 @@ export class ProductoComponent implements OnInit {
   }
 
   cargarAlCarrito() {
-    this.estaCargandoAlCarrito = true;
+    this.cargandoAlCarrito = true;
     this.carritoCompraService.agregarQuitarAlPedido(this.producto, this.cantidad)
       .subscribe(
         data => {
           this.carritoCompraService.getCantidadRenglones()
-            .pipe(
-              finalize(() => this.estaCargandoAlCarrito = false)
-            )
             .subscribe(
               cant => {
                 this.carritoCompraService.setCantidadItemsEnCarrito(Number(cant));
                 this.irAlListado();
+                this.cargandoAlCarrito = false;
               },
-              err => this.avisoService.openSnackBar(err.error, '', 3500)
+              err => {
+                this.avisoService.openSnackBar(err.error, '', 3500);
+                this.cargandoAlCarrito = false;
+              }
             );
         },
         err => {
-          this.estaCargandoAlCarrito = false;
+          this.cargandoAlCarrito = false;
           this.avisoService.openSnackBar(err.error, '', 3500);
         }
       );
