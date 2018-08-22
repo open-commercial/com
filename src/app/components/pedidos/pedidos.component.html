@@ -24,7 +24,7 @@
               <span>{{ pedido.fecha | date: 'dd/MM/yyyy' }}</span>
             </div>
             <div fxFlex class="pedido-column-content">
-              <strong>{{ pedido.totalActual | sicComCurrency }}</strong>
+              <strong>$ {{ pedido.totalActual | number:'1.2-2':'es-AR' }}</strong>
             </div>
           </div>
         </div>

@@ -10,7 +10,7 @@
       </div>
       <div fxLayoutAlign="space-around center" class="sic-com-totalizadores" fxLayout.lt-sm="column">
         <span>Cant. Articulos: {{cantidadArticulos}}</span>
-        <span>Total: {{totalLista | sicComCurrency }}</span>
+        <span>Total: $ {{totalLista | number:'1.2-2':'es-AR' }}</span>
       </div>
       <div fxLayoutAlign="space-around center" class="sic-com-botonera">
         <button mat-raised-button fxShow="{{mostrarBotonAsignarCliente}}" (click)="openDialogCliente()" disabled="{{(itemsCarritoCompra.length == 0)}}" color="primary">
@@ -36,7 +36,7 @@
               </div>
               <div fxFlex="70" fxLayoutAlign="center start" fxLayout="column" [routerLink]="['/producto/' + icc.producto.id_Producto]">
                 <span class="sic-com-descripcion-producto">{{icc.producto.descripcion}}</span>
-                <strong>{{icc.producto.precioLista | sicComCurrency }}</strong>
+                <strong>$ {{icc.producto.precioLista | number:'1.2-2':'es-AR' }}</strong>
               </div>
           </div>
           <div fxLayout fxFlex.gt-md="40">
@@ -44,7 +44,7 @@
               <button mat-raised-button (click)="editCantidadProducto(icc)" color="primary">Cantidad {{icc.cantidad}}</button>
             </div>
             <div fxFlex="40" fxLayoutAlign="center center">
-              <strong>{{ icc.importe | sicComCurrency }}</strong>
+              <strong>$ {{ icc.importe | number:'1.2-2':'es-AR' }}</strong>
             </div>
             <div fxFlex="20" fxLayoutAlign="center center">
               <button mat-icon-button (click)="eliminarItemDelCarrito(icc)" matTooltip="Quitar del listado">

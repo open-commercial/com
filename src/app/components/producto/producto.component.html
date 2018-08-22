@@ -13,7 +13,7 @@
         <div fxLayout="column">
           <span class="sic-com-codigo-producto">{{producto.codigo}}</span>
           <span class="sic-com-descripcion-producto">{{producto.descripcion}}</span><br>
-          <span class="sic-com-precio-producto">{{producto.precioLista | sicComCurrency}}</span>
+          <span class="sic-com-precio-producto">$ {{producto.precioLista | number:'1.2-2':'es-AR'}}</span>
           <span>Disponible <strong>{{producto.cantidad | number:'1.0-2':'es-AR'}} {{producto.nombreMedida}}</strong></span>
           <span>Cantidad Minima <strong>{{producto.ventaMinima}}</strong></span>
         </div>
