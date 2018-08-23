@@ -3,10 +3,9 @@ import {Pedido} from '../../models/pedido';
 import {Cliente} from '../../models/cliente';
 import {PedidosService} from '../../services/pedidos.service';
 import {AvisoService} from '../../services/aviso.service';
-import {Usuario} from '../../models/usuario';
 import {ClientesService} from '../../services/clientes.service';
 import {AuthService} from '../../services/auth.service';
-import {finalize} from 'rxjs/operators';
+import {saveAs} from 'file-saver/FileSaver';
 
 @Component({
   selector: 'sic-com-pedidos',
@@ -20,29 +19,29 @@ export class PedidosComponent implements OnInit {
   pagina = 0;
   totalPaginas = 0;
   tamanioPagina = 5;
-  loading = false;
   isLoading = false;
 
   constructor(private pedidosService: PedidosService, private avisoService: AvisoService,
-              private authService: AuthService, private clientesService: ClientesService) {}
+              private authService: AuthService, private clientesService: ClientesService) {
+    this.isLoading = true;
+  }
 
   ngOnInit() {
     this.isLoading = true;
-    this.authService.getLoggedInUsuario()
-      .pipe(
-        finalize(()  => this.isLoading = false)
-      )
+    this.clientesService.getClienteDelUsuario(this.authService.getLoggedInIdUsuario())
       .subscribe(
-        (usuario: Usuario) => {
-          this.clientesService.getClienteDelUsuario(usuario.id_Usuario).subscribe(
-            (cliente: Cliente) => {
-              if (cliente) {
-                this.cliente = cliente;
-                this.cargarPedidos(true);
-              }
-            });
+        (cliente: Cliente) => {
+          if (cliente) {
+            this.cliente = cliente;
+            this.cargarPedidos(true);
+          } else {
+            this.isLoading = false;
+          }
         },
-        err => this.avisoService.openSnackBar(err.error, '', 3500)
+        err => {
+          this.isLoading = false;
+          this.avisoService.openSnackBar(err.error, '', 3500);
+        }
       );
   }
 
@@ -51,18 +50,19 @@ export class PedidosComponent implements OnInit {
       this.pedidos = [];
       this.pagina = 0;
     }
-    this.loading = true;
-    this.pedidosService.getPedidosCliente(this.cliente, this.pagina, this.tamanioPagina).subscribe(
-      data => {
-        data['content'].forEach(p => this.pedidos.push(p));
-        this.totalPaginas = data['totalPages'];
-        this.loading = false;
-      },
-      err => {
-        this.avisoService.openSnackBar(err.error, '', 3500);
-        this.loading = false;
-      }
-    );
+    this.isLoading = true;
+    this.pedidosService.getPedidosCliente(this.cliente, this.pagina, this.tamanioPagina)
+      .subscribe(
+        data => {
+          data['content'].forEach(p => this.pedidos.push(p));
+          this.totalPaginas = data['totalPages'];
+          this.isLoading = false;
+        },
+        err => {
+          this.avisoService.openSnackBar(err.error, '', 3500);
+          this.isLoading = false;
+        }
+      );
   }
 
   masPedidos() {
@@ -70,5 +70,14 @@ export class PedidosComponent implements OnInit {
       this.pagina++;
       this.cargarPedidos(false);
     }
+  }
+
+  downloadPedidoPdf(pedido: Pedido) {
+    this.pedidosService.getPedidoPdf(pedido).subscribe(
+      (res) => {
+        const file = new Blob([res], {type: 'application/pdf'});
+        saveAs(file, `pedido-${pedido.nroPedido}.pdf`);
+      }
+    );
   }
 }

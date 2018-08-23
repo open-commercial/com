@@ -3,7 +3,7 @@
   <mat-dialog-content>
     <p>Cliente: <strong>{{cliente.razonSocial}}</strong></p>
     <p>Cant. Articulos: <strong>{{cantArt}}</strong></p>
-    <p>Total: <strong>{{total | sicComCurrency}}</strong></p>
+    <p>Total: <strong>$ {{total | number:'1.2-2':'es-AR'}}</strong></p>
   </mat-dialog-content>
   <mat-dialog-content fxLayout>
       <mat-form-field fxFlex>

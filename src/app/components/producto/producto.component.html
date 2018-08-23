@@ -13,8 +13,8 @@
         <div fxLayout="column">
           <span class="sic-com-codigo-producto">{{producto.codigo}}</span>
           <span class="sic-com-descripcion-producto">{{producto.descripcion}}</span><br>
-          <span class="sic-com-precio-producto">{{producto.precioLista | sicComCurrency}}</span>
-          <span>Disponible <strong>{{producto.cantidad | number:'1.2'}} {{producto.nombreMedida}}</strong></span>
+          <span class="sic-com-precio-producto">$ {{producto.precioLista | number:'1.2-2':'es-AR'}}</span>
+          <span>Disponible <strong>{{producto.cantidad | number:'1.0-2':'es-AR'}} {{producto.nombreMedida}}</strong></span>
           <span>Cantidad Minima <strong>{{producto.ventaMinima}}</strong></span>
         </div>
         <div fxLayoutAlign="center center" class="sic-com-controles-cantidad">
@@ -32,9 +32,10 @@
         </div>
         <div fxLayoutAlign="center center">
           <button mat-raised-button color="primary" class="sic-com-boton-agregar"
-                  (click)="cargarAlCarrito()" disabled="{{(cantidad < producto.ventaMinima)}}">
-            <mat-icon>add_shopping_cart</mat-icon>Agregar al Carrito
+                  (click)="cargarAlCarrito()" [disabled]="(cantidad < producto.ventaMinima) || cargandoAlCarrito" *ngIf="!cargandoAlCarrito">
+            <mat-icon>add_shopping_cart</mat-icon> Agregar al Carrito
           </button>
+          <mat-spinner [diameter]="50" [strokeWidth]="6" *ngIf="cargandoAlCarrito"></mat-spinner>
         </div>
       </div>
     </div>
