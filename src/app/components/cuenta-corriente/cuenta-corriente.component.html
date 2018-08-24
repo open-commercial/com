@@ -1,0 +1,26 @@
+<div class="sic-com-cuenta-corriente">
+  <div *ngIf="!isLoading && cuentaCorriente">
+    <div fxlayout="row" fxLayoutAlign="start center">
+      <span fxFlex></span>
+      <span>SALDO: <span class="monto" [class.negativo]="cuentaCorriente.saldo < 0">$ {{ cuentaCorriente.saldo | number:'1.2-2':'es-AR' }}</span></span>
+    </div>
+    <mat-nav-list>
+      <mat-list-item *ngFor="let renglon of renglones" class="renglon-row">
+        <div matLine  fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="space-around center" fxFill class="renglon-row-content">
+          <span fxFlex class="pedido-column-content">{{ renglon.fecha | date: 'dd/MM/yyyy' }}</span>
+          <span fxFlex class="pedido-column-content" >{{ getMovimiento(renglon) }}</span>
+          <span fxFlex class="pedido-column-content monto" [class.negativo]="renglon.monto < 0">$ {{ renglon.monto | number:'1.2-2':'es-AR' }}</span>
+        </div>
+        <mat-divider></mat-divider>
+      </mat-list-item>
+    </mat-nav-list>
+    <div class="mas-resultados" fxLayoutAlign="center center" (click)="masRenglones()"
+         *ngIf="(renglones.length > 0) && (totalPaginas > (pagina + 1))">
+      <strong>MAS RESULTADOS</strong>
+    </div>
+  </div>
+
+  <div *ngIf="isLoading" fxLayout="row" fxLayoutAlign="center center">
+    <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
+  </div>
+</div>
