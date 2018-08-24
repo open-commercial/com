@@ -1,4 +1,14 @@
 <div class="sic-com-cuenta-corriente">
+  <div class="sic-com-sin-cliente" *ngIf="!isLoading">
+    <span fxLayoutAlign="center center" *ngIf="!cliente">
+      <mat-icon color="primary">sentiment_neutral</mat-icon>
+      No posee una cuenta de cliente.
+    </span>
+    <span fxLayoutAlign="center center" *ngIf="cliente && !cuentaCorriente">
+      <mat-icon color="primary">sentiment_neutral</mat-icon>
+      No posee Cuenta Corriente.
+    </span>
+  </div>
   <div *ngIf="!isLoading && cuentaCorriente">
     <div fxlayout="row" fxLayoutAlign="start center">
       <span fxFlex></span>
