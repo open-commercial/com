@@ -30,24 +30,32 @@ export class CuentaCorrienteComponent implements OnInit {
   ngOnInit() {
     this.isLoading = true;
     this.clientesService.getClienteDelUsuario(this.authService.getLoggedInIdUsuario())
-      .pipe(
-        finalize(() => this.isLoading = false)
-      )
       .subscribe(
         (cliente: Cliente) => {
           if (cliente) {
             this.cliente = cliente;
             this.cuentasCorrienteService.getCuentaCorriente(this.cliente)
+              .pipe(
+                finalize(() => {
+                  if (this.cuentaCorriente) {
+                    this.cargarRenglones(true);
+                  } else {
+                    this.isLoading = false;
+                  }
+                })
+              )
               .subscribe(
-                cc  => {
-                  this.cuentaCorriente = cc;
-                  this.cargarRenglones(true);
-                },
+                cc  => this.cuentaCorriente = cc,
                 err => this.avisoService.openSnackBar(err.error, '', 3500)
               );
+          } else {
+            this.isLoading = false;
           }
         },
-        err => this.avisoService.openSnackBar(err.error, '', 3500)
+        err => {
+          this.avisoService.openSnackBar(err.error, '', 3500);
+          this.isLoading = false;
+        }
       );
   }
 
@@ -90,11 +98,11 @@ export class CuentaCorrienteComponent implements OnInit {
     }
 
     if (tc.startsWith('NOTA_CREDITO_')) {
-      return 'NOTA DE CRÉDITO';
+      return 'N. CRÉDITO';
     }
 
     if (tc.startsWith('NOTA_DEBITO_')) {
-      return 'NOTA DE DÉBITO';
+      return 'N. DÉBITO';
     }
 
     return '';

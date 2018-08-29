@@ -1,5 +1,6 @@
 .sic-com-cuenta-corriente {
   .monto {
+    white-space: nowrap;
     color: green;
     font-weight: bold;
     &.negativo {
@@ -17,6 +18,22 @@
       padding: .5em;
       .pedido-column-content {
         text-align: center;
+        font-size: 0.86em;
+        @media screen and (min-width: 600px) {
+          font-size: 1em;
+        }
+        &.fecha {
+          text-align: left;
+          @media screen and (min-width: 600px) {
+            text-align: center;
+          }
+        }
+        &.monto {
+          text-align: right;
+          @media screen and (min-width: 600px) {
+            text-align: center;
+          }
+        }
       }
     }
   }
