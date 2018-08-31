@@ -44,8 +44,10 @@ export class LoginComponent implements OnInit {
 
   openDialogEmail() {
     const dialogRef = this.dialog.open(EmailDialogComponent);
-    dialogRef.afterClosed().subscribe(data => {
-      console.log(data);
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.avisoService.openSnackBar('Los datos de recupero fueron enviados a su correo electrónico', '', 3500);
+      }
     });
   }
 }

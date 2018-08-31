@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {MatDialogRef} from '@angular/material';
 import {AvisoService} from '../../../services/aviso.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {AuthService} from '../../../services/auth.service';
 
 @Component({
   selector: 'email-dialog',
@@ -10,8 +11,10 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 export class EmailDialogComponent implements OnInit {
 
   private emailForm: FormGroup;
+  private isLoading = false;
 
   constructor(private dialogRef: MatDialogRef<EmailDialogComponent>,
+              private authService: AuthService,
               private avisoService: AvisoService, private fb: FormBuilder) {
     dialogRef.disableClose = true;
   }
@@ -26,45 +29,20 @@ export class EmailDialogComponent implements OnInit {
     });
   }
 
-  // incrementarCantidad() {
-  //   let value = parseInt(this.cantidadForm.get('cantidad').value, 10);
-  //   if (isNaN(value)) {
-  //     value = this.minValue;
-  //   } else {
-  //     value += 1;
-  //   }
-  //   this.cantidadForm.get('cantidad').setValue(value);
-  // }
-  //
-  // decrementarCantidad() {
-  //   let value = parseInt(this.cantidadForm.get('cantidad').value, 10);
-  //   if (isNaN(value)) {
-  //     value = this.minValue;
-  //   }
-  //   if (value > this.minValue) {
-  //     value -= 1;
-  //   }
-  //   this.cantidadForm.get('cantidad').setValue(value);
-  // }
-  //
-  // deshabilitarBottonDecrementar() {
-  //   const value = parseInt(this.cantidadForm.get('cantidad').value, 10);
-  //   return isNaN(value) || value <= this.minValue;
-  // }
-
-  save() {
+  submit() {
     if (this.emailForm.valid) {
       const email = this.emailForm.get('email').value;
-
-      // this.dialogRef.close(email);
-      /*this.carritoCompraService.actualizarAlPedido(this.itemCarritoCompra.producto, this.cantidad).subscribe(
-        data => {
-          this.itemCarritoCompra.cantidad = this.cantidad;
-          this.itemCarritoCompra.importe = this.cantidad * this.itemCarritoCompra.producto.precioLista;
+      this.isLoading = true;
+      this.authService.solicitarCambioContrasenia(email).subscribe(
+        () => {
           this.dialogRef.close(true);
+          this.isLoading = false;
         },
-        err => this.avisoService.openSnackBar(err.error, '', 3500)
-      );*/
+        err => {
+          this.isLoading = false;
+          this.avisoService.openSnackBar(err.error  , '', 3500);
+        }
+      );
     }
   }
 }

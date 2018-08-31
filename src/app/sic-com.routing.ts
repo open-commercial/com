@@ -5,10 +5,12 @@ import {CarritoCompraComponent} from './components/carrito-compra/carrito-compra
 import {ProductoComponent} from './components/producto/producto.component';
 import {ContainerComponent} from './components/container/container.component';
 import {ProductosComponent} from './components/productos/productos.component';
-import { PerfilComponent } from './components/perfil/perfil.component';
+import {PerfilComponent} from './components/perfil/perfil.component';
+import {PasswordRecoveryComponent} from './components/password-recovery/password-recovery.component';
 
 const sicComRoutes: Routes = [
   {path: 'login', component: LoginComponent},
+  {path: 'password-recovery', component: PasswordRecoveryComponent},
   {path: '', redirectTo: 'productos', pathMatch: 'full'},
   {path: '', component: ContainerComponent, canActivate: [AuthGuard],
     children: [
