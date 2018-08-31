@@ -1,8 +1,9 @@
 import {Injectable} from '@angular/core';
-import {Subject} from 'rxjs';
+import {Subject, Observable} from 'rxjs';
 import {environment} from 'environments/environment';
 import {HttpClient} from '@angular/common/http';
 import {Cliente} from '../models/cliente';
+import { Pedido } from '../models/pedido';
 
 @Injectable()
 export class PedidosService {
@@ -15,5 +16,9 @@ export class PedidosService {
   getPedidosCliente(cliente: Cliente, pagina: number, tamanioPagina: number) {
     return this.http.get(
       this.urlBusqueda + '&idCliente=' + cliente.id_Cliente + '&pagina=' + pagina + '&tamanio=' + tamanioPagina);
+  }
+
+  getPedidoPdf(pedido: Pedido): Observable<Blob> {
+    return this.http.get(`${this.url}/${pedido.id_Pedido}/reporte`, { responseType: 'blob'});
   }
 }

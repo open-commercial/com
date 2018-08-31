@@ -15,6 +15,7 @@ export class ProductoComponent implements OnInit {
   producto;
   cantidad;
   loadingProducto = false;
+  cargandoAlCarrito = false;
 
   constructor(private productosService: ProductosService, private route: ActivatedRoute,
               private carritoCompraService: CarritoCompraService, private location: Location,
@@ -44,16 +45,28 @@ export class ProductoComponent implements OnInit {
   }
 
   cargarAlCarrito() {
-    this.carritoCompraService.agregarQuitarAlPedido(this.producto, this.cantidad).subscribe(
-      data => {
-        this.carritoCompraService.getCantidadRenglones().subscribe(
-          cant => {
-            this.carritoCompraService.setCantidadItemsEnCarrito(Number(cant));
-            this.irAlListado();
-          },
-          err => this.avisoService.openSnackBar(err.error, '', 3500));
-      },
-      err => this.avisoService.openSnackBar(err.error, '', 3500));
+    this.cargandoAlCarrito = true;
+    this.carritoCompraService.agregarQuitarAlPedido(this.producto, this.cantidad)
+      .subscribe(
+        data => {
+          this.carritoCompraService.getCantidadRenglones()
+            .subscribe(
+              cant => {
+                this.carritoCompraService.setCantidadItemsEnCarrito(Number(cant));
+                this.irAlListado();
+                this.cargandoAlCarrito = false;
+              },
+              err => {
+                this.avisoService.openSnackBar(err.error, '', 3500);
+                this.cargandoAlCarrito = false;
+              }
+            );
+        },
+        err => {
+          this.cargandoAlCarrito = false;
+          this.avisoService.openSnackBar(err.error, '', 3500);
+        }
+      );
   }
 
   cambiarCantidad(cantidad, masMenos) {

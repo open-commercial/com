@@ -10,14 +10,12 @@ import {ProductosComponent} from '../components/productos/productos.component';
 import {ProductosService} from '../services/productos.service';
 import {AuthService} from '../services/auth.service';
 import {sicComRouting} from '../sic-com.routing';
-import {SicComCurrencyPipe} from '../pipes/sic-com-currency.pipe';
 import {SicComMaterialModule} from './sic-com-material.module';
 import {ProductoComponent} from '../components/producto/producto.component';
 import {CarritoCompraComponent} from '../components/carrito-compra/carrito-compra.component';
 import {CarritoCompraService} from '../services/carrito-compra.service';
 import {ClientesService} from '../services/clientes.service';
 import {CheckoutDialogComponent} from '../components/carrito-compra/checkoutDialog/checkout-dialog.component';
-import {SicComFilterPipe} from '../pipes/sic-com-filter.pipe';
 import {AuthGuard} from '../guards/auth.guard';
 import {JwtInterceptor} from '../interceptors/jwt.interceptor';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
@@ -56,8 +54,6 @@ registerLocaleData(localeEs, 'es-AR', localeEsExtra);
     CheckoutDialogComponent,
     ClientesDialogComponent,
     CarritoCompraComponent,
-    SicComCurrencyPipe,
-    SicComFilterPipe,
     ConfirmationDialogComponent,
     PerfilComponent,
     UsuarioComponent,

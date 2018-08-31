@@ -1,43 +1,45 @@
 <div class="sic-com-pedidos">
-  <div class="sic-com-sin-cliente" *ngIf="!isLoading && (!cliente || !pedidos.length)">
-    <span fxLayoutAlign="center center">
-      <mat-icon color="primary">sentiment_neutral</mat-icon>
-      No posee una cuenta de cliente para realizar pedidos o bien no posee pedidos realizados
-    </span>
-  </div>
-  <mat-nav-list *ngIf="!isLoading">
-    <mat-list-item *ngFor="let pedido of pedidos" class="pedido-row">
-      <div matLine fxLayoutAlign="space-around center" fxFill class="pedido-row-content">
-        <div fxFlex fxLayout="row" fxLayout.lt-sm="column">
-          <div fxFlex class="pedido-column-content">
-            <span [ngClass]="pedido.estado.toLowerCase()">
-                {{ pedido.estado }}
-            </span>
+  <div *ngIf="!isLoading">
+    <div class="sic-com-sin-cliente" *ngIf="(!cliente || !pedidos.length)">
+        <span fxLayoutAlign="center center">
+          <mat-icon color="primary">sentiment_neutral</mat-icon>
+          No posee una cuenta de cliente para realizar pedidos o bien no posee pedidos realizados
+        </span>
+    </div>
+    <mat-nav-list>
+      <mat-list-item *ngFor="let pedido of pedidos" class="pedido-row" (click)="downloadPedidoPdf(pedido)">
+        <div matLine fxLayoutAlign="space-around center" fxFill class="pedido-row-content">
+          <div fxFlex fxLayout="row" fxLayout.lt-sm="column">
+            <div fxFlex class="pedido-column-content">
+                <span [ngClass]="pedido.estado.toLowerCase()">
+                    {{ pedido.estado }}
+                </span>
+            </div>
+            <div fxFlex class="pedido-column-content" style="white-space: nowrap;">
+              Nº {{ pedido.nroPedido }}
+            </div>
           </div>
-          <div fxFlex class="pedido-column-content">
-            Nº {{ pedido.nroPedido }}
+          <div fxFlex fxLayout="row" fxLayout.lt-sm="column">
+            <div fxFlex class="pedido-column-content">
+              <span>{{ pedido.fecha | date: 'dd/MM/yyyy' }}</span>
+            </div>
+            <div fxFlex class="pedido-column-content">
+              <strong>$ {{ pedido.totalActual | number:'1.2-2':'es-AR' }}</strong>
+            </div>
           </div>
         </div>
-        <div fxFlex fxLayout="row" fxLayout.lt-sm="column">
-          <div fxFlex class="pedido-column-content">
-            <span>{{ pedido.fecha | date: 'dd/MM/yyyy' }}</span>
-          </div>
-          <div fxFlex class="pedido-column-content">
-            <strong>{{ pedido.totalActual | sicComCurrency }}</strong>
-          </div>
-        </div>
-      </div>
-      <mat-divider></mat-divider>
-    </mat-list-item>
-  </mat-nav-list>
-  <div class="mas-resultados" fxLayoutAlign="center center" (click)="masPedidos()"
-       *ngIf="!isLoading && (pedidos.length > 0) && (totalPaginas > (pagina + 1))">
-    <span *ngIf="(pedidos.length > 0) && (totalPaginas > (pagina + 1)) && !loading">
-      <strong>MAS RESULTADOS</strong>
-    </span>
-    <mat-spinner [diameter]="50" [strokeWidth]="6" *ngIf="loading && (pedidos.length > 0)"></mat-spinner>
+        <mat-divider></mat-divider>
+      </mat-list-item>
+    </mat-nav-list>
+    <div class="mas-resultados" fxLayoutAlign="center center" (click)="masPedidos()"
+         *ngIf="(pedidos.length > 0) && (totalPaginas > (pagina + 1))">
+        <span *ngIf="(pedidos.length > 0) && (totalPaginas > (pagina + 1)) && !isLoading">
+          <strong>MAS RESULTADOS</strong>
+        </span>
+      <mat-spinner [diameter]="50" [strokeWidth]="6" *ngIf="isLoading && (pedidos.length > 0)"></mat-spinner>
+    </div>
   </div>
   <div *ngIf="isLoading" fxLayout="row" fxLayoutAlign="center center">
-      <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
+    <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
   </div>
 </div>
