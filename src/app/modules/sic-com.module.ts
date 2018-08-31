@@ -35,6 +35,8 @@ import {ProvinciasService} from '../services/provincias.service';
 import {LocalidadesService} from '../services/localidades.service';
 import {CondicionesIVAService} from '../services/condicionesIVA.service';
 import {CantidadProductoDialogComponent} from '../components/carrito-compra/cantidadProductoDialog/cantidad-producto-dialog.component';
+import {CuentasCorrienteService} from '../services/cuentas-corriente.service';
+import {CuentaCorrienteComponent} from '../components/cuenta-corriente/cuenta-corriente.component';
 import {registerLocaleData} from '@angular/common';
 import localeEs from '@angular/common/locales/es';
 import localeEsExtra from '@angular/common/locales/extra/es-AR';
@@ -57,7 +59,8 @@ registerLocaleData(localeEs, 'es-AR', localeEsExtra);
     UsuarioComponent,
     ClienteComponent,
     PedidosComponent,
-    CantidadProductoDialogComponent
+    CantidadProductoDialogComponent,
+    CuentaCorrienteComponent
   ],
   imports: [
     HttpClientModule,
@@ -83,7 +86,8 @@ registerLocaleData(localeEs, 'es-AR', localeEsExtra);
     PaisesService,
     ProvinciasService,
     LocalidadesService,
-    CondicionesIVAService
+    CondicionesIVAService,
+    CuentasCorrienteService
   ],
   entryComponents: [
     ClientesDialogComponent,

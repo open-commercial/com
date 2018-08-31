@@ -9,6 +9,7 @@ export class PerfilComponent {
   isUsuarioPanelOpened = false;
   isClientePanelOpened = false;
   isPedidosPanelOpened = false;
+  isCuentaCorrientePanelOpened = false;
 
   constructor() {}
 

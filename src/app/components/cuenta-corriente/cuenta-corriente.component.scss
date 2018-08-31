@@ -1,0 +1,39 @@
+.sic-com-cuenta-corriente {
+  .monto {
+    white-space: nowrap;
+    color: green;
+    font-weight: bold;
+    &.negativo {
+      color: red;
+    }
+  }
+
+  .renglon-row {
+    height: auto;
+    vertical-align: middle;
+    .mat-line {
+      white-space: normal;
+    }
+    .renglon-row-content {
+      padding: .5em 0;
+      .pedido-column-content {
+        text-align: center;
+        font-size: 0.86em;
+      }
+    }
+  }
+
+  .mas-resultados {
+    cursor: pointer;
+    height: 60px;
+    color: #ff5722;
+  }
+
+  .sic-com-sin-cliente {
+    span {
+      height: 100px;
+      color: #ff5722;
+      font-size: 18px;
+    }
+  }
+}
