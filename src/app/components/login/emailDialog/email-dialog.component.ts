@@ -55,7 +55,8 @@ export class EmailDialogComponent implements OnInit {
   save() {
     if (this.emailForm.valid) {
       const email = this.emailForm.get('email').value;
-      this.dialogRef.close(email);
+
+      // this.dialogRef.close(email);
       /*this.carritoCompraService.actualizarAlPedido(this.itemCarritoCompra.producto, this.cantidad).subscribe(
         data => {
           this.itemCarritoCompra.cantidad = this.cantidad;
