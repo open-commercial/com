@@ -2,6 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
 import {AuthService} from '../../services/auth.service';
 import {AvisoService} from '../../services/aviso.service';
+import {MatDialog} from '@angular/material';
+import {EmailDialogComponent} from './emailDialog/email-dialog.component';
 
 @Component({
   selector: 'sic-com-login',
@@ -15,7 +17,7 @@ export class LoginComponent implements OnInit {
   returnUrl = '';
 
   constructor(private router: Router, private route: ActivatedRoute,
-              private authService: AuthService, private avisoService: AvisoService) {}
+              private dialog: MatDialog, private authService: AuthService, private avisoService: AvisoService) {}
 
   ngOnInit() {
     this.route.queryParams.subscribe(
@@ -38,5 +40,12 @@ export class LoginComponent implements OnInit {
           this.loading = false;
           this.avisoService.openSnackBar(err, '', 3500);
         });
+  }
+
+  openDialogEmail() {
+    const dialogRef = this.dialog.open(EmailDialogComponent);
+    dialogRef.afterClosed().subscribe(data => {
+      console.log(data);
+    });
   }
 }
