@@ -15,25 +15,10 @@
       white-space: normal;
     }
     .renglon-row-content {
-      padding: .5em;
+      padding: .5em 0;
       .pedido-column-content {
         text-align: center;
         font-size: 0.86em;
-        @media screen and (min-width: 600px) {
-          font-size: 1em;
-        }
-        &.fecha {
-          text-align: left;
-          @media screen and (min-width: 600px) {
-            text-align: center;
-          }
-        }
-        &.monto {
-          text-align: right;
-          @media screen and (min-width: 600px) {
-            text-align: center;
-          }
-        }
       }
     }
   }
