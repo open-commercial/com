@@ -25,8 +25,11 @@
       </mat-list-item>
     </mat-nav-list>
     <div class="mas-resultados" fxLayoutAlign="center center" (click)="masRenglones()"
-         *ngIf="(renglones.length > 0) && (totalPaginas > (pagina + 1))">
+         *ngIf="!loading && (renglones.length > 0) && (totalPaginas > (pagina + 1))">
       <strong>MAS RESULTADOS</strong>
+    </div>
+    <div *ngIf="loading" fxLayout="row" fxLayoutAlign="center center">
+      <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
     </div>
   </div>
 

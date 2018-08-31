@@ -16,6 +16,7 @@ export class CuentaCorrienteComponent implements OnInit {
 
   private cliente: Cliente = null;
   private isLoading = true;
+  private loading = true;
   private cuentaCorriente = null;
   private renglones = [];
   private pagina = 0;
@@ -35,18 +36,18 @@ export class CuentaCorrienteComponent implements OnInit {
           if (cliente) {
             this.cliente = cliente;
             this.cuentasCorrienteService.getCuentaCorriente(this.cliente)
-              .pipe(
-                finalize(() => {
-                  if (this.cuentaCorriente) {
-                    this.cargarRenglones(true);
-                  } else {
-                    this.isLoading = false;
-                  }
-                })
-              )
               .subscribe(
-                cc  => this.cuentaCorriente = cc,
-                err => this.avisoService.openSnackBar(err.error, '', 3500)
+                cc  => {
+                  if (cc) {
+                    this.cuentaCorriente = cc;
+                    this.cargarRenglones(true);
+                  }
+                  this.isLoading = false;
+                },
+                err => {
+                  this.avisoService.openSnackBar(err.error, '', 3500);
+                  this.isLoading = false;
+                }
               );
           } else {
             this.isLoading = false;
@@ -64,17 +65,16 @@ export class CuentaCorrienteComponent implements OnInit {
       this.renglones = [];
       this.pagina = 0;
     }
-    this.isLoading = true;
+    this.loading = true;
     this.cuentasCorrienteService.getCuentaCorrienteRenglones(this.cuentaCorriente, this.pagina, this.tamanioPagina).subscribe(
       data => {
-        console.log(data);
         data['content'].forEach(r => this.renglones.push(r));
         this.totalPaginas = data['totalPages'];
-        this.isLoading = false;
+        this.loading = false;
       },
       err => {
         this.avisoService.openSnackBar(err.error, '', 3500);
-        this.isLoading = false;
+        this.loading = false;
       }
     );
   }
