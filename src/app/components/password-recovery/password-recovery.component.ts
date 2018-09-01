@@ -14,16 +14,15 @@ export class PasswordRecoveryComponent implements OnInit {
   returnUrl = '';
 
   constructor(private router: Router, private route: ActivatedRoute,
-              private authService: AuthService, private avisoService: AvisoService) {}
+              private authService: AuthService, private avisoService: AvisoService) {
+  }
 
   ngOnInit() {
     const key = this.route.snapshot.queryParams.key;
     const id = this.route.snapshot.queryParams.id;
-
     if (!key || !id) {
       this.router.navigate(['login']);
     }
-
     this.authService.cambiarContrasenia(key, id).subscribe(
       (token: string) => {
         this.authService.setAuthenticationInfo(token);

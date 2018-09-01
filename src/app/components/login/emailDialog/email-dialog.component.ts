@@ -10,8 +10,8 @@ import {AuthService} from '../../../services/auth.service';
 })
 export class EmailDialogComponent implements OnInit {
 
-  private emailForm: FormGroup;
-  private isLoading = false;
+  emailForm: FormGroup;
+  isLoading = false;
 
   constructor(private dialogRef: MatDialogRef<EmailDialogComponent>,
               private authService: AuthService,
@@ -40,7 +40,7 @@ export class EmailDialogComponent implements OnInit {
         },
         err => {
           this.isLoading = false;
-          this.avisoService.openSnackBar(err.error  , '', 3500);
+          this.avisoService.openSnackBar(err.error, '', 3500);
         }
       );
     }
