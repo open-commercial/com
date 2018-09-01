@@ -37,6 +37,8 @@ import {CondicionesIVAService} from '../services/condicionesIVA.service';
 import {CantidadProductoDialogComponent} from '../components/carrito-compra/cantidadProductoDialog/cantidad-producto-dialog.component';
 import {EmailDialogComponent} from '../components/login/emailDialog/email-dialog.component';
 import {PasswordRecoveryComponent} from '../components/password-recovery/password-recovery.component';
+import {CuentasCorrienteService} from '../services/cuentas-corriente.service';
+import {CuentaCorrienteComponent} from '../components/cuenta-corriente/cuenta-corriente.component';
 import {registerLocaleData} from '@angular/common';
 import localeEs from '@angular/common/locales/es';
 import localeEsExtra from '@angular/common/locales/extra/es-AR';
@@ -61,7 +63,8 @@ registerLocaleData(localeEs, 'es-AR', localeEsExtra);
     PedidosComponent,
     CantidadProductoDialogComponent,
     EmailDialogComponent,
-    PasswordRecoveryComponent
+    PasswordRecoveryComponent,
+    CuentaCorrienteComponent
   ],
   imports: [
     HttpClientModule,
@@ -87,7 +90,8 @@ registerLocaleData(localeEs, 'es-AR', localeEsExtra);
     PaisesService,
     ProvinciasService,
     LocalidadesService,
-    CondicionesIVAService
+    CondicionesIVAService,
+    CuentasCorrienteService
   ],
   entryComponents: [
     ClientesDialogComponent,

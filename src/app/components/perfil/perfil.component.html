@@ -26,4 +26,13 @@
             <sic-com-pedidos *ngIf="isPedidosPanelOpened"></sic-com-pedidos>
         </ng-template>
     </mat-expansion-panel>
+    <mat-expansion-panel hideToggle (closed)="isCuentaCorrientePanelOpened=false" (opened)="isCuentaCorrientePanelOpened=true">
+        <mat-expansion-panel-header>
+            <mat-panel-title>Mi Cuenta Corriente</mat-panel-title>
+            <mat-icon>compare_arrows</mat-icon>
+        </mat-expansion-panel-header>
+        <ng-template matExpansionPanelContent>
+            <sic-com-cuenta-corriente *ngIf="isCuentaCorrientePanelOpened"></sic-com-cuenta-corriente>
+        </ng-template>
+    </mat-expansion-panel>
 </mat-accordion>
