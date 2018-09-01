@@ -1,0 +1,23 @@
+<mat-dialog-content>
+  <h2 mat-dialog-title>Pedido de cambio de contraseña</h2>
+  <p>Por favor, ingrese el correo electrónico asociado a su cuenta de usuario.</p>
+  <form [formGroup]="emailForm" (ngSubmit)="save()">
+    <mat-form-field fxFlex fxFill>
+      <input matInput autofocus name="email" required type="email" formControlName="email"
+             placeholder="Correo electrónico">
+      <mat-error *ngIf="emailForm.get('email').hasError('required')">
+        Requerido
+      </mat-error>
+      <mat-error *ngIf="emailForm.get('email').hasError('email') && !emailForm.get('email').hasError('required')">
+        Por favor, ingrese un email válido
+      </mat-error>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions fxLayoutAlign="center center" *ngIf="!isLoading">
+  <button mat-raised-button color="primary" (click)="submit()" [disabled]="!emailForm.valid">Aceptar</button>
+  <button mat-raised-button mat-dialog-close>Cancelar</button>
+</mat-dialog-actions>
+<div *ngIf="isLoading" fxLayout="row" fxLayoutAlign="center center">
+  <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
+</div>

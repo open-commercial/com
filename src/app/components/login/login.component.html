@@ -1,4 +1,4 @@
-<div fxFlex fxLayoutAlign="center center" class="sic-com-login">
+<div fxFlex fxLayout="column" fxLayoutAlign="center center" class="sic-com-login">
   <form class="sic-com-form" #f="ngForm" name="form" (ngSubmit)="f.form.valid && login()" novalidate
         fxLayout="column" fxLayoutAlign="center center">
     <img src="assets/loginLogoTrans.png">
@@ -30,5 +30,7 @@
       </button>
       <mat-spinner [diameter]="50" [strokeWidth]="6" *ngIf="loading"></mat-spinner>
     </div>
+    <br>
+    <a routerLink="." (click)="openDialogEmail()">Olvidé mi contraseña</a>
   </form>
 </div>

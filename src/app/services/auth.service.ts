@@ -11,14 +11,14 @@ import {UsuariosService} from './usuarios.service';
 @Injectable()
 export class AuthService {
 
-  url = environment.apiUrl + '/api/v1/login';
-  urlUsuario = environment.apiUrl + '/api/v1/usuarios';
+  urlLogin = environment.apiUrl + '/api/v1/login';
+  urlPasswordRecovery = environment.apiUrl + '/api/v1/password-recovery';
   jwtHelper = new JwtHelperService();
-
   private nombreUsuarioLoggedInSubject = new Subject<string>();
   nombreUsuarioLoggedIn$ = this.nombreUsuarioLoggedInSubject.asObservable();
 
-  constructor(private http: HttpClient, private router: Router, private usuariosService: UsuariosService) {}
+  constructor(private http: HttpClient, private router: Router, private usuariosService: UsuariosService) {
+  }
 
   setNombreUsuarioLoggedIn(nombre: string) {
     this.nombreUsuarioLoggedInSubject.next(nombre);
@@ -26,21 +26,19 @@ export class AuthService {
 
   login(username: string, password: string) {
     const credential = {username: username, password: password};
-    return this.http.post(this.url, credential, {responseType: 'text'})
+    return this.http.post(this.urlLogin, credential, {responseType: 'text'})
       .pipe(map(data => {
-        localStorage.setItem('token', data);
-        const decodedToken = this.jwtHelper.decodeToken(data);
-        localStorage.setItem('id_Usuario', decodedToken.idUsuario);
-      }),
-      catchError(err => {
-        let msjError;
-        if (err.status === 0) {
-          msjError = 'Servicio no disponible :(';
-        } else {
-          msjError = err.error;
-        }
-        return throwError(msjError);
-      }));
+          this.setAuthenticationInfo(data);
+        }),
+        catchError(err => {
+          let msjError;
+          if (err.status === 0) {
+            msjError = 'Servicio no disponible :(';
+          } else {
+            msjError = err.error;
+          }
+          return throwError(msjError);
+        }));
   }
 
   logout() {
@@ -58,10 +56,23 @@ export class AuthService {
 
   getLoggedInUsuario(): Observable<Usuario> {
     return this.usuariosService.getUsuario(localStorage.getItem('id_Usuario'));
-    // return this.http.get<Usuario>(this.urlUsuario + '/' + localStorage.getItem('id_Usuario'));
   }
 
   getLoggedInIdUsuario(): string {
     return localStorage.getItem('id_Usuario');
+  }
+
+  solicitarCambioContrasenia(email: string) {
+    return this.http.get(this.urlPasswordRecovery + `?email=${email}`);
+  }
+
+  cambiarContrasenia(key: string, id: number) {
+    return this.http.post(this.urlPasswordRecovery, {'key': key, 'id': id}, {responseType: 'text'});
+  }
+
+  setAuthenticationInfo(token: string) {
+    localStorage.setItem('token', token);
+    const decodedToken = this.jwtHelper.decodeToken(token);
+    localStorage.setItem('id_Usuario', decodedToken.idUsuario);
   }
 }

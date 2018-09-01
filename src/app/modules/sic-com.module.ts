@@ -35,6 +35,8 @@ import {ProvinciasService} from '../services/provincias.service';
 import {LocalidadesService} from '../services/localidades.service';
 import {CondicionesIVAService} from '../services/condicionesIVA.service';
 import {CantidadProductoDialogComponent} from '../components/carrito-compra/cantidadProductoDialog/cantidad-producto-dialog.component';
+import {EmailDialogComponent} from '../components/login/emailDialog/email-dialog.component';
+import {PasswordRecoveryComponent} from '../components/password-recovery/password-recovery.component';
 import {CuentasCorrienteService} from '../services/cuentas-corriente.service';
 import {CuentaCorrienteComponent} from '../components/cuenta-corriente/cuenta-corriente.component';
 import {registerLocaleData} from '@angular/common';
@@ -60,6 +62,8 @@ registerLocaleData(localeEs, 'es-AR', localeEsExtra);
     ClienteComponent,
     PedidosComponent,
     CantidadProductoDialogComponent,
+    EmailDialogComponent,
+    PasswordRecoveryComponent,
     CuentaCorrienteComponent
   ],
   imports: [
@@ -93,7 +97,8 @@ registerLocaleData(localeEs, 'es-AR', localeEsExtra);
     ClientesDialogComponent,
     CheckoutDialogComponent,
     ConfirmationDialogComponent,
-    CantidadProductoDialogComponent
+    CantidadProductoDialogComponent,
+    EmailDialogComponent
   ],
   bootstrap: [
     SicComComponent
