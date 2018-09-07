@@ -11,7 +11,7 @@
         <mat-icon>search</mat-icon>
       </button>
     </form>
-    <div fxFlex.lt-md="15" fxFlex.gt-sm="20" fxLayoutAlign="center center">
+    <div fxFlex.lt-md="15" fxFlex.gt-sm="20" fxLayoutAlign="center center" *ngIf="authService.isAuthenticated()">
       <button mat-icon-button fxHide.lt-md [matMenuTriggerFor]="menuReducido" matTooltip="Mi Perfil ({{usuarioConectado}})">
         <mat-icon>account_circle</mat-icon>
       </button>
@@ -46,6 +46,11 @@
           <span>Cerrar Sesión</span>
         </button>
       </mat-menu>
+    </div>
+    <div fxFlex.lt-md="15" fxFlex.gt-sm="20" fxLayoutAlign="center center" *ngIf="!authService.isAuthenticated()">
+      <button mat-icon-button [routerLink]="['/login']" matTooltip="Ingresar">
+        <mat-icon>account_circle</mat-icon>
+      </button>
     </div>
     <div fxHide.lt-md fxFlex.gt-sm="10"></div>
   </mat-toolbar>

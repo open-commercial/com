@@ -12,13 +12,18 @@ const sicComRoutes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'password-recovery', component: PasswordRecoveryComponent},
   {path: '', redirectTo: 'productos', pathMatch: 'full'},
-  {path: '', component: ContainerComponent, canActivate: [AuthGuard],
+  {path: '', component: ContainerComponent,
     children: [
       {path: 'productos', component: ProductosComponent},
       {path: 'producto/:id', component: ProductoComponent},
+    ]
+  },
+  {path: '', component: ContainerComponent, canActivate: [AuthGuard],
+    children: [
       {path: 'carrito-compra', component: CarritoCompraComponent},
       {path: 'perfil', component: PerfilComponent}
-    ]},
+    ]
+  },
   {path: '**', redirectTo: 'productos'}
 ];
 

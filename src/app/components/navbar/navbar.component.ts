@@ -25,16 +25,20 @@ export class NavbarComponent implements OnInit {
               private avisoService: AvisoService) {}
 
   ngOnInit() {
-    this.authService.getLoggedInUsuario().subscribe(
-      data => this.usuarioConectado = data['nombre'] + ' ' + data['apellido'],
-      err => this.avisoService.openSnackBar(err.error, '', 3500)
-    );
-    this.carritoCompraService.getCantidadRenglones().subscribe(
-      data => this.carritoCompraService.setCantidadItemsEnCarrito(Number(data)),
-      err => this.avisoService.openSnackBar(err.error, '', 3500));
-    this.carritoCompraService.cantidadItemsEnCarrito$.subscribe(data => this.cantidadItemsEnCarrito = data);
+    if (this.authService.isAuthenticated()) {
+      this.authService.getLoggedInUsuario().subscribe(
+        data => this.usuarioConectado = data['nombre'] + ' ' + data['apellido'],
+        err => this.avisoService.openSnackBar(err.error, '', 3500)
+      );
+      this.carritoCompraService.getCantidadRenglones().subscribe(
+        data => this.carritoCompraService.setCantidadItemsEnCarrito(Number(data)),
+        err => this.avisoService.openSnackBar(err.error, '', 3500));
+      this.carritoCompraService.cantidadItemsEnCarrito$.subscribe(data => this.cantidadItemsEnCarrito = data);
+
+      this.authService.nombreUsuarioLoggedIn$.subscribe(data => this.usuarioConectado = data);
+    }
+
     this.productosService.buscarProductos$.subscribe(data => this.busquedaCriteria = data);
-    this.authService.nombreUsuarioLoggedIn$.subscribe(data => this.usuarioConectado = data);
     const criteriaControl = this.busquedaForm.get('criteriaControl');
     this.productosService.buscarProductos$.subscribe(data => {
       this.busquedaCriteria = data;

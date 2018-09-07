@@ -4,6 +4,7 @@ import {ProductosService} from '../../services/productos.service';
 import {CarritoCompraService} from '../../services/carrito-compra.service';
 import {ActivatedRoute} from '@angular/router';
 import {AvisoService} from '../../services/aviso.service';
+import {AuthService} from '../../services/auth.service';
 
 @Component({
   selector: 'sic-com-producto',
@@ -19,7 +20,7 @@ export class ProductoComponent implements OnInit {
 
   constructor(private productosService: ProductosService, private route: ActivatedRoute,
               private carritoCompraService: CarritoCompraService, private location: Location,
-              private avisoService: AvisoService) {}
+              private avisoService: AvisoService, private authService: AuthService) {}
 
   ngOnInit() {
     const productoId = Number(this.route.snapshot.params['id']);
