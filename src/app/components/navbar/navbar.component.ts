@@ -5,6 +5,9 @@ import {CarritoCompraService} from '../../services/carrito-compra.service';
 import {AuthService} from '../../services/auth.service';
 import {Router} from '@angular/router';
 import {AvisoService} from '../../services/aviso.service';
+import {MatDialog} from '@angular/material';
+import {LoginDialogComponent} from '../login-dialog/login-dialog.component';
+
 
 @Component({
   selector: 'sic-com-navbar',
@@ -22,7 +25,7 @@ export class NavbarComponent implements OnInit {
 
   constructor(private authService: AuthService, private productosService: ProductosService,
               private carritoCompraService: CarritoCompraService, private router: Router,
-              private avisoService: AvisoService) {}
+              private avisoService: AvisoService, private dialog: MatDialog) {}
 
   ngOnInit() {
     if (this.authService.isAuthenticated()) {
@@ -58,5 +61,9 @@ export class NavbarComponent implements OnInit {
 
   logout() {
     this.authService.logout();
+  }
+
+  openLoginDialog() {
+    this.dialog.open(LoginDialogComponent);
   }
 }
