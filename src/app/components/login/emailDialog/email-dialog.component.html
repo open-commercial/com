@@ -1,7 +1,7 @@
 <mat-dialog-content>
   <h2 mat-dialog-title>Pedido de cambio de contraseña</h2>
   <p>Por favor, ingrese el correo electrónico asociado a su cuenta de usuario.</p>
-  <form [formGroup]="emailForm" (ngSubmit)="save()">
+  <form [formGroup]="emailForm" (ngSubmit)="submit()">
     <mat-form-field fxFlex fxFill>
       <input matInput autofocus name="email" required type="email" formControlName="email"
              placeholder="Correo electrónico">

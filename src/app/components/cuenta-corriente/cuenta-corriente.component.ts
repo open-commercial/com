@@ -13,19 +13,20 @@ import {RenglonCuentaCorriente} from '../../models/renglon-cuenta-corriente';
 })
 export class CuentaCorrienteComponent implements OnInit {
 
-  private cliente: Cliente = null;
-  private isLoading = true;
-  private loading = true;
-  private cuentaCorriente = null;
-  private renglones = [];
-  private pagina = 0;
-  private totalPaginas = 0;
-  private tamanioPagina = 5;
+  cliente: Cliente = null;
+  isLoading = true;
+  loading = true;
+  cuentaCorriente = null;
+  renglones = [];
+  pagina = 0;
+  totalPaginas = 0;
+  tamanioPagina = 5;
 
   constructor(private authService: AuthService,
               private avisoService: AvisoService,
               private clientesService: ClientesService,
-              private cuentasCorrienteService: CuentasCorrienteService) {}
+              private cuentasCorrienteService: CuentasCorrienteService) {
+  }
 
   ngOnInit() {
     this.isLoading = true;
@@ -36,7 +37,7 @@ export class CuentaCorrienteComponent implements OnInit {
             this.cliente = cliente;
             this.cuentasCorrienteService.getCuentaCorriente(this.cliente)
               .subscribe(
-                cc  => {
+                cc => {
                   if (cc) {
                     this.cuentaCorriente = cc;
                     this.cargarRenglones(true);
