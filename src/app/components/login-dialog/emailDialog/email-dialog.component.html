@@ -3,7 +3,7 @@
   <p>Por favor, ingrese el correo electrónico asociado a su cuenta de usuario.</p>
   <form [formGroup]="emailForm" (ngSubmit)="submit()">
     <mat-form-field fxFlex fxFill>
-      <input matInput autofocus name="email" required type="text" formControlName="email"
+      <input matInput autofocus name="email" required type="email" formControlName="email"
              placeholder="Correo electrónico">
       <mat-error *ngIf="emailForm.get('email').hasError('required')">
         Requerido
