@@ -39,32 +39,23 @@ export class LoginDialogComponent implements OnInit {
     if (this.loginForm.valid) {
       this.model = this.loginForm.value;
       this.loading = true;
+      this.loginForm.disable();
       this.authService.login(this.model.username, this.model.password).subscribe(
         data => {
-          this.authService.getLoggedInUsuario()
-            .subscribe(
-              (usuario: Usuario) => {
-                this.authService.setNombreUsuarioLoggedIn(usuario.nombre + ' ' + usuario.apellido);
-                setTimeout(() => {
-                  this.loading = false;
-                  this.dialogRef.close(true);
-                }, 1000);
-              },
-              err => {
-                this.avisoService.openSnackBar(err.error, '', 3500);
-                this.loading = false;
-                this.dialogRef.close(true);
-              }
-            );
+          this.loading = false;
+          this.dialogRef.close(true);
+          this.loginForm.enable();
         },
         err => {
           this.loading = false;
+          this.loginForm.enable();
           this.avisoService.openSnackBar(err, '', 3500);
         });
     }
   }
 
   openEmailDialog() {
+    this.dialogRef.close();
     const dialogRef = this.dialog.open(EmailDialogComponent);
     dialogRef.afterClosed().subscribe(result => {
       if (result) {

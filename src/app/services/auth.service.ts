@@ -12,7 +12,7 @@ import {UsuariosService} from './usuarios.service';
 export class AuthService {
 
   urlLogin = environment.apiUrl + '/api/v1/login';
-  urlPasswordRecovery = environment.apiUrl + '/api/v1/password-recovery';
+  urlPasswordRecovery = environment.apiUrl + '/api/v1/password-recovery?idEmpresa=' + environment.idEmpresa;
   jwtHelper = new JwtHelperService();
   private nombreUsuarioLoggedInSubject = new Subject<string>();
   nombreUsuarioLoggedIn$ = this.nombreUsuarioLoggedInSubject.asObservable();
@@ -63,7 +63,7 @@ export class AuthService {
   }
 
   solicitarCambioContrasenia(email: string) {
-    return this.http.get(this.urlPasswordRecovery + `?email=${email}`);
+    return this.http.get(this.urlPasswordRecovery + `&email=${email}`);
   }
 
   cambiarContrasenia(key: string, id: number) {

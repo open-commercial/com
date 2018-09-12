@@ -28,6 +28,18 @@ export class NavbarComponent implements OnInit {
               private avisoService: AvisoService, private dialog: MatDialog) {}
 
   ngOnInit() {
+    this.loadNavbarInfo();
+    this.carritoCompraService.cantidadItemsEnCarrito$.subscribe(data => this.cantidadItemsEnCarrito = data);
+    this.authService.nombreUsuarioLoggedIn$.subscribe(data => this.usuarioConectado = data);
+    this.productosService.buscarProductos$.subscribe(data => this.busquedaCriteria = data);
+    const criteriaControl = this.busquedaForm.get('criteriaControl');
+    this.productosService.buscarProductos$.subscribe(data => {
+      this.busquedaCriteria = data;
+      criteriaControl.setValue(data);
+    });
+  }
+
+  loadNavbarInfo() {
     if (this.authService.isAuthenticated()) {
       this.authService.getLoggedInUsuario().subscribe(
         data => this.usuarioConectado = data['nombre'] + ' ' + data['apellido'],
@@ -36,17 +48,7 @@ export class NavbarComponent implements OnInit {
       this.carritoCompraService.getCantidadRenglones().subscribe(
         data => this.carritoCompraService.setCantidadItemsEnCarrito(Number(data)),
         err => this.avisoService.openSnackBar(err.error, '', 3500));
-      this.carritoCompraService.cantidadItemsEnCarrito$.subscribe(data => this.cantidadItemsEnCarrito = data);
-
-      this.authService.nombreUsuarioLoggedIn$.subscribe(data => this.usuarioConectado = data);
     }
-
-    this.productosService.buscarProductos$.subscribe(data => this.busquedaCriteria = data);
-    const criteriaControl = this.busquedaForm.get('criteriaControl');
-    this.productosService.buscarProductos$.subscribe(data => {
-      this.busquedaCriteria = data;
-      criteriaControl.setValue(data);
-    });
   }
 
   submit() {
@@ -64,6 +66,11 @@ export class NavbarComponent implements OnInit {
   }
 
   openLoginDialog() {
-    this.dialog.open(LoginDialogComponent);
+    const dialogRef = this.dialog.open(LoginDialogComponent);
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.loadNavbarInfo();
+      }
+    });
   }
 }
