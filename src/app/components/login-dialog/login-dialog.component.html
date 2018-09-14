@@ -20,9 +20,8 @@
       <a routerLink="." (click)="openEmailDialog()" *ngIf="!loading">Olvidé mi contraseña</a>
       <br>
     </mat-dialog-content>
-    <div *ngIf="!loading">
-      <button fxFill mat-raised-button color="primary" [disabled]="!loginForm.valid">Ingresar</button>
-      <br><br>
+    <div *ngIf="!loading" fxLayout="column" fxLayoutGap=".7em">
+      <button fxFill mat-raised-button color="primary" >Ingresar</button>
       <a fxFill mat-raised-button>Registrarme</a>
     </div>
     <div *ngIf="loading" fxLayout="row" fxLayoutAlign="center center">
