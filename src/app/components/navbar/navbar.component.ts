@@ -63,6 +63,7 @@ export class NavbarComponent implements OnInit {
 
   logout() {
     this.authService.logout();
+    this.avisoService.openSnackBar('Su sesión se cerró correctamente', '', 3500);
   }
 
   openLoginDialog() {
