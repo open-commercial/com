@@ -15,7 +15,7 @@
           <span class="sic-com-descripcion-producto">{{producto.descripcion}}</span><br>
           <span class="sic-com-precio-producto">$ {{producto.precioLista | number:'1.2-2':'es-AR'}}</span>
           <span>Disponible <strong>{{producto.cantidad | number:'1.0-2':'es-AR'}} {{producto.nombreMedida}}</strong></span>
-          <span>Compra Minima <strong>{{producto.ventaMinima}}</strong></span>
+          <span>Compra Minima <strong>{{producto.ventaMinima}} {{producto.nombreMedida}}</strong></span>
         </div>
         <div fxLayoutAlign="center center" class="sic-com-controles-cantidad">
           <button mat-mini-fab color="accent" disabled="{{(cantidad <= producto.ventaMinima)}}"
