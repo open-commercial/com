@@ -6,6 +6,7 @@ import {MatDialog} from '@angular/material';
 import {EmailDialogComponent} from './emailDialog/email-dialog.component';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Usuario} from '../../models/usuario';
+import {RegistracionDialogComponent} from '../registracion-dialog/registracion-dialog.component';
 
 @Component({
   selector: 'sic-com-login',
@@ -62,5 +63,10 @@ export class LoginDialogComponent implements OnInit {
         this.avisoService.openSnackBar('Los datos de recupero fueron enviados a su correo electrónico', '', 3500);
       }
     });
+  }
+
+  openRegistracionDialog() {
+    this.dialogRef.close();
+    const dialogRef = this.dialog.open(RegistracionDialogComponent);
   }
 }

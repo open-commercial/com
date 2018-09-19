@@ -5,6 +5,7 @@ import {FlexLayoutModule} from '@angular/flex-layout';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {SicComComponent} from '../sic-com.component';
 import {LoginDialogComponent} from '../components/login-dialog/login-dialog.component';
+import {RegistracionDialogComponent} from '../components/registracion-dialog/registracion-dialog.component';
 import {NavbarComponent} from '../components/navbar/navbar.component';
 import {ProductosComponent} from '../components/productos/productos.component';
 import {ProductosService} from '../services/productos.service';
@@ -49,6 +50,7 @@ registerLocaleData(localeEs, 'es-AR', localeEsExtra);
   declarations: [
     SicComComponent,
     LoginDialogComponent,
+    RegistracionDialogComponent,
     NavbarComponent,
     ProductosComponent,
     ProductoComponent,
@@ -99,7 +101,8 @@ registerLocaleData(localeEs, 'es-AR', localeEsExtra);
     ConfirmationDialogComponent,
     CantidadProductoDialogComponent,
     LoginDialogComponent,
-    EmailDialogComponent
+    EmailDialogComponent,
+    RegistracionDialogComponent
   ],
   bootstrap: [
     SicComComponent

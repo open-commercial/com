@@ -22,7 +22,7 @@
     </mat-dialog-content>
     <div *ngIf="!loading" fxLayout="column" fxLayoutGap=".7em">
       <button fxFill mat-raised-button color="primary" >Ingresar</button>
-      <a fxFill mat-raised-button>Registrarme</a>
+      <a fxFill mat-raised-button (click)="openRegistracionDialog()">Registrarme</a>
     </div>
     <div *ngIf="loading" fxLayout="row" fxLayoutAlign="center center">
       <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>

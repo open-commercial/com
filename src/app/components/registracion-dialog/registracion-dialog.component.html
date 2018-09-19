@@ -1,0 +1,108 @@
+<mat-dialog-content class="sic-com-registracion">
+  <p fxLayout="column" fxLayoutAlign="center center" fxLayoutGap=".5rem">
+    <span>Por favor, seleccione el tipo de Registro</span>
+    <mat-button-toggle-group #tipo="matButtonToggleGroup" aria-label="Seleccione el Tipo de Registro">
+      <mat-button-toggle value="0">Persona</mat-button-toggle>
+      <mat-button-toggle value="1">Empresa</mat-button-toggle>
+    </mat-button-toggle-group>
+  </p>
+  <form [formGroup]="personaForm" (ngSubmit)="registrarPersona()" *ngIf="tipo.value == 0" fxLayout="column">
+    <mat-form-field fxFlex>
+      <input matInput placeholder="Nombre" formControlName="nombre" required>
+      <mat-error *ngIf="personaForm.get('nombre').hasError('required')">
+        Requerido
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field fxFlex>
+      <input matInput placeholder="Apellido" formControlName="apellido" required>
+      <mat-error *ngIf="personaForm.get('apellido').hasError('required')">
+        Requerido
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="Email" type="email" formControlName="email" required>
+      <mat-error *ngIf="personaForm.get('email').hasError('email') && !personaForm.get('email').hasError('required')">
+        Por favor, ingrese un email válido
+      </mat-error>
+      <mat-error *ngIf="personaForm.get('email').hasError('required')">
+        Requerido
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field fxFlex>
+      <input matInput placeholder="Contraseña" type="password" formControlName="password" required>
+      <mat-error *ngIf="personaForm.get('password').hasError('required')">
+        Requerido
+      </mat-error>
+      <mat-error *ngIf="!personaForm.get('password').hasError('required') && personaForm.controls.password.errors?.MatchPassword">
+        Las contraseñas deben ser iguales
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field fxFlex>
+      <input matInput placeholder="Repita la Contraseña" type="password" formControlName="repeatPassword" required>
+      <mat-error *ngIf="personaForm.get('repeatPassword').hasError('required')">
+        Requerido
+      </mat-error>
+      <mat-error *ngIf="personaForm.controls.repeatPassword.errors?.MatchPassword">
+        Las contraseñas deben ser iguales
+      </mat-error>
+    </mat-form-field>
+    <br>
+    <button fxFill mat-raised-button color="primary" >Registrarme</button>
+  </form>
+
+  <form [formGroup]="empresaForm" (ngSubmit)="registrarEmpresa()" *ngIf="tipo.value == 1" fxLayout="column">
+    <mat-form-field fxFlex>
+      <input matInput placeholder="Razón Social" formControlName="razonSocial" required>
+      <mat-error *ngIf="empresaForm.get('razonSocial').hasError('required')">
+        Requerido
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field fxFlex>
+      <input matInput placeholder="CUIT" formControlName="cuit" required>
+      <mat-error *ngIf="empresaForm.get('cuit').hasError('required')">
+        Requerido
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field fxFlex>
+      <input matInput placeholder="Nombre" formControlName="nombre" required>
+      <mat-error *ngIf="empresaForm.get('nombre').hasError('required')">
+        Requerido
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field fxFlex>
+      <input matInput placeholder="Apellido" formControlName="apellido" required>
+      <mat-error *ngIf="empresaForm.get('apellido').hasError('required')">
+        Requerido
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="Email" type="email" formControlName="email" required>
+      <mat-error *ngIf="empresaForm.get('email').hasError('email') && !empresaForm.get('email').hasError('required')">
+        Por favor, ingrese un email válido
+      </mat-error>
+      <mat-error *ngIf="empresaForm.get('email').hasError('required')">
+        Requerido
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field fxFlex>
+      <input matInput placeholder="Contraseña" type="password" formControlName="password" required>
+      <mat-error *ngIf="empresaForm.get('password').hasError('required')">
+        Requerido
+      </mat-error>
+      <mat-error *ngIf="!empresaForm.get('password').hasError('required') && empresaForm.controls.password.errors?.MatchPassword">
+        Las contraseñas deben ser iguales
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field fxFlex>
+      <input matInput placeholder="Repita la Contraseña" type="password" formControlName="repeatPassword" required>
+      <mat-error *ngIf="empresaForm.get('repeatPassword').hasError('required')">
+        Requerido
+      </mat-error>
+      <mat-error *ngIf="empresaForm.controls.repeatPassword.errors?.MatchPassword">
+        Las contraseñas deben ser iguales
+      </mat-error>
+    </mat-form-field>
+    <br>
+    <button fxFill mat-raised-button color="primary" >Registrarme</button>
+  </form>
+</mat-dialog-content>

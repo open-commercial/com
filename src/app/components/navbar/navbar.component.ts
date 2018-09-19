@@ -7,7 +7,7 @@ import {Router} from '@angular/router';
 import {AvisoService} from '../../services/aviso.service';
 import {MatDialog} from '@angular/material';
 import {LoginDialogComponent} from '../login-dialog/login-dialog.component';
-
+import {RegistracionDialogComponent} from '../registracion-dialog/registracion-dialog.component';
 
 @Component({
   selector: 'sic-com-navbar',
@@ -73,5 +73,9 @@ export class NavbarComponent implements OnInit {
         this.loadNavbarInfo();
       }
     });
+  }
+
+  openRegistracionDialog() {
+    const dialogRef = this.dialog.open(RegistracionDialogComponent);
   }
 }
