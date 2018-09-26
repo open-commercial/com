@@ -44,7 +44,10 @@ export class ClientesService {
   }
 
   saveCliente(cliente) {
-    const arr = ['idCondicionIVA=' + cliente.idCondicionIVA, 'idLocalidad=' + cliente.idLocalidad, 'idEmpresa=' + environment.idEmpresa];
+    const arr = ['idEmpresa=' + environment.idEmpresa];
+    if (cliente.idLocalidad) {
+      arr.push('idLocalidad=' + cliente.idLocalidad);
+    }
     if (cliente.idCredencial) {
       arr.push('idCredencial=' + cliente.idCredencial);
     }

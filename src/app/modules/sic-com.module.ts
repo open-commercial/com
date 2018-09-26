@@ -34,7 +34,6 @@ import {PedidosService} from '../services/pedidos.service';
 import {PaisesService} from '../services/paises.service';
 import {ProvinciasService} from '../services/provincias.service';
 import {LocalidadesService} from '../services/localidades.service';
-import {CondicionesIVAService} from '../services/condicionesIVA.service';
 import {CantidadProductoDialogComponent} from '../components/carrito-compra/cantidadProductoDialog/cantidad-producto-dialog.component';
 import {EmailDialogComponent} from '../components/login-dialog/emailDialog/email-dialog.component';
 import {PasswordRecoveryComponent} from '../components/password-recovery/password-recovery.component';
@@ -92,7 +91,6 @@ registerLocaleData(localeEs, 'es-AR', localeEsExtra);
     PaisesService,
     ProvinciasService,
     LocalidadesService,
-    CondicionesIVAService,
     CuentasCorrienteService
   ],
   entryComponents: [

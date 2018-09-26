@@ -1,16 +1,16 @@
-export interface Cliente {
+import {CategoriaIVA} from './categoriaIVA';
+import {TipoDeCliente} from './tipo.cliente';
 
+export interface Cliente {
   id_Cliente: number;
   nroCliente: string;
   razonSocial: string;
   nombreFantasia: string;
   direccion: string;
-  idCondicionIVA: number;
-  nombreCondicionIVA: string;
+  categoriaIVA: CategoriaIVA;
   idFiscal: string;
   email: string;
-  telPrimario: string;
-  telSecundario: string;
+  telefono: string;
   idLocalidad: number;
   nombreLocalidad: string;
   idProvincia: number;
@@ -28,5 +28,5 @@ export interface Cliente {
   predeterminado: boolean;
   saldoCuentaCorriente: number;
   fechaUltimoMovimiento: Date;
-
+  tipoDeCliente: TipoDeCliente;
 }

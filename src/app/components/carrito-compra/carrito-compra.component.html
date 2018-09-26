@@ -29,8 +29,8 @@
     </div>
     <mat-list>
       <mat-list-item *ngFor="let icc of itemsCarritoCompra" class="sic-com-renglones-items">
-        <div matLine fxLayout.lt-md="column">
-          <div fxLayout fxFlex.gt-md="60">
+        <div matLine fxLayout="row" fxLayout.lt-sm="column">
+          <div fxLayout fxFlex="60">
               <div fxFlex="30" fxLayoutAlign="center center">
                 <img class="sic-com-img-avatar" src="../../assets/no-image.png" />
               </div>
@@ -39,7 +39,7 @@
                 <strong>$ {{icc.producto.precioLista | number:'1.2-2':'es-AR' }}</strong>
               </div>
           </div>
-          <div fxLayout fxFlex.gt-md="40">
+          <div fxLayout fxFlex="40">
             <div fxFlex="40" fxLayoutAlign="center center">
               <button mat-raised-button (click)="editCantidadProducto(icc)" color="primary">Cantidad {{icc.cantidad}}</button>
             </div>

@@ -3,6 +3,18 @@
     <form fxLayout="column" [formGroup]="clienteForm" (ngSubmit)="submit()" *ngIf="!cliente || (cliente && inEdition)" fxLayoutGap="0.7rem">
       <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.7rem">
         <mat-form-field fxFlex>
+          <mat-select placeholder="Tipo de Cliente" formControlName="tipoDeCliente" required>
+            <mat-option *ngFor="let tc of keys(tiposDeCliente)" [value]="tc">
+              {{ tiposDeCliente[tc] }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="clienteForm.get('tipoDeCliente').hasError('required')">
+            Requerido
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.7rem">
+        <mat-form-field fxFlex>
           <input matInput type="number" placeholder="ID Fiscal" formControlName="idFiscal">
           <mat-error *ngIf="clienteForm.get('idFiscal').hasError('pattern')">
             Solo números
@@ -10,13 +22,12 @@
           <mat-hint>CUIL, CUIT o DNI según corresponda</mat-hint>
         </mat-form-field>
         <mat-form-field fxFlex>
-          <mat-select placeholder="Condición de IVA" formControlName="idCondicionIVA" required>
-            <mat-option></mat-option>
-            <mat-option *ngFor="let ci of condicionesIVA" [value]="ci.id_CondicionIVA">
-              {{ ci.nombre }}
+          <mat-select placeholder="Categoría de IVA" formControlName="categoriaIVA" required>
+            <mat-option *ngFor="let ci of keys(categoriasIVA)" [value]="ci">
+              {{ categoriasIVA[ci] }}
             </mat-option>
           </mat-select>
-          <mat-error *ngIf="clienteForm.get('idCondicionIVA').hasError('required')">
+          <mat-error *ngIf="clienteForm.get('categoriaIVA').hasError('required')">
             Requerido
           </mat-error>
         </mat-form-field>
@@ -37,44 +48,38 @@
           <input matInput placeholder="Dirección" formControlName="direccion">
         </mat-form-field>
         <mat-form-field fxFlex>
-          <mat-select placeholder="País" formControlName="idPais" required>
+          <mat-select placeholder="País" formControlName="idPais">
             <mat-option></mat-option>
             <mat-option *ngFor="let p of paises" [value]="p.id_Pais">
               {{ p.nombre }}
             </mat-option>
           </mat-select>
-          <mat-error *ngIf="clienteForm.get('idPais').hasError('required')">
-            Requerido
-          </mat-error>
         </mat-form-field>
       </div>
       <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.7rem">
         <mat-form-field fxFlex>
-          <mat-select placeholder="Provincia" formControlName="idProvincia" required>
+          <mat-select placeholder="Provincia" formControlName="idProvincia">
             <mat-option></mat-option>
             <mat-option *ngFor="let pr of provincias" [value]="pr.id_Provincia">
               {{ pr.nombre }}
             </mat-option>
           </mat-select>
-          <mat-error *ngIf="clienteForm.get('idProvincia').hasError('required')">
-            Requerido
-          </mat-error>
         </mat-form-field>
         <mat-form-field fxFlex>
-          <mat-select placeholder="Localidad" formControlName="idLocalidad" required>
+          <mat-select placeholder="Localidad" formControlName="idLocalidad">
             <mat-option></mat-option>
             <mat-option *ngFor="let l of localidades" [value]="l.id_Localidad">
               {{ l.nombre }}
             </mat-option>
           </mat-select>
-          <mat-error *ngIf="clienteForm.get('idLocalidad').hasError('required')">
-            Requerido
-          </mat-error>
         </mat-form-field>
       </div>
       <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.7rem">
         <mat-form-field fxFlex>
-          <input matInput placeholder="Teléfono" formControlName="telPrimario">
+          <input matInput placeholder="Teléfono" formControlName="telefono" required>
+          <mat-error *ngIf="clienteForm.get('telefono').hasError('required')">
+            Requerido
+          </mat-error>
         </mat-form-field>
         <mat-form-field fxFlex>
           <input matInput placeholder="Email" formControlName="email">
@@ -110,20 +115,20 @@
           </span>
           <span fxLayout="row" fxLayoutGap="1rem" fxLayoutAlign="start center">
             <mat-icon>account_balance</mat-icon>
-            <span>{{ cliente.nombreCondicionIVA }}</span>
+            <span>{{ categoriasIVA[cliente.categoriaIVA] }}</span>
           </span>
         </div>
         <div fxFlex fxLayout="column" fxLayoutGap="1rem" fxLayoutAlign="start start">
-          <span fxLayout="row" fxLayoutGap="1rem" fxLayoutAlign="start center">
+          <span fxLayout="row" fxLayoutGap="1rem" fxLayoutAlign="start center" *ngIf="cliente.nombreLocalidad">
             <mat-icon>place</mat-icon>
             <span>
               <span *ngIf="cliente.direccion"> {{ cliente.direccion }},</span>
               {{ cliente.nombreLocalidad }}, {{ cliente.nombreProvincia }}, {{ cliente.nombrePais }}
             </span>
           </span>
-          <span fxLayout="row" fxLayoutGap="1rem" fxLayoutAlign="start center" *ngIf="cliente.telPrimario">
+          <span fxLayout="row" fxLayoutGap="1rem" fxLayoutAlign="start center" *ngIf="cliente.telefono">
             <mat-icon>phone</mat-icon>
-            <span>{{ cliente.telPrimario }}</span>
+            <span>{{ cliente.telefono }}</span>
           </span>
           <span fxLayout="row" fxLayoutGap="1rem" fxLayoutAlign="start center" *ngIf="cliente.email">
             <mat-icon>email</mat-icon>

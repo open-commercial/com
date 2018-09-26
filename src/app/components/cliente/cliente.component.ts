@@ -1,17 +1,17 @@
-import {Component, OnInit, Input} from '@angular/core';
-import {FormBuilder, Validators, FormGroup} from '@angular/forms';
+import {Component, Input, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AuthService} from '../../services/auth.service';
 import {Cliente} from '../../models/cliente';
 import {ClientesService} from '../../services/clientes.service';
 import {AvisoService} from '../../services/aviso.service';
-import {CondicionIVA} from '../../models/condicionIVA';
-import {CondicionesIVAService} from '../../services/condicionesIVA.service';
+import {CategoriaIVA} from '../../models/categoriaIVA';
 import {Pais} from '../../models/pais';
 import {PaisesService} from '../../services/paises.service';
 import {Provincia} from '../../models/provincia';
 import {ProvinciasService} from '../../services/provincias.service';
 import {Localidad} from '../../models/localidad';
 import {LocalidadesService} from '../../services/localidades.service';
+import {TipoDeCliente} from '../../models/tipo.cliente';
 
 @Component({
   selector: 'sic-com-cliente',
@@ -23,17 +23,22 @@ export class ClienteComponent implements OnInit {
   @Input() inEdition = false;
   clienteForm: FormGroup;
   cliente: Cliente = null;
-  condicionesIVA: Array<CondicionIVA> = [];
   paises: Array<Pais> = [];
   provincias: Array<Provincia> = [];
   localidades: Array<Localidad> = [];
   isLoading = true;
 
+  // Lo siguiente es para poder iterar sobre el enum de CategoriaIVA en la vista:
+  // Se guarda el metodo keys de Object en una variable
+  keys = Object.keys;
+  // Asigno el enum a una variable
+  categoriasIVA = CategoriaIVA;
+  tiposDeCliente = TipoDeCliente;
+
   constructor(private authService: AuthService,
               private fb: FormBuilder,
               private avisoService: AvisoService,
               private clientesService: ClientesService,
-              private condicionesIVAService: CondicionesIVAService,
               private paisesService: PaisesService,
               private provinciasService: ProvinciasService,
               private localidadesService: LocalidadesService) {
@@ -42,15 +47,16 @@ export class ClienteComponent implements OnInit {
 
   createForm() {
     this.clienteForm = this.fb.group({
+      tipoDeCliente: [null, Validators.required],
       idFiscal: ['', Validators.pattern('^[0-9]*$')],
       razonSocial: ['', Validators.required],
       nombreFantasia: '',
-      idCondicionIVA: [null, Validators.required],
+      categoriaIVA: [null, Validators.required],
       direccion: '',
-      idPais: [null, Validators.required],
-      idProvincia: [null, Validators.required],
-      idLocalidad: [null, Validators.required],
-      telPrimario: '',
+      idPais: null,
+      idProvincia: null,
+      idLocalidad: null,
+      telefono: ['', Validators.required],
       email: ['', Validators.email],
     });
   }
@@ -60,13 +66,13 @@ export class ClienteComponent implements OnInit {
     this.clientesService.getClienteDelUsuario(this.authService.getLoggedInIdUsuario()).subscribe(
       (cliente: Cliente) => {
         if (cliente) {
+          console.log(cliente);
           this.cliente = cliente;
         }
         this.isLoading = false;
       },
       error => this.isLoading = false
     );
-    this.getCondicionesIVA();
     this.getPaises();
     this.clienteForm.get('idPais').valueChanges.subscribe(
       idPais => {
@@ -111,17 +117,17 @@ export class ClienteComponent implements OnInit {
 
   getFormValues(): any {
     return {
+      tipoDeCliente: this.clienteForm.get('tipoDeCliente').value,
       id_Cliente: this.cliente ? this.cliente.id_Cliente : null,
       razonSocial: this.clienteForm.get('razonSocial').value,
       nombreFantasia: this.clienteForm.get('nombreFantasia').value,
       direccion: this.clienteForm.get('direccion').value,
       idFiscal: this.clienteForm.get('idFiscal').value,
       email: this.clienteForm.get('email').value,
-      telPrimario: this.clienteForm.get('telPrimario').value,
-      telSecundario: this.cliente ? this.cliente.telSecundario : '',
+      telefono: this.clienteForm.get('telefono').value,
       contacto: this.cliente ? this.cliente.contacto : '',
       idLocalidad: this.clienteForm.get('idLocalidad').value,
-      idCondicionIVA: this.clienteForm.get('idCondicionIVA').value,
+      categoriaIVA: this.clienteForm.get('categoriaIVA').value,
       idCredencial: this.authService.getLoggedInIdUsuario(),
       idViajante: this.cliente ? this.cliente.idViajante : null,
     };
@@ -132,25 +138,20 @@ export class ClienteComponent implements OnInit {
       this.clienteForm.reset();
     } else {
       this.clienteForm.reset({
+        tipoDeCliente: this.cliente.tipoDeCliente,
         idFiscal: this.cliente.idFiscal,
         razonSocial: this.cliente.razonSocial,
         nombreFantasia: this.cliente.nombreFantasia,
-        idCondicionIVA: this.cliente.idCondicionIVA,
+        categoriaIVA: this.cliente.categoriaIVA,
         direccion: this.cliente.direccion,
         idPais: this.cliente.idPais,
         idProvincia: this.cliente.idProvincia,
         idLocalidad: this.cliente.idLocalidad,
-        telPrimario: this.cliente.telPrimario,
-        telSecundario: this.cliente.telSecundario,
+        telefono: this.cliente.telefono,
         contacto: this.cliente.contacto,
         email: this.cliente.email
       });
     }
-  }
-
-  getCondicionesIVA() {
-    this.condicionesIVAService.getCondicionesIVA()
-      .subscribe((data: CondicionIVA[]) => this.condicionesIVA = data);
   }
 
   getPaises() {

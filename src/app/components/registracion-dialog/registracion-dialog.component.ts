@@ -5,7 +5,6 @@ import {AvisoService} from '../../services/aviso.service';
 import {MatDialog} from '@angular/material';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Usuario} from '../../models/usuario';
-import {PasswordValidation} from '../../validators/PasswordValidation';
 
 @Component({
   selector: 'sic-com-registracion-dialog',
@@ -33,22 +32,18 @@ export class RegistracionDialogComponent implements OnInit {
       apellido: ['', Validators.required],
       email: ['', Validators.required],
       password: ['', Validators.required],
-      repeatPassword: ['', Validators.required],
     });
-    this.personaForm.setValidators(PasswordValidation.MatchPassword);
   }
 
   buildEmpresaForm() {
     this.empresaForm = this.fb.group({
-      razonSocial: ['', Validators.required],
-      cuit: ['', Validators.required],
       nombre: ['', Validators.required],
       apellido: ['', Validators.required],
       email: ['', Validators.required],
+      cuit: ['', Validators.required],
+      razonSocial: ['', Validators.required],
       password: ['', Validators.required],
-      repeatPassword: ['', Validators.required],
     });
-    this.empresaForm.setValidators(PasswordValidation.MatchPassword);
   }
 
   registrarPersona() {

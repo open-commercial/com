@@ -1,7 +1,6 @@
 <mat-dialog-content class="sic-com-registracion">
   <p fxLayout="column" fxLayoutAlign="center center" fxLayoutGap=".5rem">
-    <span>Por favor, seleccione el tipo de Registro</span>
-    <mat-button-toggle-group #tipo="matButtonToggleGroup" aria-label="Seleccione el Tipo de Registro">
+    <mat-button-toggle-group value="0" #tipo="matButtonToggleGroup" aria-label="Seleccione el Tipo de Registro">
       <mat-button-toggle value="0">Persona</mat-button-toggle>
       <mat-button-toggle value="1">Empresa</mat-button-toggle>
     </mat-button-toggle-group>
@@ -34,15 +33,6 @@
         Requerido
       </mat-error>
       <mat-error *ngIf="!personaForm.get('password').hasError('required') && personaForm.controls.password.errors?.MatchPassword">
-        Las contraseñas deben ser iguales
-      </mat-error>
-    </mat-form-field>
-    <mat-form-field fxFlex>
-      <input matInput placeholder="Repita la Contraseña" type="password" formControlName="repeatPassword" required>
-      <mat-error *ngIf="personaForm.get('repeatPassword').hasError('required')">
-        Requerido
-      </mat-error>
-      <mat-error *ngIf="personaForm.controls.repeatPassword.errors?.MatchPassword">
         Las contraseñas deben ser iguales
       </mat-error>
     </mat-form-field>
@@ -90,15 +80,6 @@
         Requerido
       </mat-error>
       <mat-error *ngIf="!empresaForm.get('password').hasError('required') && empresaForm.controls.password.errors?.MatchPassword">
-        Las contraseñas deben ser iguales
-      </mat-error>
-    </mat-form-field>
-    <mat-form-field fxFlex>
-      <input matInput placeholder="Repita la Contraseña" type="password" formControlName="repeatPassword" required>
-      <mat-error *ngIf="empresaForm.get('repeatPassword').hasError('required')">
-        Requerido
-      </mat-error>
-      <mat-error *ngIf="empresaForm.controls.repeatPassword.errors?.MatchPassword">
         Las contraseñas deben ser iguales
       </mat-error>
     </mat-form-field>
