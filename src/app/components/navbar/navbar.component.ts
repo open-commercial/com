@@ -23,7 +23,7 @@ export class NavbarComponent implements OnInit {
     criteriaControl: new FormControl()
   });
 
-  constructor(private authService: AuthService, private productosService: ProductosService,
+  constructor(public authService: AuthService, private productosService: ProductosService,
               private carritoCompraService: CarritoCompraService, private router: Router,
               private avisoService: AvisoService, private dialog: MatDialog) {}
 
