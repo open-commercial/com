@@ -66,8 +66,8 @@ export class ClienteComponent implements OnInit {
     this.clientesService.getClienteDelUsuario(this.authService.getLoggedInIdUsuario()).subscribe(
       (cliente: Cliente) => {
         if (cliente) {
-          console.log(cliente);
           this.cliente = cliente;
+          this.clienteForm.get('tipoDeCliente').disable();
         }
         this.isLoading = false;
       },
@@ -77,11 +77,14 @@ export class ClienteComponent implements OnInit {
     this.clienteForm.get('idPais').valueChanges.subscribe(
       idPais => {
         this.getProvincias(idPais);
-        this.localidades.splice(0, this.localidades.length);
+        this.clienteForm.get('idProvincia').setValue(null);
       }
     );
     this.clienteForm.get('idProvincia').valueChanges.subscribe(
-      idProvincia => this.getLocalidades(idProvincia)
+      idProvincia => {
+        this.getLocalidades(idProvincia);
+        this.clienteForm.get('idLocalidad').setValue(null);
+      }
     );
   }
 
@@ -102,6 +105,7 @@ export class ClienteComponent implements OnInit {
                 if (cliente) {
                   this.cliente = newcliente;
                   this.inEdition = false;
+                  this.clienteForm.get('tipoDeCliente').disable();
                 }
                 this.isLoading = false;
               }

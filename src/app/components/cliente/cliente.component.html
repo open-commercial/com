@@ -12,6 +12,7 @@
             Requerido
           </mat-error>
         </mat-form-field>
+        <span fxFlex fxHide fxShow.gt-sm></span>
       </div>
       <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.7rem">
         <mat-form-field fxFlex>
@@ -59,7 +60,6 @@
       <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.7rem">
         <mat-form-field fxFlex>
           <mat-select placeholder="Provincia" formControlName="idProvincia">
-            <mat-option></mat-option>
             <mat-option *ngFor="let pr of provincias" [value]="pr.id_Provincia">
               {{ pr.nombre }}
             </mat-option>
@@ -67,7 +67,6 @@
         </mat-form-field>
         <mat-form-field fxFlex>
           <mat-select placeholder="Localidad" formControlName="idLocalidad">
-            <mat-option></mat-option>
             <mat-option *ngFor="let l of localidades" [value]="l.id_Localidad">
               {{ l.nombre }}
             </mat-option>
@@ -96,7 +95,7 @@
     </form>
     <div *ngIf="cliente && !inEdition" class="info">
       <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="1rem">
-        <div fxFlex fxLayout="column" fxLayoutGap="1rem" fxLayoutAlign="start start">
+        <div fxFlex>
           <span fxLayout="row" fxLayoutGap="1rem" fxLayoutAlign="start center">
             <mat-icon>assignment_ind</mat-icon>
             <span>#{{ cliente.nroCliente }}</span>
@@ -118,7 +117,7 @@
             <span>{{ categoriasIVA[cliente.categoriaIVA] }}</span>
           </span>
         </div>
-        <div fxFlex fxLayout="column" fxLayoutGap="1rem" fxLayoutAlign="start start">
+        <div fxFlex>
           <span fxLayout="row" fxLayoutGap="1rem" fxLayoutAlign="start center" *ngIf="cliente.nombreLocalidad">
             <mat-icon>place</mat-icon>
             <span>

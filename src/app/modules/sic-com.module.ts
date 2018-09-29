@@ -39,6 +39,7 @@ import {EmailDialogComponent} from '../components/login-dialog/emailDialog/email
 import {PasswordRecoveryComponent} from '../components/password-recovery/password-recovery.component';
 import {CuentasCorrienteService} from '../services/cuentas-corriente.service';
 import {CuentaCorrienteComponent} from '../components/cuenta-corriente/cuenta-corriente.component';
+import {RegistracionService} from '../services/registracion.service';
 import {registerLocaleData} from '@angular/common';
 import localeEs from '@angular/common/locales/es';
 import localeEsExtra from '@angular/common/locales/extra/es-AR';
@@ -91,7 +92,8 @@ registerLocaleData(localeEs, 'es-AR', localeEsExtra);
     PaisesService,
     ProvinciasService,
     LocalidadesService,
-    CuentasCorrienteService
+    CuentasCorrienteService,
+    RegistracionService
   ],
   entryComponents: [
     ClientesDialogComponent,

@@ -1,11 +1,10 @@
 <mat-dialog-content class="sic-com-registracion">
   <p fxLayout="column" fxLayoutAlign="center center" fxLayoutGap=".5rem">
-    <mat-button-toggle-group value="0" #tipo="matButtonToggleGroup" aria-label="Seleccione el Tipo de Registro">
-      <mat-button-toggle value="0">Persona</mat-button-toggle>
-      <mat-button-toggle value="1">Empresa</mat-button-toggle>
+    <mat-button-toggle-group [value]="tCliente" aria-label="Seleccione el Tipo de Registro" (change)="onTipoSeleccionado($event)">
+      <mat-button-toggle *ngFor="let tc of keys(tiposDeCliente)" [value]="tc">{{ tiposDeCliente[tc] }}</mat-button-toggle>
     </mat-button-toggle-group>
   </p>
-  <form [formGroup]="personaForm" (ngSubmit)="registrarPersona()" *ngIf="tipo.value == 0" fxLayout="column">
+  <form [formGroup]="personaForm" (ngSubmit)="registrarPersona()" *ngIf="tCliente == 'PERSONA'" fxLayout="column">
     <mat-form-field fxFlex>
       <input matInput placeholder="Nombre" formControlName="nombre" required>
       <mat-error *ngIf="personaForm.get('nombre').hasError('required')">
@@ -15,6 +14,12 @@
     <mat-form-field fxFlex>
       <input matInput placeholder="Apellido" formControlName="apellido" required>
       <mat-error *ngIf="personaForm.get('apellido').hasError('required')">
+        Requerido
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field fxFlex>
+      <input matInput placeholder="Teléfono" formControlName="telefono" required>
+      <mat-error *ngIf="personaForm.get('telefono').hasError('required')">
         Requerido
       </mat-error>
     </mat-form-field>
@@ -32,27 +37,12 @@
       <mat-error *ngIf="personaForm.get('password').hasError('required')">
         Requerido
       </mat-error>
-      <mat-error *ngIf="!personaForm.get('password').hasError('required') && personaForm.controls.password.errors?.MatchPassword">
-        Las contraseñas deben ser iguales
-      </mat-error>
     </mat-form-field>
     <br>
     <button fxFill mat-raised-button color="primary" >Registrarme</button>
   </form>
 
-  <form [formGroup]="empresaForm" (ngSubmit)="registrarEmpresa()" *ngIf="tipo.value == 1" fxLayout="column">
-    <mat-form-field fxFlex>
-      <input matInput placeholder="Razón Social" formControlName="razonSocial" required>
-      <mat-error *ngIf="empresaForm.get('razonSocial').hasError('required')">
-        Requerido
-      </mat-error>
-    </mat-form-field>
-    <mat-form-field fxFlex>
-      <input matInput placeholder="CUIT" formControlName="cuit" required>
-      <mat-error *ngIf="empresaForm.get('cuit').hasError('required')">
-        Requerido
-      </mat-error>
-    </mat-form-field>
+  <form [formGroup]="empresaForm" (ngSubmit)="registrarEmpresa()" *ngIf="tCliente == 'EMPRESA'" fxLayout="column">
     <mat-form-field fxFlex>
       <input matInput placeholder="Nombre" formControlName="nombre" required>
       <mat-error *ngIf="empresaForm.get('nombre').hasError('required')">
@@ -62,6 +52,12 @@
     <mat-form-field fxFlex>
       <input matInput placeholder="Apellido" formControlName="apellido" required>
       <mat-error *ngIf="empresaForm.get('apellido').hasError('required')">
+        Requerido
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field fxFlex>
+      <input matInput placeholder="Teléfono" formControlName="telefono" required>
+      <mat-error *ngIf="personaForm.get('telefono').hasError('required')">
         Requerido
       </mat-error>
     </mat-form-field>
@@ -75,15 +71,27 @@
       </mat-error>
     </mat-form-field>
     <mat-form-field fxFlex>
+      <input matInput placeholder="CUIT" formControlName="cuit" required>
+      <mat-error *ngIf="empresaForm.get('cuit').hasError('required')">
+        Requerido
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field fxFlex>
+      <input matInput placeholder="Razón Social" formControlName="razonSocial" required>
+      <mat-error *ngIf="empresaForm.get('razonSocial').hasError('required')">
+        Requerido
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field fxFlex>
       <input matInput placeholder="Contraseña" type="password" formControlName="password" required>
       <mat-error *ngIf="empresaForm.get('password').hasError('required')">
         Requerido
       </mat-error>
-      <mat-error *ngIf="!empresaForm.get('password').hasError('required') && empresaForm.controls.password.errors?.MatchPassword">
-        Las contraseñas deben ser iguales
-      </mat-error>
     </mat-form-field>
     <br>
-    <button fxFill mat-raised-button color="primary" >Registrarme</button>
+    <button fxFill mat-raised-button color="primary" *ngIf="!loading" >Registrarme</button>
   </form>
+  <div *ngIf="loading" fxLayout="row" fxLayoutAlign="center center">
+    <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
+  </div>
 </mat-dialog-content>

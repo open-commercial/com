@@ -1,4 +1,4 @@
 export enum TipoDeCliente {
-  EMPRESA = 'Empresa',
-  PERSONA = 'Persona'
+  PERSONA = 'Persona',
+  EMPRESA = 'Empresa'
 }

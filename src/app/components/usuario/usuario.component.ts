@@ -3,7 +3,6 @@ import {FormBuilder, Validators, FormGroup} from '@angular/forms';
 import {Usuario} from '../../models/usuario';
 import {UsuariosService} from '../../services/usuarios.service';
 import {AvisoService} from '../../services/aviso.service';
-import {PasswordValidation} from '../../validators/PasswordValidation';
 import {AuthService} from '../../services/auth.service';
 import {finalize} from 'rxjs/operators';
 
@@ -43,7 +42,6 @@ export class UsuarioComponent implements OnInit {
               nombre: this.usuario.nombre || '',
               email: this.usuario.email || '',
               password: '',
-              repeatPassword: '',
             });
           }
         },
@@ -53,14 +51,12 @@ export class UsuarioComponent implements OnInit {
 
   createForm() {
     this.usuarioForm = this.fb.group({
-      username: ['', Validators.required],
+      username: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9_-]*$')]],
       apellido: ['', Validators.required],
       nombre: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       password: '',
-      repeatPassword: ''
     });
-    this.usuarioForm.setValidators(PasswordValidation.MatchPassword);
   }
 
   toggleEdit() {
@@ -109,7 +105,6 @@ export class UsuarioComponent implements OnInit {
       nombre: this.usuario.nombre,
       email: this.usuario.email,
       password: '',
-      repeatPassword: '',
     });
   }
 }
