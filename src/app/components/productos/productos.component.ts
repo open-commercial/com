@@ -37,13 +37,14 @@ export class ProductosComponent implements OnInit, OnDestroy {
   }
 
   cargarProductos(reset: boolean) {
-    if (reset) {
-      this.productos = [];
-      this.pagina = 0;
-    }
     this.loadingProducts = true;
     this.productosService.getProductos(this.pagina, this.tamanioPagina).subscribe(
       data => {
+        if (reset) {
+          this.productos = [];
+          this.pagina = 0;
+        }
+
         data['content'].forEach(p => this.productos.push(p));
         this.totalPaginas = data['totalPages'];
         this.loadingProducts = false;
