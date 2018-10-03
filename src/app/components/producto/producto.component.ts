@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Location} from '@angular/common';
 import {ProductosService} from '../../services/productos.service';
 import {CarritoCompraService} from '../../services/carrito-compra.service';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {AvisoService} from '../../services/aviso.service';
 import {AuthService} from '../../services/auth.service';
 
@@ -18,7 +18,8 @@ export class ProductoComponent implements OnInit {
   loadingProducto = false;
   cargandoAlCarrito = false;
 
-  constructor(private productosService: ProductosService, private route: ActivatedRoute,
+  constructor(private productosService: ProductosService,
+              private router: Router, private route: ActivatedRoute,
               private carritoCompraService: CarritoCompraService, private location: Location,
               private avisoService: AvisoService, private authService: AuthService) {}
 
@@ -42,7 +43,7 @@ export class ProductoComponent implements OnInit {
   }
 
   irAlListado() {
-    this.location.back();
+    this.router.navigateByUrl('/productos;busqueda=' + this.productosService.getBusquedaCriteria());
   }
 
   cargarAlCarrito() {
