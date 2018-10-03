@@ -63,6 +63,50 @@ export class ClienteComponent implements OnInit {
 
   ngOnInit() {
     this.isLoading = true;
+
+    this.getPaises();
+
+    this.clienteForm.get('idPais').valueChanges.subscribe(
+      idPais => {
+        if (!idPais) {
+          this.provincias.splice(0, this.provincias.length);
+          this.localidades.splice(0, this.localidades.length);
+          this.clienteForm.get('idProvincia').setValue(null);
+          return;
+        }
+        this.provinciasService.getProvincias(idPais).subscribe(
+          (data: Provincia[]) => {
+            this.provincias = data;
+            const provinciaFormValue = this.clienteForm.get('idProvincia').value;
+            if (!this.provinciasHasId(provinciaFormValue)) {
+              const idPorvincia = this.provincias.length ? this.provincias[0].id_Provincia : null;
+              this.clienteForm.get('idProvincia').setValue(idPorvincia);
+            }
+          }
+        );
+      }
+    );
+
+    this.clienteForm.get('idProvincia').valueChanges.subscribe(
+      idProvincia => {
+        if (!idProvincia) {
+          this.localidades.splice(0, this.localidades.length);
+          this.clienteForm.get('idLocalidad').setValue(null);
+          return;
+        }
+        this.localidadesService.getLocalidades(idProvincia).subscribe(
+          (data: Localidad[]) => {
+            this.localidades = data;
+            const localidadFormValue = this.clienteForm.get('idLocalidad').value;
+            if (!this.localidadHasId(localidadFormValue)) {
+              const idLocalidad = this.localidades.length ? this.localidades[0].id_Localidad : null;
+              this.clienteForm.get('idLocalidad').setValue(idLocalidad);
+            }
+          }
+        );
+      }
+    );
+
     this.clientesService.getClienteDelUsuario(this.authService.getLoggedInIdUsuario()).subscribe(
       (cliente: Cliente) => {
         if (cliente) {
@@ -72,19 +116,6 @@ export class ClienteComponent implements OnInit {
         this.isLoading = false;
       },
       error => this.isLoading = false
-    );
-    this.getPaises();
-    this.clienteForm.get('idPais').valueChanges.subscribe(
-      idPais => {
-        this.getProvincias(idPais);
-        this.clienteForm.get('idProvincia').setValue(null);
-      }
-    );
-    this.clienteForm.get('idProvincia').valueChanges.subscribe(
-      idProvincia => {
-        this.getLocalidades(idProvincia);
-        this.clienteForm.get('idLocalidad').setValue(null);
-      }
     );
   }
 
@@ -165,24 +196,21 @@ export class ClienteComponent implements OnInit {
       });
   }
 
-  getProvincias(idPais: number) {
-    if (!idPais) {
-      this.provincias.splice(0, this.provincias.length);
-      this.localidades.splice(0, this.localidades.length);
-      return;
+  provinciasHasId(idProvincia) {
+    for (let i = 0; i < this.provincias.length; i += 1) {
+      if (this.provincias[i].id_Provincia === idProvincia) {
+        return true;
+      }
     }
-    this.provinciasService.getProvincias(idPais)
-      .subscribe((data: Provincia[]) => {
-        this.provincias = data;
-      });
+    return false;
   }
 
-  getLocalidades(idProvincia: number) {
-    if (!idProvincia) {
-      this.localidades.splice(0, this.localidades.length);
-      return;
+  localidadHasId(idLocalidad) {
+    for (let i = 0; i < this.localidades.length; i += 1) {
+      if (this.localidades[i].id_Localidad === idLocalidad) {
+        return true;
+      }
     }
-    this.localidadesService.getLocalidades(idProvincia)
-      .subscribe((data: Localidad[]) => this.localidades = data);
+    return false;
   }
 }
