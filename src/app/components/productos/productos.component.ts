@@ -29,7 +29,6 @@ export class ProductosComponent implements OnInit, OnDestroy {
     });
 
     this.productosService.buscarProductos(this.busquedaCriteria);
-    this.cargarProductos(true);
   }
 
   ngOnDestroy() {
