@@ -1,0 +1,119 @@
+<div class="sic-com-registracion">
+  <!--<p fxLayout="column" fxLayoutAlign="center center" fxLayoutGap=".5rem">
+    <mat-button-toggle-group [value]="tCliente" aria-label="Seleccione el Tipo de Registro" (change)="onTipoSeleccionado($event)">
+      <mat-button-toggle *ngFor="let tc of keys(tiposDeCliente)" [value]="tc">{{ tiposDeCliente[tc] }}</mat-button-toggle>
+    </mat-button-toggle-group>
+  </p>-->
+  <div fxLayout="column" fxLayoutAlign="center center">
+    <img src="assets/loginLogoTrans.png">
+    <h1>Registración</h1>
+    <form [formGroup]="personaForm" (ngSubmit)="registrarPersona()" *ngIf="tCliente == 'PERSONA'" fxLayout="column">
+      <mat-form-field fxFlex>
+        <input matInput placeholder="Nombre" formControlName="nombre" required>
+        <mat-error *ngIf="personaForm.get('nombre').hasError('required')">
+          Requerido
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field fxFlex>
+        <input matInput placeholder="Apellido" formControlName="apellido" required>
+        <mat-error *ngIf="personaForm.get('apellido').hasError('required')">
+          Requerido
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field fxFlex>
+        <input matInput placeholder="Teléfono" formControlName="telefono" required>
+        <mat-error *ngIf="personaForm.get('telefono').hasError('required')">
+          Requerido
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput placeholder="Email" type="email" formControlName="email" required>
+        <mat-error *ngIf="personaForm.get('email').hasError('email') && !personaForm.get('email').hasError('required')">
+          Por favor, ingrese un email válido
+        </mat-error>
+        <mat-error *ngIf="personaForm.get('email').hasError('required')">
+          Requerido
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field fxFlex>
+        <input matInput placeholder="Contraseña" type="password" formControlName="password" required>
+        <mat-error *ngIf="personaForm.get('password').hasError('required')">
+          Requerido
+        </mat-error>
+      </mat-form-field>
+      <br>
+      <mat-action-row fxLayout="column" fxLayoutAlign="start end">
+        <button mat-raised-button color="primary" *ngIf="!loading" >Registrarme</button>
+      </mat-action-row>
+    </form>
+    <form [formGroup]="empresaForm" (ngSubmit)="registrarEmpresa()" *ngIf="tCliente == 'EMPRESA'">
+      <div fxLayout="column">
+        <div fxLayout="row" fxLayout.xs="column" fxLayoutGap=".7rem">
+          <mat-form-field fxFlex>
+            <input matInput placeholder="CUIT" formControlName="cuit" required>
+            <mat-error *ngIf="empresaForm.get('cuit').hasError('required')">
+              Requerido
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field fxFlex>
+            <input matInput placeholder="Razón Social" formControlName="razonSocial" required>
+            <mat-error *ngIf="empresaForm.get('razonSocial').hasError('required')">
+              Requerido
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div fxLayout="row" fxLayout.xs="column" fxLayoutGap=".7rem">
+          <mat-form-field fxFlex>
+            <input matInput placeholder="Nombre" formControlName="nombre" required>
+            <mat-error *ngIf="empresaForm.get('nombre').hasError('required')">
+              Requerido
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field fxFlex>
+            <input matInput placeholder="Apellido" formControlName="apellido" required>
+            <mat-error *ngIf="empresaForm.get('apellido').hasError('required')">
+              Requerido
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div fxLayout="row" fxLayout.xs="column" fxLayoutGap=".7rem">
+          <mat-form-field fxFlex>
+            <input matInput placeholder="Teléfono" formControlName="telefono" required>
+            <mat-error *ngIf="personaForm.get('telefono').hasError('required')">
+              Requerido
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field fxFlex>
+            <input matInput placeholder="Email" type="email" formControlName="email" required>
+            <mat-error *ngIf="empresaForm.get('email').hasError('email') && !empresaForm.get('email').hasError('required')">
+              Por favor, ingrese un email válido
+            </mat-error>
+            <mat-error *ngIf="empresaForm.get('email').hasError('required')">
+              Requerido
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div fxLayout="row" fxLayout.xs="column" fxLayoutGap=".7rem">
+          <mat-form-field fxFlex>
+            <input matInput placeholder="Contraseña" type="password" formControlName="password" required>
+            <mat-error *ngIf="empresaForm.get('password').hasError('required')">
+              Requerido
+            </mat-error>
+          </mat-form-field>
+          <span fxFlex></span>
+        </div>
+
+      </div>
+      <mat-action-row fxLayout="row" fxLayoutAlign="space-between center">
+        <a mat-raised-button routerLink="/login">
+          <mat-icon aria-label="Ir al Ingreso">keyboard_arrow_left</mat-icon> Ir al Ingreso
+        </a>
+        <button mat-raised-button color="primary" *ngIf="!loading" >Registrarme</button>
+      </mat-action-row>
+    </form>
+
+    <div *ngIf="loading" fxLayout="row" fxLayoutAlign="center center">
+      <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
+    </div>
+  </div>
+</div>

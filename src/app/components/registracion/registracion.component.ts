@@ -1,18 +1,18 @@
 import {Component, OnInit, AfterContentInit} from '@angular/core';
-import {MatDialog, MatDialogRef} from '@angular/material';
 import {AuthService} from '../../services/auth.service';
 import {AvisoService} from '../../services/aviso.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Usuario} from '../../models/usuario';
 import {TipoDeCliente} from '../../models/tipo.cliente';
 import {RegistracionService} from '../../services/registracion.service';
+import {Router} from '@angular/router';
 
 @Component({
-  selector: 'sic-com-registracion-dialog',
-  templateUrl: './registracion-dialog.component.html',
-  styleUrls: ['./registracion-dialog.component.scss']
+  selector: 'sic-com-registracion',
+  templateUrl: './registracion.component.html',
+  styleUrls: ['./registracion.component.scss']
 })
-export class RegistracionDialogComponent implements OnInit, AfterContentInit {
+export class RegistracionComponent implements OnInit, AfterContentInit {
   loading = false;
   personaForm: FormGroup;
   empresaForm: FormGroup;
@@ -23,8 +23,7 @@ export class RegistracionDialogComponent implements OnInit, AfterContentInit {
 
   tCliente = null;
 
-  constructor(private dialogRef: MatDialogRef<RegistracionDialogComponent>,
-              private dialog: MatDialog, private authService: AuthService,
+  constructor(private authService: AuthService, private router: Router,
               private registracionService: RegistracionService,
               private avisoService: AvisoService, private fb: FormBuilder) {
 
@@ -32,10 +31,15 @@ export class RegistracionDialogComponent implements OnInit, AfterContentInit {
     this.buildEmpresaForm();
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    if (this.authService.isAuthenticated()) {
+      this.avisoService.openSnackBar('Hay un usuario logueado no puede ir a registración.', '', 3500);
+      this.router.navigate(['productos']);
+    }
+  }
 
   ngAfterContentInit() {
-    this.tCliente = 'PERSONA';
+    this.tCliente = 'EMPRESA';
   }
 
   buildPersonaForm() {
@@ -74,14 +78,16 @@ export class RegistracionDialogComponent implements OnInit, AfterContentInit {
       reg.tipoDeCliente = this.tCliente;
 
       this.loading = true;
+      form.disable();
       this.registracionService.registrar(reg).subscribe(
         () => {
           this.loading = false;
-          this.dialogRef.close();
           this.avisoService.openSnackBar('Recibirá un email para confirmar su registración.', '', 3500);
+          this.router.navigate(['login']);
         },
         err => {
           this.loading = false;
+          form.enable();
           this.avisoService.openSnackBar(err.error, '', 3500);
         }
       );

@@ -5,9 +5,6 @@ import {CarritoCompraService} from '../../services/carrito-compra.service';
 import {AuthService} from '../../services/auth.service';
 import {Router} from '@angular/router';
 import {AvisoService} from '../../services/aviso.service';
-import {MatDialog} from '@angular/material';
-import {LoginDialogComponent} from '../login-dialog/login-dialog.component';
-import {RegistracionDialogComponent} from '../registracion-dialog/registracion-dialog.component';
 
 @Component({
   selector: 'sic-com-navbar',
@@ -25,7 +22,7 @@ export class NavbarComponent implements OnInit {
 
   constructor(public authService: AuthService, private productosService: ProductosService,
               private carritoCompraService: CarritoCompraService, private router: Router,
-              private avisoService: AvisoService, private dialog: MatDialog) {}
+              private avisoService: AvisoService) {}
 
   ngOnInit() {
     this.loadNavbarInfo();
@@ -61,21 +58,16 @@ export class NavbarComponent implements OnInit {
     this.router.navigate(['/productos', { busqueda: criteria }]);
   }
 
+  goToLogin() {
+    this.router.navigate(['login']);
+  }
+
   logout() {
     this.authService.logout();
     this.avisoService.openSnackBar('Su sesión se cerró correctamente', '', 3500);
   }
 
-  openLoginDialog() {
-    const dialogRef = this.dialog.open(LoginDialogComponent);
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.loadNavbarInfo();
-      }
-    });
-  }
-
-  openRegistracionDialog() {
-    const dialogRef = this.dialog.open(RegistracionDialogComponent);
+  goToRegistracion() {
+    this.router.navigate(['registracion']);
   }
 }

@@ -6,8 +6,12 @@ import {ContainerComponent} from './components/container/container.component';
 import {ProductosComponent} from './components/productos/productos.component';
 import {PerfilComponent} from './components/perfil/perfil.component';
 import {PasswordRecoveryComponent} from './components/password-recovery/password-recovery.component';
+import {LoginComponent} from './components/login/login.component';
+import {RegistracionComponent} from './components/registracion/registracion.component';
 
 const sicComRoutes: Routes = [
+  {path: 'login', component: LoginComponent},
+  {path: 'registracion', component: RegistracionComponent},
   {path: 'password-recovery', component: PasswordRecoveryComponent},
   {path: '', redirectTo: 'productos', pathMatch: 'full'},
   {path: '', component: ContainerComponent,
