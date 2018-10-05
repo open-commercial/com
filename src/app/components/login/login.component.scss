@@ -1,9 +1,11 @@
 .sic-com-login {
 
+  height: 100%;
   text-align: center;
+  background-color: white;
 
   img {
-    width: 200px;
+    width: 170px;
   }
 
   a {
@@ -15,6 +17,4 @@
     width: 90%;
     max-width: 300px;
   }
-
-  height: 100%;
 }
