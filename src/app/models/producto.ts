@@ -1,6 +1,6 @@
 export interface Producto {
   id_Producto: number;
-  cantidad: number;
+  hayStock: boolean;
   codigo: string;
   descripcion: string;
   nombreMedida: string;
