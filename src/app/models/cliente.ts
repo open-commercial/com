@@ -3,9 +3,11 @@ import {TipoDeCliente} from './tipo.cliente';
 
 export interface Cliente {
   id_Cliente: number;
+  tipoDeCliente: TipoDeCliente;
   nroCliente: string;
   razonSocial: string;
   nombreFantasia: string;
+  bonificacion: number;
   direccion: string;
   categoriaIVA: CategoriaIVA;
   idFiscal: string;
@@ -28,5 +30,4 @@ export interface Cliente {
   predeterminado: boolean;
   saldoCuentaCorriente: number;
   fechaUltimoMovimiento: Date;
-  tipoDeCliente: TipoDeCliente;
 }

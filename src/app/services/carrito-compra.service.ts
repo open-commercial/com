@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {Subject} from 'rxjs';
 import {environment} from 'environments/environment';
 import {HttpClient} from '@angular/common/http';
+import {OrdenCompra} from '../models/orden-compra';
 
 @Injectable()
 export class CarritoCompraService {
@@ -45,9 +46,9 @@ export class CarritoCompraService {
     return this.http.delete(urlDeleteItem);
   }
 
-  enviarOrden(pedido, idEmpresa, idUsuario, idCliente) {
-    const urlPedido = this.url + `/carrito-compra?idEmpresa=${idEmpresa}&idUsuario=${idUsuario}&idCliente=${idCliente}`;
-    return this.http.post(urlPedido, pedido, {responseType: 'text'});
+  enviarOrden(orden: OrdenCompra, idEmpresa, idUsuario, idCliente) {
+    const uri = this.url + `/carrito-compra?idEmpresa=${idEmpresa}&idUsuario=${idUsuario}&idCliente=${idCliente}`;
+    return this.http.post(uri, orden);
   }
 
   getTotalImportePedido() {

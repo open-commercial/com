@@ -10,7 +10,7 @@
         <textarea matInput autofocus placeholder="Observaciones" [(ngModel)]="observaciones"></textarea>
       </mat-form-field>
   </mat-dialog-content>
-  <button mat-raised-button color="primary" (click)="enviarPedido()" *ngIf="!loadingData">
+  <button mat-raised-button color="primary" (click)="enviarOrden()" *ngIf="!loadingData">
     <mat-icon>done_all</mat-icon>
     Enviar Orden
   </button>

@@ -13,14 +13,19 @@ import {AuthService} from '../../../services/auth.service';
 export class CheckoutDialogComponent implements OnInit {
 
   cliente;
+  subTotal = 0;
+  descuentoPorcentaje = 0;
+  descuentoNeto = 0;
   total = 0;
   cantArt = 0;
   observaciones;
   loggedInIdUsuario;
   loadingData = false;
 
-  constructor(private carritoCompraService: CarritoCompraService, private authService: AuthService,
-              private clientesService: ClientesService, private avisoService: AvisoService,
+  constructor(private carritoCompraService: CarritoCompraService,
+              private authService: AuthService,
+              private clientesService: ClientesService,
+              private avisoService: AvisoService,
               private dialogRef: MatDialogRef<CheckoutDialogComponent>) {}
 
   ngOnInit() {
@@ -34,21 +39,20 @@ export class CheckoutDialogComponent implements OnInit {
       err => this.avisoService.openSnackBar(err.error, '', 3500));
   }
 
-  enviarPedido() {
+  enviarOrden() {
     this.loadingData = true;
-    const defaultMsj = 'Los precios se encuentran sujetos a modificaciones.';
-    const observaciones = this.observaciones ? this.observaciones : defaultMsj;
-    const fecha = new Date();
-    const pedido = {
-      'id_Pedido': 0,
-      'fecha': fecha.getTime() - (fecha.getTimezoneOffset() * 60000),
-      'observaciones': observaciones,
-      'totalEstimado': this.total
+    const ordenDeCompra = {
+      'observaciones': this.observaciones,
+      'subTotal': this.total, // cambiar
+      'recargoPorcentaje': 0,
+      'recargoNeto': 0,
+      'descuentoPorcentaje': this.descuentoPorcentaje,
+      'descuentoNeto': this.descuentoNeto,
+      'total': this.total
     };
-    this.carritoCompraService.enviarOrden(pedido, this.cliente['idEmpresa'],
+    this.carritoCompraService.enviarOrden(ordenDeCompra, this.cliente['idEmpresa'],
       this.loggedInIdUsuario, this.cliente['id_Cliente']).subscribe(
       data => {
-        data = JSON.parse(data);
         this.loadingData = false;
         const mensaje = 'El pedido Nro ' + data['nroPedido'] + ' fué generado correctamente';
         this.avisoService.openSnackBar(mensaje, '', 3500);
@@ -56,17 +60,9 @@ export class CheckoutDialogComponent implements OnInit {
         this.carritoCompraService.setCantidadItemsEnCarrito(0);
         this.cerrarDialog(true);
       },
-      error => {
-        let mensaje = '';
-        if (error.status === 404) {
-          mensaje = 'No se encontró el servidor. Error: ' + error.status;
-        } else if (error.status === 0) {
-          mensaje = 'No se pudo enviar el pedido ';
-        } else {
-          mensaje = error.error;
-        }
+      err => {
         this.loadingData = false;
-        this.avisoService.openSnackBar(mensaje, '', 3500);
+        this.avisoService.openSnackBar(err.error, '', 3500);
       });
   }
 

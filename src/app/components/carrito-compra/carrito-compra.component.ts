@@ -31,9 +31,13 @@ export class CarritoCompraComponent implements OnInit {
   loadingRenglones = false;
   mostrarBotonAsignarCliente = true;
 
-  constructor(private carritoCompraService: CarritoCompraService, private clientesService: ClientesService,
-              private dialog: MatDialog, private avisoService: AvisoService, private authService: AuthService,
-              private productosService: ProductosService, private router: Router) {}
+  constructor(private carritoCompraService: CarritoCompraService,
+              private clientesService: ClientesService,
+              private dialog: MatDialog,
+              private avisoService: AvisoService,
+              private authService: AuthService,
+              private productosService: ProductosService,
+              private router: Router) {}
 
   ngOnInit() {
     this.loadingPedido = true;

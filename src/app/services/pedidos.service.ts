@@ -1,9 +1,9 @@
 import {Injectable} from '@angular/core';
-import {Subject, Observable} from 'rxjs';
+import {Observable} from 'rxjs';
 import {environment} from 'environments/environment';
 import {HttpClient} from '@angular/common/http';
 import {Cliente} from '../models/cliente';
-import { Pedido } from '../models/pedido';
+import {Pedido} from '../models/pedido';
 
 @Injectable()
 export class PedidosService {
