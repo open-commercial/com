@@ -39,6 +39,7 @@ import {EmailDialogComponent} from '../components/login/emailDialog/email-dialog
 import {PasswordRecoveryComponent} from '../components/password-recovery/password-recovery.component';
 import {CuentasCorrienteService} from '../services/cuentas-corriente.service';
 import {CuentaCorrienteComponent} from '../components/cuenta-corriente/cuenta-corriente.component';
+import { NgxCaptchaModule } from 'ngx-captcha';
 import {RegistracionService} from '../services/registracion.service';
 import {registerLocaleData} from '@angular/common';
 import localeEs from '@angular/common/locales/es';
@@ -76,7 +77,8 @@ registerLocaleData(localeEs, 'es-AR', localeEsExtra);
     SicComMaterialModule,
     FlexLayoutModule,
     BrowserAnimationsModule,
-    sicComRouting
+    sicComRouting,
+    NgxCaptchaModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},

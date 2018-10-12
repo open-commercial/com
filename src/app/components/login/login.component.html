@@ -1,4 +1,9 @@
-<div class="sic-com-login" fxLayout="row" fxLayoutAlign="center center">
+<div class="sic-com-login">
+  <a routerLink="/productos" fxLayout="row" fxLayoutAlign="start center">
+    <mat-icon>keyboard_arrow_left</mat-icon>
+    <strong>Ir a Productos</strong>
+  </a>
+  <div fxLayout="row" fxLayoutAlign="center center">
     <form [formGroup]="loginForm" (ngSubmit)="login()" class="sic-com-form">
       <img src="assets/loginLogoTrans.png">
       <div fxLayout="column">
@@ -28,4 +33,5 @@
         <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
       </div>
     </form>
+  </div>
 </div>

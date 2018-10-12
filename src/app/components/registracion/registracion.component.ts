@@ -1,4 +1,4 @@
-import {Component, OnInit, AfterContentInit} from '@angular/core';
+import {Component, OnInit, ViewChild } from '@angular/core';
 import {AuthService} from '../../services/auth.service';
 import {AvisoService} from '../../services/aviso.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
@@ -6,13 +6,14 @@ import {Usuario} from '../../models/usuario';
 import {TipoDeCliente} from '../../models/tipo.cliente';
 import {RegistracionService} from '../../services/registracion.service';
 import {Router} from '@angular/router';
+import {ReCaptcha2Component} from 'ngx-captcha';
 
 @Component({
   selector: 'sic-com-registracion',
   templateUrl: './registracion.component.html',
   styleUrls: ['./registracion.component.scss']
 })
-export class RegistracionComponent implements OnInit, AfterContentInit {
+export class RegistracionComponent implements OnInit {
   loading = false;
   personaForm: FormGroup;
   empresaForm: FormGroup;
@@ -23,6 +24,9 @@ export class RegistracionComponent implements OnInit, AfterContentInit {
 
   tCliente = null;
 
+  siteKey = '6Lfwp3QUAAAAANbMv6EJApDs1FS9l7v6LMig4nGU';
+  type: 'image' | 'audio' = 'image';
+
   constructor(private authService: AuthService, private router: Router,
               private registracionService: RegistracionService,
               private avisoService: AvisoService, private fb: FormBuilder) {
@@ -32,14 +36,11 @@ export class RegistracionComponent implements OnInit, AfterContentInit {
   }
 
   ngOnInit() {
+    this.tCliente = 'EMPRESA';
     if (this.authService.isAuthenticated()) {
       this.avisoService.openSnackBar('Hay un usuario logueado no puede ir a registración.', '', 3500);
       this.router.navigate(['productos']);
     }
-  }
-
-  ngAfterContentInit() {
-    this.tCliente = 'EMPRESA';
   }
 
   buildPersonaForm() {
@@ -49,6 +50,7 @@ export class RegistracionComponent implements OnInit, AfterContentInit {
       telefono: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required],
+      recaptcha: ['', Validators.required],
     });
   }
 
@@ -61,6 +63,7 @@ export class RegistracionComponent implements OnInit, AfterContentInit {
       cuit: ['', Validators.required],
       razonSocial: ['', Validators.required],
       password: ['', Validators.required],
+      recaptcha: ['', Validators.required]
     });
   }
 
@@ -76,7 +79,6 @@ export class RegistracionComponent implements OnInit, AfterContentInit {
     if (form.valid) {
       const reg = form.value;
       reg.tipoDeCliente = this.tCliente;
-
       this.loading = true;
       form.disable();
       this.registracionService.registrar(reg).subscribe(
@@ -91,7 +93,6 @@ export class RegistracionComponent implements OnInit, AfterContentInit {
           this.avisoService.openSnackBar(err.error, '', 3500);
         }
       );
-
     }
   }
 
