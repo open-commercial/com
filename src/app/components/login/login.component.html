@@ -1,0 +1,37 @@
+<div class="sic-com-login">
+  <a routerLink="/productos" fxLayout="row" fxLayoutAlign="start center">
+    <mat-icon>keyboard_arrow_left</mat-icon>
+    <strong>Ir a Productos</strong>
+  </a>
+  <div fxLayout="row" fxLayoutAlign="center center">
+    <form [formGroup]="loginForm" (ngSubmit)="login()" class="sic-com-form">
+      <img src="assets/loginLogoTrans.png">
+      <div fxLayout="column">
+        <mat-form-field fxFlex fxFill>
+          <input matInput autofocus name="username" required type="text" formControlName="username"
+                 placeholder="Email o Usuario">
+          <mat-error *ngIf="loginForm.get('username').hasError('required')">
+            Requerido
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field fxFlex fxFill>
+          <input matInput name="password" required type="password" formControlName="password"
+                 placeholder="Contraseña">
+          <mat-error *ngIf="loginForm.get('password').hasError('required')">
+            Requerido
+          </mat-error>
+        </mat-form-field>
+        <span>&nbsp;</span>
+        <a routerLink="." (click)="openEmailDialog()" *ngIf="!loading">Olvidé mi contraseña</a>
+        <span>&nbsp;</span>
+      </div>
+      <div *ngIf="!loading" fxLayout="column" fxLayoutGap=".7em">
+        <button fxFill mat-raised-button color="primary" >Ingresar</button>
+        <a fxFill mat-raised-button routerLink="/registracion">Registrarme</a>
+      </div>
+      <div *ngIf="loading" fxLayout="row" fxLayoutAlign="center center">
+        <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
+      </div>
+    </form>
+  </div>
+</div>

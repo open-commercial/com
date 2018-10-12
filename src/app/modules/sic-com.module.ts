@@ -4,8 +4,8 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {SicComComponent} from '../sic-com.component';
-import {LoginDialogComponent} from '../components/login-dialog/login-dialog.component';
-import {RegistracionDialogComponent} from '../components/registracion-dialog/registracion-dialog.component';
+import {LoginComponent} from '../components/login/login.component';
+import {RegistracionComponent} from '../components/registracion/registracion.component';
 import {NavbarComponent} from '../components/navbar/navbar.component';
 import {ProductosComponent} from '../components/productos/productos.component';
 import {ProductosService} from '../services/productos.service';
@@ -35,10 +35,11 @@ import {PaisesService} from '../services/paises.service';
 import {ProvinciasService} from '../services/provincias.service';
 import {LocalidadesService} from '../services/localidades.service';
 import {CantidadProductoDialogComponent} from '../components/carrito-compra/cantidadProductoDialog/cantidad-producto-dialog.component';
-import {EmailDialogComponent} from '../components/login-dialog/emailDialog/email-dialog.component';
+import {EmailDialogComponent} from '../components/login/emailDialog/email-dialog.component';
 import {PasswordRecoveryComponent} from '../components/password-recovery/password-recovery.component';
 import {CuentasCorrienteService} from '../services/cuentas-corriente.service';
 import {CuentaCorrienteComponent} from '../components/cuenta-corriente/cuenta-corriente.component';
+import { NgxCaptchaModule } from 'ngx-captcha';
 import {RegistracionService} from '../services/registracion.service';
 import {registerLocaleData} from '@angular/common';
 import localeEs from '@angular/common/locales/es';
@@ -49,8 +50,8 @@ registerLocaleData(localeEs, 'es-AR', localeEsExtra);
 @NgModule({
   declarations: [
     SicComComponent,
-    LoginDialogComponent,
-    RegistracionDialogComponent,
+    LoginComponent,
+    RegistracionComponent,
     NavbarComponent,
     ProductosComponent,
     ProductoComponent,
@@ -76,7 +77,8 @@ registerLocaleData(localeEs, 'es-AR', localeEsExtra);
     SicComMaterialModule,
     FlexLayoutModule,
     BrowserAnimationsModule,
-    sicComRouting
+    sicComRouting,
+    NgxCaptchaModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
@@ -100,9 +102,7 @@ registerLocaleData(localeEs, 'es-AR', localeEsExtra);
     CheckoutDialogComponent,
     ConfirmationDialogComponent,
     CantidadProductoDialogComponent,
-    LoginDialogComponent,
-    EmailDialogComponent,
-    RegistracionDialogComponent
+    EmailDialogComponent
   ],
   bootstrap: [
     SicComComponent
