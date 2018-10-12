@@ -46,7 +46,7 @@
             Requerido
           </mat-error>
         </mat-form-field>
-      </div>
+      </div><br>
       <mat-action-row fxLayout="column" fxLayoutAlign="center center">
         <ngx-recaptcha2
           [siteKey]="siteKey"
@@ -55,7 +55,7 @@
           formControlName="recaptcha">
         </ngx-recaptcha2>
         <span><br></span>
-        <button fxFill mat-raised-button color="primary" *ngIf="!loading" >Registrarme</button>
+        <button fxFill mat-raised-button color="primary" *ngIf="!loading" >Registrarme</button><br>
       </mat-action-row>
     </form>
     <form [formGroup]="empresaForm" (ngSubmit)="registrarEmpresa()" *ngIf="tCliente == 'EMPRESA'">
@@ -105,7 +105,7 @@
             Requerido
           </mat-error>
         </mat-form-field>
-      </div>
+      </div><br>
       <mat-action-row fxLayout="column" fxLayoutAlign="center center">
         <ngx-recaptcha2
           [siteKey]="siteKey"
@@ -114,7 +114,7 @@
           formControlName="recaptcha">
         </ngx-recaptcha2>
         <span><br></span>
-        <button fxFill mat-raised-button color="primary" *ngIf="!loading" >Registrarme</button>
+        <button fxFill mat-raised-button color="primary" *ngIf="!loading" >Registrarme</button><br>
       </mat-action-row>
     </form>
     <div *ngIf="loading" fxLayout="row" fxLayoutAlign="center center">
