@@ -42,6 +42,7 @@ export class CheckoutDialogComponent implements OnInit {
   enviarOrden() {
     this.loadingData = true;
     const ordenDeCompra = {
+      'cantArticulos': this.cantArt,
       'observaciones': this.observaciones,
       'subTotal': this.total, // cambiar
       'recargoPorcentaje': 0,

@@ -11,6 +11,8 @@ import {Rol} from '../../models/rol';
 import {CantidadProductoDialogComponent} from './cantidadProductoDialog/cantidad-producto-dialog.component';
 import {ProductosService} from '../../services/productos.service';
 import {Router} from '@angular/router';
+import {OrdenCompra} from '../../models/orden-compra';
+import {Cliente} from '../../models/cliente';
 
 @Component({
   selector: 'sic-com-carrito-compra',
@@ -20,16 +22,24 @@ import {Router} from '@angular/router';
 export class CarritoCompraComponent implements OnInit {
 
   itemsCarritoCompra = [];
-  totalLista = 0;
-  cantidadArticulos = 0;
   cantidadRenglones = 0;
-  clienteSeleccionado = [];
+  clienteSeleccionado: Cliente;
   pagina = 0;
   tamanioPagina = 10;
   totalPaginas = 0;
   loadingPedido = false;
   loadingRenglones = false;
   mostrarBotonAsignarCliente = true;
+  ordenCompra: OrdenCompra = {
+    cantArticulos: 0,
+    observaciones: '',
+    subTotal: 0,
+    recargoPorcentaje: 0,
+    recargoNeto: 0,
+    descuentoPorcentaje: 0,
+    descuentoNeto: 0,
+    total: 0,
+  };
 
   constructor(private carritoCompraService: CarritoCompraService,
               private clientesService: ClientesService,
@@ -67,7 +77,10 @@ export class CarritoCompraComponent implements OnInit {
   }
 
   openDialogCliente() {
-    this.dialog.open(ClientesDialogComponent);
+    const diagRef = this.dialog.open(ClientesDialogComponent);
+    diagRef.afterClosed().subscribe(
+      result => this.sumarTotales()
+    );
   }
 
   openDialogCheckout() {
@@ -75,8 +88,8 @@ export class CarritoCompraComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.itemsCarritoCompra = [];
-        this.cantidadArticulos = 0;
-        this.totalLista = 0;
+        this.ordenCompra.subTotal = 0;
+        this.ordenCompra.cantArticulos = 0;
       }
     });
   }
@@ -86,7 +99,7 @@ export class CarritoCompraComponent implements OnInit {
     dialogRef.componentInstance.titulo = '¿Está seguro de quitar todos los productos del carrito?';
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.cantidadArticulos = 0;
+        this.ordenCompra.cantArticulos = 0;
         this.carritoCompraService.eliminarTodosLosItems().subscribe(
           data => {
             this.avisoService.openSnackBar('Se borraron todos los articulos del listado', '', 3500);
@@ -115,11 +128,17 @@ export class CarritoCompraComponent implements OnInit {
   sumarTotales() {
     this.carritoCompraService.getTotalImportePedido().subscribe(
       data => {
-        this.totalLista = 0;
+        this.ordenCompra.subTotal = 0;
         if (data !== null) {
-          this.totalLista = parseFloat(data.toString());
+          this.ordenCompra.subTotal = parseFloat(data.toString());
+          // console.log(this.clienteSeleccionado);
+          // this.ordenCompra.descuentoPorcentaje = this.clienteSeleccionado ? this.clienteSeleccionado.bonificacion : 0;
+          this.ordenCompra.descuentoPorcentaje = this.clientesService.getClienteSeleccionado() ?
+            this.clientesService.getClienteSeleccionado().bonificacion : 0;
+          this.ordenCompra.descuentoNeto = (this.ordenCompra.subTotal * this.ordenCompra.descuentoPorcentaje) / 100;
+          this.ordenCompra.total = this.ordenCompra.subTotal - this.ordenCompra.descuentoNeto;
           this.carritoCompraService.getCantidadArticulos().subscribe(
-            cantArt => this.cantidadArticulos = Number(cantArt),
+            cantArt => this.ordenCompra.cantArticulos = Number(cantArt),
             err => this.avisoService.openSnackBar(err.error, '', 3500));
         }
       },
@@ -137,7 +156,7 @@ export class CarritoCompraComponent implements OnInit {
             this.sumarTotales();
             const id = this.itemsCarritoCompra.map(function(e) {return e; }).indexOf(itemCarritoCompra);
             this.itemsCarritoCompra.splice(id, 1);
-            this.cantidadArticulos = this.itemsCarritoCompra.length;
+            this.ordenCompra.cantArticulos = this.itemsCarritoCompra.length;
             this.carritoCompraService.setCantidadItemsEnCarrito(this.itemsCarritoCompra.length);
           },
           err => this.avisoService.openSnackBar(err.error, '', 3500));

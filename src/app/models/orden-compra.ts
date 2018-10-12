@@ -1,4 +1,5 @@
 export interface OrdenCompra {
+  cantArticulos: number;
   observaciones?: string;
   subTotal: number;
   recargoPorcentaje: number;
