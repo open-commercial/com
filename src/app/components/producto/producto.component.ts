@@ -1,5 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {Location} from '@angular/common';
 import {ProductosService} from '../../services/productos.service';
 import {CarritoCompraService} from '../../services/carrito-compra.service';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -19,9 +18,12 @@ export class ProductoComponent implements OnInit {
   cargandoAlCarrito = false;
 
   constructor(private productosService: ProductosService,
-              private router: Router, private route: ActivatedRoute,
-              private carritoCompraService: CarritoCompraService, private location: Location,
-              private avisoService: AvisoService, private authService: AuthService) {}
+              private carritoCompraService: CarritoCompraService,
+              private avisoService: AvisoService,
+              private authService: AuthService,
+              private router: Router,
+              private route: ActivatedRoute) {
+  }
 
   ngOnInit() {
     const productoId = Number(this.route.snapshot.params['id']);

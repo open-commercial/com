@@ -18,11 +18,13 @@ export class ProductosComponent implements OnInit, OnDestroy {
   busquedaCriteria = '';
   buscarProductosSubscription: Subscription;
 
-  constructor(private productosService: ProductosService, private route: ActivatedRoute, private avisoService: AvisoService) {}
+  constructor(private productosService: ProductosService,
+              private route: ActivatedRoute,
+              private avisoService: AvisoService) {
+  }
 
   ngOnInit() {
     this.busquedaCriteria = this.route.snapshot.paramMap.get('busqueda') || '';
-
     this.buscarProductosSubscription = this.productosService.buscarProductos$.subscribe(data => {
       this.busquedaCriteria = data;
       this.cargarProductos(true);
