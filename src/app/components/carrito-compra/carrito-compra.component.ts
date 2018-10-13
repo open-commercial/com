@@ -136,8 +136,6 @@ export class CarritoCompraComponent implements OnInit {
         this.ordenCompra.subTotal = 0;
         if (data !== null) {
           this.ordenCompra.subTotal = parseFloat(data.toString());
-          // console.log(this.clienteSeleccionado);
-          // this.ordenCompra.descuentoPorcentaje = this.clienteSeleccionado ? this.clienteSeleccionado.bonificacion : 0;
           this.ordenCompra.descuentoPorcentaje = this.clientesService.getClienteSeleccionado() ?
             this.clientesService.getClienteSeleccionado().bonificacion : 0;
           this.ordenCompra.descuentoNeto = (this.ordenCompra.subTotal * this.ordenCompra.descuentoPorcentaje) / 100;
