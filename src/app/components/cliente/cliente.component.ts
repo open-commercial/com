@@ -48,6 +48,7 @@ export class ClienteComponent implements OnInit {
   createForm() {
     this.clienteForm = this.fb.group({
       tipoDeCliente: [null, Validators.required],
+      bonificacion: [null, Validators.pattern('^[0-9]*$')],
       idFiscal: ['', Validators.pattern('^[0-9]*$')],
       razonSocial: ['', Validators.required],
       nombreFantasia: '',
@@ -63,9 +64,7 @@ export class ClienteComponent implements OnInit {
 
   ngOnInit() {
     this.isLoading = true;
-
     this.getPaises();
-
     this.clienteForm.get('idPais').valueChanges.subscribe(
       idPais => {
         if (!idPais) {
@@ -86,7 +85,6 @@ export class ClienteComponent implements OnInit {
         );
       }
     );
-
     this.clienteForm.get('idProvincia').valueChanges.subscribe(
       idProvincia => {
         if (!idProvincia) {
@@ -106,12 +104,12 @@ export class ClienteComponent implements OnInit {
         );
       }
     );
-
     this.clientesService.getClienteDelUsuario(this.authService.getLoggedInIdUsuario()).subscribe(
       (cliente: Cliente) => {
         if (cliente) {
           this.cliente = cliente;
           this.clienteForm.get('tipoDeCliente').disable();
+          this.clienteForm.get('bonificacion').disable();
         }
         this.isLoading = false;
       },
@@ -137,6 +135,7 @@ export class ClienteComponent implements OnInit {
                   this.cliente = newcliente;
                   this.inEdition = false;
                   this.clienteForm.get('tipoDeCliente').disable();
+                  this.clienteForm.get('bonificacion').disable();
                 }
                 this.isLoading = false;
               }
@@ -153,6 +152,7 @@ export class ClienteComponent implements OnInit {
   getFormValues(): any {
     return {
       tipoDeCliente: this.clienteForm.get('tipoDeCliente').value,
+      bonificacion: this.clienteForm.get('bonificacion').value,
       id_Cliente: this.cliente ? this.cliente.id_Cliente : null,
       razonSocial: this.clienteForm.get('razonSocial').value,
       nombreFantasia: this.clienteForm.get('nombreFantasia').value,
@@ -174,6 +174,7 @@ export class ClienteComponent implements OnInit {
     } else {
       this.clienteForm.reset({
         tipoDeCliente: this.cliente.tipoDeCliente,
+        bonificacion: this.cliente.bonificacion,
         idFiscal: this.cliente.idFiscal,
         razonSocial: this.cliente.razonSocial,
         nombreFantasia: this.cliente.nombreFantasia,

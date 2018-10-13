@@ -12,7 +12,13 @@
             Requerido
           </mat-error>
         </mat-form-field>
-        <span fxFlex fxHide fxShow.gt-sm></span>
+        <mat-form-field fxFlex>
+          <input matInput type="number" placeholder="Bonificación" formControlName="bonificacion">
+          <span matSuffix>%&nbsp;</span>
+          <mat-error *ngIf="clienteForm.get('bonificacion').hasError('pattern')">
+            Solo números
+          </mat-error>
+        </mat-form-field>
       </div>
       <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.7rem">
         <mat-form-field fxFlex>
@@ -101,26 +107,30 @@
               <mat-icon>assignment_ind</mat-icon>
               <span>#{{ cliente.nroCliente }}</span>
             </span>
-              <span fxLayout="row" fxLayoutGap="1rem" fxLayoutAlign="start center" *ngIf="cliente.idFiscal">
+            <span fxLayout="row" fxLayoutGap="1rem" fxLayoutAlign="start center" *ngIf="cliente.idFiscal">
               <mat-icon>work</mat-icon>
               <span>{{ cliente.idFiscal }}</span>
             </span>
-              <span fxLayout="row" fxLayoutGap="1rem" fxLayoutAlign="start center">
+            <span fxLayout="row" fxLayoutGap="1rem" fxLayoutAlign="start center">
               <mat-icon>grade</mat-icon>
               <span>{{ cliente.razonSocial }}</span>
             </span>
-              <span fxLayout="row" fxLayoutGap="1rem" fxLayoutAlign="start center" *ngIf="cliente.nombreFantasia">
+            <span fxLayout="row" fxLayoutGap="1rem" fxLayoutAlign="start center" *ngIf="cliente.nombreFantasia">
               <mat-icon>copyright</mat-icon>
               <span>{{ cliente.nombreFantasia }}</span>
             </span>
-              <span fxLayout="row" fxLayoutGap="1rem" fxLayoutAlign="start center">
-              <mat-icon>account_balance</mat-icon>
-              <span>{{ categoriasIVA[cliente.categoriaIVA] }}</span>
+            <span fxLayout="row" fxLayoutGap="1rem" fxLayoutAlign="start center">
+              <mat-icon>attach_money</mat-icon>
+              <span>{{ cliente.bonificacion }}%</span>
             </span>
           </div>
         </div>
         <div fxFlex>
           <div fxLayout="column" fxLayoutGap="0.7rem">
+            <span fxLayout="row" fxLayoutGap="1rem" fxLayoutAlign="start center">
+              <mat-icon>account_balance</mat-icon>
+              <span>{{ categoriasIVA[cliente.categoriaIVA] }}</span>
+            </span>
             <span fxLayout="row" fxLayoutGap="1rem" fxLayoutAlign="start center" *ngIf="cliente.nombreLocalidad">
               <mat-icon>place</mat-icon>
               <span>
@@ -128,11 +138,11 @@
                 {{ cliente.nombreLocalidad }}, {{ cliente.nombreProvincia }}, {{ cliente.nombrePais }}
               </span>
             </span>
-              <span fxLayout="row" fxLayoutGap="1rem" fxLayoutAlign="start center" *ngIf="cliente.telefono">
+            <span fxLayout="row" fxLayoutGap="1rem" fxLayoutAlign="start center" *ngIf="cliente.telefono">
               <mat-icon>phone</mat-icon>
               <span>{{ cliente.telefono }}</span>
             </span>
-              <span fxLayout="row" fxLayoutGap="1rem" fxLayoutAlign="start center" *ngIf="cliente.email">
+            <span fxLayout="row" fxLayoutGap="1rem" fxLayoutAlign="start center" *ngIf="cliente.email">
               <mat-icon>email</mat-icon>
               <span>{{ cliente.email }}</span>
             </span>
