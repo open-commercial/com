@@ -1,9 +1,10 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, Inject} from '@angular/core';
 import {CarritoCompraService} from '../../../services/carrito-compra.service';
 import {ClientesService} from '../../../services/clientes.service';
-import {MatDialogRef} from '@angular/material';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {AvisoService} from '../../../services/aviso.service';
 import {AuthService} from '../../../services/auth.service';
+import {OrdenCompra} from '../../../models/orden-compra';
 
 @Component({
   selector: 'sic-com-checkout',
@@ -13,11 +14,6 @@ import {AuthService} from '../../../services/auth.service';
 export class CheckoutDialogComponent implements OnInit {
 
   cliente;
-  subTotal = 0;
-  descuentoPorcentaje = 0;
-  descuentoNeto = 0;
-  total = 0;
-  cantArt = 0;
   observaciones;
   loggedInIdUsuario;
   loadingData = false;
@@ -26,32 +22,18 @@ export class CheckoutDialogComponent implements OnInit {
               private authService: AuthService,
               private clientesService: ClientesService,
               private avisoService: AvisoService,
-              private dialogRef: MatDialogRef<CheckoutDialogComponent>) {}
+              private dialogRef: MatDialogRef<CheckoutDialogComponent>,
+              @Inject(MAT_DIALOG_DATA) public data: OrdenCompra) {}
 
   ngOnInit() {
     this.cliente = this.clientesService.getClienteSeleccionado();
-    this.carritoCompraService.getTotalImportePedido().subscribe(
-      data => this.total = parseFloat(data.toString()),
-      err => this.avisoService.openSnackBar(err.error, '', 3500));
     this.loggedInIdUsuario = this.authService.getLoggedInIdUsuario();
-    this.carritoCompraService.getCantidadArticulos().subscribe(
-      data => this.cantArt = Number(data),
-      err => this.avisoService.openSnackBar(err.error, '', 3500));
   }
 
   enviarOrden() {
     this.loadingData = true;
-    const ordenDeCompra = {
-      'cantArticulos': this.cantArt,
-      'observaciones': this.observaciones,
-      'subTotal': this.total, // cambiar
-      'recargoPorcentaje': 0,
-      'recargoNeto': 0,
-      'descuentoPorcentaje': this.descuentoPorcentaje,
-      'descuentoNeto': this.descuentoNeto,
-      'total': this.total
-    };
-    this.carritoCompraService.enviarOrden(ordenDeCompra, this.cliente['idEmpresa'],
+    this.data.observaciones = this.observaciones;
+    this.carritoCompraService.enviarOrden(this.data, this.cliente['idEmpresa'],
       this.loggedInIdUsuario, this.cliente['id_Cliente']).subscribe(
       data => {
         this.loadingData = false;

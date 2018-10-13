@@ -30,16 +30,7 @@ export class CarritoCompraComponent implements OnInit {
   loadingPedido = false;
   loadingRenglones = false;
   mostrarBotonAsignarCliente = true;
-  ordenCompra: OrdenCompra = {
-    cantArticulos: 0,
-    observaciones: '',
-    subTotal: 0,
-    recargoPorcentaje: 0,
-    recargoNeto: 0,
-    descuentoPorcentaje: 0,
-    descuentoNeto: 0,
-    total: 0,
-  };
+  ordenCompra: OrdenCompra;
 
   constructor(private carritoCompraService: CarritoCompraService,
               private clientesService: ClientesService,
@@ -47,10 +38,12 @@ export class CarritoCompraComponent implements OnInit {
               private avisoService: AvisoService,
               private authService: AuthService,
               private productosService: ProductosService,
-              private router: Router) {}
+              private router: Router) {
+  }
 
   ngOnInit() {
     this.loadingPedido = true;
+    this.resetOrdenDeCompra();
     this.cargarPedido();
     this.clienteSeleccionado = this.clientesService.getClienteSeleccionado();
     this.clientesService.clienteSeleccionado$.subscribe(data => this.clienteSeleccionado = data);
@@ -84,14 +77,26 @@ export class CarritoCompraComponent implements OnInit {
   }
 
   openDialogCheckout() {
-    const dialogRef = this.dialog.open(CheckoutDialogComponent);
+    const dialogRef = this.dialog.open(CheckoutDialogComponent, {data: this.ordenCompra});
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.itemsCarritoCompra = [];
-        this.ordenCompra.subTotal = 0;
-        this.ordenCompra.cantArticulos = 0;
+        this.resetOrdenDeCompra();
       }
     });
+  }
+
+  resetOrdenDeCompra() {
+    this.ordenCompra = {
+      cantArticulos: 0,
+      observaciones: '',
+      subTotal: 0,
+      recargoPorcentaje: 0,
+      recargoNeto: 0,
+      descuentoPorcentaje: 0,
+      descuentoNeto: 0,
+      total: 0,
+    };
   }
 
   vaciarPedido() {
@@ -154,7 +159,9 @@ export class CarritoCompraComponent implements OnInit {
           data => {
             this.avisoService.openSnackBar('Se eliminó el articulo del listado', '', 3500);
             this.sumarTotales();
-            const id = this.itemsCarritoCompra.map(function(e) {return e; }).indexOf(itemCarritoCompra);
+            const id = this.itemsCarritoCompra.map(function (e) {
+              return e;
+            }).indexOf(itemCarritoCompra);
             this.itemsCarritoCompra.splice(id, 1);
             this.ordenCompra.cantArticulos = this.itemsCarritoCompra.length;
             this.carritoCompraService.setCantidadItemsEnCarrito(this.itemsCarritoCompra.length);
@@ -184,6 +191,6 @@ export class CarritoCompraComponent implements OnInit {
 
   irAlListado() {
     const criteria = this.productosService.getBusquedaCriteria();
-    this.router.navigate(['/productos', { busqueda: criteria }]);
+    this.router.navigate(['/productos', {busqueda: criteria}]);
   }
 }
