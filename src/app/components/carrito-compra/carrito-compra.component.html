@@ -11,7 +11,12 @@
       <div fxLayoutAlign="space-around center" class="sic-com-totalizadores" fxLayout.lt-sm="column">
         <span>Cant. Articulos: {{ordenCompra.cantArticulos}}</span>
         <span>Subtotal: $ {{ordenCompra.subTotal | number:'1.2-2':'es-AR' }}</span>
-        <span>Bonificación: % {{ordenCompra.descuentoPorcentaje | number:'1.2-2':'es-AR' }}</span>
+        <mat-chip-list>
+          Bonificación:
+          <mat-chip class="sic-com-bonificacion">
+            <span>%{{ordenCompra.descuentoPorcentaje | number:'1.2-2':'es-AR' }}</span>
+          </mat-chip>
+        </mat-chip-list>
         <span>Total: $ {{ordenCompra.total | number:'1.2-2':'es-AR' }}</span>
       </div>
       <div fxLayoutAlign="space-around center" class="sic-com-botonera">
