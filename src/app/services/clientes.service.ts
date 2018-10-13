@@ -25,12 +25,12 @@ export class ClientesService {
     this.clienteSeleccionadoSubject.next(cliente);
   }
 
-  getClienteSeleccionado() {
+  getClienteSeleccionado(): Cliente {
     const cliente = localStorage.getItem('clientePedido');
     if (cliente) {
       return JSON.parse(cliente);
     } else {
-      return [];
+      return null;
     }
   }
 

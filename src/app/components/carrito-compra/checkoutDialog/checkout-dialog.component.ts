@@ -1,9 +1,10 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, Inject} from '@angular/core';
 import {CarritoCompraService} from '../../../services/carrito-compra.service';
 import {ClientesService} from '../../../services/clientes.service';
-import {MatDialogRef} from '@angular/material';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {AvisoService} from '../../../services/aviso.service';
 import {AuthService} from '../../../services/auth.service';
+import {OrdenCompra} from '../../../models/orden-compra';
 
 @Component({
   selector: 'sic-com-checkout',
@@ -13,42 +14,28 @@ import {AuthService} from '../../../services/auth.service';
 export class CheckoutDialogComponent implements OnInit {
 
   cliente;
-  total = 0;
-  cantArt = 0;
   observaciones;
   loggedInIdUsuario;
   loadingData = false;
 
-  constructor(private carritoCompraService: CarritoCompraService, private authService: AuthService,
-              private clientesService: ClientesService, private avisoService: AvisoService,
-              private dialogRef: MatDialogRef<CheckoutDialogComponent>) {}
+  constructor(private carritoCompraService: CarritoCompraService,
+              private authService: AuthService,
+              private clientesService: ClientesService,
+              private avisoService: AvisoService,
+              private dialogRef: MatDialogRef<CheckoutDialogComponent>,
+              @Inject(MAT_DIALOG_DATA) public data: OrdenCompra) {}
 
   ngOnInit() {
     this.cliente = this.clientesService.getClienteSeleccionado();
-    this.carritoCompraService.getTotalImportePedido().subscribe(
-      data => this.total = parseFloat(data.toString()),
-      err => this.avisoService.openSnackBar(err.error, '', 3500));
     this.loggedInIdUsuario = this.authService.getLoggedInIdUsuario();
-    this.carritoCompraService.getCantidadArticulos().subscribe(
-      data => this.cantArt = Number(data),
-      err => this.avisoService.openSnackBar(err.error, '', 3500));
   }
 
-  enviarPedido() {
+  enviarOrden() {
     this.loadingData = true;
-    const defaultMsj = 'Los precios se encuentran sujetos a modificaciones.';
-    const observaciones = this.observaciones ? this.observaciones : defaultMsj;
-    const fecha = new Date();
-    const pedido = {
-      'id_Pedido': 0,
-      'fecha': fecha.getTime() - (fecha.getTimezoneOffset() * 60000),
-      'observaciones': observaciones,
-      'totalEstimado': this.total
-    };
-    this.carritoCompraService.enviarOrden(pedido, this.cliente['idEmpresa'],
+    this.data.observaciones = this.observaciones;
+    this.carritoCompraService.enviarOrden(this.data, this.cliente['idEmpresa'],
       this.loggedInIdUsuario, this.cliente['id_Cliente']).subscribe(
       data => {
-        data = JSON.parse(data);
         this.loadingData = false;
         const mensaje = 'El pedido Nro ' + data['nroPedido'] + ' fué generado correctamente';
         this.avisoService.openSnackBar(mensaje, '', 3500);
@@ -56,17 +43,9 @@ export class CheckoutDialogComponent implements OnInit {
         this.carritoCompraService.setCantidadItemsEnCarrito(0);
         this.cerrarDialog(true);
       },
-      error => {
-        let mensaje = '';
-        if (error.status === 404) {
-          mensaje = 'No se encontró el servidor. Error: ' + error.status;
-        } else if (error.status === 0) {
-          mensaje = 'No se pudo enviar el pedido ';
-        } else {
-          mensaje = error.error;
-        }
+      err => {
         this.loadingData = false;
-        this.avisoService.openSnackBar(mensaje, '', 3500);
+        this.avisoService.openSnackBar(err.error, '', 3500);
       });
   }
 

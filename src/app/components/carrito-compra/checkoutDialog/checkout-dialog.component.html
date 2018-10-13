@@ -1,16 +1,19 @@
 <div class="sic-com-checkout" fxLayout="column">
   <h2 mat-dialog-title>Cerrar Orden</h2>
   <mat-dialog-content>
-    <p>Cliente: <strong>{{cliente.razonSocial}}</strong></p>
-    <p>Cant. Articulos: <strong>{{cantArt}}</strong></p>
-    <p>Total: <strong>$ {{total | number:'1.2-2':'es-AR'}}</strong></p>
+    <span>Cliente: <strong>{{cliente.razonSocial}}</strong></span><br>
+    <span>Cant. Articulos: <strong>{{data.cantArticulos}}</strong></span><br>
+    <span>Subtotal: <strong>$ {{data.subTotal | number:'1.2-2':'es-AR'}}</strong></span><br>
+    <span>Bonificación: <strong>% {{data.descuentoPorcentaje | number:'1.2-2':'es-AR' }}</strong></span><br>
+    <span>Total: <strong>$ {{data.total | number:'1.2-2':'es-AR'}}</strong></span>
   </mat-dialog-content>
+  <br>
   <mat-dialog-content fxLayout>
-      <mat-form-field fxFlex>
-        <textarea matInput autofocus placeholder="Observaciones" [(ngModel)]="observaciones"></textarea>
-      </mat-form-field>
+    <mat-form-field fxFlex>
+      <textarea matInput autofocus placeholder="Observaciones" [(ngModel)]="observaciones"></textarea>
+    </mat-form-field>
   </mat-dialog-content>
-  <button mat-raised-button color="primary" (click)="enviarPedido()" *ngIf="!loadingData">
+  <button mat-raised-button color="primary" (click)="enviarOrden()" *ngIf="!loadingData">
     <mat-icon>done_all</mat-icon>
     Enviar Orden
   </button>
