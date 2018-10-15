@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {AuthService} from '../../services/auth.service';
 import {AvisoService} from '../../services/aviso.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
@@ -6,7 +6,6 @@ import {Usuario} from '../../models/usuario';
 import {TipoDeCliente} from '../../models/tipo.cliente';
 import {RegistracionService} from '../../services/registracion.service';
 import {Router} from '@angular/router';
-import {ReCaptcha2Component} from 'ngx-captcha';
 
 @Component({
   selector: 'sic-com-registracion',
@@ -18,19 +17,17 @@ export class RegistracionComponent implements OnInit {
   personaForm: FormGroup;
   empresaForm: FormGroup;
   usuario: Usuario;
-
   keys = Object.keys;
   tiposDeCliente = TipoDeCliente;
-
   tCliente = null;
-
   siteKey = '6Lfwp3QUAAAAANbMv6EJApDs1FS9l7v6LMig4nGU';
   type: 'image' | 'audio' = 'image';
 
-  constructor(private authService: AuthService, private router: Router,
+  constructor(private authService: AuthService,
+              private router: Router,
               private registracionService: RegistracionService,
-              private avisoService: AvisoService, private fb: FormBuilder) {
-
+              private avisoService: AvisoService,
+              private fb: FormBuilder) {
     this.buildPersonaForm();
     this.buildEmpresaForm();
   }
@@ -38,7 +35,6 @@ export class RegistracionComponent implements OnInit {
   ngOnInit() {
     this.tCliente = 'EMPRESA';
     if (this.authService.isAuthenticated()) {
-      this.avisoService.openSnackBar('Hay un usuario logueado no puede ir a registración.', '', 3500);
       this.router.navigate(['productos']);
     }
   }

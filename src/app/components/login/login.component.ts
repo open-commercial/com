@@ -14,15 +14,17 @@ import {Router} from '@angular/router';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-
   model: any = {};
   loading = false;
   returnUrl = '';
   loginForm: FormGroup;
   usuario: Usuario;
 
-  constructor(private router: Router, private dialog: MatDialog, private authService: AuthService,
-              private avisoService: AvisoService, private fb: FormBuilder) {
+  constructor(private router: Router,
+              private dialog: MatDialog,
+              private authService: AuthService,
+              private avisoService: AvisoService,
+              private fb: FormBuilder) {
     this.buildForm();
   }
 
