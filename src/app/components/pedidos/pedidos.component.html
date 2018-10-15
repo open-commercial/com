@@ -3,7 +3,7 @@
     <div class="sic-com-sin-cliente" *ngIf="(!cliente || !pedidos.length)">
         <span fxLayoutAlign="center center">
           <mat-icon color="primary">sentiment_neutral</mat-icon>
-          No posee una cuenta de cliente para realizar pedidos o bien no posee pedidos realizados
+          No posee una cuenta de cliente para realizar pedidos o no posee pedidos realizados
         </span>
     </div>
     <mat-nav-list>
@@ -24,7 +24,7 @@
               <span>{{ pedido.fecha | date: 'dd/MM/yyyy' }}</span>
             </div>
             <div fxFlex class="pedido-column-content">
-              <strong>$ {{ pedido.totalActual | number:'1.2-2':'es-AR' }}</strong>
+              <strong>$ {{ pedido.totalEstimado | number:'1.2-2':'es-AR' }}</strong>
             </div>
           </div>
         </div>
