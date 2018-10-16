@@ -61,8 +61,8 @@
     <form [formGroup]="empresaForm" (ngSubmit)="registrarEmpresa()" *ngIf="tCliente == 'EMPRESA'">
       <div fxLayout="column" fxLayoutGap=".5rem">
         <mat-form-field fxFlex>
-          <input matInput placeholder="CUIT" formControlName="cuit" required>
-          <mat-error *ngIf="empresaForm.get('cuit').hasError('required')">
+          <input matInput placeholder="CUIT" type="number" formControlName="idFiscal" required>
+          <mat-error *ngIf="empresaForm.get('idFiscal').hasError('required')">
             Requerido
           </mat-error>
         </mat-form-field>

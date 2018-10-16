@@ -13,7 +13,6 @@ import {saveAs} from 'file-saver/FileSaver';
   styleUrls: ['pedidos.component.scss']
 })
 export class PedidosComponent implements OnInit {
-
   cliente: Cliente = null;
   pedidos: Array<Pedido> = [];
   pagina = 0;
@@ -22,8 +21,10 @@ export class PedidosComponent implements OnInit {
   isLoading = true;
   loading = true;
 
-  constructor(private pedidosService: PedidosService, private avisoService: AvisoService,
-              private authService: AuthService, private clientesService: ClientesService) {
+  constructor(private pedidosService: PedidosService,
+              private avisoService: AvisoService,
+              private authService: AuthService,
+              private clientesService: ClientesService) {
   }
 
   ngOnInit() {

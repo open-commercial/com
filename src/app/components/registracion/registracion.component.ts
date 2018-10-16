@@ -56,7 +56,7 @@ export class RegistracionComponent implements OnInit {
       apellido: ['', Validators.required],
       telefono: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      cuit: ['', Validators.required],
+      idFiscal: ['', Validators.required],
       razonSocial: ['', Validators.required],
       password: ['', Validators.required],
       recaptcha: ['', Validators.required]
@@ -80,7 +80,7 @@ export class RegistracionComponent implements OnInit {
       this.registracionService.registrar(reg).subscribe(
         () => {
           this.loading = false;
-          this.avisoService.openSnackBar('Recibirá un email para confirmar su registración.', '', 3500);
+          this.avisoService.openSnackBar('Recibirá un email para confirmar su registración', '', 3500);
           this.router.navigate(['login']);
         },
         err => {
