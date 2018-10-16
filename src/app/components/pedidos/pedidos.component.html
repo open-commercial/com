@@ -1,10 +1,16 @@
 <div class="sic-com-pedidos">
   <div *ngIf="!isLoading">
-    <div class="sic-com-sin-cliente" *ngIf="(!cliente || !pedidos.length)">
+    <div class="sic-com-sin-cliente" *ngIf="!cliente">
         <span fxLayoutAlign="center center">
           <mat-icon color="primary">sentiment_neutral</mat-icon>
-          No posee una cuenta de cliente para realizar pedidos o no posee pedidos realizados
+          No posee una cuenta de cliente para realizar pedidos
         </span>
+    </div>
+    <div class="sic-com-sin-cliente" *ngIf="!loading && cliente && !pedidos.length">
+      <span fxLayoutAlign="center center">
+          <mat-icon color="primary">sentiment_neutral</mat-icon>
+          No posee pedidos realizados
+      </span>
     </div>
     <mat-nav-list>
       <mat-list-item *ngFor="let pedido of pedidos" class="pedido-row" (click)="downloadPedidoPdf(pedido)">
