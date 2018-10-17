@@ -5,7 +5,7 @@
   </a>
   <div fxLayout="row" fxLayoutAlign="center center">
     <form [formGroup]="loginForm" (ngSubmit)="login()" class="sic-com-form">
-      <img src="assets/loginLogoTrans.png">
+      <a routerLink="productos"><img src="assets/loginLogoTrans.png"></a>
       <div fxLayout="column">
         <mat-form-field fxFlex fxFill>
           <input matInput autofocus name="username" required type="text" formControlName="username"
