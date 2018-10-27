@@ -2,74 +2,53 @@ import {Component, OnInit} from '@angular/core';
 import {MatDialogRef} from '@angular/material';
 import {CarritoCompraService} from '../../../services/carrito-compra.service';
 import {AvisoService} from '../../../services/aviso.service';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 @Component({
-    selector: 'sic-com-cantidad-producto-dialog',
-    templateUrl: 'cantidad-producto-dialog.component.html',
+  selector: 'sic-com-cantidad-producto-dialog',
+  templateUrl: 'cantidad-producto-dialog.component.html',
+  styleUrls: ['cantidad-producto-dialog.component.scss']
 })
 export class CantidadProductoDialogComponent implements OnInit {
 
-    itemCarritoCompra = null;
-    cantidad = 0;
-    minValue = 0;
-    cantidadForm: FormGroup;
+  itemCarritoCompra = null;
+  cantidad;
+  loading = false;
 
-    constructor(private dialogRef: MatDialogRef<CantidadProductoDialogComponent>,
-                private carritoCompraService: CarritoCompraService,
-                private avisoService: AvisoService, private fb: FormBuilder) {
-        dialogRef.disableClose = true;
-    }
+  constructor(private dialogRef: MatDialogRef<CantidadProductoDialogComponent>,
+              private carritoCompraService: CarritoCompraService,
+              private avisoService: AvisoService) {
+    dialogRef.disableClose = true;
+  }
 
-    ngOnInit() {
-        this.cantidad = this.itemCarritoCompra.cantidad;
-        this.minValue = this.itemCarritoCompra.producto.ventaMinima;
-        this.buildForm();
-    }
+  ngOnInit() {
+    this.cantidad = this.itemCarritoCompra.cantidad;
+  }
 
-    buildForm() {
-        this.cantidadForm = this.fb.group({
-            cantidad: [this.cantidad, [Validators.required, Validators.min(this.minValue)]]
-        });
+  cambiarCantidad(cantidad, masMenos) {
+    if (masMenos === 1) {
+      this.cantidad = parseFloat(cantidad) + 1;
+    } else {
+      if (cantidad > 1) {
+        this.cantidad = parseFloat(cantidad) - 1;
+      } else {
+        this.cantidad = 1;
+      }
     }
+  }
 
-    incrementarCantidad() {
-        let value = parseInt(this.cantidadForm.get('cantidad').value, 10);
-        if (isNaN(value)) {
-            value = this.minValue;
-        } else {
-            value += 1;
-        }
-        this.cantidadForm.get('cantidad').setValue(value);
-    }
-
-    decrementarCantidad() {
-        let value = parseInt(this.cantidadForm.get('cantidad').value, 10);
-        if (isNaN(value)) {
-            value = this.minValue;
-        }
-        if (value > this.minValue) {
-            value -= 1;
-        }
-        this.cantidadForm.get('cantidad').setValue(value);
-    }
-
-    deshabilitarBottonDecrementar() {
-        const value = parseInt(this.cantidadForm.get('cantidad').value, 10);
-        return isNaN(value) || value <= this.minValue;
-    }
-
-    save() {
-        if (this.cantidadForm.valid) {
-            this.cantidad = this.cantidadForm.get('cantidad').value;
-            this.carritoCompraService.actualizarAlPedido(this.itemCarritoCompra.producto, this.cantidad).subscribe(
-                data => {
-                  this.itemCarritoCompra.cantidad = this.cantidad;
-                  this.itemCarritoCompra.importe = this.cantidad * this.itemCarritoCompra.producto.precioLista;
-                  this.dialogRef.close(true);
-                },
-                err => this.avisoService.openSnackBar(err.error, '', 3500)
-            );
-        }
-    }
+  aceptar() {
+    this.loading = true;
+    this.carritoCompraService.actualizarAlPedido(this.itemCarritoCompra.producto, this.cantidad).subscribe(
+      data => {
+        this.itemCarritoCompra.cantidad = this.cantidad;
+        this.itemCarritoCompra.importe = this.cantidad * this.itemCarritoCompra.producto.precioLista;
+        this.dialogRef.close(true);
+        this.loading = false;
+      },
+      err => {
+        this.avisoService.openSnackBar(err.error, '', 3500);
+        this.loading = false;
+      }
+    );
+  }
 }

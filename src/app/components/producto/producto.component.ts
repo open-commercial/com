@@ -35,7 +35,7 @@ export class ProductoComponent implements OnInit {
     this.productosService.getProducto(id).subscribe(
       data => {
         this.producto = data;
-        this.cantidad = data['ventaMinima'];
+        this.cantidad = 1;
         this.loadingProducto = false;
       },
       err => {
