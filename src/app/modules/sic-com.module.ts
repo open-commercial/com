@@ -16,14 +16,12 @@ import {ProductoComponent} from '../components/producto/producto.component';
 import {CarritoCompraComponent} from '../components/carrito-compra/carrito-compra.component';
 import {CarritoCompraService} from '../services/carrito-compra.service';
 import {ClientesService} from '../services/clientes.service';
-import {CheckoutDialogComponent} from '../components/carrito-compra/checkoutDialog/checkout-dialog.component';
 import {AuthGuard} from '../guards/auth.guard';
 import {JwtInterceptor} from '../interceptors/jwt.interceptor';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {EmpresasService} from '../services/empresas.service';
 import {AvisoService} from '../services/aviso.service';
 import {ContainerComponent} from '../components/container/container.component';
-import {ClientesDialogComponent} from '../components/carrito-compra/clientesDialog/clientes-dialog.component';
 import {ConfirmationDialogComponent} from '../components/confirmation-dialog/confirmation-dialog.component';
 import {PerfilComponent} from '../components/perfil/perfil.component';
 import {UsuarioComponent} from '../components/usuario/usuario.component';
@@ -39,8 +37,9 @@ import {EmailDialogComponent} from '../components/login/emailDialog/email-dialog
 import {PasswordRecoveryComponent} from '../components/password-recovery/password-recovery.component';
 import {CuentasCorrienteService} from '../services/cuentas-corriente.service';
 import {CuentaCorrienteComponent} from '../components/cuenta-corriente/cuenta-corriente.component';
-import { NgxCaptchaModule } from 'ngx-captcha';
+import {NgxCaptchaModule} from 'ngx-captcha';
 import {RegistracionService} from '../services/registracion.service';
+import {CheckoutComponent} from '../components/checkout/checkout.component';
 import {registerLocaleData} from '@angular/common';
 import localeEs from '@angular/common/locales/es';
 import localeEsExtra from '@angular/common/locales/extra/es-AR';
@@ -56,8 +55,6 @@ registerLocaleData(localeEs, 'es-AR', localeEsExtra);
     ProductosComponent,
     ProductoComponent,
     ContainerComponent,
-    CheckoutDialogComponent,
-    ClientesDialogComponent,
     CarritoCompraComponent,
     ConfirmationDialogComponent,
     PerfilComponent,
@@ -67,7 +64,8 @@ registerLocaleData(localeEs, 'es-AR', localeEsExtra);
     CantidadProductoDialogComponent,
     EmailDialogComponent,
     PasswordRecoveryComponent,
-    CuentaCorrienteComponent
+    CuentaCorrienteComponent,
+    CheckoutComponent
   ],
   imports: [
     HttpClientModule,
@@ -98,8 +96,6 @@ registerLocaleData(localeEs, 'es-AR', localeEsExtra);
     RegistracionService
   ],
   entryComponents: [
-    ClientesDialogComponent,
-    CheckoutDialogComponent,
     ConfirmationDialogComponent,
     CantidadProductoDialogComponent,
     EmailDialogComponent

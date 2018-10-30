@@ -9,26 +9,15 @@
         <strong>Ir al listado</strong>
       </div>
       <div fxLayoutAlign="space-around center" class="sic-com-totalizadores" fxLayout.lt-sm="column">
-        <span>Cant. Articulos: {{ordenCompra.cantArticulos}}</span>
-        <span>Subtotal: $ {{ordenCompra.subTotal | number:'1.2-2':'es-AR' }}</span>
-        <mat-chip-list>
-          Bonificación:
-          <mat-chip class="sic-com-bonificacion">
-            <span>%{{ordenCompra.descuentoPorcentaje | number:'1.2-2':'es-AR' }}</span>
-          </mat-chip>
-        </mat-chip-list>
-        <span>Total: $ {{ordenCompra.total | number:'1.2-2':'es-AR' }}</span>
+        <span>Cant. Articulos: {{cantidadArticulos}}</span>
+        <span>Subtotal: $ {{subTotal | number:'1.2-2':'es-AR' }}</span>
       </div>
       <div fxLayoutAlign="space-around center" class="sic-com-botonera">
-        <button mat-raised-button fxShow="{{mostrarBotonAsignarCliente}}" (click)="openDialogCliente()" disabled="{{(itemsCarritoCompra.length == 0)}}" color="primary">
-          <mat-icon>account_circle</mat-icon>
-          <span fxHide.lt-md>Asignar Cliente</span>
-        </button>
         <button mat-raised-button (click)="vaciarPedido()" disabled="{{(itemsCarritoCompra.length == 0)}}">
           <mat-icon>remove_shopping_cart</mat-icon>
           <span fxHide.lt-md>Limpiar Listado</span>
         </button>
-        <button mat-raised-button (click)="openDialogCheckout()" disabled="{{(!clienteSeleccionado) || (itemsCarritoCompra.length == 0)}}" color="primary">
+        <button mat-raised-button (click)="goToCheckout()" disabled="{{!itemsCarritoCompra.length}}" color="primary">
           <mat-icon>local_shipping</mat-icon>
           <span fxHide.lt-md>Cerrar Orden</span>
         </button>

@@ -8,6 +8,8 @@ import {PerfilComponent} from './components/perfil/perfil.component';
 import {PasswordRecoveryComponent} from './components/password-recovery/password-recovery.component';
 import {LoginComponent} from './components/login/login.component';
 import {RegistracionComponent} from './components/registracion/registracion.component';
+import {CheckoutComponent} from './components/checkout/checkout.component';
+
 
 const sicComRoutes: Routes = [
   {path: 'login', component: LoginComponent},
@@ -23,7 +25,8 @@ const sicComRoutes: Routes = [
   {path: '', component: ContainerComponent, canActivate: [AuthGuard],
     children: [
       {path: 'carrito-compra', component: CarritoCompraComponent},
-      {path: 'perfil', component: PerfilComponent}
+      {path: 'perfil', component: PerfilComponent},
+      {path: 'checkout', component: CheckoutComponent}
     ]
   },
   {path: '**', redirectTo: 'productos'}

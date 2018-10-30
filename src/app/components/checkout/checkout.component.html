@@ -1,0 +1,51 @@
+<div class="sic-com-checkout">
+   <mat-vertical-stepper linear #stepper>
+    <mat-step [stepControl]="checkoutPaso1Form" *ngIf="checkoutPaso1Form">
+      <form [formGroup]="checkoutPaso1Form" autocomplete="off">
+        <ng-template matStepLabel>Cliente: <strong>{{ cliente ? cliente.razonSocial: '' }}</strong></ng-template>
+        <input type="hidden" formControlName="id_Cliente" required>
+        <div *ngIf="puedeVenderAOtroCliente()">
+          <p>
+            Puede seleccionar otro cliente, escribiendo su nonbre en el siguiente campo de búsqueda.
+            En la lista que aparecerá luego, seleccione el cliente deseado.
+          </p>
+          <mat-form-field fxFill="100">
+            <input matInput placeholder="Busqueda" (keyup)="onBusqKeyUp($event)">
+          </mat-form-field>
+          <mat-nav-list *ngIf="!isClientesLoading && clientes.length">
+            <a mat-list-item routerLink="." *ngFor="let cliente of clientes" (click)="seleccionarCliente(cliente, stepper)"> {{ cliente.razonSocial }} </a>
+          </mat-nav-list>
+          <div *ngIf="isClientesLoading" fxLayout="row" fxLayoutAlign="center center">
+            <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
+          </div>
+        </div>
+      </form>
+    </mat-step>
+    <mat-step [stepControl]="checkoutPaso2Form" *ngIf="checkoutPaso2Form">
+      <form [formGroup]="checkoutPaso2Form">
+        <ng-template matStepLabel>Resumen</ng-template>
+        <div fxLayoutAlign="space-between center" fxLayout.lt-sm="column" *ngIf="cliente">
+          <span>Cant. de Artículos: {{ cantidadArticulos }}</span>
+          <span>Subtotal: $ {{ subTotal| number:'1.2-2':'es-AR' }}</span>
+          <span>
+            <mat-chip-list>
+              Bonificación: <mat-chip class="sic-com-bonificacion" color="primary">{{ cliente.bonificacion }} %</mat-chip>
+            </mat-chip-list>
+          </span>
+          <span>Total: <strong>$ {{ total| number:'1.2-2':'es-AR' }}</strong></span>
+        </div>
+        <br>
+        <div>
+          <mat-form-field fxFlexFill>
+            <textarea matInput placeholder="Comentario" formControlName="comentario" rows="5"></textarea>
+          </mat-form-field>
+        </div>
+        <div *ngIf="!enviarOrdenLoading">
+          <button mat-button matStepperPrevious>Atrás</button>
+          <button mat-button (click)="cerrarOrden()" [disabled]="!cliente">Cerrar Orden</button>
+        </div>
+        <mat-spinner [diameter]="50" [strokeWidth]="6" *ngIf="enviarOrdenLoading"></mat-spinner>
+      </form>
+    </mat-step>
+  </mat-vertical-stepper>
+</div>
