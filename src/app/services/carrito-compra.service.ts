@@ -20,13 +20,13 @@ export class CarritoCompraService {
 
   agregarQuitarAlPedido(producto, cantidad) {
     const idUsuario = localStorage.getItem('id_Usuario');
-    const urlAddCarrito = this.urlCarrito + idUsuario + '/productos/' + producto['id_Producto'] + '?cantidad=' + cantidad;
+    const urlAddCarrito = this.urlCarrito + idUsuario + '/productos/' + producto['idProducto'] + '?cantidad=' + cantidad;
     return this.http.post(urlAddCarrito, {});
   }
 
   actualizarAlPedido(producto, cantidad) {
     const idUsuario = localStorage.getItem('id_Usuario');
-    const urlActCarrito = this.urlCarrito + idUsuario + '/productos/' + producto['id_Producto'] + '?cantidad=' + cantidad;
+    const urlActCarrito = this.urlCarrito + idUsuario + '/productos/' + producto['idProducto'] + '?cantidad=' + cantidad;
     return this.http.put(urlActCarrito, {});
   }
 

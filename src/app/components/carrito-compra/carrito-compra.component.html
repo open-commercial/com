@@ -41,7 +41,7 @@
               <div fxFlex="30" fxLayoutAlign="center center">
                 <img class="sic-com-img-avatar" src="../../assets/no-image.png" />
               </div>
-              <div fxFlex="70" fxLayoutAlign="center start" fxLayout="column" [routerLink]="['/producto/' + icc.producto.id_Producto]">
+              <div fxFlex="70" fxLayoutAlign="center start" fxLayout="column" [routerLink]="['/producto/' + icc.producto.idProducto]">
                 <span class="sic-com-descripcion-producto">{{icc.producto.descripcion}}</span>
                 <strong>$ {{icc.producto.precioLista | number:'1.2-2':'es-AR' }}</strong>
               </div>
