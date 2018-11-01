@@ -4,7 +4,31 @@
   .sic-com-bonificacion {
     color: white;
     background-color: limegreen;
+    //font-weight: bold;
+    //font-size: 1em;
+  }
+
+  .resumen {
+    margin-top: .5rem;
     font-weight: bold;
+  }
+
+  .valor {
+    white-space: nowrap;
+  }
+
+  .acciones {
+    text-align: right;
+  }
+
+  .nro-cliente {
+    white-space: normal;
+    font-size: .9em;
+  }
+
+  .razon-social {
+    white-space: normal;
     font-size: 1em;
+    font-style: italic;
   }
 }

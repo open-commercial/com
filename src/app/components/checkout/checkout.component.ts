@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {FormGroup, FormBuilder, Validators} from '@angular/forms';
 import {ProductosService} from '../../services/productos.service';
 import {CarritoCompraService} from '../../services/carrito-compra.service';
@@ -21,9 +21,15 @@ import {Router} from '@angular/router';
 export class CheckoutComponent implements OnInit {
   isLoading = false;
   usuario: Usuario = null;
+  clienteDeUsuario: Cliente = null;
   cliente: Cliente = null;
+
+  opcionCliente = '1';
   isClientesLoading = false;
   clientes = [];
+  clientesPagina = 0;
+  clientesTamanioPagina = 3;
+  clientesTotalPaginas = 0;
 
   checkoutPaso1Form: FormGroup = null;
   checkoutPaso2Form: FormGroup = null;
@@ -35,7 +41,13 @@ export class CheckoutComponent implements OnInit {
   total: Number = 0;
   enviarOrdenLoading = false;
 
-  @ViewChild('stepper') stepper: MatStepper;
+  @ViewChild('stepper')
+  stepper: MatStepper;
+
+  @ViewChild('busquedaInput')
+  busquedaInput: ElementRef;
+
+  observacionesMaxLength = 200;
 
   constructor(private productosService: ProductosService,
               private carritoCompraService: CarritoCompraService,
@@ -47,18 +59,17 @@ export class CheckoutComponent implements OnInit {
   }
 
   ngOnInit() {
-    const subscription = this.busqKeyUp.pipe(
+    this.busqKeyUp.pipe(
         debounceTime(700),
         distinctUntilChanged()
       )
       .subscribe(
         search => {
-          if ( search.length < 4 ) { this.clientes = []; return; }
-          this.isClientesLoading = true;
-          this.clientesService.getAllClientes(search).pipe(
-            map(data => this.clientes = data.content),
-            finalize(() => this.isClientesLoading = false)
-          ).subscribe();
+          if ( search.length < 2 ) {
+            this.clearClientes();
+            return;
+          }
+          this.cargarClientes(search, true);
         }
       );
 
@@ -70,6 +81,7 @@ export class CheckoutComponent implements OnInit {
           this.clientesService.getClienteDelUsuario(this.usuario.id_Usuario).subscribe(
             (cliente: Cliente) => {
               if (cliente) {
+                this.clienteDeUsuario = cliente;
                 this.cliente = cliente;
                 this.createForms();
                 this.getTotalesInfo();
@@ -94,7 +106,7 @@ export class CheckoutComponent implements OnInit {
 
   createForms() {
     this.checkoutPaso2Form = this.fb.group({
-      'comentario': ''
+      'observaciones': ['', Validators.maxLength(this.observacionesMaxLength)]
     });
 
     this.checkoutPaso1Form = this.fb.group({
@@ -110,12 +122,53 @@ export class CheckoutComponent implements OnInit {
   }
 
   puedeVenderAOtroCliente() {
-    return this.cliente &&
+    return this.usuario &&
       !(this.usuario && this.usuario.roles.indexOf(Rol[Rol.COMPRADOR.toString()]) !== -1 && this.usuario.roles.length === 1);
   }
 
   onBusqKeyUp($event) {
     this.busqKeyUp.next($event.target.value);
+  }
+
+  clearClientes() {
+    this.clientes = [];
+    this.clientesPagina = 0;
+  }
+
+  opcionClienteChange($event) {
+    this.opcionCliente = $event.value;
+    if (this.opcionCliente === '2') {
+      this.cliente = null;
+      setTimeout(() => this.busquedaInput.nativeElement.focus(), 300);
+    } else {
+      this.cliente = this.clienteDeUsuario;
+    }
+
+    this.clearClientes();
+    if (this.busquedaInput) {
+      this.busquedaInput.nativeElement.value = '';
+    }
+    this.checkoutPaso1Form.get('id_Cliente').setValue(this.cliente ? this.cliente.id_Cliente : null);
+  }
+
+  cargarClientes(search, reset: boolean) {
+    this.isClientesLoading = true;
+    this.clientesService.getClientes(search, this.clientesPagina, this.clientesTamanioPagina).pipe(
+      finalize(() => this.isClientesLoading = false)
+    ).subscribe(
+      data => {
+        if (reset) {
+          this.clearClientes();
+        }
+        data['content'].forEach(c => this.clientes.push(c));
+        this.clientesTotalPaginas = data['totalPages'];
+      }
+    );
+  }
+
+  masClientes(search) {
+    this.clientesPagina += 1;
+    this.cargarClientes(search, false);
   }
 
   seleccionarCliente(cliente: Cliente) {
@@ -124,7 +177,10 @@ export class CheckoutComponent implements OnInit {
       this.checkoutPaso1Form.get('id_Cliente').setValue(this.cliente.id_Cliente);
       this.getTotalesInfo();
     }
-    this.clientes = [];
+    this.clearClientes();
+    if (this.busquedaInput) {
+      this.busquedaInput.nativeElement.value = '';
+    }
     this.stepper.next();
   }
 
@@ -138,20 +194,24 @@ export class CheckoutComponent implements OnInit {
         this.cantidadArticulos = data[0];
         this.subTotal = data[1];
         this.total = data[2];
+
+        if (this.cantidadArticulos <= 0) {
+          this.avisoService.openSnackBar('No se puede hacer el checkout. NO TIENE ITEMS en el carrito.', '', 3500);
+          this.router.navigate(['carrito-compra']);
+        }
       });
     }
   }
 
   cerrarOrden() {
-    if (this.cliente) {
+    if (this.cliente && this.checkoutPaso1Form.valid && this.checkoutPaso2Form.valid) {
       this.checkoutPaso1Form.disable();
       this.checkoutPaso2Form.disable();
       this.enviarOrdenLoading = true;
       this.carritoCompraService.enviarOrden(
-        this.checkoutPaso2Form.get('comentario').value, this.authService.getLoggedInIdUsuario(), this.cliente.id_Cliente
+        this.checkoutPaso2Form.get('observaciones').value, this.authService.getLoggedInIdUsuario(), this.cliente.id_Cliente
       ).subscribe(
         data => {
-          this.avisoService.openSnackBar('PEDIDO REALIZACO CON ÉXITO.', '', 3500);
           this.irAProductos();
         },
         err => {
