@@ -45,7 +45,10 @@ export class CheckoutComponent implements OnInit {
   stepper: MatStepper;
 
   @ViewChild('busquedaInput')
-  busquedaInput: ElementRef;
+  busquedaInputRef: ElementRef;
+
+  @ViewChild('observacionesTextArea')
+  observacionesTextAreaRef: ElementRef;
 
   observacionesMaxLength = 200;
 
@@ -139,14 +142,14 @@ export class CheckoutComponent implements OnInit {
     this.opcionCliente = $event.value;
     if (this.opcionCliente === '2') {
       this.cliente = null;
-      setTimeout(() => this.busquedaInput.nativeElement.focus(), 300);
+      setTimeout(() => this.busquedaInputRef.nativeElement.focus(), 300);
     } else {
       this.cliente = this.clienteDeUsuario;
     }
 
     this.clearClientes();
-    if (this.busquedaInput) {
-      this.busquedaInput.nativeElement.value = '';
+    if (this.busquedaInputRef) {
+      this.busquedaInputRef.nativeElement.value = '';
     }
     this.checkoutPaso1Form.get('id_Cliente').setValue(this.cliente ? this.cliente.id_Cliente : null);
   }
@@ -178,8 +181,8 @@ export class CheckoutComponent implements OnInit {
       this.getTotalesInfo();
     }
     this.clearClientes();
-    if (this.busquedaInput) {
-      this.busquedaInput.nativeElement.value = '';
+    if (this.busquedaInputRef) {
+      this.busquedaInputRef.nativeElement.value = '';
     }
     this.stepper.next();
   }
@@ -211,6 +214,8 @@ export class CheckoutComponent implements OnInit {
         this.checkoutPaso2Form.get('observaciones').value, this.authService.getLoggedInIdUsuario(), this.cliente.id_Cliente
       ).subscribe(
         data => {
+          const mensaje = 'El pedido Nro ' + data['nroPedido'] + ' fué generado correctamente';
+          this.avisoService.openSnackBar(mensaje, '', 3500);
           this.irAProductos();
         },
         err => {
@@ -227,4 +232,9 @@ export class CheckoutComponent implements OnInit {
     this.router.navigateByUrl('/productos;busqueda=' + this.productosService.getBusquedaCriteria());
   }
 
+  changeStep($event) {
+    if ($event.selectedIndex === 1) {
+      setTimeout(() => this.observacionesTextAreaRef.nativeElement.focus(), 300);
+    }
+  }
 }
