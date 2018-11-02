@@ -2,7 +2,7 @@
   <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
 </div>
 <div class="sic-com-checkout" *ngIf="!isLoading">
-   <mat-vertical-stepper linear #stepper (selectionChange)="changeStep($event)">
+  <mat-vertical-stepper linear #stepper (selectionChange)="changeStep($event)">
     <mat-step [stepControl]="checkoutPaso1Form" *ngIf="checkoutPaso1Form">
       <form [formGroup]="checkoutPaso1Form" autocomplete="off">
         <ng-template matStepLabel>
@@ -12,7 +12,8 @@
         </ng-template>
         <input type="hidden" formControlName="id_Cliente" required>
         <div *ngIf="puedeVenderAOtroCliente()">
-          <mat-radio-group [value]="opcionCliente" fxLayout="column" fxLayoutGap="1rem" (change)="opcionClienteChange($event)">
+          <mat-radio-group [value]="opcionCliente" fxLayout="column" fxLayoutGap="1rem"
+                           (change)="opcionClienteChange($event)">
             <mat-radio-button color="primary" value="1">Mi Cuenta de Cliente</mat-radio-button>
             <mat-radio-button color="primary" value="2">Buscar Cliente</mat-radio-button>
           </mat-radio-group>
@@ -31,7 +32,9 @@
             <div fxLayout="row" fxLayoutAlign="center center">
               <mat-spinner *ngIf="isClientesLoading" [diameter]="50" [strokeWidth]="6"></mat-spinner>
             </div>
-            <div class="sic-com-mas-resultados" fxLayout="row" fxLayoutAlign="center center" *ngIf="!isClientesLoading && clientes.length && (clientesTotalPaginas > (clientesPagina + 1))" (click)="masClientes(busquedaInput.value)">
+            <div class="sic-com-mas-resultados" fxLayout="row" fxLayoutAlign="center center"
+                 *ngIf="!isClientesLoading && clientes.length && (clientesTotalPaginas > (clientesPagina + 1))"
+                 (click)="masClientes(busquedaInput.value)">
               <strong>MAS RESULTADOS</strong>
             </div>
           </div>
@@ -41,12 +44,15 @@
     <mat-step [stepControl]="checkoutPaso2Form" *ngIf="checkoutPaso2Form">
       <form [formGroup]="checkoutPaso2Form">
         <ng-template matStepLabel>Resumen</ng-template>
-        <div fxLayoutAlign="space-between center" fxLayout.lt-sm="column" *ngIf="cliente" class="resumen" fxLayoutGap=".8rem">
+        <div fxLayoutAlign="space-between center" fxLayout.lt-sm="column" *ngIf="cliente" class="resumen"
+             fxLayoutGap=".8rem">
           <div>Cant. de Artículos: {{ cantidadArticulos| number:'1.2-2':'es-AR' }}</div>
           <div>Subtotal: <span class="valor">$ {{ subTotal| number:'1.2-2':'es-AR' }}</span></div>
           <div>
             <mat-chip-list>
-              <mat-chip class="sic-com-bonificacion valor" color="primary">Bonificación: {{ cliente.bonificacion| number:'1.2-2':'es-AR' }} %</mat-chip>
+              <mat-chip class="sic-com-bonificacion valor" color="primary">
+                Bonificación: {{ cliente.bonificacion | number:'1.2-2':'es-AR' }} %
+              </mat-chip>
             </mat-chip-list>
           </div>
           <div>Total: <span class="valor">$ {{ total| number:'1.2-2':'es-AR' }}</span></div>
@@ -54,16 +60,22 @@
         <br>
         <div>
           <mat-form-field fxFlexFill style="padding: 10px;">
-            <textarea matInput placeholder="Observaciones" formControlName="observaciones" rows="3" #observacionesTextArea></textarea>
+            <textarea matInput placeholder="Observaciones" formControlName="observaciones" rows="3"
+                      #observacionesTextArea></textarea>
             <mat-error *ngIf="checkoutPaso2Form.get('observaciones').hasError('maxlength')">
               Máximo 200 caracteres
             </mat-error>
-            <mat-hint align="end">{{ checkoutPaso2Form.get('observaciones').value.length}} / {{ observacionesMaxLength }}</mat-hint>
+            <mat-hint align="end">
+              {{checkoutPaso2Form.get('observaciones').value.length}} / {{ observacionesMaxLength}}
+            </mat-hint>
           </mat-form-field>
         </div>
         <br>
         <div *ngIf="!enviarOrdenLoading" class="acciones">
-          <button mat-raised-button color="primary" (click)="cerrarOrden()" [disabled]="!cliente || checkoutPaso1Form.invalid || checkoutPaso2Form.invalid">Confirmar</button>
+          <button mat-raised-button color="primary" (click)="cerrarOrden()"
+                  [disabled]="!cliente || checkoutPaso1Form.invalid || checkoutPaso2Form.invalid">
+            Confirmar
+          </button>
         </div>
         <div fxLayout="row" fxLayoutAlign="center center" *ngIf="enviarOrdenLoading">
           <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>

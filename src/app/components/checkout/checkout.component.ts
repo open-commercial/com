@@ -9,7 +9,7 @@ import {Usuario} from '../../models/usuario';
 import {Cliente} from '../../models/cliente';
 import {Rol} from '../../models/rol';
 import {forkJoin, Subject} from 'rxjs';
-import {debounceTime, distinctUntilChanged, finalize, map} from 'rxjs/operators';
+import {debounceTime, distinctUntilChanged, finalize} from 'rxjs/operators';
 import {MatStepper} from '@angular/material';
 import {Router} from '@angular/router';
 
@@ -63,21 +63,19 @@ export class CheckoutComponent implements OnInit {
 
   ngOnInit() {
     this.busqKeyUp.pipe(
-        debounceTime(700),
-        distinctUntilChanged()
-      )
-      .subscribe(
-        search => {
-          if ( search.length < 1 ) {
-            this.clearClientes();
-            return;
-          }
-          this.cargarClientes(search, true);
+      debounceTime(700),
+      distinctUntilChanged()
+    ).subscribe(
+      search => {
+        if (search.length < 1) {
+          this.clearClientes();
+          return;
         }
-      );
-
-  this.isLoading = true;
-  this.authService.getLoggedInUsuario().subscribe(
+        this.cargarClientes(search, true);
+      }
+    );
+    this.isLoading = true;
+    this.authService.getLoggedInUsuario().subscribe(
       (usuario: Usuario) => {
         if (usuario) {
           this.usuario = usuario;
@@ -111,15 +109,14 @@ export class CheckoutComponent implements OnInit {
     this.checkoutPaso2Form = this.fb.group({
       'observaciones': ['', Validators.maxLength(this.observacionesMaxLength)]
     });
-
     this.checkoutPaso1Form = this.fb.group({
       'id_Cliente': [this.cliente.id_Cliente, Validators.required]
     });
-
     if (!this.puedeVenderAOtroCliente()) {
       this.checkoutPaso1Form.disable();
       setTimeout(() => {
-        this.stepper.selectedIndex = 1; this.stepper._steps.first.editable = false;
+        this.stepper.selectedIndex = 1;
+        this.stepper._steps.first.editable = false;
       }, 300);
     }
   }
@@ -146,7 +143,6 @@ export class CheckoutComponent implements OnInit {
     } else {
       this.cliente = this.clienteDeUsuario;
     }
-
     this.clearClientes();
     if (this.busquedaInputRef) {
       this.busquedaInputRef.nativeElement.value = '';
@@ -197,7 +193,6 @@ export class CheckoutComponent implements OnInit {
         this.cantidadArticulos = data[0];
         this.subTotal = data[1];
         this.total = data[2];
-
         if (this.cantidadArticulos <= 0) {
           this.router.navigate(['carrito-compra']);
         }

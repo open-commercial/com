@@ -20,12 +20,6 @@ export class ClientesService {
     return this.http.get(uri);
   }
 
-  getAllClientes(nombre) {
-    const uri = this.uriClientes + '/busqueda/criteria?idEmpresa=' + environment.idEmpresa
-      + '&razonSocial=' + nombre + '&nombreFantasia=' + nombre + '&nroCliente=' + nombre;
-    return this.http.get<any>(uri);
-  }
-
   setClienteSeleccionado(cliente) {
     localStorage.setItem('clientePedido', JSON.stringify(cliente));
     this.clienteSeleccionadoSubject.next(cliente);

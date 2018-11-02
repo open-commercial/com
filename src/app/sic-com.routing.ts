@@ -10,7 +10,6 @@ import {LoginComponent} from './components/login/login.component';
 import {RegistracionComponent} from './components/registracion/registracion.component';
 import {CheckoutComponent} from './components/checkout/checkout.component';
 
-
 const sicComRoutes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'registracion', component: RegistracionComponent},

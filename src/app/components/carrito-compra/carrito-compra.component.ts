@@ -5,12 +5,9 @@ import {ClientesService} from '../../services/clientes.service';
 import {AvisoService} from '../../services/aviso.service';
 import {AuthService} from '../../services/auth.service';
 import {ConfirmationDialogComponent} from '../confirmation-dialog/confirmation-dialog.component';
-import {Rol} from '../../models/rol';
 import {CantidadProductoDialogComponent} from './cantidadProductoDialog/cantidad-producto-dialog.component';
 import {ProductosService} from '../../services/productos.service';
 import {Router} from '@angular/router';
-import {OrdenCompra} from '../../models/orden-compra';
-import {Cliente} from '../../models/cliente';
 import {forkJoin} from 'rxjs';
 
 @Component({
