@@ -2,7 +2,7 @@ import {
   MatListModule, MatIconModule, MatInputModule, MatToolbarModule,
   MatProgressSpinnerModule, MatButtonModule, MatSnackBarModule, MatDialogModule,
   MatAutocompleteModule, MatTooltipModule, MatExpansionModule, MatSelectModule,
-  MatMenuModule, MatChipsModule, MatButtonToggleModule
+  MatMenuModule, MatChipsModule, MatButtonToggleModule, MatStepperModule, MatRadioModule
 } from '@angular/material';
 import {NgModule} from '@angular/core';
 
@@ -10,10 +10,10 @@ import {NgModule} from '@angular/core';
   imports: [MatToolbarModule, MatProgressSpinnerModule, MatListModule, MatIconModule,
     MatInputModule, MatButtonModule, MatSnackBarModule, MatDialogModule,
     MatAutocompleteModule, MatTooltipModule, MatExpansionModule, MatSelectModule,
-    MatMenuModule, MatChipsModule, MatButtonToggleModule],
+    MatMenuModule, MatChipsModule, MatButtonToggleModule, MatStepperModule, MatRadioModule],
   exports: [MatToolbarModule, MatProgressSpinnerModule, MatListModule, MatIconModule,
     MatInputModule, MatButtonModule, MatSnackBarModule, MatDialogModule,
     MatAutocompleteModule, MatTooltipModule, MatExpansionModule, MatSelectModule,
-    MatMenuModule, MatChipsModule, MatButtonToggleModule]
+    MatMenuModule, MatChipsModule, MatButtonToggleModule, MatStepperModule, MatRadioModule]
 })
 export class SicComMaterialModule {}

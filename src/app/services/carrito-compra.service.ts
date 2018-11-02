@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Subject} from 'rxjs';
+import {Observable, Subject} from 'rxjs';
 import {environment} from 'environments/environment';
 import {HttpClient} from '@angular/common/http';
 import {OrdenCompra} from '../models/orden-compra';
@@ -46,14 +46,14 @@ export class CarritoCompraService {
     return this.http.delete(urlDeleteItem);
   }
 
-  enviarOrden(orden: OrdenCompra, idEmpresa, idUsuario, idCliente) {
-    const uri = this.url + `/carrito-compra?idEmpresa=${idEmpresa}&idUsuario=${idUsuario}&idCliente=${idCliente}`;
-    return this.http.post(uri, orden);
+  enviarOrden(observaciones: string, idUsuario, idCliente) {
+    const uri = this.url + `/carrito-compra?idEmpresa=${environment.idEmpresa}&idUsuario=${idUsuario}&idCliente=${idCliente}`;
+    return this.http.post(uri, observaciones);
   }
 
-  getTotalImportePedido() {
-    const urlTotalImpPedido = this.urlCarrito + localStorage.getItem('id_Usuario') + '/total';
-    return this.http.get(urlTotalImpPedido);
+  getTotalImportePedido(idCliente): Observable<Number> {
+    const urlTotalImpPedido = this.urlCarrito + localStorage.getItem('id_Usuario') + '/clientes/' + idCliente + '/total';
+    return this.http.get<Number>(urlTotalImpPedido);
   }
 
   getCantidadRenglones() {
@@ -61,9 +61,13 @@ export class CarritoCompraService {
     return this.http.get(urlCantRenglones);
   }
 
-  getCantidadArticulos() {
+  getCantidadArticulos(): Observable<Number> {
     const urlCantArticulos = this.urlCarrito + localStorage.getItem('id_Usuario') + '/cantidad-articulos';
-    return this.http.get(urlCantArticulos);
+    return this.http.get<Number>(urlCantArticulos);
   }
 
+  getSubtotalImportePedido(): Observable<Number> {
+    const urlSubtotal = this.urlCarrito + localStorage.getItem('id_Usuario') + '/subtotal';
+    return this.http.get<Number>(urlSubtotal);
+  }
 }

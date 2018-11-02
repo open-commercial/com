@@ -1,0 +1,47 @@
+.sic-com-checkout {
+  background-color: white;
+
+  .sic-com-bonificacion {
+    color: white;
+    background-color: limegreen;
+  }
+
+  .resumen {
+    margin-top: .5rem;
+    font-weight: bold;
+  }
+
+  .valor {
+    white-space: nowrap;
+  }
+
+  .acciones {
+    text-align: right;
+  }
+
+  .nro-cliente {
+    white-space: normal;
+    font-size: .85em;
+  }
+
+  .razon-social {
+    white-space: normal;
+    font-size: 1em;
+  }
+
+  .nombre-fantasia {
+    white-space: normal;
+    color: #666;
+  }
+
+  .sic-com-mas-resultados {
+    color: #ff5722;
+    cursor: pointer;
+    height: 60px;
+    font-size: 14px;
+  }
+
+  .cliente-label {
+    white-space: normal;
+  }
+}
