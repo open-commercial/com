@@ -9,7 +9,7 @@
         <strong>Ir al listado</strong>
       </div>
       <div fxLayoutAlign="space-around center" class="sic-com-totalizadores" fxLayout.lt-sm="column">
-        <span>Cant. Articulos: {{cantidadArticulos}}</span>
+        <span>Cant. Articulos: {{cantidadArticulos | number:'1.2-2':'es-AR' }}</span>
         <span>Subtotal: $ {{subTotal | number:'1.2-2':'es-AR' }}</span>
       </div>
       <div fxLayoutAlign="space-around center" class="sic-com-botonera">

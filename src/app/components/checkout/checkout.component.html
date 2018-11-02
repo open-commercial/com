@@ -19,19 +19,17 @@
           <br>
           <div *ngIf="opcionCliente == 2">
             <mat-form-field fxFill="100">
-              <input matInput placeholder="Nombre" (keyup)="onBusqKeyUp($event)" #busquedaInput>
+              <input matInput placeholder="Nombre o Nro de Cliente" (keyup)="onBusqKeyUp($event)" #busquedaInput>
             </mat-form-field>
             <mat-nav-list>
-              <!--<a mat-list-item routerLink="." *ngFor="let cliente of clientes" (click)="seleccionarCliente(cliente, stepper)"> {{ cliente.razonSocial }} </a>-->
               <mat-list-item *ngFor="let cliente of clientes" (click)="seleccionarCliente(cliente, stepper)">
                 <h3 matLine class="nro-cliente">#{{ cliente.nroCliente }}</h3>
                 <p matLine class="razon-social">{{ cliente.razonSocial }}</p>
                 <p matLine class="nombre-fantasia" *ngIf="cliente.nombreFantasia">{{ cliente.nombreFantasia }}</p>
-                <mat-divider></mat-divider>
               </mat-list-item>
             </mat-nav-list>
             <div fxLayout="row" fxLayoutAlign="center center">
-              <mat-spinner *ngIf="isClientesLoading" [diameter]="40" [strokeWidth]="6"></mat-spinner>
+              <mat-spinner *ngIf="isClientesLoading" [diameter]="50" [strokeWidth]="6"></mat-spinner>
             </div>
             <div class="sic-com-mas-resultados" fxLayout="row" fxLayoutAlign="center center" *ngIf="!isClientesLoading && clientes.length && (clientesTotalPaginas > (clientesPagina + 1))" (click)="masClientes(busquedaInput.value)">
               <strong>MAS RESULTADOS</strong>
@@ -58,7 +56,7 @@
           <mat-form-field fxFlexFill style="padding: 10px;">
             <textarea matInput placeholder="Observaciones" formControlName="observaciones" rows="3" #observacionesTextArea></textarea>
             <mat-error *ngIf="checkoutPaso2Form.get('observaciones').hasError('maxlength')">
-              Máximo 200 caracteres.
+              Máximo 200 caracteres
             </mat-error>
             <mat-hint align="end">{{ checkoutPaso2Form.get('observaciones').value.length}} / {{ observacionesMaxLength }}</mat-hint>
           </mat-form-field>
