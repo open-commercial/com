@@ -4,8 +4,6 @@
   .sic-com-bonificacion {
     color: white;
     background-color: limegreen;
-    //font-weight: bold;
-    //font-size: 1em;
   }
 
   .resumen {
@@ -23,12 +21,22 @@
 
   .nro-cliente {
     white-space: normal;
-    font-size: .9em;
+    font-size: .85em;
   }
 
   .razon-social {
     white-space: normal;
     font-size: 1em;
-    font-style: italic;
+  }
+
+  .nombre-fantasia {
+    white-space: normal;
+    color: #666;
+  }
+
+  .sic-com-mas-resultados {
+    color: #ff5722;
+    cursor: pointer;
+    height: 60px;
   }
 }

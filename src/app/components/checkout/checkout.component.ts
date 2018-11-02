@@ -65,7 +65,7 @@ export class CheckoutComponent implements OnInit {
       )
       .subscribe(
         search => {
-          if ( search.length < 2 ) {
+          if ( search.length < 1 ) {
             this.clearClientes();
             return;
           }
@@ -196,7 +196,6 @@ export class CheckoutComponent implements OnInit {
         this.total = data[2];
 
         if (this.cantidadArticulos <= 0) {
-          this.avisoService.openSnackBar('No se puede hacer el checkout. NO TIENE ITEMS en el carrito.', '', 3500);
           this.router.navigate(['carrito-compra']);
         }
       });

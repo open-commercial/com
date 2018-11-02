@@ -8,30 +8,29 @@
         <ng-template matStepLabel>Cliente: <strong>{{ cliente ? cliente.razonSocial: '' }}</strong></ng-template>
         <input type="hidden" formControlName="id_Cliente" required>
         <div *ngIf="puedeVenderAOtroCliente()">
-          <mat-radio-group [value]="opcionCliente" fxLayout="column" fxLayoutGap=".3rem" (change)="opcionClienteChange($event)">
+          <mat-radio-group [value]="opcionCliente" fxLayout="column" fxLayoutGap="1rem" (change)="opcionClienteChange($event)">
             <mat-radio-button color="primary" value="1">Mi Cuenta de Cliente</mat-radio-button>
             <mat-radio-button color="primary" value="2">Buscar Cliente</mat-radio-button>
           </mat-radio-group>
+          <br>
           <div *ngIf="opcionCliente == 2">
-            <p>
-              Puede seleccionar otro cliente, escribiendo su nonbre en el siguiente campo de búsqueda.
-              En la lista que aparecerá luego, seleccione el cliente deseado.
-            </p>
             <mat-form-field fxFill="100">
-              <input matInput placeholder="Busqueda" (keyup)="onBusqKeyUp($event)" #busquedaInput>
+              <input matInput placeholder="Nombre" (keyup)="onBusqKeyUp($event)" #busquedaInput>
             </mat-form-field>
             <mat-nav-list>
               <!--<a mat-list-item routerLink="." *ngFor="let cliente of clientes" (click)="seleccionarCliente(cliente, stepper)"> {{ cliente.razonSocial }} </a>-->
               <mat-list-item *ngFor="let cliente of clientes" (click)="seleccionarCliente(cliente, stepper)">
-                <h3 matLine class="nro-cliente"> {{ cliente.nroCliente }} </h3>
-                <p matLine class="razon-social"> {{ cliente.razonSocial }} </p>
+                <h3 matLine class="nro-cliente">#{{ cliente.nroCliente }}</h3>
+                <p matLine class="razon-social">{{ cliente.razonSocial }}</p>
+                <p matLine class="nombre-fantasia" *ngIf="cliente.nombreFantasia">{{ cliente.nombreFantasia }}</p>
+                <mat-divider></mat-divider>
               </mat-list-item>
             </mat-nav-list>
             <div fxLayout="row" fxLayoutAlign="center center">
               <mat-spinner *ngIf="isClientesLoading" [diameter]="40" [strokeWidth]="6"></mat-spinner>
-              <a mat-stroked-button routerLink="." *ngIf="!isClientesLoading && clientes.length && (clientesTotalPaginas > (clientesPagina + 1))" (click)="masClientes(busquedaInput.value)">
-                MAS RESULTADOS
-              </a>
+            </div>
+            <div class="sic-com-mas-resultados" fxLayout="row" fxLayoutAlign="center center" *ngIf="!isClientesLoading && clientes.length && (clientesTotalPaginas > (clientesPagina + 1))" (click)="masClientes(busquedaInput.value)">
+              <strong>MAS RESULTADOS</strong>
             </div>
           </div>
         </div>
@@ -52,7 +51,7 @@
         </div>
         <br>
         <div>
-          <mat-form-field fxFlexFill>
+          <mat-form-field fxFlexFill style="padding: 10px;">
             <textarea matInput placeholder="Observaciones" formControlName="observaciones" rows="3"></textarea>
             <mat-error *ngIf="checkoutPaso2Form.get('observaciones').hasError('maxlength')">
               Máximo 200 caracteres.
@@ -60,6 +59,7 @@
             <mat-hint align="end">{{ checkoutPaso2Form.get('observaciones').value.length}} / {{ observacionesMaxLength }}</mat-hint>
           </mat-form-field>
         </div>
+        <br>
         <div *ngIf="!enviarOrdenLoading" class="acciones">
           <button mat-raised-button color="primary" (click)="cerrarOrden()" [disabled]="!cliente || checkoutPaso1Form.invalid || checkoutPaso2Form.invalid">Confirmar</button>
         </div>
