@@ -21,21 +21,20 @@
           </mat-chip-list>
         </div>
         <div fxLayoutAlign="center center" class="sic-com-controles-cantidad" *ngIf="authService.isAuthenticated()">
-          <button mat-mini-fab color="accent" disabled="{{(cantidad <= producto.ventaMinima)}}"
-                  (click)="cambiarCantidad(cantidad, 0)">
+          <button mat-mini-fab color="accent" (click)="cambiarCantidad(cantidad, 0)" [disabled]="cargandoAlCarrito">
             <mat-icon>remove</mat-icon>
           </button>
           <mat-form-field class="sic-com-input-cantidad">
-            <input matInput autofocus type="number" [(ngModel)]='cantidad'
-                   placeholder="Cantidad" min="{{producto.ventaMinima}}">
+            <input matInput autofocus type="number" [(ngModel)]='cantidad' placeholder="Cantidad"
+                   min="0" [disabled]="cargandoAlCarrito">
           </mat-form-field>
-          <button mat-mini-fab color="primary" (click)="cambiarCantidad(cantidad, 1)">
+          <button mat-mini-fab color="primary" (click)="cambiarCantidad(cantidad, 1)" [disabled]="cargandoAlCarrito">
             <mat-icon>add</mat-icon>
           </button>
         </div>
         <div fxLayoutAlign="center center" *ngIf="authService.isAuthenticated()">
-          <button mat-raised-button color="primary" class="sic-com-boton-agregar"
-                  (click)="cargarAlCarrito()" [disabled]="(cantidad < producto.ventaMinima) || cargandoAlCarrito" *ngIf="!cargandoAlCarrito">
+          <button mat-raised-button color="primary" class="sic-com-boton-agregar" (click)="cargarAlCarrito()"
+                  [disabled]="cantidad <= 0" *ngIf="!cargandoAlCarrito">
             <mat-icon>add_shopping_cart</mat-icon> Agregar al Carrito
           </button>
           <mat-spinner [diameter]="50" [strokeWidth]="6" *ngIf="cargandoAlCarrito"></mat-spinner>

@@ -9,7 +9,7 @@
     </mat-button-toggle-group>
   </p>-->
   <div fxLayout="column" fxLayoutAlign="center center">
-    <img src="assets/loginLogoTrans.png">
+    <a routerLink="productos"><img src="assets/loginLogoTrans.png"></a>
     <h1>Registración</h1>
     <form [formGroup]="personaForm" (ngSubmit)="registrarPersona()" *ngIf="tCliente == 'PERSONA'" fxLayout="column">
       <div fxLayout="column" fxLayoutGap=".5rem">
@@ -61,8 +61,9 @@
     <form [formGroup]="empresaForm" (ngSubmit)="registrarEmpresa()" *ngIf="tCliente == 'EMPRESA'">
       <div fxLayout="column" fxLayoutGap=".5rem">
         <mat-form-field fxFlex>
-          <input matInput placeholder="CUIT" formControlName="cuit" required>
-          <mat-error *ngIf="empresaForm.get('cuit').hasError('required')">
+          <input matInput placeholder="CUIT" type="number" min="0" max="99999999999" oninput="validity.valid || (value='');"
+                 formControlName="idFiscal" required>
+          <mat-error *ngIf="empresaForm.get('idFiscal').hasError('required')">
             Requerido
           </mat-error>
         </mat-form-field>

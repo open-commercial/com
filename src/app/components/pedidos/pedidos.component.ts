@@ -13,17 +13,18 @@ import {saveAs} from 'file-saver/FileSaver';
   styleUrls: ['pedidos.component.scss']
 })
 export class PedidosComponent implements OnInit {
-
   cliente: Cliente = null;
   pedidos: Array<Pedido> = [];
   pagina = 0;
   totalPaginas = 0;
   tamanioPagina = 5;
-  isLoading = false;
+  isLoading = true;
+  loading = true;
 
-  constructor(private pedidosService: PedidosService, private avisoService: AvisoService,
-              private authService: AuthService, private clientesService: ClientesService) {
-    this.isLoading = true;
+  constructor(private pedidosService: PedidosService,
+              private avisoService: AvisoService,
+              private authService: AuthService,
+              private clientesService: ClientesService) {
   }
 
   ngOnInit() {
@@ -34,9 +35,8 @@ export class PedidosComponent implements OnInit {
           if (cliente) {
             this.cliente = cliente;
             this.cargarPedidos(true);
-          } else {
-            this.isLoading = false;
           }
+          this.isLoading = false;
         },
         err => {
           this.isLoading = false;
@@ -47,20 +47,24 @@ export class PedidosComponent implements OnInit {
 
   cargarPedidos(reset: boolean) {
     if (reset) {
-      this.pedidos = [];
       this.pagina = 0;
     }
-    this.isLoading = true;
+    this.loading = true;
     this.pedidosService.getPedidosCliente(this.cliente, this.pagina, this.tamanioPagina)
       .subscribe(
         data => {
+          if (reset) {
+            this.pedidos = [];
+            this.pagina = 0;
+          }
+
           data['content'].forEach(p => this.pedidos.push(p));
           this.totalPaginas = data['totalPages'];
-          this.isLoading = false;
+          this.loading = false;
         },
         err => {
           this.avisoService.openSnackBar(err.error, '', 3500);
-          this.isLoading = false;
+          this.loading = false;
         }
       );
   }
