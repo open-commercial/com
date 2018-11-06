@@ -113,7 +113,6 @@ export class CheckoutComponent implements OnInit {
       'id_Cliente': [this.cliente.id_Cliente, Validators.required]
     });
     if (!this.puedeVenderAOtroCliente()) {
-      this.checkoutPaso1Form.disable();
       setTimeout(() => {
         this.stepper.selectedIndex = 1;
         this.stepper._steps.first.editable = false;
