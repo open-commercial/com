@@ -23,10 +23,10 @@
               <input matInput placeholder="Nombre o Nro de Cliente" (keyup)="onBusqKeyUp($event)" #busquedaInput>
             </mat-form-field>
             <mat-nav-list>
-              <mat-list-item *ngFor="let cliente of clientes" (click)="seleccionarCliente(cliente, stepper)">
-                <h3 matLine class="nro-cliente">#{{ cliente.nroCliente }}</h3>
-                <p matLine class="razon-social">{{ cliente.razonSocial }}</p>
-                <p matLine class="nombre-fantasia" *ngIf="cliente.nombreFantasia">{{ cliente.nombreFantasia }}</p>
+              <mat-list-item *ngFor="let c of clientes" (click)="seleccionarCliente(c)" [class.seleccionado]="cliente && cliente.id_Cliente === c.id_Cliente">
+                <h3 matLine class="nro-cliente">#{{ c.nroCliente }}</h3>
+                <p matLine class="razon-social">{{ c.razonSocial }}</p>
+                <p matLine class="nombre-fantasia" *ngIf="c.nombreFantasia">{{ c.nombreFantasia }}</p>
               </mat-list-item>
             </mat-nav-list>
             <div fxLayout="row" fxLayoutAlign="center center">
@@ -39,6 +39,9 @@
             </div>
           </div>
         </div>
+        <div class="botonera">
+          <button mat-raised-button color="primary" matStepperNext>Continuar</button>
+        </div>
       </form>
     </mat-step>
     <mat-step [stepControl]="checkoutPaso2Form" *ngIf="checkoutPaso2Form">
@@ -46,7 +49,7 @@
         <ng-template matStepLabel>Resumen</ng-template>
         <div fxLayoutAlign="space-between center" fxLayout.lt-sm="column" *ngIf="cliente" class="resumen"
              fxLayoutGap=".8rem">
-          <div>Cant. de Artículos: {{ cantidadArticulos| number:'1.2-2':'es-AR' }}</div>
+          <div>Cant. de Artículos: {{ cantidadArticulos| number:'1.0-2':'es-AR' }}</div>
           <div>Subtotal: <span class="valor">$ {{ subTotal| number:'1.2-2':'es-AR' }}</span></div>
           <div>
             <mat-chip-list>

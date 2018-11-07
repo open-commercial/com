@@ -44,4 +44,16 @@
   .cliente-label {
     white-space: normal;
   }
+
+  .botonera {
+    text-align: right;
+  }
+
+  .seleccionado {
+    color: #ff5722;
+  }
+
+  .seleccionado .nombre-fantasia {
+    color: rgba(255, 101, 46, 0.85);
+  }
 }

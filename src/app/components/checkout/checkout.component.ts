@@ -64,7 +64,7 @@ export class CheckoutComponent implements OnInit {
   ngOnInit() {
     this.busqKeyUp.pipe(
       debounceTime(700),
-      distinctUntilChanged()
+      // distinctUntilChanged()
     ).subscribe(
       search => {
         if (search.length < 1) {
@@ -179,6 +179,8 @@ export class CheckoutComponent implements OnInit {
     if (this.busquedaInputRef) {
       this.busquedaInputRef.nativeElement.value = '';
     }
+    const mensaje = 'Se seleccionó el cliente: ' + this.cliente.razonSocial;
+    this.avisoService.openSnackBar(mensaje, '', 3500);
     this.stepper.next();
   }
 
