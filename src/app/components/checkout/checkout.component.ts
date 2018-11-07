@@ -174,13 +174,8 @@ export class CheckoutComponent implements OnInit {
       this.checkoutPaso1Form.get('id_Cliente').setValue(this.cliente.id_Cliente);
       this.getTotalesInfo();
     }
-    this.clearClientes();
-    if (this.busquedaInputRef) {
-      this.busquedaInputRef.nativeElement.value = '';
-    }
     const mensaje = 'Se seleccionó el cliente: ' + this.cliente.razonSocial;
     this.avisoService.openSnackBar(mensaje, '', 3500);
-    this.stepper.next();
   }
 
   getTotalesInfo() {
