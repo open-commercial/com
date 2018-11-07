@@ -40,7 +40,7 @@
           </div>
         </div>
         <div class="botonera">
-          <button mat-raised-button color="primary" matStepperNext>Continuar</button>
+          <button mat-raised-button color="primary" matStepperNext [disabled]="!cliente">Continuar</button>
         </div>
       </form>
     </mat-step>

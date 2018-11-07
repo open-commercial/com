@@ -64,7 +64,6 @@ export class CheckoutComponent implements OnInit {
   ngOnInit() {
     this.busqKeyUp.pipe(
       debounceTime(700),
-      // distinctUntilChanged()
     ).subscribe(
       search => {
         if (search.length < 1) {
