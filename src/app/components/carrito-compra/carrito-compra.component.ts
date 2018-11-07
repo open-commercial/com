@@ -93,7 +93,7 @@ export class CarritoCompraComponent implements OnInit {
     dialogRef.componentInstance.titulo = '¿Está seguro de quitar el producto?';
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.carritoCompraService.eliminarItem(itemCarritoCompra.producto.id_Producto).subscribe(
+        this.carritoCompraService.eliminarItem(itemCarritoCompra.producto.idProducto).subscribe(
           data => {
             this.avisoService.openSnackBar('Se eliminó el articulo del listado', '', 3500);
             this.sumarSubTotal();
