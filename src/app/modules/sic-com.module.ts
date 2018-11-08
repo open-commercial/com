@@ -33,7 +33,7 @@ import {PaisesService} from '../services/paises.service';
 import {ProvinciasService} from '../services/provincias.service';
 import {LocalidadesService} from '../services/localidades.service';
 import {CantidadProductoDialogComponent} from '../components/carrito-compra/cantidadProductoDialog/cantidad-producto-dialog.component';
-import {EmailDialogComponent} from '../components/login/emailDialog/email-dialog.component';
+import {PasswordRecoveryRequestComponent} from '../components/password-recovery-request/password-recovery-request.component';
 import {PasswordRecoveryComponent} from '../components/password-recovery/password-recovery.component';
 import {CuentasCorrienteService} from '../services/cuentas-corriente.service';
 import {CuentaCorrienteComponent} from '../components/cuenta-corriente/cuenta-corriente.component';
@@ -62,7 +62,7 @@ registerLocaleData(localeEs, 'es-AR', localeEsExtra);
     ClienteComponent,
     PedidosComponent,
     CantidadProductoDialogComponent,
-    EmailDialogComponent,
+    PasswordRecoveryRequestComponent,
     PasswordRecoveryComponent,
     CuentaCorrienteComponent,
     CheckoutComponent
@@ -98,7 +98,6 @@ registerLocaleData(localeEs, 'es-AR', localeEsExtra);
   entryComponents: [
     ConfirmationDialogComponent,
     CantidadProductoDialogComponent,
-    EmailDialogComponent
   ],
   bootstrap: [
     SicComComponent
