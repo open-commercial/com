@@ -3,7 +3,6 @@ import {AuthService} from '../../services/auth.service';
 import {AvisoService} from '../../services/aviso.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Usuario} from '../../models/usuario';
-import {TipoDeCliente} from '../../models/tipo.cliente';
 import {RegistracionService} from '../../services/registracion.service';
 import {Router} from '@angular/router';
 
@@ -18,7 +17,6 @@ export class RegistracionComponent implements OnInit {
   empresaForm: FormGroup;
   usuario: Usuario;
   keys = Object.keys;
-  tiposDeCliente = TipoDeCliente;
   tCliente = null;
   siteKey = '6Lfwp3QUAAAAANbMv6EJApDs1FS9l7v6LMig4nGU';
   type: 'image' | 'audio' = 'image';

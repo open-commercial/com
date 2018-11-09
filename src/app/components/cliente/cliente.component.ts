@@ -11,7 +11,6 @@ import {Provincia} from '../../models/provincia';
 import {ProvinciasService} from '../../services/provincias.service';
 import {Localidad} from '../../models/localidad';
 import {LocalidadesService} from '../../services/localidades.service';
-import {TipoDeCliente} from '../../models/tipo.cliente';
 
 @Component({
   selector: 'sic-com-cliente',
@@ -33,7 +32,6 @@ export class ClienteComponent implements OnInit {
   keys = Object.keys;
   // Asigno el enum a una variable
   categoriasIVA = CategoriaIVA;
-  tiposDeCliente = TipoDeCliente;
 
   constructor(private authService: AuthService,
               private fb: FormBuilder,
@@ -173,10 +171,9 @@ export class ClienteComponent implements OnInit {
       this.clienteForm.reset();
     } else {
       this.clienteForm.reset({
-        tipoDeCliente: this.cliente.tipoDeCliente,
         bonificacion: this.cliente.bonificacion,
         idFiscal: this.cliente.idFiscal,
-        razonSocial: this.cliente.razonSocial,
+        nombreFiscal: this.cliente.nombreFiscal,
         nombreFantasia: this.cliente.nombreFantasia,
         categoriaIVA: this.cliente.categoriaIVA,
         direccion: this.cliente.direccion,
