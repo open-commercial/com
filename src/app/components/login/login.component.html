@@ -22,7 +22,7 @@
           </mat-error>
         </mat-form-field>
         <span>&nbsp;</span>
-        <a routerLink="." (click)="openEmailDialog()" *ngIf="!loading">Olvidé mi contraseña</a>
+        <a routerLink="/password-recovery-request" *ngIf="!loading">Olvidé mi contraseña</a>
         <span>&nbsp;</span>
       </div>
       <div *ngIf="!loading" fxLayout="column" fxLayoutGap=".7em">

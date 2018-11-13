@@ -1,11 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {AuthService} from '../../services/auth.service';
 import {AvisoService} from '../../services/aviso.service';
-import {MatDialog} from '@angular/material';
-import {EmailDialogComponent} from './emailDialog/email-dialog.component';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Usuario} from '../../models/usuario';
-import {RegistracionComponent} from '../registracion/registracion.component';
 import {Router} from '@angular/router';
 
 @Component({
@@ -21,7 +18,6 @@ export class LoginComponent implements OnInit {
   usuario: Usuario;
 
   constructor(private router: Router,
-              private dialog: MatDialog,
               private authService: AuthService,
               private avisoService: AvisoService,
               private fb: FormBuilder) {
@@ -56,18 +52,5 @@ export class LoginComponent implements OnInit {
           this.avisoService.openSnackBar(err, '', 3500);
         });
     }
-  }
-
-  openEmailDialog() {
-    const dialogRef = this.dialog.open(EmailDialogComponent);
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.avisoService.openSnackBar('Los datos de recupero fueron enviados a su correo electrónico', '', 3500);
-      }
-    });
-  }
-
-  openRegistracionDialog() {
-    this.dialog.open(RegistracionComponent);
   }
 }
