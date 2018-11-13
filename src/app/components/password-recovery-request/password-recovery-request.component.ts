@@ -24,7 +24,6 @@ export class PasswordRecoveryRequestComponent implements OnInit {
     if (this.authService.isAuthenticated()) {
       this.router.navigate(['productos']);
     }
-
     this.createForm();
   }
 
@@ -38,16 +37,18 @@ export class PasswordRecoveryRequestComponent implements OnInit {
     if (this.requestForm.valid) {
       const email = this.requestForm.get('email').value;
       this.loading = true;
+      this.requestForm.disable();
       this.authService.solicitarCambioContrasenia(email).subscribe(
         () => {
           this.loading = false;
           let message = 'El pedido para recuperar su contraseña ha sido realizado correctamente.';
-          message += ' En breve recibirá un correo electrónico con instrucciones.';
+          message += ' En breve recibirá un correo electrónico con instrucciones';
           this.avisoService.openSnackBar(message, '', 5000);
           this.router.navigate(['productos']);
         },
         err => {
           this.loading = false;
+          this.requestForm.enable();
           this.avisoService.openSnackBar(err.error, '', 3500);
         }
       );
