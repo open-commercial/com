@@ -1,4 +1,4 @@
-import {CategoriaIVA} from './categoriaIVA';
+import {CategoriaIVA} from './categoria-iva';
 
 export interface Cliente {
   id_Cliente: number;

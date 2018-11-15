@@ -4,7 +4,7 @@ import {AuthService} from '../../services/auth.service';
 import {Cliente} from '../../models/cliente';
 import {ClientesService} from '../../services/clientes.service';
 import {AvisoService} from '../../services/aviso.service';
-import {CategoriaIVA} from '../../models/categoriaIVA';
+import {CategoriaIVA} from '../../models/categoria-iva';
 import {Pais} from '../../models/pais';
 import {PaisesService} from '../../services/paises.service';
 import {Provincia} from '../../models/provincia';
@@ -45,10 +45,8 @@ export class ClienteComponent implements OnInit {
 
   createForm() {
     this.clienteForm = this.fb.group({
-      tipoDeCliente: [null, Validators.required],
-      bonificacion: [null, Validators.pattern('^[0-9]*$')],
       idFiscal: ['', Validators.pattern('^[0-9]*$')],
-      razonSocial: ['', Validators.required],
+      nombreFiscal: ['', Validators.required],
       nombreFantasia: '',
       categoriaIVA: [null, Validators.required],
       direccion: '',
@@ -106,8 +104,6 @@ export class ClienteComponent implements OnInit {
       (cliente: Cliente) => {
         if (cliente) {
           this.cliente = cliente;
-          this.clienteForm.get('tipoDeCliente').disable();
-          this.clienteForm.get('bonificacion').disable();
         }
         this.isLoading = false;
       },
@@ -132,8 +128,6 @@ export class ClienteComponent implements OnInit {
                 if (cliente) {
                   this.cliente = newcliente;
                   this.inEdition = false;
-                  this.clienteForm.get('tipoDeCliente').disable();
-                  this.clienteForm.get('bonificacion').disable();
                 }
                 this.isLoading = false;
               }
@@ -149,10 +143,8 @@ export class ClienteComponent implements OnInit {
 
   getFormValues(): any {
     return {
-      tipoDeCliente: this.clienteForm.get('tipoDeCliente').value,
-      bonificacion: this.clienteForm.get('bonificacion').value,
       id_Cliente: this.cliente ? this.cliente.id_Cliente : null,
-      razonSocial: this.clienteForm.get('razonSocial').value,
+      nombreFiscal: this.clienteForm.get('nombreFiscal').value,
       nombreFantasia: this.clienteForm.get('nombreFantasia').value,
       direccion: this.clienteForm.get('direccion').value,
       idFiscal: this.clienteForm.get('idFiscal').value,
@@ -171,7 +163,6 @@ export class ClienteComponent implements OnInit {
       this.clienteForm.reset();
     } else {
       this.clienteForm.reset({
-        bonificacion: this.cliente.bonificacion,
         idFiscal: this.cliente.idFiscal,
         nombreFiscal: this.cliente.nombreFiscal,
         nombreFantasia: this.cliente.nombreFantasia,

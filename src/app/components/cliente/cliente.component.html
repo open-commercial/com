@@ -3,30 +3,11 @@
     <form fxLayout="column" [formGroup]="clienteForm" (ngSubmit)="submit()" *ngIf="!cliente || (cliente && inEdition)" fxLayoutGap="0.7rem">
       <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.7rem">
         <mat-form-field fxFlex>
-          <mat-select placeholder="Tipo de Cliente" formControlName="tipoDeCliente" required>
-            <mat-option *ngFor="let tc of keys(tiposDeCliente)" [value]="tc">
-              {{ tiposDeCliente[tc] }}
-            </mat-option>
-          </mat-select>
-          <mat-error *ngIf="clienteForm.get('tipoDeCliente').hasError('required')">
-            Requerido
-          </mat-error>
-        </mat-form-field>
-        <mat-form-field fxFlex>
-          <input matInput type="number" placeholder="Bonificación" formControlName="bonificacion">
-          <span matSuffix>%&nbsp;</span>
-          <mat-error *ngIf="clienteForm.get('bonificacion').hasError('pattern')">
-            Solo números
-          </mat-error>
-        </mat-form-field>
-      </div>
-      <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.7rem">
-        <mat-form-field fxFlex>
-          <input matInput type="number" placeholder="ID Fiscal" formControlName="idFiscal">
+          <input matInput type="number" placeholder="CUIT o DNI" formControlName="idFiscal">
           <mat-error *ngIf="clienteForm.get('idFiscal').hasError('pattern')">
             Solo números
           </mat-error>
-          <mat-hint>CUIL, CUIT o DNI según corresponda</mat-hint>
+          <mat-hint>CUIT o DNI según corresponda</mat-hint>
         </mat-form-field>
         <mat-form-field fxFlex>
           <mat-select placeholder="Categoría de IVA" formControlName="categoriaIVA" required>
@@ -41,8 +22,8 @@
       </div>
       <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.7rem">
         <mat-form-field fxFlex>
-          <input matInput placeholder="Razón Social" formControlName="razonSocial" required>
-          <mat-error *ngIf="clienteForm.get('razonSocial').hasError('required')">
+          <input matInput placeholder="Nombre Fiscal" formControlName="nombreFiscal" required>
+          <mat-error *ngIf="clienteForm.get('nombreFiscal').hasError('required')">
             Requerido
           </mat-error>
         </mat-form-field>
@@ -113,7 +94,7 @@
             </span>
             <span fxLayout="row" fxLayoutGap="1rem" fxLayoutAlign="start center">
               <mat-icon>grade</mat-icon>
-              <span>{{ cliente.razonSocial }}</span>
+              <span>{{ cliente.nombreFiscal }}</span>
             </span>
             <span fxLayout="row" fxLayoutGap="1rem" fxLayoutAlign="start center" *ngIf="cliente.nombreFantasia">
               <mat-icon>copyright</mat-icon>
@@ -121,7 +102,7 @@
             </span>
             <span fxLayout="row" fxLayoutGap="1rem" fxLayoutAlign="start center">
               <mat-icon>attach_money</mat-icon>
-              <span>{{ cliente.bonificacion }}%</span>
+              <span>{{ cliente.bonificacion | number:'1.2-2':'es-AR' }}%</span>
             </span>
           </div>
         </div>
