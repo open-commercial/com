@@ -20,14 +20,12 @@ export class ProductosService {
     this.buscarProductosSubject.next(this.criteria);
   }
 
-  getProductos(pagina: number, tamanioPagina: number) {
+  getProductos(pagina: number) {
     const arr = [
+      'codigo=' + this.getBusquedaCriteria(),
       'descripcion=' + this.getBusquedaCriteria(),
-      'pagina=' + pagina,
-      'tamanio=' + tamanioPagina,
-      'publicos=true'
+      'pagina=' + pagina
     ];
-
     const criteria = '&' + arr.join('&');
     return this.http.get(this.urlBusqueda + criteria);
   }
