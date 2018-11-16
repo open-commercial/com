@@ -44,4 +44,11 @@
     height: 90px;
     color: #ff5722;
   }
+
+  .sic-com-precio-lista {
+    font-weight: bold;
+    &.bonificado {
+      text-decoration: line-through;
+    }
+  }
 }
