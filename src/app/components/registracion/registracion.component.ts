@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {AuthService} from '../../services/auth.service';
 import {AvisoService} from '../../services/aviso.service';
-import {FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators} from '@angular/forms';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Usuario} from '../../models/usuario';
 import {RegistracionService} from '../../services/registracion.service';
 import {Router} from '@angular/router';
@@ -17,12 +17,8 @@ import {nombreFiscalValidator} from '../../validators/cliente-nombre-fiscal.vali
 export class RegistracionComponent implements OnInit {
   loading = false;
   usuario: Usuario;
-
   siteKey = '6Lfwp3QUAAAAANbMv6EJApDs1FS9l7v6LMig4nGU';
-  type: 'image' | 'audio' = 'image';
-
   registracionForm: FormGroup;
-
   keys = Object.keys;
   categoriasIVA = CategoriaIVA;
 
@@ -51,7 +47,6 @@ export class RegistracionComponent implements OnInit {
       password: ['', Validators.required],
       recaptcha: ['', Validators.required],
     });
-
     this.registracionForm.setValidators(nombreFiscalValidator);
   }
 
@@ -61,7 +56,6 @@ export class RegistracionComponent implements OnInit {
       if (reg.categoriaIVA === <CategoriaIVA>'CONSUMIDOR_FINAL') {
         reg.nombreFiscal = '';
       }
-
       this.loading = true;
       this.registracionForm.disable();
       this.registracionService.registrar(reg).subscribe(
