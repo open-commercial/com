@@ -28,6 +28,4 @@ export interface Cliente {
   idCredencial: number;
   nombreCredencial: string;
   predeterminado: boolean;
-  saldoCuentaCorriente: number;
-  fechaUltimoMovimiento: Date;
 }
