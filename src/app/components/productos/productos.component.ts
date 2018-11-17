@@ -14,7 +14,6 @@ export class ProductosComponent implements OnInit, OnDestroy {
   loadingProducts = false;
   totalPaginas = 0;
   pagina = 0;
-  tamanioPagina = 10;
   busquedaCriteria = '';
   buscarProductosSubscription: Subscription;
 
@@ -42,7 +41,7 @@ export class ProductosComponent implements OnInit, OnDestroy {
     if (reset) {
       this.pagina = 0;
     }
-    this.productosService.getProductos(this.pagina, this.tamanioPagina).subscribe(
+    this.productosService.getProductos(this.pagina).subscribe(
       data => {
         if (reset) {
           this.pagina = 0;

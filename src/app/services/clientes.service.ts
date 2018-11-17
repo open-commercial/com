@@ -15,7 +15,7 @@ export class ClientesService {
 
   getClientes(nombre, pagina, tamanioPagina) {
     const uri = this.uriClientes + '/busqueda/criteria?idEmpresa=' + environment.idEmpresa
-      + '&razonSocial=' + nombre + '&nombreFantasia=' + nombre + '&nroCliente=' + nombre
+      + '&nombreFiscal=' + nombre + '&nombreFantasia=' + nombre + '&nroCliente=' + nombre
       + '&pagina=' + pagina + '&tamanio=' + tamanioPagina;
     return this.http.get(uri);
   }
@@ -55,10 +55,7 @@ export class ClientesService {
       arr.push('idViajante=' + cliente.idViajante);
     }
     const url = this.uriClientes + '?' + arr.join('&');
-    if (cliente.id_Cliente) {
-      return this.http.put(url, cliente);
-    } else {
-      return this.http.post(url, cliente);
-    }
+
+    return this.http.put(url, cliente);
   }
 }

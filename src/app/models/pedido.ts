@@ -8,7 +8,7 @@ export interface Pedido {
   observaciones: string;
   nombreEmpresa: string;
   eliminado: boolean;
-  razonSocialCliente: string;
+  nombreFiscalCliente: string;
   nombreUsuario: string;
   subTotal: number;
   recargoPorcentaje: number;

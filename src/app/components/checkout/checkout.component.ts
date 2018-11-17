@@ -174,7 +174,7 @@ export class CheckoutComponent implements OnInit {
       this.checkoutPaso1Form.get('id_Cliente').setValue(this.cliente.id_Cliente);
       this.getTotalesInfo();
     }
-    const mensaje = 'Se seleccionó el cliente: ' + this.cliente.razonSocial;
+    const mensaje = 'Se seleccionó el cliente: ' + this.cliente.nombreFiscal;
     this.avisoService.openSnackBar(mensaje, '', 3500);
   }
 
