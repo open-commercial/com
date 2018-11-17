@@ -73,7 +73,7 @@ export class RegistracionComponent implements OnInit {
         )
         .subscribe(
           () => {
-            this.avisoService.openSnackBar('Recibirá un email para confirmar su registración', '', 3500);
+            this.avisoService.openSnackBar('Recibirá un email para confirmar su registración', 'OK', 0);
             this.router.navigate(['productos']);
           },
           err => {
