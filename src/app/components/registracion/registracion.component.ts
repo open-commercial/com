@@ -64,17 +64,19 @@ export class RegistracionComponent implements OnInit {
       this.registracionForm.disable();
       this.registracionService.registrar(reg)
         .pipe(
-          finalize(() => this.captchaElem.reloadCaptcha())
+          finalize(() => {
+            this.captchaElem.reloadCaptcha();
+            this.registracionForm.get('recaptcha').setValue('');
+            this.loading = false;
+            this.registracionForm.enable();
+          })
         )
         .subscribe(
           () => {
-            this.loading = false;
             this.avisoService.openSnackBar('Recibirá un email para confirmar su registración', '', 3500);
             this.router.navigate(['productos']);
           },
           err => {
-            this.loading = false;
-            this.registracionForm.enable();
             this.avisoService.openSnackBar(err.error, '', 3500);
           }
         );
