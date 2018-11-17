@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {AuthService} from '../../services/auth.service';
 import {AvisoService} from '../../services/aviso.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
@@ -8,6 +8,8 @@ import {Router} from '@angular/router';
 import {CategoriaIVA} from '../../models/categoria-iva';
 import {RegistracionCuenta} from '../../models/registracion-cuenta';
 import {nombreFiscalValidator} from '../../validators/cliente-nombre-fiscal.validator';
+import {ReCaptcha2Component} from 'ngx-captcha';
+import {finalize} from 'rxjs/operators';
 
 @Component({
   selector: 'sic-com-registracion',
@@ -21,6 +23,8 @@ export class RegistracionComponent implements OnInit {
   registracionForm: FormGroup;
   keys = Object.keys;
   categoriasIVA = CategoriaIVA;
+
+  @ViewChild('captchaElem') captchaElem: ReCaptcha2Component;
 
   constructor(private authService: AuthService,
               private router: Router,
@@ -58,18 +62,22 @@ export class RegistracionComponent implements OnInit {
       }
       this.loading = true;
       this.registracionForm.disable();
-      this.registracionService.registrar(reg).subscribe(
-        () => {
-          this.loading = false;
-          this.avisoService.openSnackBar('Recibirá un email para confirmar su registración', '', 3500);
-          this.router.navigate(['productos']);
-        },
-        err => {
-          this.loading = false;
-          this.registracionForm.enable();
-          this.avisoService.openSnackBar(err.error, '', 3500);
-        }
-      );
+      this.registracionService.registrar(reg)
+        .pipe(
+          finalize(() => this.captchaElem.reloadCaptcha())
+        )
+        .subscribe(
+          () => {
+            this.loading = false;
+            this.avisoService.openSnackBar('Recibirá un email para confirmar su registración', '', 3500);
+            this.router.navigate(['productos']);
+          },
+          err => {
+            this.loading = false;
+            this.registracionForm.enable();
+            this.avisoService.openSnackBar(err.error, '', 3500);
+          }
+        );
     }
   }
 }

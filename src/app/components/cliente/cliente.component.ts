@@ -19,7 +19,7 @@ import {LocalidadesService} from '../../services/localidades.service';
 })
 export class ClienteComponent implements OnInit {
 
-  @Input() inEdition = false;
+  inEdition = false;
   clienteForm: FormGroup;
   cliente: Cliente = null;
   paises: Array<Pais> = [];
@@ -56,6 +56,14 @@ export class ClienteComponent implements OnInit {
       telefono: ['', Validators.required],
       email: ['', Validators.email],
     });
+
+    this.clienteForm.get('categoriaIVA').valueChanges.subscribe(
+      value => {
+        if (value === 'CONSUMIDOR_FINAL') {
+          this.clienteForm.get('nombreFantasia').setValue('');
+        }
+      }
+    );
   }
 
   ngOnInit() {

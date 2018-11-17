@@ -27,9 +27,10 @@
             Requerido
           </mat-error>
         </mat-form-field>
-        <mat-form-field fxFlex>
+        <mat-form-field fxFlex *ngIf="clienteForm.get('categoriaIVA').value !== 'CONSUMIDOR_FINAL'">
           <input matInput placeholder="Nombre de Fantasía" formControlName="nombreFantasia">
         </mat-form-field>
+        <span fxFlex *ngIf="clienteForm.get('categoriaIVA').value === 'CONSUMIDOR_FINAL'"></span>
       </div>
       <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.7rem">
         <mat-form-field fxFlex>
