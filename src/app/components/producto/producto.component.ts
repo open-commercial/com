@@ -32,7 +32,7 @@ export class ProductoComponent implements OnInit {
 
   getProducto(id: number) {
     this.loadingProducto = true;
-    this.productosService.getProducto(id).subscribe(
+    this.productosService.getProducto(id, this.authService.isAuthenticated()).subscribe(
       data => {
         this.producto = data;
         this.cantidad = 1;
@@ -83,5 +83,9 @@ export class ProductoComponent implements OnInit {
         this.cantidad = 1;
       }
     }
+  }
+
+  esProductoBonificado() {
+    return this.producto && this.producto['precioBonificado'] && this.producto.precioBonificado !== this.producto.precioLista;
   }
 }

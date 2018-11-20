@@ -13,7 +13,14 @@
         <div fxLayout="column">
           <span class="sic-com-codigo-producto">{{producto.codigo}}</span>
           <span class="sic-com-descripcion-producto">{{producto.descripcion}}</span><br>
-          <span class="sic-com-precio-producto">$ {{producto.precioLista | number:'1.2-2':'es-AR'}}</span>
+          <div>
+            <span class="sic-com-precio-producto" [class.bonificado]="esProductoBonificado()">
+              $ {{producto.precioLista | number:'1.2-2':'es-AR'}}
+            </span>
+            <span class="sic-com-precio-bonificado" *ngIf="esProductoBonificado()">
+              $ {{producto.precioBonificado | number:'1.2-2':'es-AR'}}
+            </span>
+          </div>
           <mat-chip-list>
             <mat-chip class="sic-com-stock" [style.background-color]="(producto.hayStock ? 'limegreen' : 'red')">
               {{producto.hayStock ? "Hay Stock" : "Sin Stock"}}

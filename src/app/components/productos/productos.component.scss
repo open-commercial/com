@@ -48,7 +48,11 @@
   .sic-com-precio-lista {
     font-weight: bold;
     &.bonificado {
+      font-weight: normal;
       text-decoration: line-through;
     }
+  }
+  .sic-com-precio-bonificado {
+    font-weight: bold;
   }
 }
