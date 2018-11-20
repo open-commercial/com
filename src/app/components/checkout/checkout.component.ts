@@ -39,6 +39,7 @@ export class CheckoutComponent implements OnInit {
   cantidadArticulos: Number = 0;
   subTotal: Number = 0;
   total: Number = 0;
+  loadingTotales = false;
   enviarOrdenLoading = false;
 
   @ViewChild('stepper')
@@ -140,6 +141,7 @@ export class CheckoutComponent implements OnInit {
       setTimeout(() => this.busquedaInputRef.nativeElement.focus(), 300);
     } else {
       this.cliente = this.clienteDeUsuario;
+      this.getTotalesInfo();
     }
     this.clearClientes();
     if (this.busquedaInputRef) {
@@ -180,11 +182,15 @@ export class CheckoutComponent implements OnInit {
 
   getTotalesInfo() {
     if (this.cliente) {
+      this.loadingTotales = true;
       forkJoin(
         this.carritoCompraService.getCantidadArticulos(),
         this.carritoCompraService.getSubtotalImportePedido(),
         this.carritoCompraService.getTotalImportePedido(this.cliente.id_Cliente)
-      ).subscribe(data => {
+      ).pipe(
+        finalize(() => this.loadingTotales = false)
+      )
+      .subscribe(data => {
         this.cantidadArticulos = data[0];
         this.subTotal = data[1];
         this.total = data[2];
