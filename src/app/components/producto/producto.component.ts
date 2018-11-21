@@ -4,6 +4,8 @@ import {CarritoCompraService} from '../../services/carrito-compra.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AvisoService} from '../../services/aviso.service';
 import {AuthService} from '../../services/auth.service';
+import {ClientesService} from '../../services/clientes.service';
+import {Cliente} from '../../models/cliente';
 
 @Component({
   selector: 'sic-com-producto',
@@ -16,17 +18,24 @@ export class ProductoComponent implements OnInit {
   cantidad;
   loadingProducto = false;
   cargandoAlCarrito = false;
+  cliente: Cliente = null;
 
   constructor(private productosService: ProductosService,
               private carritoCompraService: CarritoCompraService,
               private avisoService: AvisoService,
               private authService: AuthService,
+              private clienteService: ClientesService,
               private router: Router,
               private route: ActivatedRoute) {
   }
 
   ngOnInit() {
     const productoId = Number(this.route.snapshot.params['id']);
+    if (this.authService.isAuthenticated()) {
+      this.clienteService.getClienteDelUsuario(this.authService.getLoggedInIdUsuario()).subscribe(
+        (cliente: Cliente) => this.cliente = cliente
+      );
+    }
     this.getProducto(productoId);
   }
 
@@ -34,7 +43,7 @@ export class ProductoComponent implements OnInit {
     this.loadingProducto = true;
     this.productosService.getProducto(id, this.authService.isAuthenticated()).subscribe(
       data => {
-        this.producto = data;
+        this.producto = data; console.log(data);
         this.cantidad = 1;
         this.loadingProducto = false;
       },
@@ -86,6 +95,6 @@ export class ProductoComponent implements OnInit {
   }
 
   esProductoBonificado() {
-    return this.producto && this.producto['precioBonificado'] && this.producto.precioBonificado !== this.producto.precioLista;
+    return this.authService.isAuthenticated() && this.producto.precioBonificado !== this.producto.precioLista;
   }
 }
