@@ -8,8 +8,8 @@ import {ClientesService} from '../../services/clientes.service';
 import {Usuario} from '../../models/usuario';
 import {Cliente} from '../../models/cliente';
 import {Rol} from '../../models/rol';
-import {forkJoin, Subject} from 'rxjs';
-import {debounceTime, distinctUntilChanged, finalize} from 'rxjs/operators';
+import {Subject} from 'rxjs';
+import {debounceTime, finalize} from 'rxjs/operators';
 import {MatStepper} from '@angular/material';
 import {Router} from '@angular/router';
 
@@ -180,18 +180,15 @@ export class CheckoutComponent implements OnInit {
 
   getTotalesInfo() {
     if (this.cliente) {
-      forkJoin(
-        this.carritoCompraService.getCantidadArticulos(),
-        this.carritoCompraService.getSubtotalImportePedido(),
-        this.carritoCompraService.getTotalImportePedido(this.cliente.id_Cliente)
-      ).subscribe(data => {
-        this.cantidadArticulos = data[0];
-        this.subTotal = data[1];
-        this.total = data[2];
-        if (this.cantidadArticulos <= 0) {
-          this.router.navigate(['carrito-compra']);
-        }
-      });
+      this.carritoCompraService.getCarritoCompra(this.cliente.id_Cliente)
+        .subscribe(data => {
+          this.cantidadArticulos = data.cantArticulos;
+          this.subTotal = data.subtotal;
+          this.total = data.total;
+          if (this.cantidadArticulos <= 0) {
+            this.router.navigate(['carrito-compra']);
+          }
+        });
     }
   }
 

@@ -1,8 +1,8 @@
 <div fxLayout="column" class="sic-com-carrito-compra">
-  <div *ngIf="loadingPedido" fxLayoutAlign="center center" class="sic-comSpinnerDiv">
+  <div *ngIf="loadingCarritoCompra" fxLayoutAlign="center center" class="sic-comSpinnerDiv">
     <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
   </div>
-  <div *ngIf="!loadingPedido">
+  <div *ngIf="!loadingCarritoCompra">
     <div fxLayout="column">
       <div fxLayoutAlign="start center" class="sic-com-ir-listado" (click)="irAlListado()">
         <mat-icon>keyboard_arrow_left</mat-icon>
@@ -13,7 +13,7 @@
         <span>Subtotal: $ {{subTotal | number:'1.2-2':'es-AR' }}</span>
       </div>
       <div fxLayoutAlign="space-around center" class="sic-com-botonera">
-        <button mat-raised-button (click)="vaciarPedido()" disabled="{{(itemsCarritoCompra.length == 0)}}">
+        <button mat-raised-button (click)="vaciarCarritoCompra()" disabled="{{(itemsCarritoCompra.length == 0)}}">
           <mat-icon>remove_shopping_cart</mat-icon>
           <span fxHide.lt-md>Limpiar Listado</span>
         </button>
@@ -52,7 +52,7 @@
       </mat-list-item>
     </mat-list>
   </div>
-  <div fxLayoutAlign="center center" class="sic-com-mas-resultados" (click)="masProductosPedido()"
+  <div fxLayoutAlign="center center" class="sic-com-mas-resultados" (click)="masItemsCarritoCompra()"
        *ngIf="(itemsCarritoCompra.length > 0) && (totalPaginas > (pagina + 1)) && !loadingRenglones">
     <strong>MAS RESULTADOS</strong>
   </div>

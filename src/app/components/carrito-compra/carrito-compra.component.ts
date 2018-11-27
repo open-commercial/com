@@ -8,7 +8,9 @@ import {ConfirmationDialogComponent} from '../confirmation-dialog/confirmation-d
 import {CantidadProductoDialogComponent} from './cantidadProductoDialog/cantidad-producto-dialog.component';
 import {ProductosService} from '../../services/productos.service';
 import {Router} from '@angular/router';
-import {forkJoin} from 'rxjs';
+import {Usuario} from '../../models/usuario';
+import {Cliente} from '../../models/cliente';
+import {CarritoCompra} from '../../models/carrito-compra';
 
 @Component({
   selector: 'sic-com-carrito-compra',
@@ -19,44 +21,77 @@ export class CarritoCompraComponent implements OnInit {
   itemsCarritoCompra = [];
   cantidadRenglones = 0;
   pagina = 0;
-  tamanioPagina = 10;
   totalPaginas = 0;
-  loadingPedido = false;
+  loadingCarritoCompra = false;
   loadingRenglones = false;
   mostrarBotonAsignarCliente = true;
-
-  cantidadArticulos: Number = 0;
-  subTotal: Number = 0;
+  cantidadArticulos = 0;
+  subTotal = 0;
+  usuario: Usuario = null;
+  clienteDeUsuario: Cliente = null;
+  cliente: Cliente = null;
+  carritoCompra: CarritoCompra;
 
   constructor(private carritoCompraService: CarritoCompraService,
               private clientesService: ClientesService,
-              private dialog: MatDialog,
               private avisoService: AvisoService,
               private authService: AuthService,
               private productosService: ProductosService,
+              private dialog: MatDialog,
               private router: Router) {
   }
 
   ngOnInit() {
-    this.loadingPedido = true;
-    this.cargarPedido();
+    this.loadingCarritoCompra = true;
+    this.cargarItemsCarritoCompra();
 
-    this.carritoCompraService.getCantidadRenglones().subscribe(
+
+    this.authService.getLoggedInUsuario().subscribe(
+      (usuario: Usuario) => {
+        if (usuario) {
+          this.usuario = usuario;
+          this.clientesService.getClienteDelUsuario(this.usuario.id_Usuario).subscribe(
+            (cliente: Cliente) => {
+              if (cliente) {
+                this.clienteDeUsuario = cliente;
+                this.cliente = cliente;
+              }
+              this.loadingCarritoCompra = false;
+            },
+            err => {
+              this.loadingCarritoCompra = false;
+              this.avisoService.openSnackBar(err.error, '', 3500);
+            }
+          );
+        } else {
+          this.loadingCarritoCompra = false;
+        }
+      },
+      err => {
+        this.loadingCarritoCompra = false;
+        this.avisoService.openSnackBar(err.error, '', 3500);
+      }
+    );
+
+
+
+
+    /*this.carritoCompraService.getCantidadRenglones().subscribe(
       data => {
         this.cantidadRenglones = Number(data);
         this.carritoCompraService.setCantidadItemsEnCarrito(Number(data));
       },
-      err => this.avisoService.openSnackBar(err.error, '', 3500));
+      err => this.avisoService.openSnackBar(err.error, '', 3500));*/
   }
 
-  vaciarPedido() {
+  vaciarCarritoCompra() {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent);
     dialogRef.componentInstance.titulo = '¿Está seguro de quitar todos los productos del carrito?';
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.carritoCompraService.eliminarTodosLosItems().subscribe(
           data => {
-            this.sumarSubTotal();
+            this.cargarCarritoCompra();
             this.itemsCarritoCompra = [];
             this.carritoCompraService.setCantidadItemsEnCarrito(0);
             this.avisoService.openSnackBar('Se borraron todos los articulos del listado', '', 3500);
@@ -66,26 +101,26 @@ export class CarritoCompraComponent implements OnInit {
     });
   }
 
-  cargarPedido() {
-    this.carritoCompraService.getItems(this.pagina, this.tamanioPagina).subscribe(
-      data => {
-        data['content'].forEach(item => this.itemsCarritoCompra.push(item));
-        this.totalPaginas = data['totalPages'];
-        this.sumarSubTotal();
-        this.loadingPedido = false;
-        this.loadingRenglones = false;
+  cargarCarritoCompra() {
+    this.carritoCompraService.getCarritoCompra(this.clienteDeUsuario.id_Cliente)
+      .subscribe(data => {
+          this.cantidadArticulos = data.cantArticulos;
+          this.subTotal = data.subtotal;
       },
       err => this.avisoService.openSnackBar(err.error, '', 3500));
   }
 
-  sumarSubTotal() {
-    forkJoin(
-      this.carritoCompraService.getCantidadArticulos(),
-      this.carritoCompraService.getSubtotalImportePedido()
-    ).subscribe(data => {
-      this.cantidadArticulos = data[0];
-      this.subTotal = data[1];
-    });
+  cargarItemsCarritoCompra() {
+    this.carritoCompraService.getItems(this.pagina)
+      .subscribe(
+        data => {
+          data['content'].forEach(item => this.itemsCarritoCompra.push(item));
+          this.totalPaginas = data['totalPages'];
+          this.cargarCarritoCompra();
+          this.loadingCarritoCompra = false;
+          this.loadingRenglones = false;
+        },
+        err => this.avisoService.openSnackBar(err.error, '', 3500));
   }
 
   eliminarItemDelCarrito(itemCarritoCompra) {
@@ -96,7 +131,7 @@ export class CarritoCompraComponent implements OnInit {
         this.carritoCompraService.eliminarItem(itemCarritoCompra.producto.idProducto).subscribe(
           data => {
             this.avisoService.openSnackBar('Se eliminó el articulo del listado', '', 3500);
-            this.sumarSubTotal();
+            this.cargarCarritoCompra();
             const id = this.itemsCarritoCompra.map(function (e) {
               return e;
             }).indexOf(itemCarritoCompra);
@@ -113,16 +148,16 @@ export class CarritoCompraComponent implements OnInit {
     dialogRef.componentInstance.itemCarritoCompra = itemCarritoCompra;
     dialogRef.afterClosed().subscribe(data => {
       if (data) {
-        this.sumarSubTotal();
+        this.cargarCarritoCompra();
       }
     });
   }
 
-  masProductosPedido() {
+  masItemsCarritoCompra() {
     this.loadingRenglones = true;
     if ((this.pagina + 1) < this.totalPaginas) {
       this.pagina++;
-      this.cargarPedido();
+      this.cargarItemsCarritoCompra();
     }
   }
 
