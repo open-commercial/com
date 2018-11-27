@@ -6,6 +6,7 @@ import {AvisoService} from '../../services/aviso.service';
 import {AuthService} from '../../services/auth.service';
 import {ClientesService} from '../../services/clientes.service';
 import {Cliente} from '../../models/cliente';
+import {CarritoCompra} from '../../models/carrito-compra';
 
 @Component({
   selector: 'sic-com-producto',
@@ -43,7 +44,7 @@ export class ProductoComponent implements OnInit {
     this.loadingProducto = true;
     this.productosService.getProducto(id, this.authService.isAuthenticated()).subscribe(
       data => {
-        this.producto = data; console.log(data);
+        this.producto = data;
         this.cantidad = 1;
         this.loadingProducto = false;
       },
@@ -62,18 +63,20 @@ export class ProductoComponent implements OnInit {
     this.carritoCompraService.agregarQuitarAlPedido(this.producto, this.cantidad)
       .subscribe(
         data => {
-          this.carritoCompraService.getCantidadRenglones()
-            .subscribe(
-              cant => {
-                this.carritoCompraService.setCantidadItemsEnCarrito(Number(cant));
-                this.irAlListado();
-                this.cargandoAlCarrito = false;
-              },
-              err => {
-                this.avisoService.openSnackBar(err.error, '', 3500);
-                this.cargandoAlCarrito = false;
-              }
-            );
+          if (this.cliente) {
+            this.carritoCompraService.getCarritoCompra(this.cliente.id_Cliente)
+              .subscribe(
+                (carrito: CarritoCompra) => {
+                  this.carritoCompraService.setCantidadItemsEnCarrito(carrito.cantRenglones);
+                  this.irAlListado();
+                  this.cargandoAlCarrito = false;
+                },
+                err => {
+                  this.avisoService.openSnackBar(err.error, '', 3500);
+                  this.cargandoAlCarrito = false;
+                }
+              );
+          }
         },
         err => {
           this.cargandoAlCarrito = false;
@@ -95,6 +98,6 @@ export class ProductoComponent implements OnInit {
   }
 
   esProductoBonificado() {
-    return this.authService.isAuthenticated() && this.producto.precioBonificado !== this.producto.precioLista;
+    return this.authService.isAuthenticated() && this.producto.precioListaBonificado !== this.producto.precioLista;
   }
 }

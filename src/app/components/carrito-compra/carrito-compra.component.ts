@@ -8,9 +8,7 @@ import {ConfirmationDialogComponent} from '../confirmation-dialog/confirmation-d
 import {CantidadProductoDialogComponent} from './cantidadProductoDialog/cantidad-producto-dialog.component';
 import {ProductosService} from '../../services/productos.service';
 import {Router} from '@angular/router';
-import {Usuario} from '../../models/usuario';
 import {Cliente} from '../../models/cliente';
-import {CarritoCompra} from '../../models/carrito-compra';
 
 @Component({
   selector: 'sic-com-carrito-compra',
@@ -27,10 +25,8 @@ export class CarritoCompraComponent implements OnInit {
   mostrarBotonAsignarCliente = true;
   cantidadArticulos = 0;
   subTotal = 0;
-  usuario: Usuario = null;
-  clienteDeUsuario: Cliente = null;
+  subTotalBonificado = 0;
   cliente: Cliente = null;
-  carritoCompra: CarritoCompra;
 
   constructor(private carritoCompraService: CarritoCompraService,
               private clientesService: ClientesService,
@@ -43,45 +39,20 @@ export class CarritoCompraComponent implements OnInit {
 
   ngOnInit() {
     this.loadingCarritoCompra = true;
-    this.cargarItemsCarritoCompra();
 
-
-    this.authService.getLoggedInUsuario().subscribe(
-      (usuario: Usuario) => {
-        if (usuario) {
-          this.usuario = usuario;
-          this.clientesService.getClienteDelUsuario(this.usuario.id_Usuario).subscribe(
-            (cliente: Cliente) => {
-              if (cliente) {
-                this.clienteDeUsuario = cliente;
-                this.cliente = cliente;
-              }
-              this.loadingCarritoCompra = false;
-            },
-            err => {
-              this.loadingCarritoCompra = false;
-              this.avisoService.openSnackBar(err.error, '', 3500);
-            }
-          );
-        } else {
-          this.loadingCarritoCompra = false;
+    this.clientesService.getClienteDelUsuario(this.authService.getLoggedInIdUsuario()).subscribe(
+      (cliente: Cliente) => {
+        if (cliente) {
+          this.cliente = cliente;
+          this.cargarItemsCarritoCompra();
         }
+        this.loadingCarritoCompra = false;
       },
       err => {
         this.loadingCarritoCompra = false;
         this.avisoService.openSnackBar(err.error, '', 3500);
       }
     );
-
-
-
-
-    /*this.carritoCompraService.getCantidadRenglones().subscribe(
-      data => {
-        this.cantidadRenglones = Number(data);
-        this.carritoCompraService.setCantidadItemsEnCarrito(Number(data));
-      },
-      err => this.avisoService.openSnackBar(err.error, '', 3500));*/
   }
 
   vaciarCarritoCompra() {
@@ -102,10 +73,11 @@ export class CarritoCompraComponent implements OnInit {
   }
 
   cargarCarritoCompra() {
-    this.carritoCompraService.getCarritoCompra(this.clienteDeUsuario.id_Cliente)
+    this.carritoCompraService.getCarritoCompra(this.cliente.id_Cliente)
       .subscribe(data => {
           this.cantidadArticulos = data.cantArticulos;
           this.subTotal = data.subtotal;
+          this.subTotalBonificado = this.subTotal - (this.subTotal * this.cliente.bonificacion / 100);
       },
       err => this.avisoService.openSnackBar(err.error, '', 3500));
   }
@@ -121,6 +93,14 @@ export class CarritoCompraComponent implements OnInit {
           this.loadingRenglones = false;
         },
         err => this.avisoService.openSnackBar(err.error, '', 3500));
+  }
+
+  precioListaBonificado(item) {
+    return item.producto.precioLista - (item.producto.precioLista * this.cliente.bonificacion / 100);
+  }
+
+  precioImporteBonificado(item) {
+    return item.importe - (item.importe * this.cliente.bonificacion / 100);
   }
 
   eliminarItemDelCarrito(itemCarritoCompra) {

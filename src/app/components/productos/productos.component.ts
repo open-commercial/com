@@ -69,6 +69,6 @@ export class ProductosComponent implements OnInit, OnDestroy {
   }
 
   estaBonificado(p) {
-    return p && p['precioBonificado'] && p.precioBonificado !== p.precioLista;
+    return this.authService.isAuthenticated() && p.precioListaBonificado !== p.precioLista;
   }
 }

@@ -9,6 +9,10 @@
   .sic-com-totalizadores {
     height: 60px;
     font-weight: bold;
+    .subtotal.bonificado {
+      font-weight: normal;
+      text-decoration: line-through;
+    }
   }
 
   .sic-com-botonera {
@@ -21,7 +25,11 @@
     .mat-line {
       white-space: normal;
     }
-    padding-bottom: 7px; 
+    padding-bottom: 7px;
+    .precio-item.bonificado {
+      font-weight: normal;
+      text-decoration: line-through;
+    }
   }
 
   .sic-com-img-avatar {
@@ -54,4 +62,6 @@
     cursor: pointer;
     height: 90px;
   }
+
+
 }
