@@ -48,7 +48,12 @@ export class ProductosComponent implements OnInit, OnDestroy {
           this.productos = [];
         }
 
-        data['content'].forEach(p => this.productos.push(p));
+        data['content'].forEach(p => {
+          if (p.urlImagen == null || p.urlImagen === '') {
+            p.urlImagen = '../../../assets/no-image.png';
+          }
+          this.productos.push(p);
+        });
         this.totalPaginas = data['totalPages'];
         this.loadingProducts = false;
       },

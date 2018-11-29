@@ -20,14 +20,14 @@ export class ProductosService {
     this.buscarProductosSubject.next(this.criteria);
   }
 
-  getProductos(pagina: number) {
+  getProductos(pagina: number): Observable<[Producto]> {
     const arr = [
       'codigo=' + this.getBusquedaCriteria(),
       'descripcion=' + this.getBusquedaCriteria(),
       'pagina=' + pagina
     ];
     const criteria = '&' + arr.join('&');
-    return this.http.get(this.urlBusqueda + criteria);
+    return this.http.get<[Producto]>(this.urlBusqueda + criteria);
   }
 
   getProducto(idProducto: number): Observable<Producto> {

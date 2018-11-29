@@ -4,6 +4,7 @@ import {CarritoCompraService} from '../../services/carrito-compra.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AvisoService} from '../../services/aviso.service';
 import {AuthService} from '../../services/auth.service';
+import {Producto} from '../../models/producto';
 
 @Component({
   selector: 'sic-com-producto',
@@ -12,7 +13,7 @@ import {AuthService} from '../../services/auth.service';
 })
 export class ProductoComponent implements OnInit {
 
-  producto;
+  producto: Producto;
   cantidad;
   loadingProducto = false;
   cargandoAlCarrito = false;
@@ -35,6 +36,9 @@ export class ProductoComponent implements OnInit {
     this.productosService.getProducto(id).subscribe(
       data => {
         this.producto = data;
+        if (this.producto.urlImagen == null || this.producto.urlImagen === '') {
+          this.producto.urlImagen = '../../../assets/no-image.png';
+        }
         this.cantidad = 1;
         this.loadingProducto = false;
       },
