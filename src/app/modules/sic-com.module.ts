@@ -40,6 +40,7 @@ import {CuentaCorrienteComponent} from '../components/cuenta-corriente/cuenta-co
 import {NgxCaptchaModule} from 'ngx-captcha';
 import {RegistracionService} from '../services/registracion.service';
 import {CheckoutComponent} from '../components/checkout/checkout.component';
+import {SlideshowModule} from 'ng-simple-slideshow';
 import {registerLocaleData} from '@angular/common';
 import localeEs from '@angular/common/locales/es';
 import localeEsExtra from '@angular/common/locales/extra/es-AR';
@@ -76,7 +77,8 @@ registerLocaleData(localeEs, 'es-AR', localeEsExtra);
     FlexLayoutModule,
     BrowserAnimationsModule,
     sicComRouting,
-    NgxCaptchaModule
+    NgxCaptchaModule,
+    SlideshowModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},

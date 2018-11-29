@@ -3,6 +3,7 @@ import {ProductosService} from '../../services/productos.service';
 import {ActivatedRoute} from '@angular/router';
 import {AvisoService} from 'app/services/aviso.service';
 import {Subscription} from 'rxjs';
+import {IImage} from 'ng-simple-slideshow';
 
 @Component({
   selector: 'sic-com-productos',
@@ -16,6 +17,19 @@ export class ProductosComponent implements OnInit, OnDestroy {
   pagina = 0;
   busquedaCriteria = '';
   buscarProductosSubscription: Subscription;
+
+  imageUrls: (string | IImage)[] = [
+    {
+      url: 'https://homecamp.com.au/wp-content/uploads/2018/05/Dewit-Trowel-Bottle-Opener.jpg',
+      caption: 'Producto',
+      href: '/producto/2809'
+    },
+    {
+      url: 'https://img.alicdn.com/imgextra/i1/6000000002914/TB2X884EXOWBuNjy0FiXXXFxVXa_!!6000000002914-0-tbvideo.jpg',
+      caption: 'Búsqueda',
+      href: '/productos;busqueda=tramontina'
+    },
+  ];
 
   constructor(private productosService: ProductosService,
               private route: ActivatedRoute,

@@ -1,4 +1,12 @@
 <div fxLayout="column" class="sic-com-productos">
+  <slideshow
+    [imageUrls]="imageUrls"
+    height="300px"
+    autoPlay="true"
+    backgroundSize="cover"
+    backgroundRepeat="no-repeat"
+  >
+  </slideshow>
   <div fxLayoutAlign="center center" *ngIf="loadingProducts && (productos.length === 0)">
     <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
   </div>
