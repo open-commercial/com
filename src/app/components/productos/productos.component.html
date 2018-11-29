@@ -16,7 +16,7 @@
         <p mat-line class="sic-com-descripcion"><strong>{{p.descripcion}}</strong></p>
         <p mat-line>
           <span class="sic-com-precio-lista" [class.bonificado]="estaBonificado(p)">$ {{p.precioLista | number:'1.2-2':'es-AR' }}</span>
-          <span class="sic-com-precio-bonificado" *ngIf="estaBonificado(p)">&nbsp;$ {{ p.precioListaBonificado | number:'1.2-2':'es-AR' }}</span>
+          <span class="sic-com-precio-bonificado" *ngIf="estaBonificado(p)">&nbsp;&nbsp;$ {{ p.precioBonificado | number:'1.2-2':'es-AR' }}</span>
         </p>
       </mat-list-item>
       <mat-divider></mat-divider>

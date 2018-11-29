@@ -7,7 +7,7 @@
       <mat-icon>keyboard_arrow_left</mat-icon>
       <strong>Ir al listado</strong>
     </div>
-    <div fxLayout="column" fxLayoutAlign="start center">
+    <div fxLayout="column" fxLayoutAlign="start center" *ngIf="!loadingProducto && producto">
       <img class="sic-com-img-producto" src="../../../assets/no-image.png">
       <div class="sic-com-detalle-producto">
         <div fxLayout="column">
@@ -19,7 +19,7 @@
             $ {{producto.precioLista | number:'1.2-2':'es-AR'}}
             </span>
             <span class="sic-com-precio-bonificado" *ngIf="esProductoBonificado()">
-              $ {{producto.precioListaBonificado | number:'1.2-2':'es-AR'}}
+              $ {{producto.precioBonificado | number:'1.2-2':'es-AR'}}
             </span>
           </div>
           <span class="bonificado-label" *ngIf="cliente && esProductoBonificado()">

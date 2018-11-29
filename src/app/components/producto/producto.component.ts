@@ -25,7 +25,7 @@ export class ProductoComponent implements OnInit {
               private carritoCompraService: CarritoCompraService,
               private avisoService: AvisoService,
               private authService: AuthService,
-              private clienteService: ClientesService,
+              private clientesService: ClientesService,
               private router: Router,
               private route: ActivatedRoute) {
   }
@@ -33,7 +33,7 @@ export class ProductoComponent implements OnInit {
   ngOnInit() {
     const productoId = Number(this.route.snapshot.params['id']);
     if (this.authService.isAuthenticated()) {
-      this.clienteService.getClienteDelUsuario(this.authService.getLoggedInIdUsuario()).subscribe(
+      this.clientesService.getClienteDelUsuario(this.authService.getLoggedInIdUsuario()).subscribe(
         (cliente: Cliente) => this.cliente = cliente
       );
     }
@@ -51,6 +51,7 @@ export class ProductoComponent implements OnInit {
       err => {
         this.loadingProducto = false;
         this.avisoService.openSnackBar(err.error, '', 3500);
+        this.irAlListado();
       });
   }
 
@@ -98,6 +99,6 @@ export class ProductoComponent implements OnInit {
   }
 
   esProductoBonificado() {
-    return this.authService.isAuthenticated() && this.producto.precioListaBonificado !== this.producto.precioLista;
+    return this.authService.isAuthenticated() && this.producto.precioBonificado !== this.producto.precioLista;
   }
 }
