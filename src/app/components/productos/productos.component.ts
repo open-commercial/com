@@ -47,7 +47,6 @@ export class ProductosComponent implements OnInit, OnDestroy {
           this.pagina = 0;
           this.productos = [];
         }
-
         data['content'].forEach(p => {
           if (p.urlImagen == null || p.urlImagen === '') {
             p.urlImagen = '../../../assets/no-image.png';
