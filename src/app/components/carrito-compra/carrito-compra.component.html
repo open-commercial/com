@@ -11,8 +11,8 @@
       <div fxLayoutAlign="space-around center" class="sic-com-totalizadores" fxLayout.lt-sm="column">
         <div>Cant. Articulos: {{cantidadArticulos | number:'1.0-2':'es-AR' }}</div>
         <div>
-          Subtotal: <span class="subtotal" [class.bonificado]="subTotal != subTotalBonificado">$ {{subTotal | number:'1.2-2':'es-AR' }}</span>&nbsp;&nbsp;
-          <span *ngIf="subTotal != subTotalBonificado">$ {{subTotalBonificado | number:'1.2-2':'es-AR' }}</span>
+          Subtotal: <span class="subtotal" [class.bonificado]="subTotal != total">$ {{subTotal | number:'1.2-2':'es-AR' }}</span>&nbsp;&nbsp;
+          <span *ngIf="subTotal != total">$ {{total | number:'1.2-2':'es-AR' }}</span>
         </div>
       </div>
       <div fxLayoutAlign="space-around center" class="sic-com-botonera">
@@ -37,10 +37,10 @@
                 <div class="sic-com-descripcion-producto">{{icc.producto.descripcion}}</div>
                 <div>
                   <strong class="precio-item" [class.bonificado]="cliente && cliente.bonificacion > 0">
-                    $ {{icc.producto.precioLista | number:'1.2-2':'es-AR' }}
+                    $ {{icc.producto.precioLista | number:'1.2-2':'es-AR'}}
                   </strong>&nbsp;
                   <strong *ngIf="cliente && cliente.bonificacion > 0">
-                    $ {{ precioListaBonificado(icc) | number:'1.2-2':'es-AR' }}
+                    $ {{icc.producto.precioBonificado | number:'1.2-2':'es-AR'}}
                   </strong>
                 </div>
               </div>
@@ -50,8 +50,8 @@
               <button mat-raised-button (click)="editCantidadProducto(icc)" color="primary">Cantidad {{icc.cantidad | number:'1.0-2':'es-AR' }}</button>
             </div>
             <div fxFlex="40" fxLayoutAlign="center center">
-              <strong *ngIf="!(cliente && cliente.bonificacion > 0)">$ {{ icc.importe | number:'1.2-2':'es-AR' }}</strong>
-              <strong *ngIf="cliente && cliente.bonificacion > 0">$ {{ precioImporteBonificado(icc) | number:'1.2-2':'es-AR' }}</strong>
+              <strong *ngIf="!(cliente && cliente.bonificacion > 0)">$ {{icc.importe | number:'1.2-2':'es-AR'}}</strong>
+              <strong *ngIf="cliente && cliente.bonificacion > 0">$ {{icc.importeBonificado | number:'1.2-2':'es-AR'}}</strong>
             </div>
             <div fxFlex="20" fxLayoutAlign="center center">
               <button mat-icon-button (click)="eliminarItemDelCarrito(icc)" matTooltip="Quitar del listado">

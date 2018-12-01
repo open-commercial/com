@@ -25,7 +25,7 @@ export class CarritoCompraComponent implements OnInit {
   mostrarBotonAsignarCliente = true;
   cantidadArticulos = 0;
   subTotal = 0;
-  subTotalBonificado = 0;
+  total = 0;
   cliente: Cliente = null;
 
   constructor(private carritoCompraService: CarritoCompraService,
@@ -77,13 +77,13 @@ export class CarritoCompraComponent implements OnInit {
       .subscribe(data => {
           this.cantidadArticulos = data.cantArticulos;
           this.subTotal = data.subtotal;
-          this.subTotalBonificado = this.subTotal - (this.subTotal * this.cliente.bonificacion / 100);
+          this.total = data.total;
       },
       err => this.avisoService.openSnackBar(err.error, '', 3500));
   }
 
   cargarItemsCarritoCompra() {
-    this.carritoCompraService.getItems(this.pagina)
+    this.carritoCompraService.getItems(this.cliente.id_Cliente, this.pagina)
       .subscribe(
         data => {
           data['content'].forEach(item => this.itemsCarritoCompra.push(item));

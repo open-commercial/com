@@ -34,9 +34,9 @@ export class CarritoCompraService {
     return this.http.put(uriPut, {});
   }
 
-  getItems(pagina: number) {
+  getItems(idCliente: number, pagina: number) {
     const idUsuario = localStorage.getItem('id_Usuario');
-    const uriGet = `${this.uri}/usuarios/${idUsuario}/items?pagina=${pagina}`;
+    const uriGet = `${this.uri}/usuarios/${idUsuario}/clientes/${idCliente}/items?pagina=${pagina}`;
     return this.http.get(uriGet);
   }
 
@@ -56,29 +56,4 @@ export class CarritoCompraService {
     const uriPost = `${this.uri}?idEmpresa=${environment.idEmpresa}&idUsuario=${idUsuario}&idCliente=${idCliente}`;
     return this.http.post(uriPost, observaciones);
   }
-
-
-
-
-  /*
-  getTotalImportePedido(idCliente): Observable<Number> {
-    const urlTotalImpPedido = this.urlCarrito + localStorage.getItem('id_Usuario') + '/clientes/' + idCliente + '/total';
-    return this.http.get<Number>(urlTotalImpPedido);
-  }
-
-    getCantidadRenglones() {
-    const urlCantRenglones = this.urlCarrito + localStorage.getItem('id_Usuario') + '/cantidad-renglones';
-    return this.http.get(urlCantRenglones);
-  }
-
-  getCantidadArticulos(): Observable<Number> {
-    const urlCantArticulos = this.urlCarrito + localStorage.getItem('id_Usuario') + '/cantidad-articulos';
-    return this.http.get<Number>(urlCantArticulos);
-  }
-
-  getSubtotalImportePedido(): Observable<Number> {
-    const urlSubtotal = this.urlCarrito + localStorage.getItem('id_Usuario') + '/subtotal';
-    return this.http.get<Number>(urlSubtotal);
-  }
-  */
 }
