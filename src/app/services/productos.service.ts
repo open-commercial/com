@@ -19,7 +19,7 @@ export class ProductosService {
 
   constructor(private http: HttpClient) {}
 
-  protected getQSForProductosUrl(pagina: number, tamanioPagina: number) {
+  protected getQSForProductosUrl(pagina: number) {
     const arr = [
       'codigo=' + this.getBusquedaCriteria(),
       'descripcion=' + this.getBusquedaCriteria(),
@@ -33,8 +33,8 @@ export class ProductosService {
     this.buscarProductosSubject.next(this.criteria);
   }
 
-  getProductos(pagina: number, tamanioPagina: number, urlSegura: boolean = false) {
-    const criteria = this.getQSForProductosUrl(pagina, tamanioPagina);
+  getProductos(pagina: number, urlSegura: boolean = false) {
+    const criteria = this.getQSForProductosUrl(pagina);
     const url = urlSegura ? this.securedUrlBusqueda : this.urlBusqueda;
     return this.http.get(url + criteria);
   }

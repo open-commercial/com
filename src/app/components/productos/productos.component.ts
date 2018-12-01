@@ -43,7 +43,8 @@ export class ProductosComponent implements OnInit, OnDestroy {
     if (reset) {
       this.pagina = 0;
     }
-    this.productosService.getProductos(this.pagina, this.tamanioPagina, this.authService.isAuthenticated()).subscribe(
+    this.productosService.getProductos(this.pagina, this.authService.isAuthenticated())
+      .subscribe(
       data => {
         if (reset) {
           this.pagina = 0;
