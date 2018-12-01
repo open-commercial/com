@@ -7,7 +7,7 @@
       <form [formGroup]="checkoutPaso1Form" autocomplete="off">
         <ng-template matStepLabel>
           <div class="cliente-label">
-            Cliente: <strong>{{ cliente ? cliente.razonSocial: '' }}</strong>
+            Cliente: <strong>{{ cliente ? cliente.nombreFiscal: '' }}</strong>
           </div>
         </ng-template>
         <input type="hidden" formControlName="id_Cliente" required>
@@ -25,7 +25,7 @@
             <mat-nav-list>
               <mat-list-item *ngFor="let c of clientes" (click)="seleccionarCliente(c)" [class.seleccionado]="cliente && cliente.id_Cliente === c.id_Cliente">
                 <h3 matLine class="nro-cliente">#{{ c.nroCliente }}</h3>
-                <p matLine class="razon-social">{{ c.razonSocial }}</p>
+                <p matLine class="razon-social">{{ c.nombreFiscal }}</p>
                 <p matLine class="nombre-fantasia" *ngIf="c.nombreFantasia">{{ c.nombreFantasia }}</p>
               </mat-list-item>
             </mat-nav-list>
@@ -47,18 +47,21 @@
     <mat-step [stepControl]="checkoutPaso2Form" *ngIf="checkoutPaso2Form">
       <form [formGroup]="checkoutPaso2Form">
         <ng-template matStepLabel>Resumen</ng-template>
-        <div fxLayoutAlign="space-between center" fxLayout.lt-sm="column" *ngIf="cliente" class="resumen"
+        <div fxLayoutAlign="space-between center" fxLayout.lt-sm="column" *ngIf="!loadingTotales && cliente" class="resumen"
              fxLayoutGap=".8rem">
           <div>Cant. de Artículos: {{ cantidadArticulos| number:'1.0-2':'es-AR' }}</div>
           <div>Subtotal: <span class="valor">$ {{ subTotal| number:'1.2-2':'es-AR' }}</span></div>
           <div>
             <mat-chip-list>
               <mat-chip class="sic-com-bonificacion valor" color="primary">
-                Bonificación: {{ cliente.bonificacion | number:'1.2-2':'es-AR' }} %
+                Bonificación: {{ cliente.bonificacion | number:'1.0-2':'es-AR' }} %
               </mat-chip>
             </mat-chip-list>
           </div>
           <div>Total: <span class="valor">$ {{ total| number:'1.2-2':'es-AR' }}</span></div>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="center center" *ngIf="loadingTotales">
+          <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
         </div>
         <br>
         <div>
@@ -76,7 +79,7 @@
         <br>
         <div *ngIf="!enviarOrdenLoading" class="acciones">
           <button mat-raised-button color="primary" (click)="cerrarOrden()"
-                  [disabled]="!cliente || checkoutPaso1Form.invalid || checkoutPaso2Form.invalid">
+                  [disabled]="loadingTotales || !cliente || checkoutPaso1Form.invalid || checkoutPaso2Form.invalid">
             Confirmar
           </button>
         </div>

@@ -3,7 +3,7 @@ export interface CuentaCorriente {
   fechaApertura: Date;
   fechaUltimoMovimiento: Date;
   idCuentaCorriente: number;
-  razonSocialCliente: string;
+  nombreFiscalCliente: string;
   saldo: number;
   type: string;
 }

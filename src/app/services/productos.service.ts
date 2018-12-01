@@ -21,12 +21,10 @@ export class ProductosService {
 
   protected getQSForProductosUrl(pagina: number, tamanioPagina: number) {
     const arr = [
+      'codigo=' + this.getBusquedaCriteria(),
       'descripcion=' + this.getBusquedaCriteria(),
-      'pagina=' + pagina,
-      'tamanio=' + tamanioPagina,
-      'publicos=true'
+      'pagina=' + pagina
     ];
-
     return '&' + arr.join('&');
   }
 

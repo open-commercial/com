@@ -16,12 +16,6 @@ export class UsuariosService {
   }
 
   saveUsuario(usuario: Usuario) {
-    if (usuario.id_Usuario) {
-      // PUT
-      return this.http.put(this.url, usuario);
-    } else {
-      // POST
-      return this.http.post(this.url, usuario);
-    }
+    return this.http.put(this.url, usuario);
   }
 }

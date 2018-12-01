@@ -39,6 +39,7 @@ export class CheckoutComponent implements OnInit {
   cantidadArticulos: Number = 0;
   subTotal: Number = 0;
   total: Number = 0;
+  loadingTotales = false;
   enviarOrdenLoading = false;
 
   @ViewChild('stepper')
@@ -140,6 +141,7 @@ export class CheckoutComponent implements OnInit {
       setTimeout(() => this.busquedaInputRef.nativeElement.focus(), 300);
     } else {
       this.cliente = this.clienteDeUsuario;
+      this.getTotalesInfo();
     }
     this.clearClientes();
     if (this.busquedaInputRef) {
@@ -174,7 +176,7 @@ export class CheckoutComponent implements OnInit {
       this.checkoutPaso1Form.get('id_Cliente').setValue(this.cliente.id_Cliente);
       this.getTotalesInfo();
     }
-    const mensaje = 'Se seleccionó el cliente: ' + this.cliente.razonSocial;
+    const mensaje = 'Se seleccionó el cliente: ' + this.cliente.nombreFiscal;
     this.avisoService.openSnackBar(mensaje, '', 3500);
   }
 

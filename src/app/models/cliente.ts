@@ -1,11 +1,9 @@
-import {CategoriaIVA} from './categoriaIVA';
-import {TipoDeCliente} from './tipo.cliente';
+import {CategoriaIVA} from './categoria-iva';
 
 export interface Cliente {
   id_Cliente: number;
-  tipoDeCliente: TipoDeCliente;
   nroCliente: string;
-  razonSocial: string;
+  nombreFiscal: string;
   nombreFantasia: string;
   bonificacion: number;
   direccion: string;
@@ -28,6 +26,4 @@ export interface Cliente {
   idCredencial: number;
   nombreCredencial: string;
   predeterminado: boolean;
-  saldoCuentaCorriente: number;
-  fechaUltimoMovimiento: Date;
 }
