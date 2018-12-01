@@ -9,11 +9,14 @@ export class ProductosService {
 
   url = environment.apiUrl + '/api/v1/public/productos/';
   urlBusqueda = this.url + 'busqueda/criteria?idEmpresa=' + environment.idEmpresa;
+  securedUrl = environment.apiUrl + '/api/v1/productos/';
+  securedUrlBusqueda = this.securedUrl + 'busqueda/criteria?idEmpresa=' + environment.idEmpresa;
   private buscarProductosSubject = new Subject<string>();
   buscarProductos$ = this.buscarProductosSubject.asObservable();
   private criteria = '';
 
   constructor(private http: HttpClient) {}
+
 
   buscarProductos(criteria: string) {
     this.criteria = criteria === null ? '' : criteria;
@@ -30,8 +33,20 @@ export class ProductosService {
     return this.http.get<[Producto]>(this.urlBusqueda + criteria);
   }
 
-  getProducto(idProducto: number): Observable<Producto> {
-    return this.http.get<Producto>(this.url + idProducto);
+  buscarProductos(criteria: string) {
+    this.criteria = criteria === null ? '' : criteria;
+    this.buscarProductosSubject.next(this.criteria);
+  }
+
+  getProductos(pagina: number, urlSegura: boolean = false) {
+    const criteria = this.getCriteriaBusqueda(pagina);
+    const url = urlSegura ? this.securedUrlBusqueda : this.urlBusqueda;
+    return this.http.get(url + criteria);
+  }
+
+  getProducto(idProducto: number, urlSegura: boolean = false): Observable<Producto> {
+    const url = urlSegura ? this.securedUrl : this.url;
+    return this.http.get<Producto>(url + idProducto);
   }
 
   getBusquedaCriteria(): string {

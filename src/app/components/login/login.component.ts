@@ -4,6 +4,9 @@ import {AvisoService} from '../../services/aviso.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Usuario} from '../../models/usuario';
 import {Router} from '@angular/router';
+import {Cliente} from '../../models/cliente';
+import {ClientesService} from '../../services/clientes.service';
+import {finalize} from 'rxjs/operators';
 
 @Component({
   selector: 'sic-com-login',
@@ -20,6 +23,7 @@ export class LoginComponent implements OnInit {
   constructor(private router: Router,
               private authService: AuthService,
               private avisoService: AvisoService,
+              private clientesService: ClientesService,
               private fb: FormBuilder) {
     this.buildForm();
   }
@@ -44,7 +48,29 @@ export class LoginComponent implements OnInit {
       this.loginForm.disable();
       this.authService.login(this.model.username, this.model.password).subscribe(
         () => {
-          this.router.navigate(['productos']);
+          this.clientesService.getClienteDelUsuario(this.authService.getLoggedInIdUsuario())
+            .pipe(
+              finalize(() => {
+                this.loginForm.reset();
+                this.loginForm.enable();
+              })
+            )
+            .subscribe(
+              (cliente: Cliente) => {
+                if (cliente) {
+                  this.router.navigate(['productos']);
+                } else {
+                  this.avisoService.openSnackBar('El usuario no posee cliente asociado.', '', 3500);
+                  this.authService.logout();
+                }
+                this.loading = false;
+              },
+              err => {
+                this.loading = false;
+                this.avisoService.openSnackBar(err, '', 3500);
+                this.authService.logout();
+              }
+            );
         },
         err => {
           this.loading = false;
