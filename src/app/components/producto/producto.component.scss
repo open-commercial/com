@@ -29,6 +29,20 @@
   .sic-com-precio-producto {
     font-weight: bold;
     font-size: 20px;
+    &.bonificado {
+      font-weight: normal;
+      text-decoration: line-through;
+    }
+  }
+
+  .sic-com-precio-bonificado {
+    font-size: 20px;
+    font-weight: bold;
+  }
+
+  .bonificado-label {
+    color: green;
+    font-size: 18px;
   }
 
   .sic-com-controles-cantidad {

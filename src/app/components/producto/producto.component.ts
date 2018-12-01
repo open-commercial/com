@@ -4,6 +4,9 @@ import {CarritoCompraService} from '../../services/carrito-compra.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AvisoService} from '../../services/aviso.service';
 import {AuthService} from '../../services/auth.service';
+import {ClientesService} from '../../services/clientes.service';
+import {Cliente} from '../../models/cliente';
+import {CarritoCompra} from '../../models/carrito-compra';
 
 @Component({
   selector: 'sic-com-producto',
@@ -16,23 +19,30 @@ export class ProductoComponent implements OnInit {
   cantidad;
   loadingProducto = false;
   cargandoAlCarrito = false;
+  cliente: Cliente = null;
 
   constructor(private productosService: ProductosService,
               private carritoCompraService: CarritoCompraService,
               private avisoService: AvisoService,
               private authService: AuthService,
+              private clientesService: ClientesService,
               private router: Router,
               private route: ActivatedRoute) {
   }
 
   ngOnInit() {
     const productoId = Number(this.route.snapshot.params['id']);
+    if (this.authService.isAuthenticated()) {
+      this.clientesService.getClienteDelUsuario(this.authService.getLoggedInIdUsuario()).subscribe(
+        (cliente: Cliente) => this.cliente = cliente
+      );
+    }
     this.getProducto(productoId);
   }
 
   getProducto(id: number) {
     this.loadingProducto = true;
-    this.productosService.getProducto(id).subscribe(
+    this.productosService.getProducto(id, this.authService.isAuthenticated()).subscribe(
       data => {
         this.producto = data;
         this.cantidad = 1;
@@ -41,6 +51,7 @@ export class ProductoComponent implements OnInit {
       err => {
         this.loadingProducto = false;
         this.avisoService.openSnackBar(err.error, '', 3500);
+        this.irAlListado();
       });
   }
 
@@ -53,18 +64,20 @@ export class ProductoComponent implements OnInit {
     this.carritoCompraService.agregarQuitarAlPedido(this.producto, this.cantidad)
       .subscribe(
         data => {
-          this.carritoCompraService.getCantidadRenglones()
-            .subscribe(
-              cant => {
-                this.carritoCompraService.setCantidadItemsEnCarrito(Number(cant));
-                this.irAlListado();
-                this.cargandoAlCarrito = false;
-              },
-              err => {
-                this.avisoService.openSnackBar(err.error, '', 3500);
-                this.cargandoAlCarrito = false;
-              }
-            );
+          if (this.cliente) {
+            this.carritoCompraService.getCarritoCompra(this.cliente.id_Cliente)
+              .subscribe(
+                (carrito: CarritoCompra) => {
+                  this.carritoCompraService.setCantidadItemsEnCarrito(carrito.cantRenglones);
+                  this.irAlListado();
+                  this.cargandoAlCarrito = false;
+                },
+                err => {
+                  this.avisoService.openSnackBar(err.error, '', 3500);
+                  this.cargandoAlCarrito = false;
+                }
+              );
+          }
         },
         err => {
           this.cargandoAlCarrito = false;
@@ -83,5 +96,9 @@ export class ProductoComponent implements OnInit {
         this.cantidad = 1;
       }
     }
+  }
+
+  esProductoBonificado() {
+    return this.authService.isAuthenticated() && this.producto.precioBonificado !== this.producto.precioLista;
   }
 }

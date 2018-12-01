@@ -5,6 +5,9 @@ import {CarritoCompraService} from '../../services/carrito-compra.service';
 import {AuthService} from '../../services/auth.service';
 import {Router} from '@angular/router';
 import {AvisoService} from '../../services/aviso.service';
+import {Cliente} from '../../models/cliente';
+import {ClientesService} from '../../services/clientes.service';
+import {CarritoCompra} from '../../models/carrito-compra';
 
 @Component({
   selector: 'sic-com-navbar',
@@ -19,9 +22,11 @@ export class NavbarComponent implements OnInit {
   busquedaForm = new FormGroup ({
     criteriaControl: new FormControl()
   });
+  cliente: Cliente = null;
 
   constructor(public authService: AuthService, private productosService: ProductosService,
               private carritoCompraService: CarritoCompraService, private router: Router,
+              private clientesService: ClientesService,
               private avisoService: AvisoService) {}
 
   ngOnInit() {
@@ -42,9 +47,16 @@ export class NavbarComponent implements OnInit {
         data => this.usuarioConectado = data['nombre'] + ' ' + data['apellido'],
         err => this.avisoService.openSnackBar(err.error, '', 3500)
       );
-      this.carritoCompraService.getCantidadRenglones().subscribe(
-        data => this.carritoCompraService.setCantidadItemsEnCarrito(Number(data)),
-        err => this.avisoService.openSnackBar(err.error, '', 3500));
+
+      this.clientesService.getClienteDelUsuario(this.authService.getLoggedInIdUsuario()).subscribe(
+        (cliente: Cliente) => {
+          this.cliente = cliente;
+          this.carritoCompraService.getCarritoCompra(cliente.id_Cliente).subscribe(
+            (carrito: CarritoCompra) => this.carritoCompraService.setCantidadItemsEnCarrito(carrito.cantRenglones),
+            err => this.avisoService.openSnackBar(err.error, '', 3500)
+          );
+        }
+      );
     }
   }
 

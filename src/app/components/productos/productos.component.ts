@@ -3,6 +3,7 @@ import {ProductosService} from '../../services/productos.service';
 import {ActivatedRoute} from '@angular/router';
 import {AvisoService} from 'app/services/aviso.service';
 import {Subscription} from 'rxjs';
+import {AuthService} from '../../services/auth.service';
 
 @Component({
   selector: 'sic-com-productos',
@@ -19,7 +20,8 @@ export class ProductosComponent implements OnInit, OnDestroy {
 
   constructor(private productosService: ProductosService,
               private route: ActivatedRoute,
-              private avisoService: AvisoService) {
+              private avisoService: AvisoService,
+              private authService: AuthService) {
   }
 
   ngOnInit() {
@@ -41,13 +43,12 @@ export class ProductosComponent implements OnInit, OnDestroy {
     if (reset) {
       this.pagina = 0;
     }
-    this.productosService.getProductos(this.pagina).subscribe(
+    this.productosService.getProductos(this.pagina, this.tamanioPagina, this.authService.isAuthenticated()).subscribe(
       data => {
         if (reset) {
           this.pagina = 0;
           this.productos = [];
         }
-
         data['content'].forEach(p => this.productos.push(p));
         this.totalPaginas = data['totalPages'];
         this.loadingProducts = false;
@@ -63,5 +64,9 @@ export class ProductosComponent implements OnInit, OnDestroy {
       this.pagina++;
       this.cargarProductos(false);
     }
+  }
+
+  estaBonificado(p) {
+    return this.authService.isAuthenticated() && p.precioBonificado !== p.precioLista;
   }
 }

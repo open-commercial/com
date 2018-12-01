@@ -7,18 +7,31 @@
       <mat-icon>keyboard_arrow_left</mat-icon>
       <strong>Ir al listado</strong>
     </div>
-    <div fxLayout="column" fxLayoutAlign="start center">
+    <div fxLayout="column" fxLayoutAlign="start center" *ngIf="!loadingProducto && producto">
       <img class="sic-com-img-producto" src="../../../assets/no-image.png">
       <div class="sic-com-detalle-producto">
         <div fxLayout="column">
           <span class="sic-com-codigo-producto">{{producto.codigo}}</span>
-          <span class="sic-com-descripcion-producto">{{producto.descripcion}}</span><br>
-          <span class="sic-com-precio-producto">$ {{producto.precioLista | number:'1.2-2':'es-AR'}}</span>
+          <span class="sic-com-descripcion-producto">{{producto.descripcion}}</span>
+          <br>
+          <div fxLayout="row" fxLayoutAlign="left center" fxLayoutGap=".5rem">
+            <span class="sic-com-precio-producto" [class.bonificado]="esProductoBonificado()">
+            $ {{producto.precioLista | number:'1.2-2':'es-AR'}}
+            </span>
+            <span class="sic-com-precio-bonificado" *ngIf="esProductoBonificado()">
+              $ {{producto.precioBonificado | number:'1.2-2':'es-AR'}}
+            </span>
+          </div>
+          <span class="bonificado-label" *ngIf="cliente && esProductoBonificado()">
+            {{ cliente.bonificacion | number:'1.0-2':'es-AR' }}% bonificado!
+          </span>
+          <br>
           <mat-chip-list>
             <mat-chip class="sic-com-stock" [style.background-color]="(producto.hayStock ? 'limegreen' : 'red')">
               {{producto.hayStock ? "Hay Stock" : "Sin Stock"}}
             </mat-chip>
           </mat-chip-list>
+
         </div>
         <div fxLayoutAlign="center center" class="sic-com-controles-cantidad" *ngIf="authService.isAuthenticated()">
           <button mat-mini-fab color="accent" (click)="cambiarCantidad(cantidad, 0)" [disabled]="cargandoAlCarrito">
