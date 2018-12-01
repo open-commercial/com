@@ -4,6 +4,7 @@ import {CarritoCompraService} from '../../services/carrito-compra.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AvisoService} from '../../services/aviso.service';
 import {AuthService} from '../../services/auth.service';
+import {Producto} from '../../models/producto';
 import {ClientesService} from '../../services/clientes.service';
 import {Cliente} from '../../models/cliente';
 import {CarritoCompra} from '../../models/carrito-compra';
@@ -15,7 +16,7 @@ import {CarritoCompra} from '../../models/carrito-compra';
 })
 export class ProductoComponent implements OnInit {
 
-  producto;
+  producto: Producto;
   cantidad;
   loadingProducto = false;
   cargandoAlCarrito = false;
@@ -45,6 +46,9 @@ export class ProductoComponent implements OnInit {
     this.productosService.getProducto(id, this.authService.isAuthenticated()).subscribe(
       data => {
         this.producto = data;
+        if (this.producto.urlImagen == null || this.producto.urlImagen === '') {
+          this.producto.urlImagen = '../../../assets/no-image.png';
+        }
         this.cantidad = 1;
         this.loadingProducto = false;
       },

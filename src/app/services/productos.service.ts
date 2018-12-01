@@ -17,13 +17,20 @@ export class ProductosService {
 
   constructor(private http: HttpClient) {}
 
-  private getCriteriaBusqueda(pagina: number) {
+
+  buscarProductos(criteria: string) {
+    this.criteria = criteria === null ? '' : criteria;
+    this.buscarProductosSubject.next(this.criteria);
+  }
+
+  getProductos(pagina: number): Observable<[Producto]> {
     const arr = [
       'codigo=' + this.getBusquedaCriteria(),
       'descripcion=' + this.getBusquedaCriteria(),
       'pagina=' + pagina
     ];
-    return '&' + arr.join('&');
+    const criteria = '&' + arr.join('&');
+    return this.http.get<[Producto]>(this.urlBusqueda + criteria);
   }
 
   buscarProductos(criteria: string) {

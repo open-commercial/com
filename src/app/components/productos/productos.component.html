@@ -11,7 +11,7 @@
   <mat-nav-list class="sic-com-listado">
     <div *ngFor="let p of productos">
       <mat-list-item [routerLink]="['/producto/' + p.idProducto]">
-        <img mat-list-avatar class="sic-com-avatar" src="../../assets/no-image.png">
+        <img mat-list-avatar class="sic-com-avatar" [src]=p.urlImagen>
         <p mat-line class="sic-com-codigo">{{p.codigo}}</p>
         <p mat-line class="sic-com-descripcion"><strong>{{p.descripcion}}</strong></p>
         <p mat-line>
