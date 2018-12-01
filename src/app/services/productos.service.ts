@@ -9,17 +9,15 @@ export class ProductosService {
 
   url = environment.apiUrl + '/api/v1/public/productos/';
   urlBusqueda = this.url + 'busqueda/criteria?idEmpresa=' + environment.idEmpresa;
-
   securedUrl = environment.apiUrl + '/api/v1/productos/';
   securedUrlBusqueda = this.securedUrl + 'busqueda/criteria?idEmpresa=' + environment.idEmpresa;
-
   private buscarProductosSubject = new Subject<string>();
   buscarProductos$ = this.buscarProductosSubject.asObservable();
   private criteria = '';
 
   constructor(private http: HttpClient) {}
 
-  protected getQSForProductosUrl(pagina: number) {
+  private getCriteriaBusqueda(pagina: number) {
     const arr = [
       'codigo=' + this.getBusquedaCriteria(),
       'descripcion=' + this.getBusquedaCriteria(),
@@ -34,7 +32,7 @@ export class ProductosService {
   }
 
   getProductos(pagina: number, urlSegura: boolean = false) {
-    const criteria = this.getQSForProductosUrl(pagina);
+    const criteria = this.getCriteriaBusqueda(pagina);
     const url = urlSegura ? this.securedUrlBusqueda : this.urlBusqueda;
     return this.http.get(url + criteria);
   }
