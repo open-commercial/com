@@ -17,25 +17,18 @@ export class ProductosService {
 
   constructor(private http: HttpClient) {}
 
-
   buscarProductos(criteria: string) {
     this.criteria = criteria === null ? '' : criteria;
     this.buscarProductosSubject.next(this.criteria);
   }
 
-  getProductos(pagina: number): Observable<[Producto]> {
+  getCriteriaBusqueda(pagina: number) {
     const arr = [
       'codigo=' + this.getBusquedaCriteria(),
       'descripcion=' + this.getBusquedaCriteria(),
       'pagina=' + pagina
     ];
-    const criteria = '&' + arr.join('&');
-    return this.http.get<[Producto]>(this.urlBusqueda + criteria);
-  }
-
-  buscarProductos(criteria: string) {
-    this.criteria = criteria === null ? '' : criteria;
-    this.buscarProductosSubject.next(this.criteria);
+    return  '&' + arr.join('&');
   }
 
   getProductos(pagina: number, urlSegura: boolean = false) {
