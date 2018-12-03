@@ -23,10 +23,13 @@
   <mat-nav-list class="sic-com-listado">
     <div *ngFor="let p of productos">
       <mat-list-item [routerLink]="['/producto/' + p.idProducto]">
-        <img mat-list-avatar class="sic-com-avatar" src="../../assets/no-image.png">
+        <img mat-list-avatar class="sic-com-avatar" [src]=p.urlImagen>
         <p mat-line class="sic-com-codigo">{{p.codigo}}</p>
         <p mat-line class="sic-com-descripcion"><strong>{{p.descripcion}}</strong></p>
-        <p mat-line><strong>$ {{p.precioLista | number:'1.2-2':'es-AR' }}</strong></p>
+        <p mat-line>
+          <span class="sic-com-precio-lista" [class.bonificado]="estaBonificado(p)">$ {{p.precioLista | number:'1.2-2':'es-AR' }}</span>
+          <span class="sic-com-precio-bonificado" *ngIf="estaBonificado(p)">&nbsp;&nbsp;$ {{ p.precioBonificado | number:'1.2-2':'es-AR' }}</span>
+        </p>
       </mat-list-item>
       <mat-divider></mat-divider>
     </div>

@@ -6,5 +6,7 @@ export interface Producto {
   nombreMedida: string;
   nombreRubro: string;
   precioLista: number;
+  precioBonificado: number;
   ventaMinima: number;
+  urlImagen: string;
 }
