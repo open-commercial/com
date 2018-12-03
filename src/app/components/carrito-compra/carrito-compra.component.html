@@ -31,7 +31,7 @@
         <div matLine fxLayout="row" fxLayout.lt-sm="column">
           <div fxLayout fxFlex="60">
               <div fxFlex="30" fxLayoutAlign="center center">
-                <img class="sic-com-img-avatar" src="../../assets/no-image.png" />
+                <img mat-list-avatar class="sic-com-img-avatar" [src]=icc.producto.urlImagen>
               </div>
               <div fxFlex="70" fxLayoutAlign="center start" fxLayout="column" [routerLink]="['/producto/' + icc.producto.idProducto]">
                 <div class="sic-com-descripcion-producto">{{icc.producto.descripcion}}</div>

@@ -86,7 +86,12 @@ export class CarritoCompraComponent implements OnInit {
     this.carritoCompraService.getItems(this.cliente.id_Cliente, this.pagina)
       .subscribe(
         data => {
-          data['content'].forEach(item => this.itemsCarritoCompra.push(item));
+          data['content'].forEach(item => {
+            if (item.producto.urlImagen == null || item.producto.urlImagen === '') {
+              item.producto.urlImagen = '../../../assets/no-image.png';
+            }
+            this.itemsCarritoCompra.push(item);
+          });
           this.totalPaginas = data['totalPages'];
           this.cargarCarritoCompra();
           this.loadingCarritoCompra = false;
