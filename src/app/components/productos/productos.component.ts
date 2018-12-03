@@ -3,6 +3,7 @@ import {ProductosService} from '../../services/productos.service';
 import {ActivatedRoute} from '@angular/router';
 import {AvisoService} from 'app/services/aviso.service';
 import {Subscription} from 'rxjs';
+import {IImage} from 'ng-simple-slideshow';
 import {AuthService} from '../../services/auth.service';
 
 @Component({
@@ -17,6 +18,25 @@ export class ProductosComponent implements OnInit, OnDestroy {
   pagina = 0;
   busquedaCriteria = '';
   buscarProductosSubscription: Subscription;
+
+  imageUrls: (string | IImage)[] = [
+    {
+      url: 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1543814304/slideshow/gladiator-pro.png',
+      href: '/productos;busqueda=gladiator'
+    },
+    {
+      url: 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1543814304/slideshow/suprabond.jpg',
+      href: '/productos;busqueda=suprabond'
+    },
+    {
+      url: 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1543814304/slideshow/tacsa.jpg',
+      href: '/productos;busqueda=tacsa'
+    },
+    {
+      url: 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1543814304/slideshow/interelec.jpg',
+      href: '/productos;busqueda=interelec'
+    }
+  ];
 
   constructor(private productosService: ProductosService,
               private route: ActivatedRoute,
