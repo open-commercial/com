@@ -3,6 +3,7 @@ import {Observable, Subject} from 'rxjs';
 import {environment} from 'environments/environment';
 import {HttpClient} from '@angular/common/http';
 import {CarritoCompra} from '../models/carrito-compra';
+import {ItemCarritoCompra} from '../models/item-carrito-compra';
 
 @Injectable()
 export class CarritoCompraService {
@@ -22,10 +23,10 @@ export class CarritoCompraService {
     this.cantidadItemsEnCarritoSubject.next(cantidad);
   }
 
-  agregarQuitarAlPedido(producto, cantidad) {
+  agregarQuitarAlPedido(producto, cantidad): Observable<ItemCarritoCompra> {
     const idUsuario = localStorage.getItem('id_Usuario');
     const uriPost = `${this.uri}/usuarios/${idUsuario}/productos/${producto['idProducto']}?cantidad=${cantidad}`;
-    return this.http.post(uriPost, {});
+    return this.http.post<ItemCarritoCompra>(uriPost, {});
   }
 
   actualizarAlPedido(producto, cantidad) {
