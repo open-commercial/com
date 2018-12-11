@@ -149,7 +149,6 @@ export class CarritoCompraComponent implements OnInit {
     dialogRef.componentInstance.itemCarritoCompra = itemCarritoCompra;
     dialogRef.afterClosed().subscribe(data => {
       if (data) {
-        // this.cargarCarritoCompra();
         this.cargarItemsCarritoCompra(true);
       }
     });
