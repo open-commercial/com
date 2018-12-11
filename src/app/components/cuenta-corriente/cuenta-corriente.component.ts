@@ -20,7 +20,6 @@ export class CuentaCorrienteComponent implements OnInit {
   renglones = [];
   pagina = 0;
   totalPaginas = 0;
-  tamanioPagina = 5;
 
   constructor(private authService: AuthService,
               private avisoService: AvisoService,
@@ -66,7 +65,7 @@ export class CuentaCorrienteComponent implements OnInit {
       this.pagina = 0;
     }
     this.loading = true;
-    this.cuentasCorrienteService.getCuentaCorrienteRenglones(this.cuentaCorriente, this.pagina, this.tamanioPagina).subscribe(
+    this.cuentasCorrienteService.getCuentaCorrienteRenglones(this.cuentaCorriente, this.pagina).subscribe(
       data => {
         data['content'].forEach(r => this.renglones.push(r));
         this.totalPaginas = data['totalPages'];

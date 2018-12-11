@@ -16,8 +16,8 @@ export class CuentasCorrienteService {
     return this.http.get<CuentaCorriente>(this.url + `/clientes/${cliente.id_Cliente}`);
   }
 
-  getCuentaCorrienteRenglones(cuentaCorriente: CuentaCorriente, pagina: number, tamanioPagina: number) {
+  getCuentaCorrienteRenglones(cuentaCorriente: CuentaCorriente, pagina: number) {
     return this.http.get(
-      this.url + `/${cuentaCorriente.idCuentaCorriente}/renglones?pagina=${pagina}&tamanio=${tamanioPagina}`);
+      this.url + `/${cuentaCorriente.idCuentaCorriente}/renglones?pagina=${pagina}`);
   }
 }

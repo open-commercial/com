@@ -13,12 +13,11 @@ export class PedidosService {
 
   constructor(private http: HttpClient) {}
 
-  getPedidosCliente(cliente: Cliente, pagina: number, tamanioPagina: number) {
-    return this.http.get(
-      this.urlBusqueda + '&idCliente=' + cliente.id_Cliente + '&pagina=' + pagina + '&tamanio=' + tamanioPagina);
+  getPedidosCliente(cliente: Cliente, pagina: number) {
+    return this.http.get(this.urlBusqueda + '&idCliente=' + cliente.id_Cliente + '&pagina=' + pagina);
   }
 
   getPedidoPdf(pedido: Pedido): Observable<Blob> {
-    return this.http.get(`${this.url}/${pedido.id_Pedido}/reporte`, { responseType: 'blob'});
+    return this.http.get(`${this.url}/${pedido.id_Pedido}/reporte`, {responseType: 'blob'});
   }
 }
