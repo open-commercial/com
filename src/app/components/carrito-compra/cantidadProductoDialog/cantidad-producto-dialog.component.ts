@@ -40,10 +40,7 @@ export class CantidadProductoDialogComponent implements OnInit {
   aceptar() {
     this.loading = true;
     this.carritoCompraService.actualizarAlPedido(this.itemCarritoCompra.producto, this.cantidad).subscribe(
-      (data: ItemCarritoCompra) => {
-        this.itemCarritoCompra.cantidad = data.cantidad;
-        this.itemCarritoCompra.importe = data.importe;
-        this.itemCarritoCompra.importeBonificado = data.importeBonificado;
+      () => {
         this.dialogRef.close(true);
         this.loading = false;
       },

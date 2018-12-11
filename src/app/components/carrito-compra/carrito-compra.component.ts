@@ -9,6 +9,7 @@ import {CantidadProductoDialogComponent} from './cantidadProductoDialog/cantidad
 import {ProductosService} from '../../services/productos.service';
 import {Router} from '@angular/router';
 import {Cliente} from '../../models/cliente';
+import {finalize} from 'rxjs/operators';
 
 @Component({
   selector: 'sic-com-carrito-compra',
@@ -22,6 +23,7 @@ export class CarritoCompraComponent implements OnInit {
   totalPaginas = 0;
   loadingCarritoCompra = false;
   loadingRenglones = false;
+  loadingTotales = false;
   mostrarBotonAsignarCliente = true;
   cantidadArticulos = 0;
   subTotal = 0;
@@ -44,9 +46,10 @@ export class CarritoCompraComponent implements OnInit {
       (cliente: Cliente) => {
         if (cliente) {
           this.cliente = cliente;
-          this.cargarItemsCarritoCompra();
+          this.cargarItemsCarritoCompra(true);
+        } else {
+          this.loadingCarritoCompra = false;
         }
-        this.loadingCarritoCompra = false;
       },
       err => {
         this.loadingCarritoCompra = false;
@@ -73,7 +76,11 @@ export class CarritoCompraComponent implements OnInit {
   }
 
   cargarCarritoCompra() {
+    this.loadingTotales = true;
     this.carritoCompraService.getCarritoCompra(this.cliente.id_Cliente)
+      .pipe(
+        finalize(() => this.loadingTotales = false)
+      )
       .subscribe(data => {
           this.cantidadArticulos = data.cantArticulos;
           this.subTotal = data.subtotal;
@@ -82,8 +89,19 @@ export class CarritoCompraComponent implements OnInit {
       err => this.avisoService.openSnackBar(err.error, '', 3500));
   }
 
-  cargarItemsCarritoCompra() {
+  cargarItemsCarritoCompra(reset: boolean) {
+    this.loadingRenglones = true;
+    if (reset) {
+      this.itemsCarritoCompra = [];
+      this.pagina = 0;
+    }
     this.carritoCompraService.getItems(this.cliente.id_Cliente, this.pagina)
+      .pipe(
+        finalize(() => {
+          this.loadingCarritoCompra = false;
+          this.loadingRenglones = false;
+        })
+      )
       .subscribe(
         data => {
           data['content'].forEach(item => {
@@ -94,8 +112,6 @@ export class CarritoCompraComponent implements OnInit {
           });
           this.totalPaginas = data['totalPages'];
           this.cargarCarritoCompra();
-          this.loadingCarritoCompra = false;
-          this.loadingRenglones = false;
         },
         err => this.avisoService.openSnackBar(err.error, '', 3500));
   }
@@ -133,7 +149,8 @@ export class CarritoCompraComponent implements OnInit {
     dialogRef.componentInstance.itemCarritoCompra = itemCarritoCompra;
     dialogRef.afterClosed().subscribe(data => {
       if (data) {
-        this.cargarCarritoCompra();
+        // this.cargarCarritoCompra();
+        this.cargarItemsCarritoCompra(true);
       }
     });
   }
@@ -142,7 +159,7 @@ export class CarritoCompraComponent implements OnInit {
     this.loadingRenglones = true;
     if ((this.pagina + 1) < this.totalPaginas) {
       this.pagina++;
-      this.cargarItemsCarritoCompra();
+      this.cargarItemsCarritoCompra(false);
     }
   }
 
