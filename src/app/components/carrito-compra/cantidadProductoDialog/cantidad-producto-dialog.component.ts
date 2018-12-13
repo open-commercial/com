@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {MatDialogRef} from '@angular/material';
 import {CarritoCompraService} from '../../../services/carrito-compra.service';
 import {AvisoService} from '../../../services/aviso.service';
+import {ItemCarritoCompra} from '../../../models/item-carrito-compra';
 
 @Component({
   selector: 'sic-com-cantidad-producto-dialog',
@@ -10,7 +11,7 @@ import {AvisoService} from '../../../services/aviso.service';
 })
 export class CantidadProductoDialogComponent implements OnInit {
 
-  itemCarritoCompra = null;
+  itemCarritoCompra: ItemCarritoCompra = null;
   cantidad;
   loading = false;
 
@@ -39,9 +40,7 @@ export class CantidadProductoDialogComponent implements OnInit {
   aceptar() {
     this.loading = true;
     this.carritoCompraService.actualizarAlPedido(this.itemCarritoCompra.producto, this.cantidad).subscribe(
-      data => {
-        this.itemCarritoCompra.cantidad = this.cantidad;
-        this.itemCarritoCompra.importe = this.cantidad * this.itemCarritoCompra.producto.precioLista;
+      () => {
         this.dialogRef.close(true);
         this.loading = false;
       },

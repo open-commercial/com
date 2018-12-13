@@ -9,6 +9,7 @@ import {CantidadProductoDialogComponent} from './cantidadProductoDialog/cantidad
 import {ProductosService} from '../../services/productos.service';
 import {Router} from '@angular/router';
 import {Cliente} from '../../models/cliente';
+import {finalize} from 'rxjs/operators';
 
 @Component({
   selector: 'sic-com-carrito-compra',
@@ -22,6 +23,8 @@ export class CarritoCompraComponent implements OnInit {
   totalPaginas = 0;
   loadingCarritoCompra = false;
   loadingRenglones = false;
+  loadingTotales = false;
+  deleting = false;
   mostrarBotonAsignarCliente = true;
   cantidadArticulos = 0;
   subTotal = 0;
@@ -44,9 +47,10 @@ export class CarritoCompraComponent implements OnInit {
       (cliente: Cliente) => {
         if (cliente) {
           this.cliente = cliente;
-          this.cargarItemsCarritoCompra();
+          this.cargarItemsCarritoCompra(true);
+        } else {
+          this.loadingCarritoCompra = false;
         }
-        this.loadingCarritoCompra = false;
       },
       err => {
         this.loadingCarritoCompra = false;
@@ -60,20 +64,38 @@ export class CarritoCompraComponent implements OnInit {
     dialogRef.componentInstance.titulo = '¿Está seguro de quitar todos los productos del carrito?';
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.carritoCompraService.eliminarTodosLosItems().subscribe(
-          data => {
-            this.cargarCarritoCompra();
-            this.itemsCarritoCompra = [];
-            this.carritoCompraService.setCantidadItemsEnCarrito(0);
-            this.avisoService.openSnackBar('Se borraron todos los articulos del listado', '', 3500);
-          },
-          err => this.avisoService.openSnackBar(err.error, '', 3500));
+        this.deleting = true;
+        this.loadingCarritoCompra = true;
+        this.carritoCompraService.eliminarTodosLosItems()
+          .pipe(
+            finalize(() => {
+              this.deleting = false;
+              this.loadingCarritoCompra = false;
+            })
+          )
+          .subscribe(
+            data => {
+              this.cargarCarritoCompra();
+              this.cargarItemsCarritoCompra(true);
+              this.carritoCompraService.setCantidadItemsEnCarrito(0);
+              this.avisoService.openSnackBar('Se borraron todos los articulos del listado', '', 3500);
+            },
+            err => this.avisoService.openSnackBar(err.error, '', 3500)
+          );
       }
     });
   }
 
   cargarCarritoCompra() {
+    this.loadingTotales = true;
     this.carritoCompraService.getCarritoCompra(this.cliente.id_Cliente)
+      .pipe(
+        finalize(() =>  {
+          this.loadingTotales = false;
+          this.loadingCarritoCompra = false;
+          this.loadingRenglones = false;
+        })
+      )
       .subscribe(data => {
           this.cantidadArticulos = data.cantArticulos;
           this.subTotal = data.subtotal;
@@ -82,8 +104,19 @@ export class CarritoCompraComponent implements OnInit {
       err => this.avisoService.openSnackBar(err.error, '', 3500));
   }
 
-  cargarItemsCarritoCompra() {
+  cargarItemsCarritoCompra(reset: boolean) {
+    this.loadingRenglones = true;
+    if (reset) {
+      this.itemsCarritoCompra = [];
+      this.pagina = 0;
+    }
     this.carritoCompraService.getItems(this.cliente.id_Cliente, this.pagina)
+      .pipe(
+        finalize(() => {
+          this.loadingRenglones = false;
+          this.loadingCarritoCompra = false;
+        })
+      )
       .subscribe(
         data => {
           data['content'].forEach(item => {
@@ -93,9 +126,9 @@ export class CarritoCompraComponent implements OnInit {
             this.itemsCarritoCompra.push(item);
           });
           this.totalPaginas = data['totalPages'];
-          this.cargarCarritoCompra();
-          this.loadingCarritoCompra = false;
-          this.loadingRenglones = false;
+          if (reset) {
+            this.cargarCarritoCompra();
+          }
         },
         err => this.avisoService.openSnackBar(err.error, '', 3500));
   }
@@ -113,17 +146,23 @@ export class CarritoCompraComponent implements OnInit {
     dialogRef.componentInstance.titulo = '¿Está seguro de quitar el producto?';
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.carritoCompraService.eliminarItem(itemCarritoCompra.producto.idProducto).subscribe(
-          data => {
-            this.avisoService.openSnackBar('Se eliminó el articulo del listado', '', 3500);
-            this.cargarCarritoCompra();
-            const id = this.itemsCarritoCompra.map(function (e) {
-              return e;
-            }).indexOf(itemCarritoCompra);
-            this.itemsCarritoCompra.splice(id, 1);
-            this.carritoCompraService.setCantidadItemsEnCarrito(this.itemsCarritoCompra.length);
-          },
-          err => this.avisoService.openSnackBar(err.error, '', 3500));
+        this.deleting = true;
+        this.loadingCarritoCompra = true;
+        this.carritoCompraService.eliminarItem(itemCarritoCompra.producto.idProducto)
+          .pipe(
+            finalize(() => {
+              this.deleting = false;
+              this.loadingCarritoCompra = false;
+            })
+          )
+          .subscribe(
+            data => {
+              this.avisoService.openSnackBar('Se eliminó el articulo del listado', '', 3500);
+              this.cargarItemsCarritoCompra(true);
+              this.carritoCompraService.setCantidadItemsEnCarrito(this.itemsCarritoCompra.length);
+            },
+            err => this.avisoService.openSnackBar(err.error, '', 3500)
+          );
       }
     });
   }
@@ -133,7 +172,8 @@ export class CarritoCompraComponent implements OnInit {
     dialogRef.componentInstance.itemCarritoCompra = itemCarritoCompra;
     dialogRef.afterClosed().subscribe(data => {
       if (data) {
-        this.cargarCarritoCompra();
+        this.loadingCarritoCompra = true;
+        this.cargarItemsCarritoCompra(true);
       }
     });
   }
@@ -142,7 +182,7 @@ export class CarritoCompraComponent implements OnInit {
     this.loadingRenglones = true;
     if ((this.pagina + 1) < this.totalPaginas) {
       this.pagina++;
-      this.cargarItemsCarritoCompra();
+      this.cargarItemsCarritoCompra(false);
     }
   }
 
@@ -153,5 +193,9 @@ export class CarritoCompraComponent implements OnInit {
 
   goToCheckout() {
     this.router.navigate(['checkout']);
+  }
+
+  disabledButtons() {
+    return this.loadingRenglones || this.deleting;
   }
 }
