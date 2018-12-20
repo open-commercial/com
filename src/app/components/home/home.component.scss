@@ -5,6 +5,14 @@
       height: 400px; width: 100%;
     }
 
+    .info {
+      img {
+        display: inline-block;
+        height: 40px;
+        width: auto;
+      }
+    }
+
     ul.marcas {
       padding: 0;
       text-align: center;
@@ -39,14 +47,40 @@
       }
     }
 
+
+
     footer {
       img.logo {
         height: auto;
         width: 120px;
+        &.top {
+          display: none;
+          @media (min-width: 600px) {
+            display: inline-block;
+          }
+        }
+        &.bottom {
+          display: inline-block;
+          @media (min-width: 600px) {
+            display: none;
+          }
+        }
       }
       img.facebook {
-        width: 50px;
+        width: 30px;
         height: auto;
+        &.top {
+          display: inline-block;
+          @media (min-width: 600px) {
+            display: none;
+          }
+        }
+        &.bottom {
+          display: none;
+          @media (min-width: 600px) {
+            display: inline-block;
+          }
+        }
       }
       .centrado {
         text-align: center;

@@ -31,7 +31,7 @@ const sicComRoutes: Routes = [
       {path: 'checkout', component: CheckoutComponent}
     ]
   },
-  {path: '**', redirectTo: 'productos'}
+  {path: '**', redirectTo: ''}
 ];
 
 export const sicComRouting = RouterModule.forRoot(sicComRoutes);

@@ -30,7 +30,7 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     if (this.authService.isAuthenticated()) {
-      this.router.navigate(['productos']);
+      this.router.navigate(['']);
     }
   }
 
@@ -58,7 +58,7 @@ export class LoginComponent implements OnInit {
             .subscribe(
               (cliente: Cliente) => {
                 if (cliente) {
-                  this.router.navigate(['productos']);
+                  this.router.navigate(['']);
                 } else {
                   this.avisoService.openSnackBar('Su usuario no posee cuenta de cliente asociada.', '', 3500);
                   this.authService.logout();

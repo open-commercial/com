@@ -13,35 +13,43 @@ export class HomeComponent implements OnInit {
   marcas = [
     {
       url: 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1543814304/slideshow/gladiator-pro.png',
-      href: '/productos;busqueda=gladiator'
+      routeLink: ['/productos', { busqueda: 'gladiator' }],
+      nombre: 'Gladiator'
     },
     {
       url: 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1543814304/slideshow/suprabond.jpg',
-      href: '/productos;busqueda=suprabond'
+      routeLink: ['/productos', { busqueda: 'suprabond' }],
+      nombre: 'Suprabond'
     },
     {
       url: 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1543814304/slideshow/tacsa.jpg',
-      href: '/productos;busqueda=tacsa'
+      routeLink: ['/productos', { busqueda: 'tacsa'}],
+      nombre: 'Tacsa'
     },
     {
       url: 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1544154497/slideshow/interelec.jpg',
-      href: '/productos;busqueda=interelec'
+      routeLink: ['/productos', { busqueda: 'interelec'}],
+      nombre: 'Interlec'
     },
     {
       url: 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1544153960/slideshow/PoxipolLogo1.png',
-      href: '/productos;busqueda=poxipol'
+      routeLink: ['/productos', { busqueda: 'poxipol'}],
+      nombre: 'Poxipol'
     },
     {
       url: 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1544153960/slideshow/tramontina.png',
-      href: '/productos;busqueda=tramontina'
+      routeLink: ['/productos', { busqueda: 'tramontina'}],
+      nombre: 'Tramontina'
     },
     {
       url: 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1544153960/slideshow/brogas.jpg',
-      href: '/productos;busqueda=brogas'
+      routeLink: ['/productos', { busqueda: 'brogas'}],
+      nombre: 'Brogas'
     },
     {
       url: 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1544153960/slideshow/bulit.jpg',
-      href: '/productos;busqueda=bulit'
+      routeLink: ['/productos', { busqueda: 'bulit'}],
+      nombre: 'Bulit'
     },
   ];
 
