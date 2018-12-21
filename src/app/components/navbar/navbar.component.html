@@ -2,10 +2,8 @@
   <mat-toolbar color="primary">
     <div fxHide.lt-md fxFlex.gt-sm="10"></div>
     <div fxFlex="20" fxLayoutAlign="center center">
-      <a routerLink="/">
-        <img fxHide.lt-md src="assets/header-grandeTrans.png" class="sic-com-logo-grande">
-        <img fxHide.gt-sm src="assets/logo-GD_bco.png" class="sic-com-logo-chico">
-      </a>
+      <img fxHide.lt-md src="assets/header-grandeTrans.png" class="sic-com-logo-grande" routerLink="/">
+      <img fxHide.gt-sm src="assets/logo-GD_bco.png" class="sic-com-logo-chico" routerLink="/">
     </div>
     <form id="buscador-form" fxFlex fxLayoutAlign="center center" [formGroup]="busquedaForm" (ngSubmit)="submit()">
       <input class="sic-com-buscador-input" type="search" placeholder="¿Qué busca?" formControlName="criteriaControl">
