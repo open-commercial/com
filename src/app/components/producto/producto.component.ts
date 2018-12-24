@@ -43,7 +43,7 @@ export class ProductoComponent implements OnInit {
 
   getProducto(id: number) {
     this.loadingProducto = true;
-    this.productosService.getProducto(id, this.authService.isAuthenticated()).subscribe(
+    this.productosService.getProducto(id).subscribe(
       data => {
         this.producto = data;
         if (this.producto.urlImagen == null || this.producto.urlImagen === '') {

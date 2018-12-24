@@ -80,8 +80,7 @@ export class ProductosComponent implements OnInit, OnDestroy {
       this.pagina = 0;
       this.productos = [];
     }
-    this.productosService.getProductos(this.pagina, this.authService.isAuthenticated())
-      .subscribe(
+    this.productosService.getProductos(this.pagina).subscribe(
       data => {
         if (reset) {
           this.pagina = 0;
