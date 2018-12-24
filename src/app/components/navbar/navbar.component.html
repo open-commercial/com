@@ -2,8 +2,10 @@
   <mat-toolbar color="primary">
     <div fxHide.lt-md fxFlex.gt-sm="10"></div>
     <div fxFlex="20" fxLayoutAlign="center center">
-      <img fxHide.lt-md src="assets/header-grandeTrans.png" class="sic-com-logo-grande" (click)="buscarProductos(busquedaForm.get('criteriaControl').value)">
-      <img fxHide.gt-sm src="assets/logo-GD_bco.png" class="sic-com-logo-chico" (click)="buscarProductos(busquedaForm.get('criteriaControl').value)">
+      <img fxHide.lt-md src="https://res.cloudinary.com/hf0vu1bg2/image/upload/v1545615291/assets/logo_GD_header_rectangular.png" class="sic-com-logo-grande"
+           (click)="buscarProductos(busquedaForm.get('criteriaControl').value)">
+      <img fxHide.gt-sm src="https://res.cloudinary.com/hf0vu1bg2/image/upload/v1545615470/assets/logo_GD_chico.png" class="sic-com-logo-chico"
+           (click)="buscarProductos(busquedaForm.get('criteriaControl').value)">
     </div>
     <form id="buscador-form" fxFlex fxLayoutAlign="center center" [formGroup]="busquedaForm" (ngSubmit)="submit()">
       <input class="sic-com-buscador-input" type="search" placeholder="¿Qué busca?" formControlName="criteriaControl">

@@ -47,7 +47,7 @@ export class ProductoComponent implements OnInit {
       data => {
         this.producto = data;
         if (this.producto.urlImagen == null || this.producto.urlImagen === '') {
-          this.producto.urlImagen = '../../../assets/no-image.png';
+          this.producto.urlImagen = 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1545616229/assets/sin_imagen.png';
         }
         this.cantidad = 1;
         this.loadingProducto = false;

@@ -88,7 +88,7 @@ export class ProductosComponent implements OnInit, OnDestroy {
         }
         data['content'].forEach(p => {
           if (p.urlImagen == null || p.urlImagen === '') {
-            p.urlImagen = '../../../assets/no-image.png';
+            p.urlImagen = 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1545616229/assets/sin_imagen.png';
           }
           this.productos.push(p);
         });
