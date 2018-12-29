@@ -1,26 +1,26 @@
 <div class="sic-com-container" fxLayout="column" fxFlexFill>
   <sic-com-navbar></sic-com-navbar>
-  <div class="sic-com-content" fxFlex fxlayout="row" fxLayoutAlign="center stretch">
-    <div fxFlex="10" fxHide.lt-md></div>
-    <div fxLayout="column" fxLayoutAlign="space-between stretch" fxFlex class="sic-com-contenido-central">
-      <div fxFlex><router-outlet></router-outlet></div>
-      <div flex="noshrink">
-        <footer fxLayout="column" fxLayoutAlign="space-evenly center">
-          <div fxFlex class="centrado">
-            Il Globo Distribuciones S.R.L.<br>
-            CUIT 30-71239121-5<br>
-            Dirección local comercial: <strong>9 de Julio 1021</strong><br>
-            Dirección deposito principal: <strong>Napoles 5600</strong><br>
-            Corrientes - Argentina<br>
-          </div>
-          <div fxFlex="20" class="centrado">
-            <a href="https://facebook.com/globodeoro" target="_blank">
-              <img class="facebook top" src="https://res.cloudinary.com/hf0vu1bg2/image/upload/v1545109189/assets/facebook_logo.png" alt="Globo de Oro en Facebook">
-            </a>
-          </div>
-        </footer>
+  <div class="sic-com-content" fxFlex>
+    <div class="sic-com-contenido-central-container">
+      <div fxLayout="column" fxLayoutAlign="space-between stretch" fxFlex class="sic-com-contenido-central">
+        <div fxFlex><router-outlet></router-outlet></div>
+        <div flex="noshrink">
+          <footer fxLayout="column" fxLayoutAlign="space-evenly center">
+            <div fxFlex class="centrado">
+              Il Globo Distribuciones S.R.L.<br>
+              CUIT 30-71239121-5<br>
+              Dirección local comercial: <strong>9 de Julio 1021</strong><br>
+              Dirección deposito principal: <strong>Napoles 5600</strong><br>
+              Corrientes - Argentina<br>
+            </div>
+            <div fxFlex="20" class="centrado">
+              <a href="https://facebook.com/globodeoro" target="_blank">
+                <img class="facebook top" src="https://res.cloudinary.com/hf0vu1bg2/image/upload/v1545109189/assets/facebook_logo.png" alt="Globo de Oro en Facebook">
+              </a>
+            </div>
+          </footer>
+        </div>
       </div>
     </div>
-    <div fxFlex="10" fxHide.lt-md></div>
   </div>
 </div>

@@ -1,4 +1,12 @@
 .sic-com-container {
+  .sic-com-contenido-central-container {
+    height: 100%;
+    margin: 0 auto;
+    @media all and (min-width: 960px){
+      width: 80%;
+    }
+  }
+
   .sic-com-contenido-central {
     box-shadow: 12px 12px 8px -4px #aaaaaa, -12px 12px 8px -4px #aaaaaa, 0px 12px 8px -4px #aaaaaa;
     overflow-y: auto;

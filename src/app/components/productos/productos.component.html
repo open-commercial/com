@@ -1,5 +1,5 @@
 <div fxLayout="column" class="sic-com-productos">
-  <div fxLayoutAlign="center center" *ngIf="loadingProducts && (productos.length === 0)">
+  <div fxLayoutAlign="center center" *ngIf="loadingProducts && (productos.length === 0)" class="sic-com-mas-resultados">
     <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
   </div>
   <div class="sic-com-sin-resultados" *ngIf="!loadingProducts && (productos.length === 0)">
