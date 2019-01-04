@@ -22,7 +22,7 @@ export class PasswordRecoveryRequestComponent implements OnInit {
 
   ngOnInit() {
     if (this.authService.isAuthenticated()) {
-      this.router.navigate(['productos']);
+      this.router.navigate(['']);
     }
     this.createForm();
   }
@@ -44,7 +44,7 @@ export class PasswordRecoveryRequestComponent implements OnInit {
           let message = 'El pedido para recuperar su contraseña ha sido realizado correctamente.';
           message += ' En breve recibirá un correo electrónico con instrucciones';
           this.avisoService.openSnackBar(message, '', 5000);
-          this.router.navigate(['productos']);
+          this.router.navigate(['']);
         },
         err => {
           this.loading = false;

@@ -36,7 +36,7 @@ export class RegistracionComponent implements OnInit {
 
   ngOnInit() {
     if (this.authService.isAuthenticated()) {
-      this.router.navigate(['productos']);
+      this.router.navigate(['']);
     }
   }
 
@@ -74,7 +74,7 @@ export class RegistracionComponent implements OnInit {
         .subscribe(
           () => {
             this.avisoService.openSnackBar('Recibirá un email para confirmar su registración', 'OK', 0);
-            this.router.navigate(['productos']);
+            this.router.navigate(['']);
           },
           err => {
             this.avisoService.openSnackBar(err.error, '', 3500);

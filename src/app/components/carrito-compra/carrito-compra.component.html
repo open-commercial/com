@@ -1,5 +1,8 @@
 <div fxLayout="column" class="sic-com-carrito-compra">
-  <div *ngIf="!(loadingCarritoCompra || loadingTotales)">
+  <div *ngIf="loadingCarritoCompra" fxLayoutAlign="center center" class="sic-com-mas-resultados">
+    <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
+  </div>
+  <div *ngIf="!loadingCarritoCompra">
     <div fxLayout="column">
       <div fxLayoutAlign="start center" class="sic-com-ir-listado" (click)="irAlListado()">
         <mat-icon>keyboard_arrow_left</mat-icon>

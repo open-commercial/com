@@ -204,7 +204,7 @@ export class CheckoutComponent implements OnInit {
         data => {
           const mensaje = 'El pedido Nro ' + data['nroPedido'] + ' fué generado correctamente';
           this.avisoService.openSnackBar(mensaje, '', 3500);
-          this.irAProductos();
+          this.router.navigateByUrl('/');
         },
         err => {
           this.avisoService.openSnackBar(err.error, '', 3500);
@@ -214,10 +214,6 @@ export class CheckoutComponent implements OnInit {
         }
       );
     }
-  }
-
-  irAProductos() {
-    this.router.navigateByUrl('/productos;busqueda=' + this.productosService.getBusquedaCriteria());
   }
 
   changeStep($event) {

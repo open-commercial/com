@@ -41,9 +41,11 @@ import {NgxCaptchaModule} from 'ngx-captcha';
 import {RegistracionService} from '../services/registracion.service';
 import {CheckoutComponent} from '../components/checkout/checkout.component';
 import {SlideshowModule} from 'ng-simple-slideshow';
+import {HomeComponent} from '../components/home/home.component';
 import {registerLocaleData} from '@angular/common';
 import localeEs from '@angular/common/locales/es';
 import localeEsExtra from '@angular/common/locales/extra/es-AR';
+import {SlideshowService} from '../services/slideshow.service';
 
 registerLocaleData(localeEs, 'es-AR', localeEsExtra);
 
@@ -66,7 +68,8 @@ registerLocaleData(localeEs, 'es-AR', localeEsExtra);
     PasswordRecoveryRequestComponent,
     PasswordRecoveryComponent,
     CuentaCorrienteComponent,
-    CheckoutComponent
+    CheckoutComponent,
+    HomeComponent
   ],
   imports: [
     HttpClientModule,
@@ -95,7 +98,8 @@ registerLocaleData(localeEs, 'es-AR', localeEsExtra);
     ProvinciasService,
     LocalidadesService,
     CuentasCorrienteService,
-    RegistracionService
+    RegistracionService,
+    SlideshowService,
   ],
   entryComponents: [
     ConfirmationDialogComponent,

@@ -1,0 +1,38 @@
+<div class="sic-com-home">
+  <slideshow
+    [hideOnNoSlides]="true"
+    [imageUrls]="imageUrls"
+    [backgroundSize]="'contain'"
+    [height]="'280px'"
+    [autoPlay]="true"
+    [showArrows]="false"
+    [showDots]="true"
+    [dotColor]="'#ff5722'"
+    [showCaptions]="false"
+    [stopAutoPlayOnSlide]="false">
+  </slideshow>
+  <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap=".5rem" class="info">
+    <div>
+      <img src="https://res.cloudinary.com/hf0vu1bg2/image/upload/v1545110884/assets/truck_envio.png" alt="Envio gratis">
+    </div>
+    <div>
+      Aprovecha nuestro envio gratis a estas localidades en compras mayores a $1000!
+    </div>
+  </div>
+  <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap=".5rem" class="info">
+    <div>
+      <img src="https://res.cloudinary.com/hf0vu1bg2/image/upload/v1545358178/assets/shopping_cart.png" alt="Retiro en sucursal">
+    </div>
+    <div>
+      Retira sin cargo tu pedido en nuestras direcciones!
+    </div>
+  </div>
+  <iframe class="map" src="https://www.google.com/maps/d/embed?mid=1VOhcfOoN-NZWuCBltvk2Po9x9t7xySRm"></iframe>
+  <ul class="marcas">
+    <li class="marca" *ngFor="let m of marcas">
+      <a [routerLink]="m.routeLink">
+        <img [src]="m.url" [alt]="m.nombre">
+      </a>
+    </li>
+  </ul>
+</div>
