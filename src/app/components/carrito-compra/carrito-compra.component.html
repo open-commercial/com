@@ -8,7 +8,7 @@
         <mat-icon>keyboard_arrow_left</mat-icon>
         <strong>Ir al listado</strong>
       </div>
-      <div fxLayoutAlign="space-around center" class="sic-com-totalizadores" fxLayout.lt-sm="column">
+      <div fxLayoutAlign="space-around center" class="sic-com-totalizadores" fxLayout.lt-sm="column" *ngIf="!(loadingCarritoCompra || loadingTotales)">
         <div>Cant. Articulos: {{cantidadArticulos | number:'1.0-2':'es-AR' }}</div>
         <div>
           Subtotal: <span class="subtotal" [class.bonificado]="subTotal != total">$ {{subTotal | number:'1.2-2':'es-AR' }}</span>&nbsp;&nbsp;
@@ -16,11 +16,11 @@
         </div>
       </div>
       <div fxLayoutAlign="space-around center" class="sic-com-botonera">
-        <button mat-raised-button (click)="vaciarCarritoCompra()" disabled="{{(itemsCarritoCompra.length == 0)}}">
+        <button mat-raised-button (click)="vaciarCarritoCompra()" [disabled]="!itemsCarritoCompra.length || disabledButtons()">
           <mat-icon>remove_shopping_cart</mat-icon>
           <span fxHide.lt-md>Limpiar Listado</span>
         </button>
-        <button mat-raised-button (click)="goToCheckout()" disabled="{{!itemsCarritoCompra.length}}" color="primary">
+        <button mat-raised-button (click)="goToCheckout()" [disabled]="!itemsCarritoCompra.length || disabledButtons()" color="primary">
           <mat-icon>local_shipping</mat-icon>
           <span fxHide.lt-md>Cerrar Orden</span>
         </button>
@@ -47,14 +47,14 @@
           </div>
           <div fxLayout fxFlex="40">
             <div fxFlex="40" fxLayoutAlign="center center">
-              <button mat-raised-button (click)="editCantidadProducto(icc)" color="primary">Cantidad {{icc.cantidad | number:'1.0-2':'es-AR' }}</button>
+              <button mat-raised-button (click)="editCantidadProducto(icc)" color="primary" [disabled]="disabledButtons()">Cantidad {{icc.cantidad | number:'1.0-2':'es-AR' }}</button>
             </div>
             <div fxFlex="40" fxLayoutAlign="center center">
               <strong *ngIf="!(cliente && cliente.bonificacion > 0)">$ {{icc.importe | number:'1.2-2':'es-AR'}}</strong>
               <strong *ngIf="cliente && cliente.bonificacion > 0">$ {{icc.importeBonificado | number:'1.2-2':'es-AR'}}</strong>
             </div>
             <div fxFlex="20" fxLayoutAlign="center center">
-              <button mat-icon-button (click)="eliminarItemDelCarrito(icc)" matTooltip="Quitar del listado">
+              <button mat-icon-button (click)="eliminarItemDelCarrito(icc)" matTooltip="Quitar del listado" [disabled]="disabledButtons()">
                 <mat-icon>delete_forever</mat-icon>
               </button>
             </div>
@@ -64,10 +64,10 @@
     </mat-list>
   </div>
   <div fxLayoutAlign="center center" class="sic-com-mas-resultados" (click)="masItemsCarritoCompra()"
-       *ngIf="(itemsCarritoCompra.length > 0) && (totalPaginas > (pagina + 1)) && !loadingRenglones">
+       *ngIf="(itemsCarritoCompra.length > 0) && (totalPaginas > (pagina + 1)) && !(loadingRenglones || loadingTotales || loadingTotales)">
     <strong>MAS RESULTADOS</strong>
   </div>
-  <div class="sic-com-mas-resultados" fxLayoutAlign="center center" *ngIf="loadingRenglones">
+  <div class="sic-com-mas-resultados" fxLayoutAlign="center center" *ngIf="loadingCarritoCompra || loadingRenglones || loadingTotales">
     <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
   </div>
 </div>

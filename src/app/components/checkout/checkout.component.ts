@@ -28,7 +28,6 @@ export class CheckoutComponent implements OnInit {
   isClientesLoading = false;
   clientes = [];
   clientesPagina = 0;
-  clientesTamanioPagina = 3;
   clientesTotalPaginas = 0;
 
   checkoutPaso1Form: FormGroup = null;
@@ -152,7 +151,7 @@ export class CheckoutComponent implements OnInit {
 
   cargarClientes(search, reset: boolean) {
     this.isClientesLoading = true;
-    this.clientesService.getClientes(search, this.clientesPagina, this.clientesTamanioPagina).pipe(
+    this.clientesService.getClientes(search, this.clientesPagina).pipe(
       finalize(() => this.isClientesLoading = false)
     ).subscribe(
       data => {

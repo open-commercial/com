@@ -18,7 +18,7 @@ export class ProductosComponent implements OnInit, OnDestroy {
   pagina = 0;
   busquedaCriteria = '';
   buscarProductosSubscription: Subscription;
-
+  
   constructor(private productosService: ProductosService,
               private route: ActivatedRoute,
               private avisoService: AvisoService,
@@ -43,9 +43,9 @@ export class ProductosComponent implements OnInit, OnDestroy {
     this.loadingProducts = true;
     if (reset) {
       this.pagina = 0;
+      this.productos = [];
     }
-    this.productosService.getProductos(this.pagina, this.authService.isAuthenticated())
-      .subscribe(
+    this.productosService.getProductos(this.pagina).subscribe(
       data => {
         if (reset) {
           this.pagina = 0;
@@ -53,7 +53,7 @@ export class ProductosComponent implements OnInit, OnDestroy {
         }
         data['content'].forEach(p => {
           if (p.urlImagen == null || p.urlImagen === '') {
-            p.urlImagen = '../../../assets/no-image.png';
+            p.urlImagen = 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1545616229/assets/sin_imagen.png';
           }
           this.productos.push(p);
         });

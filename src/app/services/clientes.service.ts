@@ -13,10 +13,10 @@ export class ClientesService {
 
   constructor(private http: HttpClient) {}
 
-  getClientes(nombre, pagina, tamanioPagina) {
+  getClientes(nombre, pagina) {
     const uri = this.uriClientes + '/busqueda/criteria?idEmpresa=' + environment.idEmpresa
       + '&nombreFiscal=' + nombre + '&nombreFantasia=' + nombre + '&nroCliente=' + nombre
-      + '&pagina=' + pagina + '&tamanio=' + tamanioPagina;
+      + '&pagina=' + pagina;
     return this.http.get(uri);
   }
 

@@ -17,7 +17,6 @@ export class PedidosComponent implements OnInit {
   pedidos: Array<Pedido> = [];
   pagina = 0;
   totalPaginas = 0;
-  tamanioPagina = 5;
   isLoading = true;
   loading = true;
 
@@ -50,7 +49,7 @@ export class PedidosComponent implements OnInit {
       this.pagina = 0;
     }
     this.loading = true;
-    this.pedidosService.getPedidosCliente(this.cliente, this.pagina, this.tamanioPagina)
+    this.pedidosService.getPedidosCliente(this.cliente, this.pagina)
       .subscribe(
         data => {
           if (reset) {

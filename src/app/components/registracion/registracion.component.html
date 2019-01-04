@@ -4,7 +4,7 @@
     <strong>Ir a la Portada</strong>
   </a>
   <div fxLayout="column" fxLayoutAlign="center center">
-    <img src="assets/loginLogoTrans.png">
+    <img src="https://res.cloudinary.com/hf0vu1bg2/image/upload/v1545614927/assets/logo_GD_grande.png">
     <h1>Registración</h1>
     <form [formGroup]="registracionForm" (ngSubmit)="registrar()" fxLayout="column">
       <div fxLayout="column" fxLayoutGap=".5rem">
@@ -21,7 +21,7 @@
           </mat-error>
         </mat-form-field>
         <mat-form-field fxFlex>
-          <input matInput placeholder="Teléfono" formControlName="telefono" required>
+          <input matInput placeholder="Teléfono" type="number" formControlName="telefono" required>
           <mat-error *ngIf="registracionForm.get('telefono').hasError('required')">
             Requerido
           </mat-error>

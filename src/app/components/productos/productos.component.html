@@ -23,10 +23,10 @@
     </div>
   </mat-nav-list>
   <div class="sic-com-mas-resultados" fxLayoutAlign="center center" (click)="masProductos()"
-       *ngIf="(productos.length > 0) && (totalPaginas > (pagina + 1))">
-    <span *ngIf="(productos.length > 0) && (totalPaginas > (pagina + 1)) && !loadingProducts">
+       *ngIf="!loadingProducts && (productos.length > 0) && (totalPaginas > (pagina + 1))">
       <strong>MAS RESULTADOS</strong>
-    </span>
-    <mat-spinner [diameter]="50" [strokeWidth]="6" *ngIf="loadingProducts && (productos.length > 0)"></mat-spinner>
+  </div>
+  <div class="sic-com-mas-resultados" fxLayoutAlign="center center" *ngIf="loadingProducts">
+    <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
   </div>
 </div>
