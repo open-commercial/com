@@ -22,6 +22,8 @@ export class ProductoComponent implements OnInit {
   cargandoAlCarrito = false;
   cliente: Cliente = null;
 
+  imgViewerVisible = false;
+
   constructor(private productosService: ProductosService,
               private carritoCompraService: CarritoCompraService,
               private avisoService: AvisoService,
@@ -104,5 +106,9 @@ export class ProductoComponent implements OnInit {
 
   esProductoBonificado() {
     return this.authService.isAuthenticated() && this.producto.precioBonificado !== this.producto.precioLista;
+  }
+
+  toggleImgViewer() {
+    this.imgViewerVisible = !this.imgViewerVisible;
   }
 }

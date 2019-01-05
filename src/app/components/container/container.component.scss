@@ -1,5 +1,11 @@
 .sic-com-container {
+  .sic-com-content {
+    overflow-y: auto;
+    background: #eeeeee;
+  }
+
   .sic-com-contenido-central-container {
+    background: white;
     height: 100%;
     margin: 0 auto;
     @media all and (min-width: 960px){
@@ -8,11 +14,17 @@
   }
 
   .sic-com-contenido-central {
-    box-shadow: 12px 12px 8px -4px #aaaaaa, -12px 12px 8px -4px #aaaaaa, 0px 12px 8px -4px #aaaaaa;
-    overflow-y: auto;
+    box-shadow: 0px 4px 5px 6px #aaaaaa;
+    -webkit-box-shadow: 0px 4px 5px 6px #aaaaaa;
+    -moz-box-shadow: 0px 4px 5px 6px #aaaaaa;
   }
 
   footer {
+    padding-top: .7rem;
+    background: white;
+    box-shadow: 0px 14px 5px 6px #aaaaaa;
+    -webkit-box-shadow: 0px 14px 5px 6px #aaaaaa;
+    -moz-box-shadow: 0px 14px 5px 6px #aaaaaa;
     img.facebook {
       width: 30px;
       height: auto;
