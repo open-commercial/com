@@ -17,6 +17,9 @@ export class SlideshowService {
       },
       {
         url: 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1546840178/slideshow/ofertaDesmalezadora1280x600.jpg',
+      },
+      {
+        url: 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1546842909/slideshow/ofertaPala1280x600.jpg',
       }
     ];
   }
@@ -28,6 +31,9 @@ export class SlideshowService {
       },
       {
         url: 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1546841267/slideshow/ofertaDesmalezadora800x450.jpg',
+      },
+      {
+        url: 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1546843709/slideshow/ofertaPala800x450.jpg',
       }
     ];
   }
