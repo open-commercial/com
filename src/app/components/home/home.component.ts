@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {IImage} from 'ng-simple-slideshow';
 import {SlideshowService} from '../../services/slideshow.service';
+import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
 
 @Component({
   selector: 'sic-com-home',
@@ -53,9 +54,18 @@ export class HomeComponent implements OnInit {
     },
   ];
 
-  constructor(private slideshowService: SlideshowService) {}
+  constructor(private slideshowService: SlideshowService,
+              private breakpointObserver: BreakpointObserver) {}
 
   ngOnInit(): void {
-    this.imageUrls = this.slideshowService.getSlideshowData();
+    this.breakpointObserver.observe([
+      Breakpoints.XSmall
+    ]).subscribe(result => {
+      if (result.matches) {
+        this.imageUrls = this.imageUrls = this.slideshowService.getSlideshowDataForMobile();
+      } else {
+        this.imageUrls = this.imageUrls = this.slideshowService.getSlideshowDataForDesktop();
+      }
+    });
   }
 }

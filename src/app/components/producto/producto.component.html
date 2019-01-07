@@ -1,5 +1,5 @@
 <div fxLayout="column" class="sic-com-producto">
-  <div fxLayoutAlign="center center" *ngIf="loadingProducto">
+  <div class="sic-com-spinner-container" fxLayoutAlign="center center" *ngIf="loadingProducto">
     <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
   </div>
   <div *ngIf="!loadingProducto">

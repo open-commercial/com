@@ -1,5 +1,5 @@
 <div class="sic-com-checkout">
-  <div fxLayout="row" fxLayoutAlign="center center" *ngIf="isLoading" class="sic-com-mas-resultados">
+  <div fxLayout="row" fxLayoutAlign="center center" *ngIf="isLoading" class="sic-com-spinner-container">
     <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
   </div>
   <mat-vertical-stepper *ngIf="!isLoading" linear #stepper (selectionChange)="changeStep($event)">
@@ -29,7 +29,7 @@
                 <p matLine class="nombre-fantasia" *ngIf="c.nombreFantasia">{{ c.nombreFantasia }}</p>
               </mat-list-item>
             </mat-nav-list>
-            <div fxLayout="row" fxLayoutAlign="center center" class="sic-com-mas-resultados">
+            <div fxLayout="row" fxLayoutAlign="center center" class="sic-com-spinner-container">
               <mat-spinner *ngIf="isClientesLoading" [diameter]="50" [strokeWidth]="6"></mat-spinner>
             </div>
             <div class="sic-com-mas-resultados" fxLayout="row" fxLayoutAlign="center center"
@@ -60,7 +60,7 @@
           </div>
           <div>Total: <span class="valor">$ {{ total| number:'1.2-2':'es-AR' }}</span></div>
         </div>
-        <div fxLayout="row" fxLayoutAlign="center center" *ngIf="loadingTotales" class="sic-com-mas-resultados">
+        <div fxLayout="row" fxLayoutAlign="center center" *ngIf="loadingTotales" class="sic-com-spinner-container">
           <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
         </div>
         <br>
@@ -83,7 +83,7 @@
             Confirmar
           </button>
         </div>
-        <div fxLayout="row" fxLayoutAlign="center center" *ngIf="enviarOrdenLoading" class="sic-com-mas-resultados">
+        <div fxLayout="row" fxLayoutAlign="center center" *ngIf="enviarOrdenLoading" class="sic-com-spinner-container">
           <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
         </div>
       </form>

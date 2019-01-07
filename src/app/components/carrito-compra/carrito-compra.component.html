@@ -1,7 +1,4 @@
 <div fxLayout="column" class="sic-com-carrito-compra">
-  <div *ngIf="loadingCarritoCompra" fxLayoutAlign="center center" class="sic-com-mas-resultados">
-    <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
-  </div>
   <div *ngIf="!loadingCarritoCompra">
     <div fxLayout="column">
       <div fxLayoutAlign="start center" class="sic-com-ir-listado" (click)="irAlListado()">
@@ -67,7 +64,7 @@
        *ngIf="(itemsCarritoCompra.length > 0) && (totalPaginas > (pagina + 1)) && !(loadingRenglones || loadingTotales || loadingTotales)">
     <strong>MAS RESULTADOS</strong>
   </div>
-  <div class="sic-com-mas-resultados" fxLayoutAlign="center center" *ngIf="loadingCarritoCompra || loadingRenglones || loadingTotales">
+  <div class="sic-com-spinner-container" fxLayoutAlign="center center" *ngIf="loadingCarritoCompra || loadingRenglones || loadingTotales">
     <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
   </div>
 </div>
