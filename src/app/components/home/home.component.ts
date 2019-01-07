@@ -10,6 +10,7 @@ import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
 })
 export class HomeComponent implements OnInit {
 
+  height = '50vw';
   imageUrls: (string | IImage)[] = [];
   marcas = [
     {
@@ -30,10 +31,10 @@ export class HomeComponent implements OnInit {
     {
       url: 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1544154497/slideshow/interelec.jpg',
       routeLink: ['/productos', { busqueda: 'interelec'}],
-      nombre: 'Interlec'
+      nombre: 'Interelec'
     },
     {
-      url: 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1544153960/slideshow/PoxipolLogo1.png',
+      url: 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1544153960/slideshow/Poxipol.png',
       routeLink: ['/productos', { busqueda: 'poxipol'}],
       nombre: 'Poxipol'
     },
@@ -59,12 +60,14 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.breakpointObserver.observe([
-      Breakpoints.XSmall
+      Breakpoints.XSmall, Breakpoints.Small
     ]).subscribe(result => {
       if (result.matches) {
-        this.imageUrls = this.imageUrls = this.slideshowService.getSlideshowDataForMobile();
+        this.height = '50vw';
+        this.imageUrls = this.slideshowService.getSlideshowDataForMobile();
       } else {
-        this.imageUrls = this.imageUrls = this.slideshowService.getSlideshowDataForDesktop();
+        this.height = '30vw';
+        this.imageUrls = this.slideshowService.getSlideshowDataForDesktop();
       }
     });
   }

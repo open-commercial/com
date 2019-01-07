@@ -9,6 +9,9 @@
     </div>
     <div fxLayout="column" fxLayoutAlign="start center">
       <img class="sic-com-img-producto" [src]="producto.urlImagen" (click)="toggleImgViewer()">
+      <button mat-icon-button color="primary" (click)="toggleImgViewer()">
+        <mat-icon aria-label="Pantalla completa">zoom_in</mat-icon>
+      </button>
       <div class="img-viewer" *ngIf="imgViewerVisible">
         <div fxLayout="column" fxLayoutAlign="center center" fxFill>
           <img [src]="producto.urlImagen" style="max-width: 100%; height: auto;">

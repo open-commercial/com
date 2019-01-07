@@ -5,6 +5,7 @@ import {IImage} from 'ng-simple-slideshow';
 
 @Injectable()
 export class SlideshowService {
+
   url = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
@@ -12,26 +13,22 @@ export class SlideshowService {
   getSlideshowDataForDesktop(): (string | IImage)[] {
     return [
       {
-        url: 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1543814304/slideshow/gladiator-pro.png',
-        /* href='/productos;busqueda=gladiator'*/
+        url: 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1546837035/slideshow/ofertaConservadora1280x600.jpg',
       },
       {
-        url: 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1543814304/slideshow/suprabond.jpg',
-        /*href='/productos;busqueda=suprabond'*/
-      },
+        url: 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1546840178/slideshow/ofertaDesmalezadora1280x600.jpg',
+      }
     ];
   }
 
   getSlideshowDataForMobile(): (string | IImage)[] {
     return [
       {
-        url: 'http://www.casasparaconstruir.com/projetos/114/01.jpg',
-        /* href='/productos;busqueda=gladiator'*/
+        url: 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1546833123/slideshow/ofertaConservadora800x450.jpg',
       },
       {
-        url: 'https://images.adsttc.com/media/images/5605/ec3f/e58e/ce79/a500/0305/slideshow/032.jpg',
-        /*href='/productos;busqueda=suprabond'*/
-      },
+        url: 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1546841267/slideshow/ofertaDesmalezadora800x450.jpg',
+      }
     ];
   }
 }
