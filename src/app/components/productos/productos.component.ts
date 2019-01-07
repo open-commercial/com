@@ -3,7 +3,6 @@ import {ProductosService} from '../../services/productos.service';
 import {ActivatedRoute} from '@angular/router';
 import {AvisoService} from 'app/services/aviso.service';
 import {Subscription} from 'rxjs';
-import {IImage} from 'ng-simple-slideshow';
 import {AuthService} from '../../services/auth.service';
 
 @Component({
@@ -18,7 +17,7 @@ export class ProductosComponent implements OnInit, OnDestroy {
   pagina = 0;
   busquedaCriteria = '';
   buscarProductosSubscription: Subscription;
-  
+
   constructor(private productosService: ProductosService,
               private route: ActivatedRoute,
               private avisoService: AvisoService,

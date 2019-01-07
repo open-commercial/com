@@ -21,7 +21,6 @@ export class ProductoComponent implements OnInit {
   loadingProducto = false;
   cargandoAlCarrito = false;
   cliente: Cliente = null;
-
   imgViewerVisible = false;
 
   constructor(private productosService: ProductosService,
