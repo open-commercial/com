@@ -148,11 +148,11 @@ export class CarritoCompraComponent implements OnInit {
       if (result) {
         this.deleting = true;
         this.loadingCarritoCompra = true;
+        this.loadingTotales =  true;
         this.carritoCompraService.eliminarItem(itemCarritoCompra.producto.idProducto)
           .pipe(
             finalize(() => {
               this.deleting = false;
-              this.loadingCarritoCompra = false;
             })
           )
           .subscribe(

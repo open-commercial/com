@@ -1,5 +1,5 @@
 <div fxLayout="column" class="sic-com-carrito-compra">
-  <div *ngIf="!loadingCarritoCompra">
+  <div *ngIf="!(loadingCarritoCompra || loadingTotales)">
     <div fxLayout="column">
       <div fxLayoutAlign="start center" class="sic-com-ir-listado" (click)="irAlListado()">
         <mat-icon>keyboard_arrow_left</mat-icon>
@@ -27,20 +27,20 @@
       <mat-list-item *ngFor="let icc of itemsCarritoCompra" class="sic-com-renglones-items">
         <div matLine fxLayout="row" fxLayout.lt-sm="column">
           <div fxLayout fxFlex="60">
-              <div fxFlex="30" fxLayoutAlign="center center">
-                <img mat-list-avatar class="sic-com-img-avatar" [src]=icc.producto.urlImagen>
+            <div fxFlex="30" fxLayoutAlign="center center">
+              <img mat-list-avatar class="sic-com-img-avatar" [src]=icc.producto.urlImagen>
+            </div>
+            <div fxFlex="70" fxLayoutAlign="center start" fxLayout="column" [routerLink]="['/producto/' + icc.producto.idProducto]">
+              <div class="sic-com-descripcion-producto">{{icc.producto.descripcion}}</div>
+              <div>
+                <strong class="precio-item" [class.bonificado]="cliente && cliente.bonificacion > 0">
+                  $ {{icc.producto.precioLista | number:'1.2-2':'es-AR'}}
+                </strong>&nbsp;
+                <strong *ngIf="cliente && cliente.bonificacion > 0">
+                  $ {{icc.producto.precioBonificado | number:'1.2-2':'es-AR'}}
+                </strong>
               </div>
-              <div fxFlex="70" fxLayoutAlign="center start" fxLayout="column" [routerLink]="['/producto/' + icc.producto.idProducto]">
-                <div class="sic-com-descripcion-producto">{{icc.producto.descripcion}}</div>
-                <div>
-                  <strong class="precio-item" [class.bonificado]="cliente && cliente.bonificacion > 0">
-                    $ {{icc.producto.precioLista | number:'1.2-2':'es-AR'}}
-                  </strong>&nbsp;
-                  <strong *ngIf="cliente && cliente.bonificacion > 0">
-                    $ {{icc.producto.precioBonificado | number:'1.2-2':'es-AR'}}
-                  </strong>
-                </div>
-              </div>
+            </div>
           </div>
           <div fxLayout fxFlex="40">
             <div fxFlex="40" fxLayoutAlign="center center">

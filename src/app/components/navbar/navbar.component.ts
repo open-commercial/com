@@ -30,11 +30,13 @@ export class NavbarComponent implements OnInit {
               private avisoService: AvisoService) {}
 
   ngOnInit() {
+    const criteriaControl = this.busquedaForm.get('criteriaControl');
+    criteriaControl.setValue(this.productosService.getBusquedaCriteria());
+
     this.loadNavbarInfo();
     this.carritoCompraService.cantidadItemsEnCarrito$.subscribe(data => this.cantidadItemsEnCarrito = data);
     this.authService.nombreUsuarioLoggedIn$.subscribe(data => this.usuarioConectado = data);
     this.productosService.buscarProductos$.subscribe(data => this.busquedaCriteria = data);
-    const criteriaControl = this.busquedaForm.get('criteriaControl');
     this.productosService.buscarProductos$.subscribe(data => {
       this.busquedaCriteria = data;
       criteriaControl.setValue(data);
