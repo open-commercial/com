@@ -65,7 +65,7 @@
         </div>
         <br>
         <div>
-          <mat-form-field fxFlexFill style="padding: 10px;">
+          <mat-form-field fxFlexFill class="observaciones">
             <textarea matInput placeholder="Observaciones" formControlName="observaciones" rows="3"
                       #observacionesTextArea></textarea>
             <mat-error *ngIf="checkoutPaso2Form.get('observaciones').hasError('maxlength')">

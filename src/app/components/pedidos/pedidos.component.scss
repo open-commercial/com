@@ -1,17 +1,20 @@
 .sic-com-pedidos {
-    .pedido-row {
-        height: auto;
-        vertical-align: middle;
-        .mat-line {
-          white-space: normal;
-        }
-        .pedido-row-content {
-            padding: .5em;
-            .pedido-column-content {
-                text-align: center;
-            }
-        }
+  .pedido-row {
+    height: auto;
+    vertical-align: middle;
+    .mat-line {
+      white-space: normal;
     }
+    .pedido-row-content {
+      padding: .5em;
+      .pedido-column-content {
+          text-align: center;
+      }
+      .nro-pedido {
+        white-space: nowrap;
+      }
+    }
+  }
 
   .sic-com-sin-cliente {
     span {
@@ -21,24 +24,24 @@
     }
   }
 
-    .mat-chip-list {
-        padding: .2em 0.1em;
-    }
+  .mat-chip-list {
+    padding: .2em 0.1em;
+  }
 
-    .abierto {
-        color: lime;
-    }
+  .abierto {
+    color: lime;
+  }
 
-    .activo {
-        color: blue;
-    }
-    .cerrado {
-        color: red;
-    }
+  .activo {
+    color: blue;
+  }
+  .cerrado {
+    color: red;
+  }
 
-    .mas-resultados {
-        cursor: pointer;
-        height: 60px;
-        color: #ff5722;
-    }
+  .mas-resultados {
+    cursor: pointer;
+    height: 60px;
+    color: #ff5722;
+  }
 }

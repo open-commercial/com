@@ -72,6 +72,9 @@
     right: 0;
     background: white;
     z-index: 200;
+    img {
+      max-width: 100%; height: auto;
+    }
   }
 
   .sic-com-spinner-container {
