@@ -1,18 +1,7 @@
 .sic-com-container {
-  .navbar {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 100;
-  }
-
   .sic-com-content {
+    overflow-y: auto;
     background: #eeeeee;
-    margin-top: 56px;
-    @media all and (min-width: 600px) {
-      margin-top: 64px;
-    }
   }
 
   .sic-com-contenido-central-container {
