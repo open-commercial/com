@@ -5,6 +5,7 @@ import {ClientesService} from '../../services/clientes.service';
 import {AvisoService} from '../../services/aviso.service';
 import {CuentasCorrienteService} from '../../services/cuentas-corriente.service';
 import {RenglonCuentaCorriente} from '../../models/renglon-cuenta-corriente';
+import {finalize} from 'rxjs/operators';
 
 @Component({
   selector: 'sic-com-cuenta-corriente',
@@ -40,8 +41,9 @@ export class CuentaCorrienteComponent implements OnInit {
                   if (cc) {
                     this.cuentaCorriente = cc;
                     this.cargarRenglones(true);
+                  } else {
+                    this.isLoading = false;
                   }
-                  this.isLoading = false;
                 },
                 err => {
                   this.avisoService.openSnackBar(err.error, '', 3500);
@@ -65,17 +67,22 @@ export class CuentaCorrienteComponent implements OnInit {
       this.pagina = 0;
     }
     this.loading = true;
-    this.cuentasCorrienteService.getCuentaCorrienteRenglones(this.cuentaCorriente, this.pagina).subscribe(
-      data => {
-        data['content'].forEach(r => this.renglones.push(r));
-        this.totalPaginas = data['totalPages'];
-        this.loading = false;
-      },
-      err => {
-        this.avisoService.openSnackBar(err.error, '', 3500);
-        this.loading = false;
-      }
-    );
+    this.cuentasCorrienteService.getCuentaCorrienteRenglones(this.cuentaCorriente, this.pagina)
+      .pipe(
+        finalize(() => {
+          this.loading = false;
+          this.isLoading = false;
+        })
+      )
+      .subscribe(
+        data => {
+          data['content'].forEach(r => this.renglones.push(r));
+          this.totalPaginas = data['totalPages'];
+        },
+        err => {
+          this.avisoService.openSnackBar(err.error, '', 3500);
+        }
+      );
   }
 
   masRenglones() {
