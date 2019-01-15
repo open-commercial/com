@@ -5,7 +5,7 @@ import {PedidosService} from '../../services/pedidos.service';
 import {AvisoService} from '../../services/aviso.service';
 import {ClientesService} from '../../services/clientes.service';
 import {AuthService} from '../../services/auth.service';
-import {saveAs} from 'file-saver/FileSaver';
+import { saveAs } from 'file-saver';
 
 @Component({
   selector: 'sic-com-pedidos',
