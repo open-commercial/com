@@ -42,7 +42,6 @@
               {{producto.hayStock ? "Hay Stock" : "Sin Stock"}}
             </mat-chip>
           </mat-chip-list>
-
         </div>
         <div fxLayoutAlign="center center" class="sic-com-controles-cantidad" *ngIf="authService.isAuthenticated()">
           <button mat-mini-fab color="accent" (click)="cambiarCantidad(cantidad, 0)" [disabled]="cargandoAlCarrito">
@@ -62,6 +61,12 @@
             <mat-icon>add_shopping_cart</mat-icon> Agregar al Carrito
           </button>
           <mat-spinner [diameter]="50" [strokeWidth]="6" *ngIf="cargandoAlCarrito"></mat-spinner>
+        </div>
+        <div fxLayoutAlign="center center" class="sic-com-controles-cantidad" *ngIf="!authService.isAuthenticated()">
+          <button fxFill mat-raised-button routerLink="/login" color="accent">
+            <mat-icon>shopping_cart</mat-icon>
+            Comprar
+          </button>
         </div>
       </div>
     </div>

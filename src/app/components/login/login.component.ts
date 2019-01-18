@@ -48,6 +48,9 @@ export class LoginComponent implements OnInit {
       this.loginForm.disable();
       this.authService.login(this.model.username, this.model.password).subscribe(
         () => {
+          this.authService.getLoggedInUsuario().subscribe((usuario: Usuario) => {
+            this.avisoService.openSnackBar(`Bienvenido ${usuario.nombre} ${usuario.apellido}!`, '', 3500);
+          });
           this.clientesService.getClienteDelUsuario(this.authService.getLoggedInIdUsuario())
             .pipe(
               finalize(() => {

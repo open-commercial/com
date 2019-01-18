@@ -151,13 +151,13 @@ export class CheckoutComponent implements OnInit {
 
   cargarClientes(search, reset: boolean) {
     this.isClientesLoading = true;
+    if (reset) {
+      this.clearClientes();
+    }
     this.clientesService.getClientes(search, this.clientesPagina).pipe(
       finalize(() => this.isClientesLoading = false)
     ).subscribe(
       data => {
-        if (reset) {
-          this.clearClientes();
-        }
         data['content'].forEach(c => this.clientes.push(c));
         this.clientesTotalPaginas = data['totalPages'];
       }

@@ -29,8 +29,8 @@
                 <p matLine class="nombre-fantasia" *ngIf="c.nombreFantasia">{{ c.nombreFantasia }}</p>
               </mat-list-item>
             </mat-nav-list>
-            <div fxLayout="row" fxLayoutAlign="center center" class="sic-com-spinner-container">
-              <mat-spinner *ngIf="isClientesLoading" [diameter]="50" [strokeWidth]="6"></mat-spinner>
+            <div fxLayout="row" fxLayoutAlign="center center" class="sic-com-spinner-container" *ngIf="isClientesLoading">
+              <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
             </div>
             <div class="sic-com-mas-resultados" fxLayout="row" fxLayoutAlign="center center"
                  *ngIf="!isClientesLoading && clientes.length && (clientesTotalPaginas > (clientesPagina + 1))"

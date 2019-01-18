@@ -6,6 +6,7 @@ import {AvisoService} from '../../services/aviso.service';
 import {ClientesService} from '../../services/clientes.service';
 import {AuthService} from '../../services/auth.service';
 import { saveAs } from 'file-saver';
+import {finalize} from 'rxjs/operators';
 
 @Component({
   selector: 'sic-com-pedidos',
@@ -34,8 +35,9 @@ export class PedidosComponent implements OnInit {
           if (cliente) {
             this.cliente = cliente;
             this.cargarPedidos(true);
+          } else {
+            this.isLoading = false;
           }
-          this.isLoading = false;
         },
         err => {
           this.isLoading = false;
@@ -50,6 +52,12 @@ export class PedidosComponent implements OnInit {
     }
     this.loading = true;
     this.pedidosService.getPedidosCliente(this.cliente, this.pagina)
+      .pipe(
+        finalize(() => {
+          this.loading = false;
+          this.isLoading = false;
+        })
+      )
       .subscribe(
         data => {
           if (reset) {
@@ -59,11 +67,9 @@ export class PedidosComponent implements OnInit {
 
           data['content'].forEach(p => this.pedidos.push(p));
           this.totalPaginas = data['totalPages'];
-          this.loading = false;
         },
         err => {
           this.avisoService.openSnackBar(err.error, '', 3500);
-          this.loading = false;
         }
       );
   }

@@ -27,7 +27,8 @@ export class AuthService {
   login(username: string, password: string) {
     const credential = {username: username, password: password};
     return this.http.post(this.urlLogin, credential, {responseType: 'text'})
-      .pipe(map(data => {
+      .pipe(
+        map(data => {
           this.setAuthenticationInfo(data);
         }),
         catchError(err => {
@@ -38,7 +39,8 @@ export class AuthService {
             msjError = err.error;
           }
           return throwError(msjError);
-        }));
+        })
+      );
   }
 
   logout() {
