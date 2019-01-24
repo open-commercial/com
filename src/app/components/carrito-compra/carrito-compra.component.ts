@@ -188,7 +188,7 @@ export class CarritoCompraComponent implements OnInit {
 
   irAlListado() {
     const criteria = this.productosService.getBusquedaCriteria();
-    this.router.navigate(['/productos', {busqueda: criteria}]);
+    this.router.navigate(['/productos', {q: criteria}]);
   }
 
   goToCheckout() {

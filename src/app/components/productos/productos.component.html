@@ -19,10 +19,14 @@
       <mat-divider></mat-divider>
     </div>
   </mat-nav-list>
-  <div class="sic-com-mas-resultados" fxLayoutAlign="center center" (click)="masProductos()"
-       *ngIf="!loadingProducts && (productos.length > 0) && (totalPaginas > (pagina + 1))">
-      <strong>MAS RESULTADOS</strong>
-  </div>
+  <mat-paginator *ngIf="!loadingProducts && (productos.length > 0)"
+                 [pageIndex]="pagina"
+                 [length]="totalElements"
+                 [pageSize]="25"
+                 [hidePageSize]="true"
+                 (page)="cambioDePagina($event)"
+  >
+  </mat-paginator>
   <div class="sic-com-mas-resultados" fxLayoutAlign="center center" *ngIf="loadingProducts">
     <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
   </div>

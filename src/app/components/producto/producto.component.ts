@@ -8,6 +8,7 @@ import {Producto} from '../../models/producto';
 import {ClientesService} from '../../services/clientes.service';
 import {Cliente} from '../../models/cliente';
 import {CarritoCompra} from '../../models/carrito-compra';
+import {Location} from '@angular/common';
 
 @Component({
   selector: 'sic-com-producto',
@@ -29,7 +30,8 @@ export class ProductoComponent implements OnInit {
               private authService: AuthService,
               private clientesService: ClientesService,
               private router: Router,
-              private route: ActivatedRoute) {
+              private route: ActivatedRoute,
+              private location: Location) {
   }
 
   ngOnInit() {
@@ -61,7 +63,7 @@ export class ProductoComponent implements OnInit {
   }
 
   irAlListado() {
-    this.router.navigateByUrl('/productos;busqueda=' + this.productosService.getBusquedaCriteria());
+    this.location.back();
   }
 
   cargarAlCarrito() {
