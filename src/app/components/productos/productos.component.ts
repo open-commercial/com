@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ProductosService} from '../../services/productos.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AvisoService} from 'app/services/aviso.service';
-import {combineLatest, Subject, Subscription} from 'rxjs';
+import {combineLatest, Subscription} from 'rxjs';
 import {AuthService} from '../../services/auth.service';
 
 @Component({
@@ -69,7 +69,13 @@ export class ProductosComponent implements OnInit, OnDestroy {
     return this.authService.isAuthenticated() && p.precioBonificado !== p.precioLista;
   }
 
-  cambioDePagina($event) {
-    this.router.navigate(['/productos', { q: this.busquedaCriteria || '' }], { queryParams: { p: $event.pageIndex + 1 } });
+  paginaAnterior() {
+    if (this.pagina <= 0) { return; }
+    this.router.navigate(['/productos', { q: this.busquedaCriteria || '' }], { queryParams: { p: this.pagina } });
+  }
+
+  paginaSiguiente() {
+    if (this.pagina + 1 >= this.totalPaginas) { return; }
+    this.router.navigate(['/productos', { q: this.busquedaCriteria || '' }], { queryParams: { p: this.pagina + 2 } });
   }
 }

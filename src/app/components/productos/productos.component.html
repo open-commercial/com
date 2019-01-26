@@ -19,14 +19,14 @@
       <mat-divider></mat-divider>
     </div>
   </mat-nav-list>
-  <mat-paginator *ngIf="!loadingProducts && (productos.length > 0)"
-                 [pageIndex]="pagina"
-                 [length]="totalElements"
-                 [pageSize]="25"
-                 [hidePageSize]="true"
-                 (page)="cambioDePagina($event)"
-  >
-  </mat-paginator>
+  <div class="sic-com-paginator" *ngIf="!loadingProducts && (productos.length > 0)" fxLayout="row" fxLayoutAlign="center center">
+    <button mat-button [disabled]="pagina <= 0" (click)="paginaAnterior()">
+      <mat-icon aria-label="Página anterior">navigate_before</mat-icon><span>Anterior</span>
+    </button>
+    <span class="page">{{ this.pagina + 1 }}</span>
+    <button mat-button [disabled]="pagina + 1 >= totalPaginas" (click)="paginaSiguiente()">
+      <span>Siguiente</span><mat-icon aria-label="Página siguiente">navigate_next</mat-icon></button>
+  </div>
   <div class="sic-com-mas-resultados" fxLayoutAlign="center center" *ngIf="loadingProducts">
     <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
   </div>
