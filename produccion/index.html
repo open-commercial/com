@@ -19,44 +19,6 @@
     gtag('js', new Date());
     gtag('config', 'UA-132433044-1');
   </script>
-<!--
-  <script>
-    /*! Normalized address bar hiding for iOS & Android (c) @scottjehl MIT License */
-    (function( win ){
-      var doc = win.document;
-
-      // If there's a hash, or addEventListener is undefined, stop here
-      if(!win.navigator.standalone && !location.hash && win.addEventListener ){
-
-        //scroll to 1
-        win.scrollTo( 0, 1 );
-        var scrollTop = 1,
-          getScrollTop = function(){
-            return win.pageYOffset || doc.compatMode === "CSS1Compat" && doc.documentElement.scrollTop || doc.body.scrollTop || 0;
-          },
-
-          //reset to 0 on bodyready, if needed
-          bodycheck = setInterval(function(){
-            if( doc.body ){
-              clearInterval( bodycheck );
-              scrollTop = getScrollTop();
-              win.scrollTo( 0, scrollTop === 1 ? 0 : 1 );
-            }
-          }, 15 );
-
-        win.addEventListener( "load", function(){
-          setTimeout(function(){
-            //at load, if user hasn't scrolled more than 20 or so...
-            if( getScrollTop() < 20 ){
-              //reset to hide addr bar at onload
-              win.scrollTo( 0, scrollTop === 1 ? 0 : 1 );
-            }
-          }, 0);
-        }, false );
-      }
-    })( this );
-  </script>
--->
 <link rel="stylesheet" href="styles.a943bf2b96bfce0208bd.css"></head>
 <body class="mat-app-background">
 <sic-com class="sic-com-index">
@@ -86,5 +48,5 @@
   })();
 </script>
 <!-- /WhatsHelp.io widget -->
-<script type="text/javascript" src="runtime.ec2944dd8b20ec099bf3.js"></script><script type="text/javascript" src="polyfills.ff2732ee7f8b181ccc52.js"></script><script type="text/javascript" src="main.f7aa32fa91881b94398c.js"></script></body>
+<script type="text/javascript" src="runtime.ec2944dd8b20ec099bf3.js"></script><script type="text/javascript" src="polyfills.ff2732ee7f8b181ccc52.js"></script><script type="text/javascript" src="main.d8a6d920e929d930f354.js"></script></body>
 </html>
