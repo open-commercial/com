@@ -36,7 +36,7 @@ export class NavbarComponent implements OnInit {
     this.loadNavbarInfo();
     this.carritoCompraService.cantidadItemsEnCarrito$.subscribe(data => this.cantidadItemsEnCarrito = data);
     this.authService.nombreUsuarioLoggedIn$.subscribe(data => this.usuarioConectado = data);
-    this.productosService.buscarProductos$.subscribe(data => this.busquedaCriteria = data);
+
     this.productosService.buscarProductos$.subscribe(data => {
       this.busquedaCriteria = data;
       criteriaControl.setValue(data);
@@ -68,8 +68,7 @@ export class NavbarComponent implements OnInit {
 
   buscarProductos(criteria: string) {
     criteria = criteria === null ? '' : criteria;
-    this.productosService.buscarProductos(criteria);
-    this.router.navigate(['/productos', { busqueda: criteria }]);
+    this.router.navigate(['/productos', { q: criteria }]);
   }
 
   goToLogin() {

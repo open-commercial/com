@@ -42,9 +42,20 @@
   }
 
   .sic-com-mas-resultados {
-    cursor: pointer;
     height: 90px;
     color: #ff5722;
+  }
+
+  .sic-com-paginator {
+    padding: .7rem;
+    .page {
+      padding: .5rem .9rem;
+      margin: 0 .3rem;
+      background: #DFDFDF;
+      -webkit-border-radius: 3px;
+      -moz-border-radius: 3px;
+      border-radius: 3px;
+    }
   }
 
   .sic-com-precio-lista {

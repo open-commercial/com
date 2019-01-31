@@ -15,42 +15,42 @@ export class HomeComponent implements OnInit {
   marcas = [
     {
       url: 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1543814304/slideshow/gladiator-pro.png',
-      routeLink: ['/productos', { busqueda: 'gladiator' }],
+      routeLink: ['/productos', { q: 'gladiator' }],
       nombre: 'Gladiator'
     },
     {
       url: 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1543814304/slideshow/suprabond.jpg',
-      routeLink: ['/productos', { busqueda: 'suprabond' }],
+      routeLink: ['/productos', { q: 'suprabond' }],
       nombre: 'Suprabond'
     },
     {
       url: 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1543814304/slideshow/tacsa.jpg',
-      routeLink: ['/productos', { busqueda: 'tacsa'}],
+      routeLink: ['/productos', { q: 'tacsa'}],
       nombre: 'Tacsa'
     },
     {
       url: 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1544154497/slideshow/interelec.jpg',
-      routeLink: ['/productos', { busqueda: 'interelec'}],
+      routeLink: ['/productos', { q: 'interelec'}],
       nombre: 'Interelec'
     },
     {
       url: 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1544153960/slideshow/Poxipol.png',
-      routeLink: ['/productos', { busqueda: 'poxipol'}],
+      routeLink: ['/productos', { q: 'poxipol'}],
       nombre: 'Poxipol'
     },
     {
       url: 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1544153960/slideshow/tramontina.png',
-      routeLink: ['/productos', { busqueda: 'tramontina'}],
+      routeLink: ['/productos', { q: 'tramontina'}],
       nombre: 'Tramontina'
     },
     {
       url: 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1544153960/slideshow/brogas.jpg',
-      routeLink: ['/productos', { busqueda: 'brogas'}],
+      routeLink: ['/productos', { q: 'brogas'}],
       nombre: 'Brogas'
     },
     {
       url: 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1544153960/slideshow/bulit.jpg',
-      routeLink: ['/productos', { busqueda: 'bulit'}],
+      routeLink: ['/productos', { q: 'bulit'}],
       nombre: 'Bulit'
     },
   ];
