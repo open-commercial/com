@@ -1,10 +1,10 @@
 <div class="sic-com-navbar">
-  <mat-toolbar color="primary">
+  <mat-toolbar color="accent">
     <div fxHide.lt-md fxFlex.gt-sm="10"></div>
     <div fxFlex="20" fxLayoutAlign="center center">
-      <img fxHide.lt-md src="https://res.cloudinary.com/hf0vu1bg2/image/upload/v1545615291/assets/logo_GD_header_rectangular.png"
+      <img fxHide.lt-md src="https://res.cloudinary.com/hf0vu1bg2/image/upload/v1548894965/assets/GloboDeOroLogoNuevoLimpio.png"
            class="sic-com-logo-grande" routerLink="/">
-      <img fxHide.gt-sm src="https://res.cloudinary.com/hf0vu1bg2/image/upload/v1545615470/assets/logo_GD_chico.png"
+      <img fxHide.gt-sm src="https://res.cloudinary.com/hf0vu1bg2/image/upload/v1548894965/assets/GloboDeOroLogoNuevoLimpio.png"
            class="sic-com-logo-chico" routerLink="/">
     </div>
     <form id="buscador-form" fxFlex fxLayoutAlign="center center" [formGroup]="busquedaForm" (ngSubmit)="submit()">
@@ -14,7 +14,7 @@
       </button>
     </form>
     <div fxFlex.lt-md="15" fxFlex.gt-sm="20" fxLayoutAlign="center center" *ngIf="authService.isAuthenticated()">
-      <button mat-icon-button fxHide.lt-md [matMenuTriggerFor]="menuReducido" matTooltip="Mi Perfil ({{usuarioConectado}})">
+      <button mat-icon-button fxHide.lt-md [matMenuTriggerFor]="menuReducido" matTooltip="Mi Perfil ({{usuarioConectado}})" color="primary">
         <mat-icon>account_circle</mat-icon>
       </button>
       <mat-menu #menuReducido="matMenu" fxHide.lt-md [overlapTrigger]="false">
@@ -27,11 +27,11 @@
           <span>Cerrar Sesión</span>
         </button>
       </mat-menu>
-      <button mat-icon-button fxHide.lt-md [routerLink]="['/carrito-compra']" matTooltip="Ir al carrito">
+      <button mat-icon-button fxHide.lt-md [routerLink]="['/carrito-compra']" matTooltip="Ir al carrito" color="primary">
         <mat-icon>shopping_cart</mat-icon>
         <span class="sic-com-contador-carrito" *ngIf="(cantidadItemsEnCarrito > 0)">{{cantidadItemsEnCarrito}}</span>
       </button>
-      <button mat-icon-button fxHide.gt-sm [matMenuTriggerFor]="menuCompleto">
+      <button mat-icon-button fxHide.gt-sm [matMenuTriggerFor]="menuCompleto" color="primary">
         <mat-icon>more_vert</mat-icon>
       </button>
       <mat-menu #menuCompleto="matMenu" fxHide.gt-sm [overlapTrigger]="false">
@@ -50,7 +50,7 @@
       </mat-menu>
     </div>
     <div fxFlex.lt-md="15" fxFlex.gt-sm="20" fxLayoutAlign="center center" *ngIf="!authService.isAuthenticated()">
-      <button mat-icon-button fxHide.lt-md [matMenuTriggerFor]="menuReducido">
+      <button mat-icon-button fxHide.lt-md [matMenuTriggerFor]="menuReducido" color="primary">
         <mat-icon>account_circle</mat-icon>
       </button>
       <mat-menu #menuReducido="matMenu" fxHide.lt-md [overlapTrigger]="false">
@@ -63,7 +63,7 @@
           <span>Registrarme</span>
         </button>
       </mat-menu>
-      <button mat-icon-button fxHide.gt-sm [matMenuTriggerFor]="menuCompleto">
+      <button mat-icon-button fxHide.gt-sm [matMenuTriggerFor]="menuCompleto" color="primary">
         <mat-icon>more_vert</mat-icon>
       </button>
       <mat-menu #menuCompleto="matMenu" fxHide.gt-sm [overlapTrigger]="false">

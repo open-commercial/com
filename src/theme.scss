@@ -1,11 +1,7 @@
 @import '~@angular/material/theming';
+@import 'colors';
 
 @include mat-core();
 
-$candy-app-primary: mat-palette($mat-deep-orange);
-$candy-app-accent: mat-palette($mat-grey, 100);
-$candy-app-warn: mat-palette($mat-red);
-$candy-app-theme: mat-light-theme($candy-app-primary, $candy-app-accent, $candy-app-warn);
-
-@include angular-material-theme($candy-app-theme);
+@include angular-material-theme($app-theme);
 
