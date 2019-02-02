@@ -1,6 +1,10 @@
 @import "../../../_colors.scss";
 
 .sic-com-navbar {
+  mat-toolbar {
+    background: whitesmoke;
+  }
+
   #buscador-form {
     position: relative;
 
