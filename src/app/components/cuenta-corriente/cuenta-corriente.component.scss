@@ -1,3 +1,5 @@
+@import "../../../_colors.scss";
+
 .sic-com-cuenta-corriente {
   .monto {
     white-space: nowrap;
@@ -26,13 +28,13 @@
   .mas-resultados {
     cursor: pointer;
     height: 60px;
-    color: #ff5722;
+    color: $color-primary;
   }
 
   .sic-com-sin-cliente {
     span {
       height: 100px;
-      color: #ff5722;
+      color: $color-primary;
       font-size: 18px;
     }
   }

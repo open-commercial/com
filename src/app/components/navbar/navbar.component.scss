@@ -10,13 +10,12 @@
 
     .sic-com-buscador-input {
       width: 100%;
-      //border: none;
-      padding: 10px;
       font-size: 18px;
       -webkit-border-radius: 3px;
       -moz-border-radius: 3px;
       border-radius: 3px;
-      border: 2px solid $color-primary;
+      border: 1.5px solid $color-primary;
+      padding: 10px;
       padding-left: 2em;
     }
 
