@@ -1,15 +1,18 @@
+@import "../../../_colors.scss";
+
 .sic-com-navbar {
   #buscador-form {
     position: relative;
 
     .sic-com-buscador-input {
       width: 100%;
-      border: none;
+      //border: none;
       padding: 10px;
       font-size: 18px;
-      -webkit-border-radius: 10px;
-      -moz-border-radius: 10px;
-      border-radius: 10px;
+      -webkit-border-radius: 3px;
+      -moz-border-radius: 3px;
+      border-radius: 3px;
+      border: 2px solid $color-primary;
       padding-left: 2em;
     }
 

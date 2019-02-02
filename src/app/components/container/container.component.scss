@@ -1,3 +1,5 @@
+@import "../../../_colors.scss";
+
 .sic-com-container {
   .navbar {
     position: fixed;
@@ -8,7 +10,7 @@
   }
 
   .sic-com-content {
-    background: #eeeeee;
+    background: $color-accent;
     margin-top: 56px;
     &.desktop {
       margin-top: 64px;
@@ -16,7 +18,7 @@
   }
 
   .sic-com-contenido-central-container {
-    background: white;
+    background: $color-accent;
     height: 100%;
     margin: 0 auto;
     @media all and (min-width: 960px){
@@ -33,7 +35,7 @@
 
   footer {
     padding-top: .7rem;
-    background: white;
+    background: $color-accent;
     box-shadow: 0px 14px 5px 6px #aaaaaa;
     -webkit-box-shadow: 0px 14px 5px 6px #aaaaaa;
     -moz-box-shadow: 0px 14px 5px 6px #aaaaaa;
