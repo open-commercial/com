@@ -12,8 +12,11 @@
   .sic-com-content {
     background: whitesmoke;
     margin-top: 56px;
-    &.desktop {
+    &.tablet {
       margin-top: 64px;
+    }
+    &.desktop {
+      margin-top: 100px;
     }
   }
 
