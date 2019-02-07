@@ -1,3 +1,5 @@
+@import "../../../_colors.scss";
+
 .sic-com-productos {
   height: 100%;
   background-color: white;
@@ -11,7 +13,7 @@
 
     span {
       height: 100px;
-      color: #ff5722;
+      color: $color-primary;
       font-size: 30px;
 
       mat-icon {
@@ -38,12 +40,12 @@
   .sic-com-descripcion {
     white-space: normal;
     font-size: 15px;
-    color: #ff5722;
+    color: $color-primary;
   }
 
   .sic-com-mas-resultados {
     height: 90px;
-    color: #ff5722;
+    color: $color-primary;
   }
 
   .sic-com-paginator {

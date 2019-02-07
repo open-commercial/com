@@ -1,3 +1,5 @@
+@import "../../../_colors.scss";
+
 .sic-com-container {
   .navbar {
     position: fixed;
@@ -8,7 +10,7 @@
   }
 
   .sic-com-content {
-    background: #eeeeee;
+    background: whitesmoke;
     margin-top: 56px;
     &.desktop {
       margin-top: 64px;
@@ -16,7 +18,7 @@
   }
 
   .sic-com-contenido-central-container {
-    background: white;
+    background: whitesmoke;
     height: 100%;
     margin: 0 auto;
     @media all and (min-width: 960px){

@@ -1,21 +1,20 @@
 import {Injectable} from '@angular/core';
 import {environment} from 'environments/environment';
 import {IImage} from 'ng-simple-slideshow';
+import {Router} from '@angular/router';
 
 @Injectable()
 export class SlideshowService {
 
   url = environment.apiUrl;
 
-  constructor() {}
+  constructor(private router: Router) {}
 
   getSlideshowDataForDesktop(): (string | IImage)[] {
     return [
       {
-        url: 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1546840178/slideshow/ofertaDesmalezadora1280x600.jpg',
-      },
-      {
-        url: 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1546842909/slideshow/ofertaPala1280x600.jpg',
+        url: 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1549499114/slideshow/oferta-pala-1280x550px.png',
+        clickAction: () => this.router.navigate(['/productos', { q: 'pala tramontina emp plast'}])
       }
     ];
   }
@@ -23,10 +22,8 @@ export class SlideshowService {
   getSlideshowDataForMobile(): (string | IImage)[] {
     return [
       {
-        url: 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1546841267/slideshow/ofertaDesmalezadora800x450.jpg',
-      },
-      {
-        url: 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1546843709/slideshow/ofertaPala800x450.jpg',
+        url: 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1549499113/slideshow/oferta-pala-850x450px.png',
+        clickAction: () => this.router.navigate(['/productos', { q: 'pala tramontina emp plast'}])
       }
     ];
   }

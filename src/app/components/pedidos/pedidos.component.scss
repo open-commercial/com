@@ -1,3 +1,5 @@
+@import "../../../_colors.scss";
+
 .sic-com-pedidos {
   .pedido-row {
     height: auto;
@@ -19,7 +21,7 @@
   .sic-com-sin-cliente {
     span {
       height: 100px;
-      color: #ff5722;
+      color: $color-primary;
       font-size: 18px;
     }
   }
@@ -42,6 +44,6 @@
   .mas-resultados {
     cursor: pointer;
     height: 60px;
-    color: #ff5722;
+    color: $color-primary;
   }
 }

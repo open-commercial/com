@@ -1,6 +1,3 @@
-// buscar la manera de pedirle el primary color a la paleta seteada en theme.scss
-$color-primario: #ff5722;
-
 html, body {
   height: 100%;
   margin: 0;
@@ -8,20 +5,24 @@ html, body {
 }
 
 .sic-com-index {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
   display: flex;
+  align-items: center;
+  justify-content: center;
   height: 100%;
-  background-color: $color-primario;
+  background-color: whitesmoke;
 
   .sic-com-spinner {
-    margin: auto;
     text-align: center;
-    vertical-align: middle;
 
     img {
       top: -222px;
       position: relative;
       height: 90px;
-      width: 90px;
+      width: auto;
     }
 
     .sic-com-circulo-spinner {

@@ -1,3 +1,5 @@
+@import "../../../_colors.scss";
+
 .sic-com-carrito-compra {
   background-color: white;
 
@@ -44,7 +46,7 @@
   }
 
   .sic-com-descripcion-producto {
-    color: #ff5722;
+    color: $color-primary;
     font-weight: bold;
     font-size: 15px;
     cursor: pointer;
@@ -57,13 +59,13 @@
   }
 
   .sic-com-mas-resultados {
-    color: #ff5722;
+    color: $color-primary;
     cursor: pointer;
     height: 90px;
   }
 
   .sic-com-spinner-container {
     height: 90px;
-    color: #ff5722;
+    color: $color-primary;
   }
 }

@@ -1,6 +1,6 @@
-.sic-com-checkout {
-  background-color: white;
+@import "../../../_colors.scss";
 
+.sic-com-checkout {
   .sic-com-bonificacion {
     color: white;
     background-color: limegreen;
@@ -35,7 +35,7 @@
   }
 
   .sic-com-mas-resultados {
-    color: #ff5722;
+    color: $color-primary;
     cursor: pointer;
     height: 90px;
     font-size: 14px;
@@ -43,7 +43,7 @@
 
   .sic-com-spinner-container {
     height: 90px;
-    color: #ff5722;
+    color: $color-primary;
   }
 
   .cliente-label {
@@ -55,11 +55,11 @@
   }
 
   .seleccionado {
-    color: #ff5722;
+    color: $color-primary;
   }
 
   .seleccionado .nombre-fantasia {
-    color: #ff5722;
+    color: $color-primary;
   }
 
   .observaciones {
