@@ -21,17 +21,23 @@ import {Router} from '@angular/router';
 export class CheckoutComponent implements OnInit {
   isLoading = false;
   usuario: Usuario = null;
+
   clienteDeUsuario: Cliente = null;
   cliente: Cliente = null;
-
   opcionCliente = '1';
   isClientesLoading = false;
   clientes = [];
   clientesPagina = 0;
   clientesTotalPaginas = 0;
 
+  opcionEnvio = 1;
+  sucursales  = [];
+  provincias  = [];
+  localidades = [];
+
   checkoutPaso1Form: FormGroup = null;
   checkoutPaso2Form: FormGroup = null;
+  checkoutPaso3Form: FormGroup = null;
 
   busqKeyUp = new Subject<string>();
 
@@ -102,6 +108,8 @@ export class CheckoutComponent implements OnInit {
         this.avisoService.openSnackBar(err.error, '', 3500);
       }
     );
+
+    this.getSucursales();
   }
 
   createForms() {
@@ -111,6 +119,17 @@ export class CheckoutComponent implements OnInit {
     this.checkoutPaso1Form = this.fb.group({
       'id_Cliente': [this.cliente.id_Cliente, Validators.required]
     });
+    this.checkoutPaso3Form = this.fb.group({
+      sucursal_id: null,
+      direccion: this.fb.group({
+        provincia_id: null,
+        localidad_id: null,
+        calle: '',
+        numero: '',
+        piso: ''
+      })
+    });
+
     if (!this.puedeVenderAOtroCliente()) {
       setTimeout(() => {
         this.stepper.selectedIndex = 1;
@@ -193,10 +212,27 @@ export class CheckoutComponent implements OnInit {
     }
   }
 
+  getSucursales() {
+    this.sucursales = [
+      { id: 1, nombre: 'Sucursal 1' },
+      { id: 2, nombre: 'Sucursal 2' },
+      { id: 3, nombre: 'Sucursal 3' },
+    ];
+  }
+
+  getProvincias() {
+    this.provincias = [];
+  }
+
+  getLocalidades() {
+    this.provincias = [];
+  }
+
   cerrarOrden() {
-    if (this.cliente && this.checkoutPaso1Form.valid && this.checkoutPaso2Form.valid) {
+    if (this.cliente && this.checkoutPaso1Form.valid && this.checkoutPaso2Form.valid && this.checkoutPaso3Form.valid) {
       this.checkoutPaso1Form.disable();
       this.checkoutPaso2Form.disable();
+      this.checkoutPaso3Form.disable();
       this.enviarOrdenLoading = true;
       this.carritoCompraService.enviarOrden(
         this.checkoutPaso2Form.get('observaciones').value, this.authService.getLoggedInIdUsuario(), this.cliente.id_Cliente
@@ -210,6 +246,7 @@ export class CheckoutComponent implements OnInit {
           this.avisoService.openSnackBar(err.error, '', 3500);
           this.checkoutPaso1Form.enable();
           this.checkoutPaso2Form.enable();
+          this.checkoutPaso3Form.enable();
           this.enviarOrdenLoading = false;
         }
       );

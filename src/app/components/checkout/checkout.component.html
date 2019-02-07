@@ -76,10 +76,66 @@
             </mat-hint>
           </mat-form-field>
         </div>
-        <br>
+        <div class="botonera">
+          <button mat-raised-button color="primary" matStepperNext [disabled]="!cliente">Continuar</button>
+        </div>
+      </form>
+    </mat-step>
+    <mat-step [stepControl]="checkoutPaso3Form" *ngIf="checkoutPaso3Form">
+      <form [formGroup]="checkoutPaso3Form">
+        <ng-template matStepLabel>
+          <div class="cliente-label">
+            Envío: <strong></strong>
+          </div>
+        </ng-template>
+        <div fxLayout="column">
+          <mat-radio-button color="primary" [checked]="opcionEnvio == 1" (click)="opcionEnvio = 1" >Retiro en sucursal</mat-radio-button>
+          <mat-form-field fxFlex class="opcion-envio-container">
+            <mat-select placeholder="Sucursal" formControlName="sucursal_id">
+              <mat-option *ngFor="let s of sucursales" [value]="s.id">
+                {{ s.nombre }}
+              </mat-option>
+            </mat-select>
+            <!--<mat-error *ngIf="registracionForm.get('categoriaIVA').hasError('required')">
+              Requerido
+            </mat-error>-->
+          </mat-form-field>
+        </div>
+        <div fxLayout="column" formGroupName="direccion">
+          <mat-radio-button color="primary" [checked]="opcionEnvio == 2" (click)="opcionEnvio = 2" >Envio a Domicilio</mat-radio-button>
+          <div class="opcion-envio-container">
+            <div  fxLayout="column" fxLayout.gt-sm="row" fxLayoutGap="0.7rem">
+              <mat-form-field fxFlex>
+                <mat-select placeholder="Provincia" formControlName="provincia_id">
+                  <mat-option *ngFor="let p of provincias" [value]="p.id">
+                    {{ p.nombre }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field fxFlex>
+                <mat-select placeholder="Localidad" formControlName="localidad_id">
+                  <mat-option *ngFor="let l of localidades" [value]="l.id">
+                    {{ l.nombre }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div  fxLayout="column" fxLayout.gt-sm="row" fxLayoutGap="0.7rem">
+              <mat-form-field fxFlex>
+                <input matInput type="text" formControlName="calle" placeholder="Calle">
+              </mat-form-field>
+              <mat-form-field fxFlex>
+                <input matInput type="text" formControlName="numero" placeholder="Número">
+              </mat-form-field>
+              <mat-form-field fxFlex>
+                <input matInput type="text" formControlName="piso" placeholder="Piso">
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
         <div *ngIf="!enviarOrdenLoading" class="acciones">
           <button mat-raised-button color="primary" (click)="cerrarOrden()"
-                  [disabled]="loadingTotales || !cliente || checkoutPaso1Form.invalid || checkoutPaso2Form.invalid">
+                  [disabled]="loadingTotales || !cliente || checkoutPaso1Form.invalid || checkoutPaso2Form.invalid || checkoutPaso3Form.valid">
             Confirmar
           </button>
         </div>
