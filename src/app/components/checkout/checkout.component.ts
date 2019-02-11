@@ -12,6 +12,7 @@ import {Subject} from 'rxjs';
 import {debounceTime, finalize} from 'rxjs/operators';
 import {MatStepper} from '@angular/material';
 import {Router} from '@angular/router';
+import {LatLng} from '@agm/core';
 
 @Component({
   selector: 'sic-com-checkout',
@@ -34,6 +35,11 @@ export class CheckoutComponent implements OnInit {
   sucursales  = [];
   provincias  = [];
   localidades = [];
+
+  sucursalesLatLng = [
+    { lat: -27.4668594, lng: -58.8375417, dir: '9 de Julio 1021' },
+    { lat: -27.493300, lng: -58.782717, dir: 'Napoles 5600' },
+  ];
 
   checkoutPaso1Form: FormGroup = null;
   checkoutPaso2Form: FormGroup = null;

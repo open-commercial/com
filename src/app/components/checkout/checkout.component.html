@@ -91,6 +91,9 @@
         <div fxLayout="column">
           <mat-radio-button color="primary" [checked]="opcionEnvio == 1" (click)="opcionEnvio = 1" >Retiro en sucursal</mat-radio-button>
           <mat-form-field fxFlex class="opcion-envio-container">
+            <agm-map [latitude]="-27.4910086" [longitude]="-58.8310667" [zoom]="12">
+              <agm-marker *ngFor="let ll of sucursalesLatLng" [latitude]="ll.lat" [longitude]="ll.lng"></agm-marker>
+            </agm-map>
             <mat-select placeholder="Sucursal" formControlName="sucursal_id">
               <mat-option *ngFor="let s of sucursales" [value]="s.id">
                 {{ s.nombre }}

@@ -46,6 +46,7 @@ import {registerLocaleData} from '@angular/common';
 import localeEs from '@angular/common/locales/es';
 import localeEsExtra from '@angular/common/locales/extra/es-AR';
 import {SlideshowService} from '../services/slideshow.service';
+import {AgmCoreModule} from '@agm/core';
 
 registerLocaleData(localeEs, 'es-AR', localeEsExtra);
 
@@ -81,7 +82,10 @@ registerLocaleData(localeEs, 'es-AR', localeEsExtra);
     BrowserAnimationsModule,
     sicComRouting,
     NgxCaptchaModule,
-    SlideshowModule
+    SlideshowModule,
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyDtQL3NzHDVOMTLNsGM5y9pbuYynFIagb4'
+    })
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
