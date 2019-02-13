@@ -47,6 +47,7 @@ import localeEs from '@angular/common/locales/es';
 import localeEsExtra from '@angular/common/locales/extra/es-AR';
 import {SlideshowService} from '../services/slideshow.service';
 import {AgmCoreModule} from '@agm/core';
+import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
 
 registerLocaleData(localeEs, 'es-AR', localeEsExtra);
 
@@ -85,7 +86,8 @@ registerLocaleData(localeEs, 'es-AR', localeEsExtra);
     SlideshowModule,
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyDtQL3NzHDVOMTLNsGM5y9pbuYynFIagb4'
-    })
+    }),
+    AgmSnazzyInfoWindowModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},

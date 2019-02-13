@@ -24,7 +24,8 @@
             "styles": [
               "src/_colors.scss",
               "src/theme.scss",
-              "src/styles.scss"
+              "src/styles.scss",
+              "node_modules/snazzy-info-window/dist/snazzy-info-window.css"
             ],
             "scripts": []
           },

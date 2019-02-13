@@ -88,25 +88,31 @@
             Envío: <strong></strong>
           </div>
         </ng-template>
-        <div fxLayout="column">
-          <mat-radio-button color="primary" [checked]="opcionEnvio == 1" (click)="opcionEnvio = 1" >Retiro en sucursal</mat-radio-button>
-          <mat-form-field fxFlex class="opcion-envio-container">
-            <agm-map [latitude]="-27.4910086" [longitude]="-58.8310667" [zoom]="12">
-              <agm-marker *ngFor="let ll of sucursalesLatLng" [latitude]="ll.lat" [longitude]="ll.lng"></agm-marker>
-            </agm-map>
-            <mat-select placeholder="Sucursal" formControlName="sucursal_id">
-              <mat-option *ngFor="let s of sucursales" [value]="s.id">
-                {{ s.nombre }}
-              </mat-option>
-            </mat-select>
-            <!--<mat-error *ngIf="registracionForm.get('categoriaIVA').hasError('required')">
-              Requerido
-            </mat-error>-->
-          </mat-form-field>
+        <mat-radio-group [value]="opcionEnvio" fxLayout="row" fxLayoutGap="1rem" (change)="opcionEnvio = $event.value" >
+          <mat-radio-button color="primary" value="1">Retiro en sucursal</mat-radio-button>
+          <mat-radio-button color="primary" value="2">Envio a Domicilio</mat-radio-button>
+        </mat-radio-group>
+        <br>
+        <div fxLayout="column" *ngIf="opcionEnvio === '1'">
+          <agm-map [latitude]="-27.4910086" [longitude]="-58.8310667" [zoom]="12">
+            <agm-marker *ngFor="let ll of sucursalesLatLng" [latitude]="ll.lat"
+                        [longitude]="ll.lng"
+                        [title]="ll.title"
+                        [iconUrl]="ll.iconUrl"
+                        (markerClick)="markerSucursalesClick($event)">
+              <agm-snazzy-info-window [maxWidth]="200" [closeWhenOthersOpen]="true">
+                <ng-template>
+                  {{ ll.title }}
+                </ng-template>
+              </agm-snazzy-info-window>
+            </agm-marker>
+          </agm-map>
         </div>
-        <div fxLayout="column" formGroupName="direccion">
-          <mat-radio-button color="primary" [checked]="opcionEnvio == 2" (click)="opcionEnvio = 2" >Envio a Domicilio</mat-radio-button>
-          <div class="opcion-envio-container">
+        <div fxLayout="column" formGroupName="direccion"  *ngIf="opcionEnvio === '2'">
+          <agm-map [latitude]="-27.4910086" [longitude]="-58.8310667" [zoom]="12" (mapReady)="mapDireccionReady()">
+
+          </agm-map>
+          <!--<div class="opcion-envio-container">
             <div  fxLayout="column" fxLayout.gt-sm="row" fxLayoutGap="0.7rem">
               <mat-form-field fxFlex>
                 <mat-select placeholder="Provincia" formControlName="provincia_id">
@@ -134,7 +140,7 @@
                 <input matInput type="text" formControlName="piso" placeholder="Piso">
               </mat-form-field>
             </div>
-          </div>
+          </div>-->
         </div>
         <div *ngIf="!enviarOrdenLoading" class="acciones">
           <button mat-raised-button color="primary" (click)="cerrarOrden()"

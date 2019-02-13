@@ -31,14 +31,24 @@ export class CheckoutComponent implements OnInit {
   clientesPagina = 0;
   clientesTotalPaginas = 0;
 
-  opcionEnvio = 1;
+  opcionEnvio = '1';
   sucursales  = [];
   provincias  = [];
   localidades = [];
 
   sucursalesLatLng = [
-    { lat: -27.4668594, lng: -58.8375417, dir: '9 de Julio 1021' },
-    { lat: -27.493300, lng: -58.782717, dir: 'Napoles 5600' },
+    {
+      lat: -27.4668594,
+      lng: -58.8375417,
+      title: 'Local Comercial (9 de Julio 1021)',
+      iconUrl: 'https://res.cloudinary.com/hf0vu1bg2/image/upload/c_scale,w_30/v1545358178/assets/shopping_cart.png'
+    },
+    {
+      lat: -27.493300,
+      lng: -58.782717,
+      title: 'Depósito Principal (Napoles 5600)',
+      iconUrl: 'https://res.cloudinary.com/hf0vu1bg2/image/upload/c_scale,w_30/v1545358178/assets/shopping_cart.png'
+    },
   ];
 
   checkoutPaso1Form: FormGroup = null;
@@ -232,6 +242,36 @@ export class CheckoutComponent implements OnInit {
 
   getLocalidades() {
     this.provincias = [];
+  }
+
+  markerSucursalesClick($event) {
+    console.log($event.id());
+  }
+
+  mapDireccionReady() {
+    // console.log(this.getAddress(-27.4663264, -58.8377155));
+  }
+
+  getAddress( lat: number, lng: number ) {
+    console.log('Finding Address');
+    if (navigator.geolocation) {
+      const geocoder = new (<any>window).google.maps.Geocoder();
+      const latlng = new (<any>window).google.maps.LatLng(lat, lng);
+      const request = { latLng: latlng };
+      geocoder.geocode(request, (results, status) => {
+        if (status === (<any>window).google.maps.GeocoderStatus.OK) {
+          const result = results[0];
+          const rsltAdrComponent = result.address_components;
+          const resultLength = rsltAdrComponent.length;
+          if (result != null) {
+            // this.address = rsltAdrComponent[resultLength - 8].short_name;
+            console.log(results);
+          } else {
+            alert('No address available!');
+          }
+        }
+      });
+    }
   }
 
   cerrarOrden() {
