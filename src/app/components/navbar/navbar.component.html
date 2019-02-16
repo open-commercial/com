@@ -1,9 +1,9 @@
 <div class="sic-com-navbar">
-  <mat-toolbar>
+  <mat-toolbar class="tb" ngClass.gt-sm="desktop">
     <div fxHide.lt-md fxFlex.gt-sm="5"></div>
     <div fxFlex="20" fxLayoutAlign="center center">
       <img src="https://res.cloudinary.com/hf0vu1bg2/image/upload/v1549499313/assets/nuevo-logo-200x200px.png"
-           class="sic-com-logo-chico" routerLink="/">
+           class="sic-com-logo-chico" ngClass.gt-xs="tablet" ngClass.gt-sm="desktop" routerLink="/">
     </div>
     <form id="buscador-form" fxFlex fxLayoutAlign="center center" [formGroup]="busquedaForm" (ngSubmit)="submit()">
       <input class="sic-com-buscador-input" type="search" placeholder="¿Qué busca?" formControlName="criteriaControl">

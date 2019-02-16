@@ -3,6 +3,11 @@
 .sic-com-navbar {
   mat-toolbar {
     background: whitesmoke;
+    //position: relative;
+    //height: 56px;
+    &.desktop {
+      height: 100px;
+    }
   }
 
   #buscador-form {
@@ -37,6 +42,14 @@
     height: 50px;
     width: auto;
     cursor: pointer;
+    &.tablet {
+      height: 58px;
+    }
+    &.desktop {
+      //position: absolute;
+      height: 90px;
+      //top: 3px;
+    }
   }
 
   .sic-com-contador-carrito {
