@@ -48,6 +48,7 @@ import localeEsExtra from '@angular/common/locales/extra/es-AR';
 import {SlideshowService} from '../services/slideshow.service';
 import {AgmCoreModule} from '@agm/core';
 import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
+import { GooglePlaceModule } from 'ngx-google-places-autocomplete';
 
 registerLocaleData(localeEs, 'es-AR', localeEsExtra);
 
@@ -85,9 +86,11 @@ registerLocaleData(localeEs, 'es-AR', localeEsExtra);
     NgxCaptchaModule,
     SlideshowModule,
     AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyDtQL3NzHDVOMTLNsGM5y9pbuYynFIagb4'
+      apiKey: 'AIzaSyDM5L8ADh-oLkeu7tsFyBpwALN-3tfVcpQ',
+      libraries: [ 'places' ]
     }),
-    AgmSnazzyInfoWindowModule
+    AgmSnazzyInfoWindowModule,
+    GooglePlaceModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},

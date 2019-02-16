@@ -31,6 +31,7 @@
     "hammerjs": "^2.0.8",
     "ng-simple-slideshow": "^1.2.6",
     "ngx-captcha": "^6.2.1",
+    "ngx-google-places-autocomplete": "^2.0.3",
     "rxjs": "^6.3.3",
     "snazzy-info-window": "^1.1.1",
     "tslib": "^1.9.3",

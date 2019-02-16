@@ -44,42 +44,13 @@
         </div>
       </form>
     </mat-step>
-    <mat-step [stepControl]="checkoutPaso2Form" *ngIf="checkoutPaso2Form">
-      <form [formGroup]="checkoutPaso2Form">
-        <ng-template matStepLabel>Resumen</ng-template>
-        <div fxLayoutAlign="space-between center" fxLayout.lt-sm="column" *ngIf="!loadingTotales && cliente" class="resumen"
-             fxLayoutGap=".8rem">
-          <div>Cant. de Artículos: {{ cantidadArticulos| number:'1.0-2':'es-AR' }}</div>
-          <div>Subtotal: <span class="valor">$ {{ subTotal| number:'1.2-2':'es-AR' }}</span></div>
-          <div>
-            <mat-chip-list>
-              <mat-chip class="sic-com-bonificacion valor" color="primary">
-                Bonificación: {{ cliente.bonificacion | number:'1.0-2':'es-AR' }} %
-              </mat-chip>
-            </mat-chip-list>
-          </div>
-          <div>Total: <span class="valor">$ {{ total| number:'1.2-2':'es-AR' }}</span></div>
+    <mat-step>
+      <ng-template matStepLabel>
+        <div class="cliente-label">
+          Datos del Cliente
         </div>
-        <div fxLayout="row" fxLayoutAlign="center center" *ngIf="loadingTotales" class="sic-com-spinner-container">
-          <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
-        </div>
-        <br>
-        <div>
-          <mat-form-field fxFlexFill class="observaciones">
-            <textarea matInput placeholder="Observaciones" formControlName="observaciones" rows="3"
-                      #observacionesTextArea></textarea>
-            <mat-error *ngIf="checkoutPaso2Form.get('observaciones').hasError('maxlength')">
-              Máximo 200 caracteres
-            </mat-error>
-            <mat-hint align="end">
-              {{checkoutPaso2Form.get('observaciones').value.length}} / {{ observacionesMaxLength}}
-            </mat-hint>
-          </mat-form-field>
-        </div>
-        <div class="botonera">
-          <button mat-raised-button color="primary" matStepperNext [disabled]="!cliente">Continuar</button>
-        </div>
-      </form>
+      </ng-template>
+      <sic-com-cliente></sic-com-cliente>
     </mat-step>
     <mat-step [stepControl]="checkoutPaso3Form" *ngIf="checkoutPaso3Form">
       <form [formGroup]="checkoutPaso3Form">
@@ -109,6 +80,7 @@
           </agm-map>
         </div>
         <div fxLayout="column" formGroupName="direccion"  *ngIf="opcionEnvio === '2'">
+          <input ngx-google-places-autocomplete *ngIf="isEnvioADomicilioMapLoaded" (onAddressChange)="handleAddressChange($event)" [options]="acOptions" />
           <agm-map [latitude]="-27.4910086" [longitude]="-58.8310667" [zoom]="12" (mapReady)="mapDireccionReady()">
 
           </agm-map>
@@ -142,6 +114,43 @@
             </div>
           </div>-->
         </div>
+        <div class="botonera">
+          <button mat-raised-button color="primary" matStepperNext [disabled]="!cliente">Continuar</button>
+        </div>
+      </form>
+    </mat-step>
+    <mat-step [stepControl]="checkoutPaso2Form" *ngIf="checkoutPaso2Form">
+      <form [formGroup]="checkoutPaso2Form">
+        <ng-template matStepLabel>Resumen</ng-template>
+        <div fxLayoutAlign="space-between center" fxLayout.lt-sm="column" *ngIf="!loadingTotales && cliente" class="resumen"
+             fxLayoutGap=".8rem">
+          <div>Cant. de Artículos: {{ cantidadArticulos| number:'1.0-2':'es-AR' }}</div>
+          <div>Subtotal: <span class="valor">$ {{ subTotal| number:'1.2-2':'es-AR' }}</span></div>
+          <div>
+            <mat-chip-list>
+              <mat-chip class="sic-com-bonificacion valor" color="primary">
+                Bonificación: {{ cliente.bonificacion | number:'1.0-2':'es-AR' }} %
+              </mat-chip>
+            </mat-chip-list>
+          </div>
+          <div>Total: <span class="valor">$ {{ total| number:'1.2-2':'es-AR' }}</span></div>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="center center" *ngIf="loadingTotales" class="sic-com-spinner-container">
+          <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
+        </div>
+        <br>
+        <div>
+          <mat-form-field fxFlexFill class="observaciones">
+            <textarea matInput placeholder="Observaciones" formControlName="observaciones" rows="3"
+                      #observacionesTextArea></textarea>
+            <mat-error *ngIf="checkoutPaso2Form.get('observaciones').hasError('maxlength')">
+              Máximo 200 caracteres
+            </mat-error>
+            <mat-hint align="end">
+              {{checkoutPaso2Form.get('observaciones').value.length}} / {{ observacionesMaxLength}}
+            </mat-hint>
+          </mat-form-field>
+        </div>
         <div *ngIf="!enviarOrdenLoading" class="acciones">
           <button mat-raised-button color="primary" (click)="cerrarOrden()"
                   [disabled]="loadingTotales || !cliente || checkoutPaso1Form.invalid || checkoutPaso2Form.invalid || checkoutPaso3Form.valid">
@@ -153,5 +162,6 @@
         </div>
       </form>
     </mat-step>
+
   </mat-vertical-stepper>
 </div>

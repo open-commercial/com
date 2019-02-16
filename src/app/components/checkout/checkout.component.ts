@@ -13,6 +13,7 @@ import {debounceTime, finalize} from 'rxjs/operators';
 import {MatStepper} from '@angular/material';
 import {Router} from '@angular/router';
 import {LatLng} from '@agm/core';
+import { GooglePlaceDirective } from 'ngx-google-places-autocomplete/ngx-google-places-autocomplete.directive';
 
 @Component({
   selector: 'sic-com-checkout',
@@ -35,6 +36,12 @@ export class CheckoutComponent implements OnInit {
   sucursales  = [];
   provincias  = [];
   localidades = [];
+
+  isEnvioADomicilioMapLoaded = false;
+  acOptions = {
+    types: ['(regions)'],
+    componentRestrictions: { country: 'AR' }
+  };
 
   sucursalesLatLng = [
     {
@@ -249,7 +256,12 @@ export class CheckoutComponent implements OnInit {
   }
 
   mapDireccionReady() {
-    // console.log(this.getAddress(-27.4663264, -58.8377155));
+    this.isEnvioADomicilioMapLoaded = true;
+    // console.log(this.getAddress(-28.2527451, -58.6343486));
+  }
+
+  handleAddressChange($event) {
+    console.log($event);
   }
 
   getAddress( lat: number, lng: number ) {
