@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnChanges, SimpleChange, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AuthService} from '../../services/auth.service';
 import {Cliente} from '../../models/cliente';
@@ -17,8 +17,9 @@ import {LocalidadesService} from '../../services/localidades.service';
   templateUrl: 'cliente.component.html',
   styleUrls: ['cliente.component.scss']
 })
-export class ClienteComponent implements OnInit {
+export class ClienteComponent implements OnInit, OnChanges {
 
+  @Input() c: Cliente;
   inEdition = false;
   clienteForm: FormGroup;
   cliente: Cliente = null;
@@ -117,6 +118,12 @@ export class ClienteComponent implements OnInit {
       },
       error => this.isLoading = false
     );
+  }
+
+  ngOnChanges(changes: {[propKey: string]: SimpleChange}) {
+    if (changes.c.currentValue) {
+      this.cliente = changes.c.currentValue;
+    }
   }
 
   toggleEdit() {

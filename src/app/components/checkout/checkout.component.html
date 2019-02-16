@@ -50,7 +50,10 @@
           Datos del Cliente
         </div>
       </ng-template>
-      <sic-com-cliente></sic-com-cliente>
+      <sic-com-cliente [c]="cliente"></sic-com-cliente>
+      <div class="botonera">
+        <button mat-raised-button color="primary" matStepperNext [disabled]="!cliente">Continuar</button>
+      </div>
     </mat-step>
     <mat-step [stepControl]="checkoutPaso3Form" *ngIf="checkoutPaso3Form">
       <form [formGroup]="checkoutPaso3Form">
@@ -65,7 +68,7 @@
         </mat-radio-group>
         <br>
         <div fxLayout="column" *ngIf="opcionEnvio === '1'">
-          <agm-map [latitude]="-27.4910086" [longitude]="-58.8310667" [zoom]="12">
+          <agm-map [latitude]="-27.4910086" [longitude]="-58.8310667" [zoom]="12" [streetViewControl]="false">
             <agm-marker *ngFor="let ll of sucursalesLatLng" [latitude]="ll.lat"
                         [longitude]="ll.lng"
                         [title]="ll.title"
@@ -80,10 +83,10 @@
           </agm-map>
         </div>
         <div fxLayout="column" formGroupName="direccion"  *ngIf="opcionEnvio === '2'">
-          <input ngx-google-places-autocomplete *ngIf="isEnvioADomicilioMapLoaded" (onAddressChange)="handleAddressChange($event)" [options]="acOptions" />
+          <!--<input ngx-google-places-autocomplete *ngIf="isEnvioADomicilioMapLoaded" (onAddressChange)="handleAddressChange($event)" [options]="acOptions" />
           <agm-map [latitude]="-27.4910086" [longitude]="-58.8310667" [zoom]="12" (mapReady)="mapDireccionReady()">
 
-          </agm-map>
+          </agm-map>-->
           <!--<div class="opcion-envio-container">
             <div  fxLayout="column" fxLayout.gt-sm="row" fxLayoutGap="0.7rem">
               <mat-form-field fxFlex>
