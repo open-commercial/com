@@ -42,13 +42,14 @@ import {RegistracionService} from '../services/registracion.service';
 import {CheckoutComponent} from '../components/checkout/checkout.component';
 import {SlideshowModule} from 'ng-simple-slideshow';
 import {HomeComponent} from '../components/home/home.component';
+import {UbicacionFromComponent} from '../components/ubicacion-form/ubicacion-from.component';
 import {registerLocaleData} from '@angular/common';
 import localeEs from '@angular/common/locales/es';
 import localeEsExtra from '@angular/common/locales/extra/es-AR';
 import {SlideshowService} from '../services/slideshow.service';
 import {AgmCoreModule} from '@agm/core';
-import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
-import { GooglePlaceModule } from 'ngx-google-places-autocomplete';
+import {AgmSnazzyInfoWindowModule} from '@agm/snazzy-info-window';
+import {GooglePlaceModule} from 'ngx-google-places-autocomplete';
 
 registerLocaleData(localeEs, 'es-AR', localeEsExtra);
 
@@ -72,7 +73,8 @@ registerLocaleData(localeEs, 'es-AR', localeEsExtra);
     PasswordRecoveryComponent,
     CuentaCorrienteComponent,
     CheckoutComponent,
-    HomeComponent
+    HomeComponent,
+    UbicacionFromComponent
   ],
   imports: [
     HttpClientModule,

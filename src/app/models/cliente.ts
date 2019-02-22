@@ -1,4 +1,5 @@
 import {CategoriaIVA} from './categoria-iva';
+import {Ubicacion} from './ubicacion';
 
 export interface Cliente {
   id_Cliente: number;
@@ -6,17 +7,12 @@ export interface Cliente {
   nombreFiscal: string;
   nombreFantasia: string;
   bonificacion: number;
-  direccion: string;
   categoriaIVA: CategoriaIVA;
   idFiscal: string;
   email: string;
   telefono: string;
-  idLocalidad: number;
-  nombreLocalidad: string;
-  idProvincia: number;
-  nombreProvincia: string;
-  idPais: number;
-  nombrePais: string;
+  ubicacionFacturacion: Ubicacion;
+  ubicacionEnvio: Ubicacion;
   contacto: string;
   fechaAlta: Date;
   idEmpresa: number;

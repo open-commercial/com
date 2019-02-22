@@ -12,8 +12,8 @@ import {Subject} from 'rxjs';
 import {debounceTime, finalize} from 'rxjs/operators';
 import {MatStepper} from '@angular/material';
 import {Router} from '@angular/router';
-import {LatLng} from '@agm/core';
-import { GooglePlaceDirective } from 'ngx-google-places-autocomplete/ngx-google-places-autocomplete.directive';
+import {LatLng, MapsAPILoader} from '@agm/core';
+// import { GooglePlaceDirective } from 'ngx-google-places-autocomplete/ngx-google-places-autocomplete.directive';
 
 @Component({
   selector: 'sic-com-checkout',
@@ -24,6 +24,11 @@ export class CheckoutComponent implements OnInit {
   isLoading = false;
   usuario: Usuario = null;
 
+  checkoutPaso1Form: FormGroup = null;
+  checkoutPaso2Form: FormGroup = null;
+  checkoutPaso3Form: FormGroup = null;
+
+  // cliente
   clienteDeUsuario: Cliente = null;
   cliente: Cliente = null;
   opcionCliente = '1';
@@ -31,38 +36,14 @@ export class CheckoutComponent implements OnInit {
   clientes = [];
   clientesPagina = 0;
   clientesTotalPaginas = 0;
-
-  opcionEnvio = '1';
-  sucursales  = [];
-  provincias  = [];
-  localidades = [];
-
-  isEnvioADomicilioMapLoaded = false;
-  acOptions = {
-    types: ['(regions)'],
-    componentRestrictions: { country: 'AR' }
-  };
-
-  sucursalesLatLng = [
-    {
-      lat: -27.4668594,
-      lng: -58.8375417,
-      title: 'Local Comercial (9 de Julio 1021)',
-      iconUrl: 'https://res.cloudinary.com/hf0vu1bg2/image/upload/c_scale,w_30/v1545358178/assets/shopping_cart.png'
-    },
-    {
-      lat: -27.493300,
-      lng: -58.782717,
-      title: 'Depósito Principal (Napoles 5600)',
-      iconUrl: 'https://res.cloudinary.com/hf0vu1bg2/image/upload/c_scale,w_30/v1545358178/assets/shopping_cart.png'
-    },
-  ];
-
-  checkoutPaso1Form: FormGroup = null;
-  checkoutPaso2Form: FormGroup = null;
-  checkoutPaso3Form: FormGroup = null;
-
   busqKeyUp = new Subject<string>();
+
+  // envio
+  opcionEnvio = '1';
+
+  enviarADireccionFacturacion = true;
+
+  sucursales = [];
 
   cantidadArticulos: Number = 0;
   subTotal: Number = 0;
@@ -78,7 +59,6 @@ export class CheckoutComponent implements OnInit {
 
   @ViewChild('observacionesTextArea')
   observacionesTextAreaRef: ElementRef;
-
   observacionesMaxLength = 200;
 
   constructor(private productosService: ProductosService,
@@ -145,11 +125,12 @@ export class CheckoutComponent implements OnInit {
     this.checkoutPaso3Form = this.fb.group({
       sucursal_id: null,
       direccion: this.fb.group({
-        provincia_id: null,
-        localidad_id: null,
+        localidad: '',
+        provincia: '',
         calle: '',
         numero: '',
-        piso: ''
+        piso: '',
+        descripcion: ''
       })
     });
 
@@ -236,28 +217,24 @@ export class CheckoutComponent implements OnInit {
   }
 
   getSucursales() {
-    this.sucursales = [
-      { id: 1, nombre: 'Sucursal 1' },
-      { id: 2, nombre: 'Sucursal 2' },
-      { id: 3, nombre: 'Sucursal 3' },
+    this.sucursales =  [
+      {
+        lat: -27.4668594,
+        lng: -58.8375417,
+        title: 'Local Comercial (9 de Julio 1021)',
+        iconUrl: 'https://res.cloudinary.com/hf0vu1bg2/image/upload/c_scale,w_30/v1545358178/assets/shopping_cart.png'
+      },
+      {
+        lat: -27.493300,
+        lng: -58.782717,
+        title: 'Depósito Principal (Napoles 5600)',
+        iconUrl: 'https://res.cloudinary.com/hf0vu1bg2/image/upload/c_scale,w_30/v1545358178/assets/shopping_cart.png'
+      },
     ];
-  }
-
-  getProvincias() {
-    this.provincias = [];
-  }
-
-  getLocalidades() {
-    this.provincias = [];
   }
 
   markerSucursalesClick($event) {
     console.log($event.id());
-  }
-
-  mapDireccionReady() {
-    this.isEnvioADomicilioMapLoaded = true;
-    // console.log(this.getAddress(-28.2527451, -58.6343486));
   }
 
   handleAddressChange($event) {

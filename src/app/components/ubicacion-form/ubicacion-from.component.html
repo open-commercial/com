@@ -1,0 +1,28 @@
+<div [formGroup]="ubicacionForm">
+    <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.7rem" *ngIf="isMapApiLoaded">
+      <mat-form-field fxFlex>
+        <input matInput placeholder="Localidad" ngx-google-places-autocomplete (onAddressChange)="handleAddressChange($event)" [options]="acOptions" />
+      </mat-form-field>
+      <mat-form-field fxFlex>
+        <input matInput placeholder="Codigo Postal" formControlName="codigoPostal">
+      </mat-form-field>
+    </div>
+    <input type="hidden" formControlName="nombreLocalidad">
+    <input type="hidden" formControlName="nombreProvincia">
+    <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.7rem">
+      <mat-form-field fxFlex>
+        <input matInput placeholder="Calle" formControlName="calle">
+      </mat-form-field>
+      <mat-form-field fxFlex>
+        <input matInput placeholder="Número" formControlName="numero">
+      </mat-form-field>
+    </div>
+    <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.7rem">
+      <mat-form-field fxFlex>
+        <input matInput placeholder="Piso" formControlName="piso">
+      </mat-form-field>
+      <mat-form-field fxFlex>
+        <input matInput placeholder="Dpto." formControlName="departamento">
+      </mat-form-field>
+    </div>
+</div>

@@ -69,7 +69,7 @@
         <br>
         <div fxLayout="column" *ngIf="opcionEnvio === '1'">
           <agm-map [latitude]="-27.4910086" [longitude]="-58.8310667" [zoom]="12" [streetViewControl]="false">
-            <agm-marker *ngFor="let ll of sucursalesLatLng" [latitude]="ll.lat"
+            <agm-marker *ngFor="let ll of sucursales" [latitude]="ll.lat"
                         [longitude]="ll.lng"
                         [title]="ll.title"
                         [iconUrl]="ll.iconUrl"
@@ -82,27 +82,16 @@
             </agm-marker>
           </agm-map>
         </div>
-        <div fxLayout="column" formGroupName="direccion"  *ngIf="opcionEnvio === '2'">
-          <!--<input ngx-google-places-autocomplete *ngIf="isEnvioADomicilioMapLoaded" (onAddressChange)="handleAddressChange($event)" [options]="acOptions" />
-          <agm-map [latitude]="-27.4910086" [longitude]="-58.8310667" [zoom]="12" (mapReady)="mapDireccionReady()">
-
-          </agm-map>-->
-          <!--<div class="opcion-envio-container">
-            <div  fxLayout="column" fxLayout.gt-sm="row" fxLayoutGap="0.7rem">
+        <div fxLayout="column" formGroupName="direccion" *ngIf="opcionEnvio === '2'">
+          <mat-checkbox color="primary" [checked]="enviarADireccionFacturacion" (change)="enviarADireccionFacturacion = !enviarADireccionFacturacion">
+            Enviar a la dirección de facturación
+          </mat-checkbox>
+          <div class="opcion-envio-container" *ngIf="!enviarADireccionFacturacion">
+<!--            <div  fxLayout="column" fxLayout.gt-sm="row" fxLayoutGap="0.7rem">
               <mat-form-field fxFlex>
-                <mat-select placeholder="Provincia" formControlName="provincia_id">
-                  <mat-option *ngFor="let p of provincias" [value]="p.id">
-                    {{ p.nombre }}
-                  </mat-option>
-                </mat-select>
+                <input matInput placeholder="Localidad" formControlName="localidad" ngx-google-places-autocomplete *ngIf="isMapApiLoaded" (onAddressChange)="handleAddressChange($event)" [options]="acOptions" />
               </mat-form-field>
-              <mat-form-field fxFlex>
-                <mat-select placeholder="Localidad" formControlName="localidad_id">
-                  <mat-option *ngFor="let l of localidades" [value]="l.id">
-                    {{ l.nombre }}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
+              &lt;!&ndash;{{ checkoutPaso3Form.get('direccion').value | json }}&ndash;&gt;
             </div>
             <div  fxLayout="column" fxLayout.gt-sm="row" fxLayoutGap="0.7rem">
               <mat-form-field fxFlex>
@@ -115,7 +104,12 @@
                 <input matInput type="text" formControlName="piso" placeholder="Piso">
               </mat-form-field>
             </div>
-          </div>-->
+            <div  fxLayout="column" fxLayout.gt-sm="row" fxLayoutGap="0.7rem">
+              <mat-form-field fxFlex>
+                <input matInput type="text" formControlName="descripcion" placeholder="Descripcion">
+              </mat-form-field>
+            </div>-->
+          </div>
         </div>
         <div class="botonera">
           <button mat-raised-button color="primary" matStepperNext [disabled]="!cliente">Continuar</button>
