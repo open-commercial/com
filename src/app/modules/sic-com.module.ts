@@ -88,7 +88,7 @@ registerLocaleData(localeEs, 'es-AR', localeEsExtra);
     NgxCaptchaModule,
     SlideshowModule,
     AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyDM5L8ADh-oLkeu7tsFyBpwALN-3tfVcpQ',
+      apiKey: 'AIzaSyCB4ieC2bSFgfWwHcpdFGegDH7vb8K5YG8',
       libraries: [ 'places' ]
     }),
     AgmSnazzyInfoWindowModule,

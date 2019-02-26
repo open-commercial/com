@@ -59,8 +59,8 @@ export class ClienteComponent implements OnInit, OnChanges {
 
   formInitialized(name: string, form: FormGroup, value: Ubicacion) {
     this.clienteForm.setControl(name, form);
-    console.log(value);
-    this.clienteForm.get(name).setValue({
+    const u = this.clienteForm.get(name);
+    u.setValue({
       nombreLocalidad: value && value.nombreLocalidad ? value.nombreLocalidad : '',
       nombreProvincia: value && value.nombreProvincia ? value.nombreProvincia : '',
       codigoPostal: value && value.codigoPostal ? value.codigoPostal : '',
@@ -68,7 +68,10 @@ export class ClienteComponent implements OnInit, OnChanges {
       numero: value && value.numero ? value.numero : '',
       piso: value && value.piso ? value.piso : '',
       departamento: value && value.departamento ? value.departamento : '',
+      latitud: value && value.latitud ? value.latitud : '',
+      longitud: value && value.longitud ? value.longitud : '',
     });
+    u.get('nombreLocalidad').setValidators([Validators.required]);
   }
 
   ngOnInit() {
@@ -134,6 +137,30 @@ export class ClienteComponent implements OnInit, OnChanges {
       categoriaIVA: this.clienteForm.get('categoriaIVA').value,
       idCredencial: this.authService.getLoggedInIdUsuario(),
       idViajante: this.cliente ? this.cliente.idViajante : null,
+      // ubicacionFacturacion: this.clienteForm.get('ubicacionFacturacion').value,
+      ubicacionFacturacion: this.getUbicacionFormValues('ubicacionFacturacion'),
+      // ubicacionEnvio: this.clienteForm.get('ubicacionEnvio').value,
+      ubicacionEnvio: this.getUbicacionFormValues('ubicacionEnvio'),
+    };
+  }
+
+  getUbicacionFormValues(nombre: string): any {
+    const values = this.clienteForm.get(nombre).value;
+    return {
+      // idUbicacion: null,
+      // descripcion: '',
+      latitud: null,
+      longitud: null,
+      calle: values.calle,
+      numero: values.numero,
+      piso: values.piso,
+      departamento: values.departamento,
+      // eliminada: null,
+      // idLocalidad: null,
+      nombreLocalidad: values.nombreLocalidad,
+      codigoPostal: values.codigoPostal,
+      // idProvincia: null,
+      nombreProvincia: values.nombreProvincia,
     };
   }
 
@@ -141,7 +168,6 @@ export class ClienteComponent implements OnInit, OnChanges {
     if (!this.cliente) {
       this.clienteForm.reset();
     } else {
-
       this.clienteForm.reset({
         idFiscal: this.cliente.idFiscal,
         nombreFiscal: this.cliente.nombreFiscal,
@@ -151,21 +177,6 @@ export class ClienteComponent implements OnInit, OnChanges {
         contacto: this.cliente.contacto,
         email: this.cliente.email,
       });
-
-      console.log(this.clienteForm.contains('ubicacionFacturacion'));
-      const uf = this.clienteForm.get('ubicacionFacturacion');
-      //console.log(uf);
-      /*if (uf) {
-        uf.setValue({
-          nombreLocalidad: this.cliente.ubicacionFacturacion.nombreLocalidad,
-          nombreProvincia: this.cliente.ubicacionFacturacion.nombreProvincia,
-          codigoPostal: this.cliente.ubicacionFacturacion.codigoPostal,
-          calle: this.cliente.ubicacionFacturacion.calle,
-          numero: this.cliente.ubicacionFacturacion.numero,
-          piso: this.cliente.ubicacionFacturacion.piso,
-          departamento: this.cliente.ubicacionFacturacion.departamento,
-        });
-      }*/
     }
   }
 }

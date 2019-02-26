@@ -13,7 +13,6 @@ import {debounceTime, finalize} from 'rxjs/operators';
 import {MatStepper} from '@angular/material';
 import {Router} from '@angular/router';
 import {LatLng, MapsAPILoader} from '@agm/core';
-// import { GooglePlaceDirective } from 'ngx-google-places-autocomplete/ngx-google-places-autocomplete.directive';
 
 @Component({
   selector: 'sic-com-checkout',

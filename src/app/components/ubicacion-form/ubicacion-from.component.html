@@ -3,13 +3,27 @@
       <mat-form-field fxFlex>
         <input matInput placeholder="Localidad" ngx-google-places-autocomplete (onAddressChange)="handleAddressChange($event)" [options]="acOptions" />
       </mat-form-field>
-      <mat-form-field fxFlex>
-        <input matInput placeholder="Codigo Postal" formControlName="codigoPostal">
-      </mat-form-field>
+      <!--<mat-form-field fxFlex>
+        <input matInput placeholder="Localidad" formControlName="nombreLocalidad" />
+        <mat-error *ngIf="ubicacionForm.get('nombreLocalidad').hasError('required')">
+          Requerido
+        </mat-error>
+      </mat-form-field>-->
+    </div>
+    <div fxLayout="row" fxLayoutGap="0.7rem" *ngIf="isMapApiLoaded">
+      <span *ngIf="ubicacionForm.get('nombreLocalidad').value">
+        Localidad: {{ ubicacionForm.get('nombreLocalidad').value }} ({{ ubicacionForm.get('nombreProvincia').value }})
+      </span>
+      <span *ngIf="!ubicacionForm.get('nombreLocalidad').value">
+        <em>Debe seleccionar una localidad</em>
+      </span>
     </div>
     <input type="hidden" formControlName="nombreLocalidad">
     <input type="hidden" formControlName="nombreProvincia">
     <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.7rem">
+      <mat-form-field fxFlex>
+        <input matInput placeholder="Codigo Postal" formControlName="codigoPostal">
+      </mat-form-field>
       <mat-form-field fxFlex>
         <input matInput placeholder="Calle" formControlName="calle">
       </mat-form-field>
@@ -25,4 +39,7 @@
         <input matInput placeholder="Dpto." formControlName="departamento">
       </mat-form-field>
     </div>
+    <input type="hidden" formControlName="latitud">
+    <input type="hidden" formControlName="longitud">
+  <button (click)="ubicacionForm.get('nombreLocalidad').setValue('')">hhh</button>
 </div>
