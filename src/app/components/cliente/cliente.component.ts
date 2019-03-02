@@ -1,17 +1,13 @@
-import {Component, Input, OnChanges, SimpleChange, OnInit} from '@angular/core';
+import {Component, Input, OnChanges, SimpleChange, OnInit, EventEmitter, Output} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AuthService} from '../../services/auth.service';
 import {Cliente} from '../../models/cliente';
 import {ClientesService} from '../../services/clientes.service';
 import {AvisoService} from '../../services/aviso.service';
 import {CategoriaIVA} from '../../models/categoria-iva';
-import {Pais} from '../../models/pais';
-import {PaisesService} from '../../services/paises.service';
-import {Provincia} from '../../models/provincia';
-import {ProvinciasService} from '../../services/provincias.service';
-import {Localidad} from '../../models/localidad';
-import {LocalidadesService} from '../../services/localidades.service';
 import {Ubicacion} from '../../models/ubicacion';
+import {UbicacionService} from '../../services/ubicacion.service';
+import {forkJoin} from 'rxjs';
 
 @Component({
   selector: 'sic-com-cliente',
@@ -21,6 +17,8 @@ import {Ubicacion} from '../../models/ubicacion';
 export class ClienteComponent implements OnInit, OnChanges {
 
   @Input() c: Cliente;
+  @Output() updated = new EventEmitter<Cliente>();
+
   inEdition = false;
   clienteForm: FormGroup;
   cliente: Cliente = null;
@@ -35,7 +33,8 @@ export class ClienteComponent implements OnInit, OnChanges {
   constructor(private authService: AuthService,
               private fb: FormBuilder,
               private avisoService: AvisoService,
-              private clientesService: ClientesService) {
+              private clientesService: ClientesService,
+              private ubicacionService: UbicacionService) {
   }
 
   createForm() {
@@ -55,23 +54,6 @@ export class ClienteComponent implements OnInit, OnChanges {
         }
       }
     );
-  }
-
-  formInitialized(name: string, form: FormGroup, value: Ubicacion) {
-    this.clienteForm.setControl(name, form);
-    const u = this.clienteForm.get(name);
-    u.setValue({
-      nombreLocalidad: value && value.nombreLocalidad ? value.nombreLocalidad : '',
-      nombreProvincia: value && value.nombreProvincia ? value.nombreProvincia : '',
-      codigoPostal: value && value.codigoPostal ? value.codigoPostal : '',
-      calle: value && value.calle ? value.calle : '',
-      numero: value && value.numero ? value.numero : '',
-      piso: value && value.piso ? value.piso : '',
-      departamento: value && value.departamento ? value.departamento : '',
-      latitud: value && value.latitud ? value.latitud : '',
-      longitud: value && value.longitud ? value.longitud : '',
-    });
-    u.get('nombreLocalidad').setValidators([Validators.required]);
   }
 
   ngOnInit() {
@@ -103,19 +85,26 @@ export class ClienteComponent implements OnInit, OnChanges {
   submit() {
     if (this.clienteForm.valid) {
       const cliente = this.getFormValues();
+      const ubicacionFacturacion = this.getUbicacionFormValues('ubicacionFacturacion', this.cliente.ubicacionFacturacion);
+
+      const clienteObservable   = this.clientesService.saveCliente(cliente);
+      const ubicacionObservable = this.cliente.ubicacionFacturacion && this.cliente.ubicacionFacturacion.idUbicacion
+        ? this.ubicacionService.updateUbicacion(ubicacionFacturacion)
+        : this.ubicacionService.createUbicacionFacturacionCliente(cliente, ubicacionFacturacion);
+
       this.isLoading = true;
-      this.clientesService.saveCliente(cliente).subscribe(
-        data => {
+
+      forkJoin(clienteObservable, ubicacionObservable)
+        .subscribe((data) => {
           this.clientesService.getClienteDelUsuario(this.authService.getLoggedInIdUsuario())
-            .subscribe(
-              (newcliente: Cliente) => {
-                if (cliente) {
-                  this.cliente = newcliente;
-                  this.inEdition = false;
-                }
-                this.isLoading = false;
+            .subscribe((newcliente: Cliente) => {
+              if (cliente) {
+                this.cliente = newcliente;
+                this.updated.emit(this.cliente);
+                this.inEdition = false;
               }
-            );
+              this.isLoading = false;
+            });
         },
         err => {
           this.isLoading = false;
@@ -137,29 +126,43 @@ export class ClienteComponent implements OnInit, OnChanges {
       categoriaIVA: this.clienteForm.get('categoriaIVA').value,
       idCredencial: this.authService.getLoggedInIdUsuario(),
       idViajante: this.cliente ? this.cliente.idViajante : null,
-      // ubicacionFacturacion: this.clienteForm.get('ubicacionFacturacion').value,
-      ubicacionFacturacion: this.getUbicacionFormValues('ubicacionFacturacion'),
-      // ubicacionEnvio: this.clienteForm.get('ubicacionEnvio').value,
-      ubicacionEnvio: this.getUbicacionFormValues('ubicacionEnvio'),
     };
   }
 
-  getUbicacionFormValues(nombre: string): any {
+
+  formInitialized(name: string, form: FormGroup, value: Ubicacion) {
+    this.clienteForm.setControl(name, form);
+    const u = this.clienteForm.get(name);
+
+    u.setValue({
+      buscador: '',
+      nombreLocalidad: value && value.nombreLocalidad ? value.nombreLocalidad : '',
+      nombreProvincia: value && value.nombreProvincia ? value.nombreProvincia : '',
+      codigoPostal: value && value.codigoPostal ? value.codigoPostal : '',
+      calle: value && value.calle ? value.calle : '',
+      numero: value && value.numero ? value.numero : '',
+      piso: value && value.piso ? value.piso : '',
+      departamento: value && value.departamento ? value.departamento : '',
+    });
+  }
+
+
+  getUbicacionFormValues(nombre: string, uOriginal: Ubicacion = null): any {
     const values = this.clienteForm.get(nombre).value;
     return {
-      // idUbicacion: null,
-      // descripcion: '',
-      latitud: null,
-      longitud: null,
+      idUbicacion: uOriginal.idUbicacion,
+      descripcion: uOriginal.descripcion,
+      latitud: uOriginal.latitud,
+      longitud: uOriginal.longitud,
       calle: values.calle,
       numero: values.numero,
       piso: values.piso,
       departamento: values.departamento,
-      // eliminada: null,
-      // idLocalidad: null,
+      eliminada: uOriginal.eliminada,
+      idLocalidad: null,
       nombreLocalidad: values.nombreLocalidad,
       codigoPostal: values.codigoPostal,
-      // idProvincia: null,
+      idProvincia: null,
       nombreProvincia: values.nombreProvincia,
     };
   }

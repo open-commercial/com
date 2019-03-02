@@ -9,10 +9,13 @@ import {Usuario} from '../../models/usuario';
 import {Cliente} from '../../models/cliente';
 import {Rol} from '../../models/rol';
 import {Subject} from 'rxjs';
-import {debounceTime, finalize} from 'rxjs/operators';
+import {debounceTime, filter, finalize, mergeAll} from 'rxjs/operators';
 import {MatStepper} from '@angular/material';
 import {Router} from '@angular/router';
 import {LatLng, MapsAPILoader} from '@agm/core';
+import {Ubicacion} from '../../models/ubicacion';
+import {EmpresasService} from '../../services/empresas.service';
+import {Empresa} from '../../models/empresa';
 
 @Component({
   selector: 'sic-com-checkout',
@@ -42,7 +45,7 @@ export class CheckoutComponent implements OnInit {
 
   enviarADireccionFacturacion = true;
 
-  sucursales = [];
+  sucursales: Empresa[] = [];
 
   cantidadArticulos: Number = 0;
   subTotal: Number = 0;
@@ -65,6 +68,7 @@ export class CheckoutComponent implements OnInit {
               private avisoService: AvisoService,
               private authService: AuthService,
               private clientesService: ClientesService,
+              private empresasService: EmpresasService,
               private fb: FormBuilder,
               private router: Router) {
   }
@@ -122,15 +126,20 @@ export class CheckoutComponent implements OnInit {
       'id_Cliente': [this.cliente.id_Cliente, Validators.required]
     });
     this.checkoutPaso3Form = this.fb.group({
-      sucursal_id: null,
-      direccion: this.fb.group({
-        localidad: '',
-        provincia: '',
-        calle: '',
-        numero: '',
-        piso: '',
-        descripcion: ''
-      })
+      sucursal: null,
+      opcionEnvio: ['', Validators.required],
+    });
+    this.checkoutPaso3Form.get('opcionEnvio').valueChanges.subscribe(value => {
+      if (value === '1') {
+        this.checkoutPaso3Form.removeControl('ubicacionEnvio');
+      }
+      if (value === '2') {
+        this.checkoutPaso3Form.get('sucursal').setValue(null);
+        this.checkoutPaso3Form.removeControl('ubicacionEnvio');
+      }
+      if (value === '3') {
+        this.checkoutPaso3Form.get('sucursal').setValue(null);
+      }
     });
 
     if (!this.puedeVenderAOtroCliente()) {
@@ -139,6 +148,22 @@ export class CheckoutComponent implements OnInit {
         this.stepper._steps.first.editable = false;
       }, 300);
     }
+  }
+
+  formInitialized(name: string, form: FormGroup, value: Ubicacion) {
+    this.checkoutPaso3Form.setControl(name, form);
+    const u = this.checkoutPaso3Form.get(name);
+
+    u.setValue({
+      buscador: '',
+      nombreLocalidad: value && value.nombreLocalidad ? value.nombreLocalidad : '',
+      nombreProvincia: value && value.nombreProvincia ? value.nombreProvincia : '',
+      codigoPostal: value && value.codigoPostal ? value.codigoPostal : '',
+      calle: value && value.calle ? value.calle : '',
+      numero: value && value.numero ? value.numero : '',
+      piso: value && value.piso ? value.piso : '',
+      departamento: value && value.departamento ? value.departamento : '',
+    });
   }
 
   puedeVenderAOtroCliente() {
@@ -216,50 +241,23 @@ export class CheckoutComponent implements OnInit {
   }
 
   getSucursales() {
-    this.sucursales =  [
-      {
-        lat: -27.4668594,
-        lng: -58.8375417,
-        title: 'Local Comercial (9 de Julio 1021)',
-        iconUrl: 'https://res.cloudinary.com/hf0vu1bg2/image/upload/c_scale,w_30/v1545358178/assets/shopping_cart.png'
-      },
-      {
-        lat: -27.493300,
-        lng: -58.782717,
-        title: 'Depósito Principal (Napoles 5600)',
-        iconUrl: 'https://res.cloudinary.com/hf0vu1bg2/image/upload/c_scale,w_30/v1545358178/assets/shopping_cart.png'
-      },
-    ];
-  }
-
-  markerSucursalesClick($event) {
-    console.log($event.id());
-  }
-
-  handleAddressChange($event) {
-    console.log($event);
-  }
-
-  getAddress( lat: number, lng: number ) {
-    console.log('Finding Address');
-    if (navigator.geolocation) {
-      const geocoder = new (<any>window).google.maps.Geocoder();
-      const latlng = new (<any>window).google.maps.LatLng(lat, lng);
-      const request = { latLng: latlng };
-      geocoder.geocode(request, (results, status) => {
-        if (status === (<any>window).google.maps.GeocoderStatus.OK) {
-          const result = results[0];
-          const rsltAdrComponent = result.address_components;
-          const resultLength = rsltAdrComponent.length;
-          if (result != null) {
-            // this.address = rsltAdrComponent[resultLength - 8].short_name;
-            console.log(results);
-          } else {
-            alert('No address available!');
-          }
-        }
+    this.empresasService.getEmpresas()
+      .pipe(
+        // Este filter es por las dudas no venga la lat y/o la lng
+        filter((data: Empresa[], i) => !!(data[i].ubicacion.latitud && data[i].ubicacion.longitud))
+      )
+      .subscribe((data: Empresa[]) => {
+        this.sucursales = data;
       });
-    }
+  }
+
+  markerSucursalesClick(s: Empresa) {
+    this.checkoutPaso3Form.get('sucursal').setValue(s);
+  }
+
+  getUbicacionStr(): string {
+    const s = this.checkoutPaso3Form.get('sucursal').value;
+    return s ? `${s.nombre} (${s.ubicacion.descripcion})` : '(no seleccionada)';
   }
 
   cerrarOrden() {

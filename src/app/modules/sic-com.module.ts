@@ -47,6 +47,7 @@ import {registerLocaleData} from '@angular/common';
 import localeEs from '@angular/common/locales/es';
 import localeEsExtra from '@angular/common/locales/extra/es-AR';
 import {SlideshowService} from '../services/slideshow.service';
+import {UbicacionService} from '../services/ubicacion.service';
 import {AgmCoreModule} from '@agm/core';
 import {AgmSnazzyInfoWindowModule} from '@agm/snazzy-info-window';
 import {GooglePlaceModule} from 'ngx-google-places-autocomplete';
@@ -111,6 +112,7 @@ registerLocaleData(localeEs, 'es-AR', localeEsExtra);
     CuentasCorrienteService,
     RegistracionService,
     SlideshowService,
+    UbicacionService,
   ],
   entryComponents: [
     ConfirmationDialogComponent,

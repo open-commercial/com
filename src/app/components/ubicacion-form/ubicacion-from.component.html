@@ -1,34 +1,33 @@
 <div [formGroup]="ubicacionForm">
-    <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.7rem" *ngIf="isMapApiLoaded">
+    <div fxLayout="column" fxLayoutGap="0.7rem" *ngIf="isMapApiLoaded">
       <mat-form-field fxFlex>
-        <input matInput placeholder="Localidad" ngx-google-places-autocomplete (onAddressChange)="handleAddressChange($event)" [options]="acOptions" />
-      </mat-form-field>
-      <!--<mat-form-field fxFlex>
-        <input matInput placeholder="Localidad" formControlName="nombreLocalidad" />
-        <mat-error *ngIf="ubicacionForm.get('nombreLocalidad').hasError('required')">
-          Requerido
+        <input matInput placeholder="Localidad: {{ubicacionForm.get('nombreLocalidad').value ? getLocalidadFullName() : '(No selecionada)' }}"
+               formControlName="buscador" ngx-google-places-autocomplete (onAddressChange)="handleAddressChange($event)" [options]="acOptions" />
+        <mat-error *ngIf="ubicacionForm.get('buscador').hasError('invalid')">
+          Inválido
         </mat-error>
-      </mat-form-field>-->
-    </div>
-    <div fxLayout="row" fxLayoutGap="0.7rem" *ngIf="isMapApiLoaded">
-      <span *ngIf="ubicacionForm.get('nombreLocalidad').value">
-        Localidad: {{ ubicacionForm.get('nombreLocalidad').value }} ({{ ubicacionForm.get('nombreProvincia').value }})
-      </span>
-      <span *ngIf="!ubicacionForm.get('nombreLocalidad').value">
-        <em>Debe seleccionar una localidad</em>
-      </span>
+      </mat-form-field>
     </div>
     <input type="hidden" formControlName="nombreLocalidad">
     <input type="hidden" formControlName="nombreProvincia">
     <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.7rem">
       <mat-form-field fxFlex>
         <input matInput placeholder="Codigo Postal" formControlName="codigoPostal">
+        <mat-error *ngIf="ubicacionForm.get('codigoPostal').hasError('required')">
+          Requerido
+        </mat-error>
       </mat-form-field>
       <mat-form-field fxFlex>
         <input matInput placeholder="Calle" formControlName="calle">
+        <mat-error *ngIf="ubicacionForm.get('calle').hasError('required')">
+          Requerido
+        </mat-error>
       </mat-form-field>
       <mat-form-field fxFlex>
         <input matInput placeholder="Número" formControlName="numero">
+        <mat-error *ngIf="ubicacionForm.get('numero').hasError('required')">
+          Requerido
+        </mat-error>
       </mat-form-field>
     </div>
     <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.7rem">
@@ -39,7 +38,4 @@
         <input matInput placeholder="Dpto." formControlName="departamento">
       </mat-form-field>
     </div>
-    <input type="hidden" formControlName="latitud">
-    <input type="hidden" formControlName="longitud">
-  <button (click)="ubicacionForm.get('nombreLocalidad').setValue('')">hhh</button>
 </div>

@@ -1,5 +1,5 @@
 import {Component, OnInit, EventEmitter, Output, Input} from '@angular/core';
-import {FormBuilder, FormGroup} from '@angular/forms';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {LatLng, MapsAPILoader} from '@agm/core';
 import {Ubicacion} from '../../models/ubicacion';
 
@@ -34,22 +34,37 @@ export class UbicacionFromComponent implements OnInit {
   createForm() {
     this.ubicacionForm = this.fb.group({
       // nombreLocalidad: [{value: '', disabled: true}],
-      nombreLocalidad: '',
+      buscador: '',
+      nombreLocalidad: ['', Validators.required],
       nombreProvincia: '',
-      codigoPostal: '',
-      calle: '',
-      numero: '',
+      codigoPostal: ['', Validators.required],
+      calle: ['', Validators.required],
+      numero: ['', Validators.required],
       piso: '',
       departamento: '',
-      latitud: '',
-      longitud: '',
     });
+
     this.formReady.emit(this.ubicacionForm);
+
+    this.ubicacionForm.get('nombreLocalidad').valueChanges
+      .subscribe((value) => {
+        this.ubicacionForm.get('buscador').setValue(this.getLocalidadFullName());
+        this.ubicacionForm.get('buscador').markAsTouched();
+      });
+    this.ubicacionForm.get('nombreLocalidad').statusChanges
+      .subscribe((value) => {
+        if (value === 'INVALID') {
+          this.ubicacionForm.get('buscador').setErrors({'invalid': true});
+        } else {
+          this.ubicacionForm.get('buscador').setErrors(null);
+        }
+        this.ubicacionForm.get('buscador').markAsTouched();
+      });
+
+    this.ubicacionForm.get('buscador').setValue(this.getLocalidadFullName());
   }
 
   handleAddressChange($event) {
-    console.log($event);
-
     const lastNombreLocalidad = this.ubicacionForm.get('nombreLocalidad').value;
     const nombreLocalidad = $event.name;
     if (lastNombreLocalidad !== nombreLocalidad) {
@@ -61,9 +76,12 @@ export class UbicacionFromComponent implements OnInit {
     if (nombreProvincia !== lastNombreProvincia) {
       this.ubicacionForm.get('nombreProvincia').setValue(nombreProvincia);
     }
+  }
 
-    this.ubicacionForm.get('latitud').setValue($event.geometry.location.lat());
-    this.ubicacionForm.get('longitud').setValue($event.geometry.location.lng());
+  getLocalidadFullName() {
+    return this.ubicacionForm.get('nombreLocalidad').value
+      ? (this.ubicacionForm.get('nombreLocalidad').value + ', ' + this.ubicacionForm.get('nombreProvincia').value + ', Argentina')
+      : '';
   }
 
   getNombreProvincia(data) {

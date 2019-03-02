@@ -47,19 +47,14 @@
         </mat-form-field>
       </div>
       <fieldset>
-        <legend>&nbsp;UBICACIÓN DE FACTURACIÓN&nbsp;</legend>
+        <legend>&nbsp;DIRECCION DE FACTURACIÓN&nbsp;</legend>
         <sic-com-ubicacion-form (formReady)="formInitialized('ubicacionFacturacion', $event, cliente ? cliente.ubicacionFacturacion: null)"></sic-com-ubicacion-form>
-      </fieldset>
-      <fieldset>
-        <legend>&nbsp;UBICACIÓN DE ENVÍO&nbsp;</legend>
-        <sic-com-ubicacion-form (formReady)="formInitialized('ubicacionEnvio', $event, cliente ? cliente.ubicacionEnvio : null)"></sic-com-ubicacion-form>
       </fieldset>
       <br>
       <mat-action-row fxLayoutGap="0.7rem">
         <button mat-raised-button type="submit" color="primary">Guardar</button>
         <button *ngIf="cliente" mat-raised-button type="button" (click)="toggleEdit()">Cancelar</button>
       </mat-action-row>
-      {{ clienteForm.value | json }}
     </form>
     <div *ngIf="cliente && !inEdition" class="info">
       <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.7rem">
