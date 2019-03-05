@@ -33,7 +33,6 @@ export class UbicacionFromComponent implements OnInit {
 
   createForm() {
     this.ubicacionForm = this.fb.group({
-      // nombreLocalidad: [{value: '', disabled: true}],
       buscador: '',
       nombreLocalidad: ['', Validators.required],
       nombreProvincia: '',
@@ -65,16 +64,18 @@ export class UbicacionFromComponent implements OnInit {
   }
 
   handleAddressChange($event) {
-    const lastNombreLocalidad = this.ubicacionForm.get('nombreLocalidad').value;
-    const nombreLocalidad = $event.name;
-    if (lastNombreLocalidad !== nombreLocalidad) {
-      this.ubicacionForm.get('nombreLocalidad').setValue(nombreLocalidad);
-    }
+    console.log($event);
 
     const lastNombreProvincia = this.ubicacionForm.get('nombreProvincia').value;
     const nombreProvincia = this.getNombreProvincia($event);
     if (nombreProvincia !== lastNombreProvincia) {
       this.ubicacionForm.get('nombreProvincia').setValue(nombreProvincia);
+    }
+
+    const lastNombreLocalidad = this.ubicacionForm.get('nombreLocalidad').value;
+    const nombreLocalidad = $event.name;
+    if (lastNombreLocalidad !== nombreLocalidad) {
+      this.ubicacionForm.get('nombreLocalidad').setValue(nombreLocalidad);
     }
   }
 

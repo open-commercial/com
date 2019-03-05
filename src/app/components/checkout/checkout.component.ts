@@ -8,14 +8,15 @@ import {ClientesService} from '../../services/clientes.service';
 import {Usuario} from '../../models/usuario';
 import {Cliente} from '../../models/cliente';
 import {Rol} from '../../models/rol';
-import {Subject} from 'rxjs';
-import {debounceTime, filter, finalize, mergeAll} from 'rxjs/operators';
+import {forkJoin, Subject} from 'rxjs';
+import {debounceTime, filter, finalize} from 'rxjs/operators';
 import {MatStepper} from '@angular/material';
 import {Router} from '@angular/router';
-import {LatLng, MapsAPILoader} from '@agm/core';
 import {Ubicacion} from '../../models/ubicacion';
 import {EmpresasService} from '../../services/empresas.service';
 import {Empresa} from '../../models/empresa';
+import {sucursalValidator} from '../../validators/checkout-opcion-envio.validator';
+import {UbicacionService} from '../../services/ubicacion.service';
 
 @Component({
   selector: 'sic-com-checkout',
@@ -27,6 +28,7 @@ export class CheckoutComponent implements OnInit {
   usuario: Usuario = null;
 
   checkoutPaso1Form: FormGroup = null;
+  checkoutPaso1_5Form: FormGroup = null;
   checkoutPaso2Form: FormGroup = null;
   checkoutPaso3Form: FormGroup = null;
 
@@ -39,11 +41,6 @@ export class CheckoutComponent implements OnInit {
   clientesPagina = 0;
   clientesTotalPaginas = 0;
   busqKeyUp = new Subject<string>();
-
-  // envio
-  opcionEnvio = '1';
-
-  enviarADireccionFacturacion = true;
 
   sucursales: Empresa[] = [];
 
@@ -69,6 +66,7 @@ export class CheckoutComponent implements OnInit {
               private authService: AuthService,
               private clientesService: ClientesService,
               private empresasService: EmpresasService,
+              private ubicacionService: UbicacionService,
               private fb: FormBuilder,
               private router: Router) {
   }
@@ -97,6 +95,7 @@ export class CheckoutComponent implements OnInit {
                 this.cliente = cliente;
                 this.createForms();
                 this.getTotalesInfo();
+                this.checkoutPaso1_5Form.get('clienteUbicacionFacturacion').setValue(this.cliente.ubicacionFacturacion);
               }
               this.isLoading = false;
             },
@@ -119,16 +118,25 @@ export class CheckoutComponent implements OnInit {
   }
 
   createForms() {
-    this.checkoutPaso2Form = this.fb.group({
-      'observaciones': ['', Validators.maxLength(this.observacionesMaxLength)]
-    });
     this.checkoutPaso1Form = this.fb.group({
       'id_Cliente': [this.cliente.id_Cliente, Validators.required]
     });
+
+    this.checkoutPaso1_5Form = this.fb.group({
+      'clienteUbicacionFacturacion': [ false, Validators.required ]
+    });
+
+    this.checkoutPaso2Form = this.fb.group({
+      'observaciones': ['', Validators.maxLength(this.observacionesMaxLength)]
+    });
+
     this.checkoutPaso3Form = this.fb.group({
       sucursal: null,
       opcionEnvio: ['', Validators.required],
     });
+
+    this.checkoutPaso3Form.setValidators(sucursalValidator);
+
     this.checkoutPaso3Form.get('opcionEnvio').valueChanges.subscribe(value => {
       if (value === '1') {
         this.checkoutPaso3Form.removeControl('ubicacionEnvio');
@@ -226,6 +234,11 @@ export class CheckoutComponent implements OnInit {
     this.avisoService.openSnackBar(mensaje, '', 3500);
   }
 
+  clienteUpdated($event: Cliente) {
+    this.cliente = $event;
+    this.checkoutPaso1_5Form.get('clienteUbicacionFacturacion').setValue($event.ubicacionFacturacion);
+  }
+
   getTotalesInfo() {
     if (this.cliente) {
       this.carritoCompraService.getCarritoCompra(this.cliente.id_Cliente)
@@ -261,28 +274,75 @@ export class CheckoutComponent implements OnInit {
   }
 
   cerrarOrden() {
-    if (this.cliente && this.checkoutPaso1Form.valid && this.checkoutPaso2Form.valid && this.checkoutPaso3Form.valid) {
+    if (
+      this.cliente && this.checkoutPaso1Form.valid && this.checkoutPaso1_5Form.valid &&
+      this.checkoutPaso2Form.valid && this.checkoutPaso3Form.valid
+    ) {
+
+      const dataEnvio = this.checkoutPaso3Form.value;
+      const usarUbicacionDeFacturacion = dataEnvio.opcionEnvio === '2';
+      let uEnvio = null;
+
+      if (dataEnvio.opcionEnvio === '1') {
+        uEnvio = dataEnvio.sucursal.ubicacion;
+        if (this.cliente.ubicacionEnvio && this.cliente.ubicacionEnvio.idUbicacion) {
+          uEnvio.idUbicacion = this.cliente.ubicacionEnvio.idUbicacion;
+        } else {
+          uEnvio.idUbicacion = null;
+        }
+      }
+
+      if (dataEnvio.opcionEnvio === '3') {
+        uEnvio = dataEnvio.ubicacionEnvio;
+        delete uEnvio.buscador;
+
+        if (this.cliente.ubicacionEnvio && this.cliente.ubicacionEnvio.idUbicacion) {
+          uEnvio.idUbicacion = this.cliente.ubicacionEnvio.idUbicacion;
+        } else {
+          uEnvio.idUbicacion = null;
+        }
+      }
+
       this.checkoutPaso1Form.disable();
       this.checkoutPaso2Form.disable();
       this.checkoutPaso3Form.disable();
       this.enviarOrdenLoading = true;
-      this.carritoCompraService.enviarOrden(
-        this.checkoutPaso2Form.get('observaciones').value, this.authService.getLoggedInIdUsuario(), this.cliente.id_Cliente
-      ).subscribe(
-        data => {
-          const mensaje = 'El pedido Nro ' + data['nroPedido'] + ' fué generado correctamente';
-          this.avisoService.openSnackBar(mensaje, '', 3500);
-          this.router.navigateByUrl('/');
-        },
-        err => {
-          this.avisoService.openSnackBar(err.error, '', 3500);
-          this.checkoutPaso1Form.enable();
-          this.checkoutPaso2Form.enable();
-          this.checkoutPaso3Form.enable();
-          this.enviarOrdenLoading = false;
-        }
+
+      const cerrarOrdenObservable = this.carritoCompraService.enviarOrden(
+        usarUbicacionDeFacturacion, this.checkoutPaso2Form.get('observaciones').value,
+        this.authService.getLoggedInIdUsuario(), this.cliente.id_Cliente
       );
+
+      if (uEnvio) {
+        const ubicacionObservable = uEnvio.idUbicacion
+          ? this.ubicacionService.updateUbicacion(uEnvio)
+          : this.ubicacionService.createUbicacionEnvioCliente(this.cliente, uEnvio);
+
+        forkJoin(cerrarOrdenObservable, ubicacionObservable).subscribe(
+          data => this.cerrarOrdenNext(data[0]),
+          err => this.cerrarOrdenError(err)
+        );
+      } else {
+        cerrarOrdenObservable.subscribe(
+          data => this.cerrarOrdenNext(data),
+          err => this.cerrarOrdenError(err)
+        );
+      }
     }
+  }
+
+  cerrarOrdenNext(data) {
+    const mensaje = 'El pedido Nro ' + data['nroPedido'] + ' fué generado correctamente';
+    this.avisoService.openSnackBar(mensaje, '', 3500);
+    this.router.navigateByUrl('/');
+  }
+
+  cerrarOrdenError(err) {
+    this.avisoService.openSnackBar(err.error, '', 3500);
+    this.checkoutPaso1Form.enable();
+    this.checkoutPaso2Form.enable();
+    this.checkoutPaso3Form.enable();
+    this.enviarOrdenLoading = false;
   }
 
   changeStep($event) {

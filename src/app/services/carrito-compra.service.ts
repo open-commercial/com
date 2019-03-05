@@ -53,8 +53,10 @@ export class CarritoCompraService {
     return this.http.delete(uriDelete);
   }
 
-  enviarOrden(observaciones: string, idUsuario, idCliente) {
-    const uriPost = `${this.uri}?idEmpresa=${environment.idEmpresa}&idUsuario=${idUsuario}&idCliente=${idCliente}`;
+  enviarOrden(usarUbicacionDeFacturacion: boolean, observaciones: string, idUsuario, idCliente) {
+    const uriPost = `${this.uri}?idEmpresa=${environment.idEmpresa}&idUsuario=${idUsuario}&idCliente=${idCliente}`
+      + `&usarUbicacionDeFacturacion=${usarUbicacionDeFacturacion}`;
+
     return this.http.post(uriPost, observaciones);
   }
 }

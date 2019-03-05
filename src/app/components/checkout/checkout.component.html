@@ -44,16 +44,21 @@
         </div>
       </form>
     </mat-step>
-    <mat-step>
-      <ng-template matStepLabel>
-        <div class="cliente-label">
-          Datos del Cliente
+    <mat-step  [stepControl]="checkoutPaso1_5Form" *ngIf="checkoutPaso1_5Form">
+      <form [formGroup]="checkoutPaso1_5Form">
+        <ng-template matStepLabel>
+          <div class="cliente-label">
+            Datos del Cliente
+          </div>
+        </ng-template>
+        <div *ngIf="!checkoutPaso1_5Form.get('clienteUbicacionFacturacion').value" class="ubicacion-error">
+          EL CLIENTE NO POSEE DIRECCIÓN DE FACTURACION. Puede agregar esta dirección haciendo click en botón "Modificar".
         </div>
-      </ng-template>
-      <sic-com-cliente [c]="cliente" (updated)="cliente = $event"></sic-com-cliente>
-      <div class="botonera">
-        <button mat-raised-button color="primary" matStepperNext [disabled]="!cliente">Continuar</button>
-      </div>
+        <sic-com-cliente [c]="cliente" (updated)="clienteUpdated($event)"></sic-com-cliente>
+        <div class="botonera">
+          <button mat-raised-button color="primary" matStepperNext [disabled]="!cliente">Continuar</button>
+        </div>
+      </form>
     </mat-step>
     <mat-step [stepControl]="checkoutPaso3Form" *ngIf="checkoutPaso3Form">
       <form [formGroup]="checkoutPaso3Form">
@@ -70,6 +75,9 @@
         <br>
         <div *ngIf="checkoutPaso3Form.get('opcionEnvio').value === '1'">
           <strong>Sucursal: </strong> {{ getUbicacionStr() }}
+          <div *ngIf="checkoutPaso3Form.errors?.requiredSucursal" style="color: #f9a825; font-size: 75%;">
+            Requerido
+          </div>
           <br><br>
           <agm-map [latitude]="-27.4910086" [longitude]="-58.8310667" [zoom]="12" [streetViewControl]="false">
             <agm-marker *ngFor="let s of sucursales" [latitude]="s.ubicacion.latitud"

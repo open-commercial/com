@@ -61,7 +61,6 @@ export class ClienteComponent implements OnInit, OnChanges {
     this.isLoading = true;
     this.clientesService.getClienteDelUsuario(this.authService.getLoggedInIdUsuario()).subscribe(
       (cliente: Cliente) => {
-        console.log(cliente);
         if (cliente) {
           this.cliente = cliente;
         }
@@ -150,15 +149,15 @@ export class ClienteComponent implements OnInit, OnChanges {
   getUbicacionFormValues(nombre: string, uOriginal: Ubicacion = null): any {
     const values = this.clienteForm.get(nombre).value;
     return {
-      idUbicacion: uOriginal.idUbicacion,
-      descripcion: uOriginal.descripcion,
-      latitud: uOriginal.latitud,
-      longitud: uOriginal.longitud,
+      idUbicacion: uOriginal ? uOriginal.idUbicacion : null,
+      descripcion: uOriginal ? uOriginal.descripcion : '',
+      latitud: uOriginal ? uOriginal.latitud : null,
+      longitud: uOriginal ? uOriginal.longitud: null,
       calle: values.calle,
       numero: values.numero,
       piso: values.piso,
       departamento: values.departamento,
-      eliminada: uOriginal.eliminada,
+      eliminada: uOriginal ? uOriginal.eliminada : null,
       idLocalidad: null,
       nombreLocalidad: values.nombreLocalidad,
       codigoPostal: values.codigoPostal,
