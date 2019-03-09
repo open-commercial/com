@@ -1,5 +1,5 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {FormGroup, FormBuilder, Validators} from '@angular/forms';
+import {FormGroup, FormBuilder, Validators, ValidatorFn, ValidationErrors} from '@angular/forms';
 import {ProductosService} from '../../services/productos.service';
 import {CarritoCompraService} from '../../services/carrito-compra.service';
 import {AvisoService} from '../../services/aviso.service';
@@ -15,8 +15,26 @@ import {Router} from '@angular/router';
 import {Ubicacion} from '../../models/ubicacion';
 import {EmpresasService} from '../../services/empresas.service';
 import {Empresa} from '../../models/empresa';
-import {sucursalValidator} from '../../validators/checkout-opcion-envio.validator';
 import {UbicacionService} from '../../services/ubicacion.service';
+
+enum OpcionCliente {
+  CLIENTE_USUARIO = '1',
+  OTRO_CLIENTE = '2',
+}
+
+enum OpcionEnvio {
+  RETIRO_SUCURSAL = '1',
+  DIRECCION_FACTURACION = '2',
+  DIRECCION_ENVIO = '3',
+}
+
+const sucursalValidator: ValidatorFn = (control: FormGroup): ValidationErrors | null => {
+  const opcionEnvio = control.get('opcionEnvio');
+  const sucursal = control.get('sucursal');
+
+  return opcionEnvio && sucursal && opcionEnvio.value === OpcionEnvio.RETIRO_SUCURSAL && !sucursal.value ?
+    { 'requiredSucursal': true } : null;
+};
 
 @Component({
   selector: 'sic-com-checkout',
@@ -32,16 +50,31 @@ export class CheckoutComponent implements OnInit {
   checkoutPaso2Form: FormGroup = null;
   checkoutPaso3Form: FormGroup = null;
 
-  // cliente
+  // Cliente
+  opcionesCliente = [
+    { value: OpcionCliente.CLIENTE_USUARIO, text: 'Mi Cuenta de Cliente' },
+    { value: OpcionCliente.OTRO_CLIENTE, text: 'Buscar Cliente' },
+  ];
+  opcionClienteSeleccionada = OpcionCliente.CLIENTE_USUARIO;
+  // enum OpcionCliente para el template
+  opcionCliente = OpcionCliente;
+
   clienteDeUsuario: Cliente = null;
   cliente: Cliente = null;
-  opcionCliente = '1';
   isClientesLoading = false;
   clientes = [];
   clientesPagina = 0;
   clientesTotalPaginas = 0;
   busqKeyUp = new Subject<string>();
 
+  // Envio
+  opcionesEnvio = [
+    { value: OpcionEnvio.RETIRO_SUCURSAL, text: 'Retiro en sucursal' },
+    { value: OpcionEnvio.DIRECCION_FACTURACION, text: 'Enviar a la Dir. de Facturación' },
+    { value: OpcionEnvio.DIRECCION_ENVIO, text: 'Enviar a otra Dirección' },
+  ];
+  // enum OpcionEnvio para el template
+  opcionEnvio = OpcionEnvio;
   sucursales: Empresa[] = [];
 
   cantidadArticulos: Number = 0;
@@ -138,14 +171,14 @@ export class CheckoutComponent implements OnInit {
     this.checkoutPaso3Form.setValidators(sucursalValidator);
 
     this.checkoutPaso3Form.get('opcionEnvio').valueChanges.subscribe(value => {
-      if (value === '1') {
+      if (value === OpcionEnvio.RETIRO_SUCURSAL) {
         this.checkoutPaso3Form.removeControl('ubicacionEnvio');
       }
-      if (value === '2') {
+      if (value === OpcionEnvio.DIRECCION_FACTURACION) {
         this.checkoutPaso3Form.get('sucursal').setValue(null);
         this.checkoutPaso3Form.removeControl('ubicacionEnvio');
       }
-      if (value === '3') {
+      if (value === OpcionEnvio.DIRECCION_ENVIO) {
         this.checkoutPaso3Form.get('sucursal').setValue(null);
       }
     });
@@ -189,8 +222,8 @@ export class CheckoutComponent implements OnInit {
   }
 
   opcionClienteChange($event) {
-    this.opcionCliente = $event.value;
-    if (this.opcionCliente === '2') {
+    this.opcionClienteSeleccionada = $event.value;
+    if (this.opcionClienteSeleccionada === OpcionCliente.OTRO_CLIENTE) {
       this.cliente = null;
       setTimeout(() => this.busquedaInputRef.nativeElement.focus(), 300);
     } else {
@@ -280,10 +313,10 @@ export class CheckoutComponent implements OnInit {
     ) {
 
       const dataEnvio = this.checkoutPaso3Form.value;
-      const usarUbicacionDeFacturacion = dataEnvio.opcionEnvio === '2';
+      const usarUbicacionDeFacturacion = dataEnvio.opcionEnvio === OpcionEnvio.DIRECCION_FACTURACION;
       let uEnvio = null;
 
-      if (dataEnvio.opcionEnvio === '1') {
+      if (dataEnvio.opcionEnvio === OpcionEnvio.RETIRO_SUCURSAL) {
         uEnvio = dataEnvio.sucursal.ubicacion;
         if (this.cliente.ubicacionEnvio && this.cliente.ubicacionEnvio.idUbicacion) {
           uEnvio.idUbicacion = this.cliente.ubicacionEnvio.idUbicacion;
@@ -292,7 +325,7 @@ export class CheckoutComponent implements OnInit {
         }
       }
 
-      if (dataEnvio.opcionEnvio === '3') {
+      if (dataEnvio.opcionEnvio === OpcionEnvio.DIRECCION_ENVIO) {
         uEnvio = dataEnvio.ubicacionEnvio;
         delete uEnvio.buscador;
 

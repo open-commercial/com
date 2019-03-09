@@ -95,7 +95,8 @@ export class ClienteComponent implements OnInit, OnChanges {
 
       forkJoin(clienteObservable, ubicacionObservable)
         .subscribe((data) => {
-          this.clientesService.getClienteDelUsuario(this.authService.getLoggedInIdUsuario())
+          // this.clientesService.getClienteDelUsuario(this.authService.getLoggedInIdUsuario())
+          this.clientesService.getCliente(this.cliente.id_Cliente)
             .subscribe((newcliente: Cliente) => {
               if (cliente) {
                 this.cliente = newcliente;

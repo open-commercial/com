@@ -12,13 +12,11 @@
         </ng-template>
         <input type="hidden" formControlName="id_Cliente" required>
         <div *ngIf="puedeVenderAOtroCliente()">
-          <mat-radio-group [value]="opcionCliente" fxLayout="column" fxLayoutGap="1rem"
-                           (change)="opcionClienteChange($event)">
-            <mat-radio-button color="primary" value="1">Mi Cuenta de Cliente</mat-radio-button>
-            <mat-radio-button color="primary" value="2">Buscar Cliente</mat-radio-button>
+          <mat-radio-group [value]="opcionCliente.CLIENTE_USUARIO" fxLayout="column" fxLayoutGap="1rem" (change)="opcionClienteChange($event)">
+            <mat-radio-button color="primary" *ngFor="let oc of opcionesCliente" [value]="oc.value">{{ oc.text }}</mat-radio-button>
           </mat-radio-group>
           <br>
-          <div *ngIf="opcionCliente == 2">
+          <div *ngIf="opcionClienteSeleccionada == opcionCliente.OTRO_CLIENTE">
             <mat-form-field fxFill="100">
               <input matInput placeholder="Nombre o Nro de Cliente" (keyup)="onBusqKeyUp($event)" #busquedaInput>
             </mat-form-field>
@@ -68,12 +66,12 @@
           </div>
         </ng-template>
         <mat-radio-group formControlName="opcionEnvio" fxLayout="column" fxLayoutGap="1rem">
-          <mat-radio-button color="primary" value="1">Retiro en sucursal</mat-radio-button>
-          <mat-radio-button color="primary" value="2">Enviar a la Dir. de Facturación</mat-radio-button>
-          <mat-radio-button color="primary" value="3">Enviar a otra Dirección</mat-radio-button>
+          <mat-radio-button color="primary" *ngFor="let oe of opcionesEnvio" [value]="oe.value">
+            {{ oe.text }}
+          </mat-radio-button>
         </mat-radio-group>
         <br>
-        <div *ngIf="checkoutPaso3Form.get('opcionEnvio').value === '1'">
+        <div *ngIf="checkoutPaso3Form.get('opcionEnvio').value === opcionEnvio.RETIRO_SUCURSAL">
           <strong>Sucursal: </strong> {{ getUbicacionStr() }}
           <div *ngIf="checkoutPaso3Form.errors?.requiredSucursal" style="color: #f9a825; font-size: 75%;">
             Requerido
@@ -92,14 +90,14 @@
             </agm-marker>
           </agm-map>
         </div>
-        <div *ngIf="checkoutPaso3Form.get('opcionEnvio').value === '2'">
+        <div *ngIf="checkoutPaso3Form.get('opcionEnvio').value === opcionEnvio.DIRECCION_FACTURACION">
           <strong>Direccion Facturación registrada:</strong><br>
           <em>
             {{ cliente.ubicacionFacturacion.calle }} {{ cliente.ubicacionFacturacion.numero }}
             {{ cliente.ubicacionFacturacion.nombreLocalidad }}, {{ cliente.ubicacionFacturacion.nombreProvincia }}
           </em>
         </div>
-        <div *ngIf="checkoutPaso3Form.get('opcionEnvio').value === '3'">
+        <div *ngIf="checkoutPaso3Form.get('opcionEnvio').value === opcionEnvio.DIRECCION_ENVIO">
           <fieldset>
             <legend>&nbsp;DIRECCIÓN DE ENVÍO&nbsp;</legend>
             <sic-com-ubicacion-form (formReady)="formInitialized('ubicacionEnvio', $event, cliente ? cliente.ubicacionEnvio: null)"></sic-com-ubicacion-form>
