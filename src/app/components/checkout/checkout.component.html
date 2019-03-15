@@ -36,9 +36,9 @@
               <strong>MAS RESULTADOS</strong>
             </div>
           </div>
-        </div>
-        <div class="botonera">
-          <button mat-raised-button color="primary" matStepperNext [disabled]="!cliente">Continuar</button>
+          <div class="botonera">
+            <button mat-raised-button color="primary" matStepperNext [disabled]="!cliente">Continuar</button>
+          </div>
         </div>
       </form>
     </mat-step>
@@ -49,10 +49,15 @@
             Datos del Cliente
           </div>
         </ng-template>
-        <div *ngIf="!checkoutPaso1_5Form.get('clienteUbicacionFacturacion').value" class="ubicacion-error">
-          EL CLIENTE NO POSEE DIRECCIÓN DE FACTURACION. Puede agregar esta dirección haciendo click en botón "Modificar".
+        <div fxLayout="row" fxLayoutAlign="center center" *ngIf="isUbicacionesLoading" class="sic-com-spinner-container">
+          <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
         </div>
-        <sic-com-cliente [c]="cliente" (updated)="clienteUpdated($event)"></sic-com-cliente>
+        <div *ngIf="!isUbicacionesLoading">
+          <div *ngIf="!checkoutPaso1_5Form.get('clienteUbicacionFacturacion').value" class="ubicacion-error">
+            EL CLIENTE NO POSEE DIRECCIÓN DE FACTURACION. Puede agregar esta dirección haciendo click en botón "Modificar".
+          </div>
+          <sic-com-cliente [c]="cliente" (updated)="clienteUpdated($event)"></sic-com-cliente>
+        </div>
         <div class="botonera">
           <button mat-raised-button color="primary" matStepperNext [disabled]="!cliente">Continuar</button>
         </div>
@@ -65,43 +70,48 @@
             Envío: <strong></strong>
           </div>
         </ng-template>
-        <mat-radio-group formControlName="opcionEnvio" fxLayout="column" fxLayoutGap="1rem">
-          <mat-radio-button color="primary" *ngFor="let oe of opcionesEnvio" [value]="oe.value">
-            {{ oe.text }}
-          </mat-radio-button>
-        </mat-radio-group>
-        <br>
-        <div *ngIf="checkoutPaso3Form.get('opcionEnvio').value === opcionEnvio.RETIRO_SUCURSAL">
-          <strong>Sucursal: </strong> {{ getUbicacionStr() }}
-          <div *ngIf="checkoutPaso3Form.errors?.requiredSucursal" style="color: #f9a825; font-size: 75%;">
-            Requerido
+        <div fxLayout="row" fxLayoutAlign="center center" *ngIf="isUbicacionesLoading" class="sic-com-spinner-container">
+          <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
+        </div>
+        <div *ngIf="!isUbicacionesLoading">
+          <mat-radio-group formControlName="opcionEnvio" fxLayout="column" fxLayoutGap="1rem">
+            <mat-radio-button color="primary" *ngFor="let oe of opcionesEnvio" [value]="oe.value">
+              {{ oe.text }}
+            </mat-radio-button>
+          </mat-radio-group>
+          <br>
+          <div *ngIf="checkoutPaso3Form.get('opcionEnvio').value === opcionEnvio.RETIRO_SUCURSAL">
+            <strong>Sucursal: </strong> {{ getUbicacionStr() }}
+            <div *ngIf="checkoutPaso3Form.errors?.requiredSucursal" style="color: #f9a825; font-size: 75%;">
+              Requerido
+            </div>
+            <br><br>
+            <agm-map [latitude]="-27.4910086" [longitude]="-58.8310667" [zoom]="12" [streetViewControl]="false">
+              <agm-marker *ngFor="let s of sucursales" [latitude]="s.ubicacion.latitud"
+                          [longitude]="s.ubicacion.longitud"
+                          [title]="s.nombre"
+                          (markerClick)="markerSucursalesClick(s)">
+                <agm-snazzy-info-window [maxWidth]="200" [closeWhenOthersOpen]="true">
+                  <ng-template>
+                    {{ s.nombre + '(' + s.ubicacion.descripcion + ')' }}
+                  </ng-template>
+                </agm-snazzy-info-window>
+              </agm-marker>
+            </agm-map>
           </div>
-          <br><br>
-          <agm-map [latitude]="-27.4910086" [longitude]="-58.8310667" [zoom]="12" [streetViewControl]="false">
-            <agm-marker *ngFor="let s of sucursales" [latitude]="s.ubicacion.latitud"
-                        [longitude]="s.ubicacion.longitud"
-                        [title]="s.nombre"
-                        (markerClick)="markerSucursalesClick(s)">
-              <agm-snazzy-info-window [maxWidth]="200" [closeWhenOthersOpen]="true">
-                <ng-template>
-                  {{ s.nombre + '(' + s.ubicacion.descripcion + ')' }}
-                </ng-template>
-              </agm-snazzy-info-window>
-            </agm-marker>
-          </agm-map>
-        </div>
-        <div *ngIf="checkoutPaso3Form.get('opcionEnvio').value === opcionEnvio.DIRECCION_FACTURACION">
-          <strong>Direccion Facturación registrada:</strong><br>
-          <em>
-            {{ cliente.ubicacionFacturacion.calle }} {{ cliente.ubicacionFacturacion.numero }}
-            {{ cliente.ubicacionFacturacion.nombreLocalidad }}, {{ cliente.ubicacionFacturacion.nombreProvincia }}
-          </em>
-        </div>
-        <div *ngIf="checkoutPaso3Form.get('opcionEnvio').value === opcionEnvio.DIRECCION_ENVIO">
-          <fieldset>
-            <legend>&nbsp;DIRECCIÓN DE ENVÍO&nbsp;</legend>
-            <sic-com-ubicacion-form (formReady)="formInitialized('ubicacionEnvio', $event, cliente ? cliente.ubicacionEnvio: null)"></sic-com-ubicacion-form>
-          </fieldset>
+          <div *ngIf="checkoutPaso3Form.get('opcionEnvio').value === opcionEnvio.DIRECCION_FACTURACION">
+            <strong>Direccion Facturación registrada:</strong><br>
+            <em>
+              {{ ubicacionFacturacion.calle }} {{ ubicacionFacturacion.numero }}
+              {{ ubicacionFacturacion.nombreLocalidad }}, {{ ubicacionFacturacion.nombreProvincia }}
+            </em>
+          </div>
+          <div *ngIf="checkoutPaso3Form.get('opcionEnvio').value === opcionEnvio.DIRECCION_ENVIO">
+            <fieldset>
+              <legend>&nbsp;DIRECCIÓN DE ENVÍO&nbsp;</legend>
+              <sic-com-ubicacion-form (formReady)="formInitialized('ubicacionEnvio', $event, ubicacionEnvio)"></sic-com-ubicacion-form>
+            </fieldset>
+          </div>
         </div>
         <div class="botonera">
           <button mat-raised-button color="primary" matStepperNext [disabled]="!cliente">Continuar</button>

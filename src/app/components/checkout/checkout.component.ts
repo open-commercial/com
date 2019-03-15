@@ -8,7 +8,7 @@ import {ClientesService} from '../../services/clientes.service';
 import {Usuario} from '../../models/usuario';
 import {Cliente} from '../../models/cliente';
 import {Rol} from '../../models/rol';
-import {forkJoin, Subject} from 'rxjs';
+import {forkJoin, observable, Observable, Subject} from 'rxjs';
 import {debounceTime, filter, finalize} from 'rxjs/operators';
 import {MatStepper} from '@angular/material';
 import {Router} from '@angular/router';
@@ -77,6 +77,10 @@ export class CheckoutComponent implements OnInit {
   opcionEnvio = OpcionEnvio;
   sucursales: Empresa[] = [];
 
+  ubicacionFacturacion: Ubicacion = null;
+  ubicacionEnvio: Ubicacion = null;
+  isUbicacionesLoading = false;
+
   cantidadArticulos: Number = 0;
   subTotal: Number = 0;
   total: Number = 0;
@@ -105,6 +109,7 @@ export class CheckoutComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.createForms();
     this.busqKeyUp.pipe(
       debounceTime(700),
     ).subscribe(
@@ -121,14 +126,22 @@ export class CheckoutComponent implements OnInit {
       (usuario: Usuario) => {
         if (usuario) {
           this.usuario = usuario;
-          this.clientesService.getClienteDelUsuario(this.usuario.id_Usuario).subscribe(
+          this.clientesService.getClienteDelUsuario(this.usuario.id_Usuario)
+            .pipe(
+              finalize(() => {
+                if (!this.puedeVenderAOtroCliente()) {
+                  setTimeout(() => {
+                    this.stepper.selectedIndex = 1;
+                    this.stepper._steps.first.editable = false;
+                  }, 300);
+                }
+              })
+            )
+            .subscribe(
             (cliente: Cliente) => {
               if (cliente) {
                 this.clienteDeUsuario = cliente;
-                this.cliente = cliente;
-                this.createForms();
-                this.getTotalesInfo();
-                this.checkoutPaso1_5Form.get('clienteUbicacionFacturacion').setValue(this.cliente.ubicacionFacturacion);
+                this.asignarCliente(cliente);
               }
               this.isLoading = false;
             },
@@ -150,13 +163,71 @@ export class CheckoutComponent implements OnInit {
     this.getSucursales();
   }
 
+  asignarCliente(newCliente: Cliente | null) {
+    this.cliente = newCliente;
+    this.ubicacionFacturacion = null;
+    this.ubicacionEnvio = null;
+
+    if (!this.cliente) {
+      this.ubicacionEnvio = null;
+      this.checkoutPaso1Form.get('id_Cliente').setValue(null);
+      this.checkoutPaso1_5Form.get('clienteUbicacionFacturacion').setValue(null);
+      return;
+    }
+
+    this.checkoutPaso1Form.get('id_Cliente').setValue(this.cliente.id_Cliente);
+    this.getTotalesInfo();
+
+    const uFacturacionObservable = this.cliente.idUbicacionFacturacion
+      ? this.ubicacionService.getUbicacion(this.cliente.idUbicacionFacturacion) : null;
+    const uEnvioObservable = this.cliente.idUbicacionEnvio
+      ? this.ubicacionService.getUbicacion(this.cliente.idUbicacionEnvio) : null;
+
+    this.isUbicacionesLoading = true;
+    if (uFacturacionObservable && uEnvioObservable) {
+      forkJoin(uFacturacionObservable, uEnvioObservable)
+        .pipe(finalize(() => this.isUbicacionesLoading = false))
+        .subscribe(
+          (data) => {
+            this.ubicacionFacturacion = data[0];
+            this.checkoutPaso1_5Form.get('clienteUbicacionFacturacion').setValue(this.ubicacionFacturacion);
+            this.ubicacionEnvio = data[1];
+          },
+          err => this.avisoService.openSnackBar(err.error, '', 3500)
+        );
+    } else {
+      if (uFacturacionObservable) {
+        uFacturacionObservable
+          .pipe(finalize(() => this.isUbicacionesLoading = false))
+          .subscribe(
+            (u: Ubicacion) => {
+              this.ubicacionFacturacion = u;
+              this.checkoutPaso1_5Form.get('clienteUbicacionFacturacion').setValue(this.ubicacionFacturacion);
+            },
+            err => this.avisoService.openSnackBar(err.error, '', 3500)
+          );
+      }
+      if (uEnvioObservable) {
+        this.checkoutPaso1_5Form.get('clienteUbicacionFacturacion').setValue(null);
+        uEnvioObservable
+          .pipe(finalize(() => this.isUbicacionesLoading = false))
+          .subscribe(
+            (u: Ubicacion) => {
+              this.ubicacionEnvio = u;
+            },
+            err => this.avisoService.openSnackBar(err.error, '', 3500)
+          );
+      }
+    }
+  }
+
   createForms() {
     this.checkoutPaso1Form = this.fb.group({
-      'id_Cliente': [this.cliente.id_Cliente, Validators.required]
+      'id_Cliente': [null, Validators.required]
     });
 
     this.checkoutPaso1_5Form = this.fb.group({
-      'clienteUbicacionFacturacion': [ false, Validators.required ]
+      'clienteUbicacionFacturacion': [ null, Validators.required ]
     });
 
     this.checkoutPaso2Form = this.fb.group({
@@ -182,13 +253,6 @@ export class CheckoutComponent implements OnInit {
         this.checkoutPaso3Form.get('sucursal').setValue(null);
       }
     });
-
-    if (!this.puedeVenderAOtroCliente()) {
-      setTimeout(() => {
-        this.stepper.selectedIndex = 1;
-        this.stepper._steps.first.editable = false;
-      }, 300);
-    }
   }
 
   formInitialized(name: string, form: FormGroup, value: Ubicacion) {
@@ -209,7 +273,7 @@ export class CheckoutComponent implements OnInit {
 
   puedeVenderAOtroCliente() {
     return this.usuario &&
-      !(this.usuario && this.usuario.roles.indexOf(Rol[Rol.COMPRADOR.toString()]) !== -1 && this.usuario.roles.length === 1);
+      !(this.usuario.roles.indexOf(Rol[Rol.COMPRADOR.toString()]) !== -1 && this.usuario.roles.length === 1);
   }
 
   onBusqKeyUp($event) {
@@ -224,17 +288,15 @@ export class CheckoutComponent implements OnInit {
   opcionClienteChange($event) {
     this.opcionClienteSeleccionada = $event.value;
     if (this.opcionClienteSeleccionada === OpcionCliente.OTRO_CLIENTE) {
-      this.cliente = null;
+      this.asignarCliente(null);
       setTimeout(() => this.busquedaInputRef.nativeElement.focus(), 300);
     } else {
-      this.cliente = this.clienteDeUsuario;
-      this.getTotalesInfo();
+      this.asignarCliente(this.clienteDeUsuario);
     }
     this.clearClientes();
     if (this.busquedaInputRef) {
       this.busquedaInputRef.nativeElement.value = '';
     }
-    this.checkoutPaso1Form.get('id_Cliente').setValue(this.cliente ? this.cliente.id_Cliente : null);
   }
 
   cargarClientes(search, reset: boolean) {
@@ -258,18 +320,13 @@ export class CheckoutComponent implements OnInit {
   }
 
   seleccionarCliente(cliente: Cliente) {
-    this.cliente = cliente;
-    if (this.checkoutPaso1Form) {
-      this.checkoutPaso1Form.get('id_Cliente').setValue(this.cliente.id_Cliente);
-      this.getTotalesInfo();
-    }
+    this.asignarCliente(cliente);
     const mensaje = 'Se seleccionó el cliente: ' + this.cliente.nombreFiscal;
     this.avisoService.openSnackBar(mensaje, '', 3500);
   }
 
   clienteUpdated($event: Cliente) {
-    this.cliente = $event;
-    this.checkoutPaso1_5Form.get('clienteUbicacionFacturacion').setValue($event.ubicacionFacturacion);
+    this.asignarCliente($event);
   }
 
   getTotalesInfo() {
@@ -318,8 +375,8 @@ export class CheckoutComponent implements OnInit {
 
       if (dataEnvio.opcionEnvio === OpcionEnvio.RETIRO_SUCURSAL) {
         uEnvio = dataEnvio.sucursal.ubicacion;
-        if (this.cliente.ubicacionEnvio && this.cliente.ubicacionEnvio.idUbicacion) {
-          uEnvio.idUbicacion = this.cliente.ubicacionEnvio.idUbicacion;
+        if (this.ubicacionEnvio && this.ubicacionEnvio.idUbicacion) {
+          uEnvio.idUbicacion = this.ubicacionEnvio.idUbicacion;
         } else {
           uEnvio.idUbicacion = null;
         }
@@ -329,8 +386,8 @@ export class CheckoutComponent implements OnInit {
         uEnvio = dataEnvio.ubicacionEnvio;
         delete uEnvio.buscador;
 
-        if (this.cliente.ubicacionEnvio && this.cliente.ubicacionEnvio.idUbicacion) {
-          uEnvio.idUbicacion = this.cliente.ubicacionEnvio.idUbicacion;
+        if (this.ubicacionEnvio && this.ubicacionEnvio.idUbicacion) {
+          uEnvio.idUbicacion = this.ubicacionEnvio.idUbicacion;
         } else {
           uEnvio.idUbicacion = null;
         }

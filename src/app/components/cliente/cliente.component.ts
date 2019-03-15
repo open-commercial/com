@@ -8,6 +8,7 @@ import {CategoriaIVA} from '../../models/categoria-iva';
 import {Ubicacion} from '../../models/ubicacion';
 import {UbicacionService} from '../../services/ubicacion.service';
 import {forkJoin} from 'rxjs';
+import {finalize} from 'rxjs/operators';
 
 @Component({
   selector: 'sic-com-cliente',
@@ -29,6 +30,8 @@ export class ClienteComponent implements OnInit, OnChanges {
   keys = Object.keys;
   // Asigno el enum a una variable
   categoriasIVA = CategoriaIVA;
+
+  ubicacionFacturacion: Ubicacion = null;
 
   constructor(private authService: AuthService,
               private fb: FormBuilder,
@@ -59,20 +62,35 @@ export class ClienteComponent implements OnInit, OnChanges {
   ngOnInit() {
     this.createForm();
     this.isLoading = true;
-    this.clientesService.getClienteDelUsuario(this.authService.getLoggedInIdUsuario()).subscribe(
+    /*this.clientesService.getClienteDelUsuario(this.authService.getLoggedInIdUsuario()).subscribe(
       (cliente: Cliente) => {
         if (cliente) {
-          this.cliente = cliente;
+          this.asignarCliente(cliente);
         }
-        this.isLoading = false;
       },
       error => this.isLoading = false
-    );
+    );*/
+  }
+
+  asignarCliente(newCliente: Cliente) {
+    this.cliente = newCliente;
+    // Sincronizo la ubicación de Facturación
+    if (this.cliente.idUbicacionFacturacion) {
+      if (!this.isLoading) { this.isLoading = true; }
+      this.ubicacionService.getUbicacion(this.cliente.idUbicacionFacturacion)
+        .pipe(finalize(() => this.isLoading = false))
+        .subscribe(
+          (u: Ubicacion) => this.ubicacionFacturacion = u,
+          err => this.avisoService.openSnackBar(err.error, '', 3500)
+        );
+    } else {
+      this.isLoading = false;
+    }
   }
 
   ngOnChanges(changes: {[propKey: string]: SimpleChange}) {
     if (changes.c.currentValue) {
-      this.cliente = changes.c.currentValue;
+      this.asignarCliente(changes.c.currentValue);
     }
   }
 
@@ -84,10 +102,10 @@ export class ClienteComponent implements OnInit, OnChanges {
   submit() {
     if (this.clienteForm.valid) {
       const cliente = this.getFormValues();
-      const ubicacionFacturacion = this.getUbicacionFormValues('ubicacionFacturacion', this.cliente.ubicacionFacturacion);
+      const ubicacionFacturacion = this.getUbicacionFormValues('ubicacionFacturacion', this.ubicacionFacturacion);
 
       const clienteObservable   = this.clientesService.saveCliente(cliente);
-      const ubicacionObservable = this.cliente.ubicacionFacturacion && this.cliente.ubicacionFacturacion.idUbicacion
+      const ubicacionObservable = this.ubicacionFacturacion && this.ubicacionFacturacion.idUbicacion
         ? this.ubicacionService.updateUbicacion(ubicacionFacturacion)
         : this.ubicacionService.createUbicacionFacturacionCliente(cliente, ubicacionFacturacion);
 
@@ -95,15 +113,15 @@ export class ClienteComponent implements OnInit, OnChanges {
 
       forkJoin(clienteObservable, ubicacionObservable)
         .subscribe((data) => {
-          // this.clientesService.getClienteDelUsuario(this.authService.getLoggedInIdUsuario())
           this.clientesService.getCliente(this.cliente.id_Cliente)
             .subscribe((newcliente: Cliente) => {
-              if (cliente) {
-                this.cliente = newcliente;
+              if (newcliente) {
+                this.asignarCliente(newcliente);
                 this.updated.emit(this.cliente);
                 this.inEdition = false;
+              } else {
+                this.isLoading = false;
               }
-              this.isLoading = false;
             });
         },
         err => {
@@ -153,7 +171,7 @@ export class ClienteComponent implements OnInit, OnChanges {
       idUbicacion: uOriginal ? uOriginal.idUbicacion : null,
       descripcion: uOriginal ? uOriginal.descripcion : '',
       latitud: uOriginal ? uOriginal.latitud : null,
-      longitud: uOriginal ? uOriginal.longitud: null,
+      longitud: uOriginal ? uOriginal.longitud : null,
       calle: values.calle,
       numero: values.numero,
       piso: values.piso,

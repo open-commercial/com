@@ -4,6 +4,7 @@ import {HttpClient} from '@angular/common/http';
 import {Ubicacion} from '../models/ubicacion';
 import {Observable} from 'rxjs';
 import {Cliente} from '../models/cliente';
+import get = Reflect.get;
 
 @Injectable()
 export class UbicacionService {
@@ -11,6 +12,10 @@ export class UbicacionService {
   url = environment.apiUrl + '/api/v1/ubicaciones';
 
   constructor(private http: HttpClient) {}
+
+  getUbicacion(idUbicacion: number): Observable<Ubicacion> {
+    return this.http.get<Ubicacion>(this.url + `/${idUbicacion}`);
+  }
 
   createUbicacionFacturacionCliente(c: Cliente, ubicacion: Ubicacion): Observable<Ubicacion> {
     return this.http.post<Ubicacion>(this.url + `/clientes/${c.id_Cliente}/facturacion`, ubicacion);

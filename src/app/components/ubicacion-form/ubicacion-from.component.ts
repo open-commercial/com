@@ -64,8 +64,6 @@ export class UbicacionFromComponent implements OnInit {
   }
 
   handleAddressChange($event) {
-    console.log($event);
-
     const lastNombreProvincia = this.ubicacionForm.get('nombreProvincia').value;
     const nombreProvincia = this.getNombreProvincia($event);
     if (nombreProvincia !== lastNombreProvincia) {
