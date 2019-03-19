@@ -45,7 +45,7 @@ export class CheckoutComponent implements OnInit {
   isLoading = false;
   usuario: Usuario = null;
 
-  checkoutPaso1Form: FormGroup = null;
+  opcionClienteForm: FormGroup = null;
   checkoutPaso1_5Form: FormGroup = null;
   checkoutPaso2Form: FormGroup = null;
   checkoutPaso3Form: FormGroup = null;
@@ -66,6 +66,7 @@ export class CheckoutComponent implements OnInit {
   clientesPagina = 0;
   clientesTotalPaginas = 0;
   busqKeyUp = new Subject<string>();
+  clienteEditionMode = false;
 
   // Envio
   opcionesEnvio = [
@@ -76,6 +77,7 @@ export class CheckoutComponent implements OnInit {
   // enum OpcionEnvio para el template
   opcionEnvio = OpcionEnvio;
   sucursales: Empresa[] = [];
+  sucursal: Empresa = null;
 
   ubicacionFacturacion: Ubicacion = null;
   ubicacionEnvio: Ubicacion = null;
@@ -170,12 +172,12 @@ export class CheckoutComponent implements OnInit {
 
     if (!this.cliente) {
       this.ubicacionEnvio = null;
-      this.checkoutPaso1Form.get('id_Cliente').setValue(null);
+      this.opcionClienteForm.get('id_Cliente').setValue(null);
       this.checkoutPaso1_5Form.get('clienteUbicacionFacturacion').setValue(null);
       return;
     }
 
-    this.checkoutPaso1Form.get('id_Cliente').setValue(this.cliente.id_Cliente);
+    this.opcionClienteForm.get('id_Cliente').setValue(this.cliente.id_Cliente);
     this.getTotalesInfo();
 
     const uFacturacionObservable = this.cliente.idUbicacionFacturacion
@@ -222,11 +224,12 @@ export class CheckoutComponent implements OnInit {
   }
 
   createForms() {
-    this.checkoutPaso1Form = this.fb.group({
+    this.opcionClienteForm = this.fb.group({
       'id_Cliente': [null, Validators.required]
     });
 
     this.checkoutPaso1_5Form = this.fb.group({
+      'continueStepValidator': ['whatever', Validators.required],
       'clienteUbicacionFacturacion': [ null, Validators.required ]
     });
 
@@ -253,6 +256,8 @@ export class CheckoutComponent implements OnInit {
         this.checkoutPaso3Form.get('sucursal').setValue(null);
       }
     });
+
+    this.checkoutPaso3Form.get('sucursal').valueChanges.subscribe((value: Empresa) => this.sucursal = value);
   }
 
   formInitialized(name: string, form: FormGroup, value: Ubicacion) {
@@ -329,6 +334,10 @@ export class CheckoutComponent implements OnInit {
     this.asignarCliente($event);
   }
 
+  modeStatusChanged($event) {
+    this.checkoutPaso1_5Form.get('continueStepValidator').setValue($event ? null : 'whatever');
+  }
+
   getTotalesInfo() {
     if (this.cliente) {
       this.carritoCompraService.getCarritoCompra(this.cliente.id_Cliente)
@@ -345,17 +354,9 @@ export class CheckoutComponent implements OnInit {
 
   getSucursales() {
     this.empresasService.getEmpresas()
-      .pipe(
-        // Este filter es por las dudas no venga la lat y/o la lng
-        filter((data: Empresa[], i) => !!(data[i].ubicacion.latitud && data[i].ubicacion.longitud))
-      )
       .subscribe((data: Empresa[]) => {
-        this.sucursales = data;
+        this.sucursales = data.filter((value: Empresa) => value.ubicacion.latitud && value.ubicacion.longitud);
       });
-  }
-
-  markerSucursalesClick(s: Empresa) {
-    this.checkoutPaso3Form.get('sucursal').setValue(s);
   }
 
   getUbicacionStr(): string {
@@ -365,7 +366,7 @@ export class CheckoutComponent implements OnInit {
 
   cerrarOrden() {
     if (
-      this.cliente && this.checkoutPaso1Form.valid && this.checkoutPaso1_5Form.valid &&
+      this.cliente && this.opcionClienteForm.valid && this.checkoutPaso1_5Form.valid &&
       this.checkoutPaso2Form.valid && this.checkoutPaso3Form.valid
     ) {
 
@@ -393,7 +394,7 @@ export class CheckoutComponent implements OnInit {
         }
       }
 
-      this.checkoutPaso1Form.disable();
+      this.opcionClienteForm.disable();
       this.checkoutPaso2Form.disable();
       this.checkoutPaso3Form.disable();
       this.enviarOrdenLoading = true;
@@ -429,14 +430,18 @@ export class CheckoutComponent implements OnInit {
 
   cerrarOrdenError(err) {
     this.avisoService.openSnackBar(err.error, '', 3500);
-    this.checkoutPaso1Form.enable();
+    this.opcionClienteForm.enable();
     this.checkoutPaso2Form.enable();
     this.checkoutPaso3Form.enable();
     this.enviarOrdenLoading = false;
   }
 
   changeStep($event) {
-    if ($event.selectedIndex === 1) {
+    if ($event.selectedIndex !== 1) {
+      this.clienteEditionMode = false;
+    }
+
+    if ($event.selectedIndex === 3) {
       setTimeout(() => this.observacionesTextAreaRef.nativeElement.focus(), 300);
     }
   }

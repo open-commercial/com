@@ -18,7 +18,9 @@ import {finalize} from 'rxjs/operators';
 export class ClienteComponent implements OnInit, OnChanges {
 
   @Input() c: Cliente;
-  @Output() updated = new EventEmitter<Cliente>();
+  @Input() editionMode = true;
+  @Output() updated = new EventEmitter<Cliente>(true);
+  @Output() modeStatusChanged = new EventEmitter<boolean>(true);
 
   inEdition = false;
   clienteForm: FormGroup;
@@ -62,18 +64,26 @@ export class ClienteComponent implements OnInit, OnChanges {
   ngOnInit() {
     this.createForm();
     this.isLoading = true;
-    /*this.clientesService.getClienteDelUsuario(this.authService.getLoggedInIdUsuario()).subscribe(
-      (cliente: Cliente) => {
-        if (cliente) {
-          this.asignarCliente(cliente);
-        }
-      },
-      error => this.isLoading = false
-    );*/
+    if (!this.c) {
+      this.clientesService.getClienteDelUsuario(this.authService.getLoggedInIdUsuario()).subscribe(
+        (cliente: Cliente) => {
+          if (cliente) {
+            this.asignarCliente(cliente);
+          }
+        },
+        error => this.isLoading = false
+      );
+    }
   }
 
   asignarCliente(newCliente: Cliente) {
     this.cliente = newCliente;
+
+    if (!this.cliente) {
+      this.ubicacionFacturacion = null;
+      return;
+    }
+
     // Sincronizo la ubicación de Facturación
     if (this.cliente.idUbicacionFacturacion) {
       if (!this.isLoading) { this.isLoading = true; }
@@ -84,19 +94,29 @@ export class ClienteComponent implements OnInit, OnChanges {
           err => this.avisoService.openSnackBar(err.error, '', 3500)
         );
     } else {
+      this.updated.emit(this.cliente);
       this.isLoading = false;
     }
   }
 
   ngOnChanges(changes: {[propKey: string]: SimpleChange}) {
-    if (changes.c.currentValue) {
+    if (changes.c !== undefined) {
       this.asignarCliente(changes.c.currentValue);
+    }
+
+    if (changes.editionMode !== undefined) {
+      this.changeModeStatus(changes.editionMode.currentValue);
     }
   }
 
   toggleEdit() {
-    this.inEdition = !this.inEdition;
+    this.changeModeStatus(!this.inEdition);
     this.rebuildForm();
+  }
+
+  changeModeStatus(status) {
+    this.inEdition = status;
+    this.modeStatusChanged.emit(status);
   }
 
   submit() {
@@ -117,8 +137,7 @@ export class ClienteComponent implements OnInit, OnChanges {
             .subscribe((newcliente: Cliente) => {
               if (newcliente) {
                 this.asignarCliente(newcliente);
-                this.updated.emit(this.cliente);
-                this.inEdition = false;
+                this.changeModeStatus(false);
               } else {
                 this.isLoading = false;
               }

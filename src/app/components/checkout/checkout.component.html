@@ -3,8 +3,8 @@
     <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
   </div>
   <mat-vertical-stepper *ngIf="!isLoading" linear #stepper (selectionChange)="changeStep($event)">
-    <mat-step [stepControl]="checkoutPaso1Form" *ngIf="checkoutPaso1Form">
-      <form [formGroup]="checkoutPaso1Form" autocomplete="off">
+    <mat-step [stepControl]="opcionClienteForm" *ngIf="opcionClienteForm">
+      <form [formGroup]="opcionClienteForm" autocomplete="off">
         <ng-template matStepLabel>
           <div class="cliente-label">
             Cliente: <strong>{{ cliente ? cliente.nombreFiscal: '' }}</strong>
@@ -46,7 +46,7 @@
       <form [formGroup]="checkoutPaso1_5Form">
         <ng-template matStepLabel>
           <div class="cliente-label">
-            Datos del Cliente
+            Datos del Cliente: {{ cliente ? cliente.nombreFiscal: '' }}
           </div>
         </ng-template>
         <div fxLayout="row" fxLayoutAlign="center center" *ngIf="isUbicacionesLoading" class="sic-com-spinner-container">
@@ -56,10 +56,10 @@
           <div *ngIf="!checkoutPaso1_5Form.get('clienteUbicacionFacturacion').value" class="ubicacion-error">
             EL CLIENTE NO POSEE DIRECCIÓN DE FACTURACION. Puede agregar esta dirección haciendo click en botón "Modificar".
           </div>
-          <sic-com-cliente [c]="cliente" (updated)="clienteUpdated($event)"></sic-com-cliente>
+          <sic-com-cliente [c]="cliente" [editionMode]="clienteEditionMode" (updated)="clienteUpdated($event)" (modeStatusChanged)="modeStatusChanged($event)" ></sic-com-cliente>
         </div>
         <div class="botonera">
-          <button mat-raised-button color="primary" matStepperNext [disabled]="!cliente">Continuar</button>
+          <button mat-raised-button color="primary" matStepperNext [disabled]="!cliente || !checkoutPaso1_5Form.valid">Continuar</button>
         </div>
       </form>
     </mat-step>
@@ -81,23 +81,34 @@
           </mat-radio-group>
           <br>
           <div *ngIf="checkoutPaso3Form.get('opcionEnvio').value === opcionEnvio.RETIRO_SUCURSAL">
-            <strong>Sucursal: </strong> {{ getUbicacionStr() }}
-            <div *ngIf="checkoutPaso3Form.errors?.requiredSucursal" style="color: #f9a825; font-size: 75%;">
-              Requerido
+            <div>
+              <mat-form-field fxFlexFill>
+                <mat-select placeholder="Sucursal" formControlName="sucursal">
+                  <mat-option></mat-option>
+                  <mat-option *ngFor="let s of sucursales" [value]="s">
+                    {{ s.nombre + ' (' + s.ubicacion.descripcion + ')' }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <div *ngIf="checkoutPaso3Form.errors?.requiredSucursal" class="sucursal-error">
+                Requerido
+              </div>
             </div>
-            <br><br>
-            <agm-map [latitude]="-27.4910086" [longitude]="-58.8310667" [zoom]="12" [streetViewControl]="false">
-              <agm-marker *ngFor="let s of sucursales" [latitude]="s.ubicacion.latitud"
-                          [longitude]="s.ubicacion.longitud"
-                          [title]="s.nombre"
-                          (markerClick)="markerSucursalesClick(s)">
-                <agm-snazzy-info-window [maxWidth]="200" [closeWhenOthersOpen]="true">
-                  <ng-template>
-                    {{ s.nombre + '(' + s.ubicacion.descripcion + ')' }}
-                  </ng-template>
-                </agm-snazzy-info-window>
-              </agm-marker>
-            </agm-map>
+            <div *ngIf="sucursal && sucursal.ubicacion && sucursal.ubicacion.latitud && sucursal.ubicacion.longitud">
+              <agm-map [latitude]="sucursal.ubicacion.latitud" [longitude]="sucursal.ubicacion.longitud" [zoom]="15" [streetViewControl]="false">
+                <agm-marker [latitude]="sucursal.ubicacion.latitud"
+                            [longitude]="sucursal.ubicacion.longitud"
+                            [title]="sucursal.ubicacion.nombre"
+                            >
+                  <agm-snazzy-info-window [maxWidth]="200" [closeWhenOthersOpen]="true" [isOpen]="true">
+                    <ng-template>
+                      <!--{{ s.nombre + '(' + s.ubicacion.descripcion + ')' }}-->
+                      {{ getUbicacionStr() }}
+                    </ng-template>
+                  </agm-snazzy-info-window>
+                </agm-marker>
+              </agm-map>
+            </div>
           </div>
           <div *ngIf="checkoutPaso3Form.get('opcionEnvio').value === opcionEnvio.DIRECCION_FACTURACION">
             <strong>Direccion Facturación registrada:</strong><br>
@@ -113,8 +124,9 @@
             </fieldset>
           </div>
         </div>
+        <br>
         <div class="botonera">
-          <button mat-raised-button color="primary" matStepperNext [disabled]="!cliente">Continuar</button>
+          <button mat-raised-button color="primary" matStepperNext [disabled]="!cliente || !checkoutPaso3Form.valid">Continuar</button>
         </div>
         <!--{{ checkoutPaso3Form.value | json }}-->
       </form>
@@ -153,7 +165,7 @@
         </div>
         <div *ngIf="!enviarOrdenLoading" class="acciones">
           <button mat-raised-button color="primary" (click)="cerrarOrden()"
-                  [disabled]="loadingTotales || !cliente || checkoutPaso1Form.invalid || checkoutPaso2Form.invalid || checkoutPaso3Form.invalid">
+                  [disabled]="loadingTotales || !cliente || opcionClienteForm.invalid || checkoutPaso2Form.invalid || checkoutPaso3Form.invalid">
             Confirmar
           </button>
         </div>
@@ -163,4 +175,5 @@
       </form>
     </mat-step>
   </mat-vertical-stepper>
+  {{ cliente ? cliente.nombreFiscal: null }}
 </div>
