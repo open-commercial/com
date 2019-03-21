@@ -67,7 +67,7 @@
       <form [formGroup]="checkoutPaso3Form">
         <ng-template matStepLabel>
           <div class="cliente-label">
-            Envío: <strong></strong>
+            Envío: <span *ngIf="!isUbicacionesLoading">{{ getEnvioLabel() }}</span>
           </div>
         </ng-template>
         <div fxLayout="row" fxLayoutAlign="center center" *ngIf="isUbicacionesLoading" class="sic-com-spinner-container">
@@ -112,7 +112,7 @@
           </div>
           <div *ngIf="checkoutPaso3Form.get('opcionEnvio').value === opcionEnvio.DIRECCION_FACTURACION">
             <strong>Direccion Facturación registrada:</strong><br>
-            <em>
+            <em *ngIf="!isUbicacionesLoading && ubicacionFacturacion">
               {{ ubicacionFacturacion.calle }} {{ ubicacionFacturacion.numero }}
               {{ ubicacionFacturacion.nombreLocalidad }}, {{ ubicacionFacturacion.nombreProvincia }}
             </em>
@@ -175,5 +175,4 @@
       </form>
     </mat-step>
   </mat-vertical-stepper>
-  {{ cliente ? cliente.nombreFiscal: null }}
 </div>

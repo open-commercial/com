@@ -94,7 +94,6 @@ export class ClienteComponent implements OnInit, OnChanges {
           err => this.avisoService.openSnackBar(err.error, '', 3500)
         );
     } else {
-      this.updated.emit(this.cliente);
       this.isLoading = false;
     }
   }
@@ -137,6 +136,7 @@ export class ClienteComponent implements OnInit, OnChanges {
             .subscribe((newcliente: Cliente) => {
               if (newcliente) {
                 this.asignarCliente(newcliente);
+                this.updated.emit(this.cliente);
                 this.changeModeStatus(false);
               } else {
                 this.isLoading = false;

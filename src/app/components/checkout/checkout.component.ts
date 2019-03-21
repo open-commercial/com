@@ -71,8 +71,8 @@ export class CheckoutComponent implements OnInit {
   // Envio
   opcionesEnvio = [
     { value: OpcionEnvio.RETIRO_SUCURSAL, text: 'Retiro en sucursal' },
-    { value: OpcionEnvio.DIRECCION_FACTURACION, text: 'Enviar a la Dir. de Facturación' },
-    { value: OpcionEnvio.DIRECCION_ENVIO, text: 'Enviar a otra Dirección' },
+    { value: OpcionEnvio.DIRECCION_FACTURACION, text: 'Usar Dirección de Facturación' },
+    { value: OpcionEnvio.DIRECCION_ENVIO, text: 'Usar Ubicación de Envío' },
   ];
   // enum OpcionEnvio para el template
   opcionEnvio = OpcionEnvio;
@@ -419,6 +419,36 @@ export class CheckoutComponent implements OnInit {
           err => this.cerrarOrdenError(err)
         );
       }
+    }
+  }
+
+  getEnvioLabel() {
+    const dataEnvio = this.checkoutPaso3Form.value;
+    let ret = '';
+    if (dataEnvio) {
+      for (let i = 0; i < this.opcionesEnvio.length; i += 1) {
+        if (this.opcionesEnvio[i].value === dataEnvio.opcionEnvio) {
+          ret += this.opcionesEnvio[i].text;
+          break;
+        }
+      }
+
+      if (dataEnvio.opcionEnvio === OpcionEnvio.RETIRO_SUCURSAL) {
+        ret += dataEnvio.sucursal ? ` [${dataEnvio.sucursal.nombre}]` : '';
+      }
+
+      if (dataEnvio.opcionEnvio === OpcionEnvio.DIRECCION_FACTURACION) {
+        ret += this.cliente && this.cliente.idUbicacionFacturacion ? ` [${this.cliente.detalleUbicacionFacturacion}]` : '';
+      }
+
+      if (dataEnvio.opcionEnvio === OpcionEnvio.DIRECCION_ENVIO) {
+        const ubicacionEnvio = this.checkoutPaso3Form.get('ubicacionEnvio').value;
+        ret += ubicacionEnvio
+          ? ` [${ubicacionEnvio.calle} ${ubicacionEnvio.numero} ${ubicacionEnvio.nombreLocalidad}, ${ubicacionEnvio.nombreProvincia}]`
+          : '';
+      }
+
+      return ret;
     }
   }
 
