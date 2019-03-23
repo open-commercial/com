@@ -114,7 +114,7 @@
             </div>
           </div>
           <div *ngIf="opcionEnvioForm.get('opcionEnvio').value === opcionEnvio.DIRECCION_FACTURACION">
-            <strong>Direccion Facturación registrada:</strong><br>
+            <strong>Dirección de Facturación a usar:</strong>
             <em *ngIf="!isUbicacionesLoading && ubicacionFacturacion">
               {{ ubicacionFacturacion.calle }} {{ ubicacionFacturacion.numero }}
               {{ ubicacionFacturacion.nombreLocalidad }}, {{ ubicacionFacturacion.nombreProvincia }}

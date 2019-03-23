@@ -282,6 +282,7 @@ export class CheckoutComponent implements OnInit {
   }
 
   modeStatusChanged($event) {
+    this.clienteEditionMode = $event;
     this.datosDelClienteForm.get('continueStepValidator').setValue($event ? null : 'whatever');
   }
 
@@ -450,15 +451,10 @@ export class CheckoutComponent implements OnInit {
     const dataEnvio = this.opcionEnvioForm.value;
     let ret = '';
     if (dataEnvio) {
-      for (let i = 0; i < this.opcionesEnvio.length; i += 1) {
-        if (this.opcionesEnvio[i].value === dataEnvio.opcionEnvio) {
-          ret += this.opcionesEnvio[i].text;
-          break;
-        }
-      }
+
 
       if (dataEnvio.opcionEnvio === OpcionEnvio.RETIRO_SUCURSAL) {
-        ret = 'Retiro en Sucursal';
+        ret = dataEnvio.sucursal ? `Retiro en Sucursal: ${dataEnvio.sucursal.nombre} (${dataEnvio.sucursal.detalleUbicacion})` : '';
       }
 
       if (dataEnvio.opcionEnvio === OpcionEnvio.DIRECCION_FACTURACION) {
