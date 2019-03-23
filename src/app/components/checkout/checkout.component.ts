@@ -430,12 +430,16 @@ export class CheckoutComponent implements OnInit {
       );
 
       if (uEnvio) {
-        const ubicacionObservable = uEnvio.idUbicacion
+        const ubicacionObservable: Observable<void|Ubicacion> = uEnvio.idUbicacion
           ? this.ubicacionService.updateUbicacion(uEnvio)
           : this.ubicacionService.createUbicacionEnvioCliente(this.cliente, uEnvio);
-
-        forkJoin(cerrarOrdenObservable, ubicacionObservable).subscribe(
-          data => this.cerrarOrdenNext(data[0]),
+        ubicacionObservable.subscribe(
+          u => {
+            cerrarOrdenObservable.subscribe(
+              data => this.cerrarOrdenNext(data),
+              err => this.cerrarOrdenError(err)
+            );
+          },
           err => this.cerrarOrdenError(err)
         );
       } else {
