@@ -16,6 +16,7 @@ import {Ubicacion} from '../../models/ubicacion';
 import {EmpresasService} from '../../services/empresas.service';
 import {Empresa} from '../../models/empresa';
 import {UbicacionService} from '../../services/ubicacion.service';
+import {TipoDeEnvio} from '../../models/tipo-de-envio';
 
 enum OpcionCliente {
   CLIENTE_USUARIO = '1',
@@ -46,9 +47,9 @@ export class CheckoutComponent implements OnInit {
   usuario: Usuario = null;
 
   opcionClienteForm: FormGroup = null;
-  checkoutPaso1_5Form: FormGroup = null;
-  checkoutPaso2Form: FormGroup = null;
-  checkoutPaso3Form: FormGroup = null;
+  datosDelClienteForm: FormGroup = null;
+  opcionEnvioForm: FormGroup = null;
+  resumenForm: FormGroup = null;
 
   // Cliente
   opcionesCliente = [
@@ -78,6 +79,8 @@ export class CheckoutComponent implements OnInit {
   opcionEnvio = OpcionEnvio;
   sucursales: Empresa[] = [];
   sucursal: Empresa = null;
+  ubicacionSucursal: Ubicacion = null;
+  isUbicacionSucursalLoading = false;
 
   ubicacionFacturacion: Ubicacion = null;
   ubicacionEnvio: Ubicacion = null;
@@ -165,104 +168,48 @@ export class CheckoutComponent implements OnInit {
     this.getSucursales();
   }
 
-  asignarCliente(newCliente: Cliente | null) {
-    this.cliente = newCliente;
-    this.ubicacionFacturacion = null;
-    this.ubicacionEnvio = null;
-
-    if (!this.cliente) {
-      this.ubicacionEnvio = null;
-      this.opcionClienteForm.get('id_Cliente').setValue(null);
-      this.checkoutPaso1_5Form.get('clienteUbicacionFacturacion').setValue(null);
-      return;
-    }
-
-    this.opcionClienteForm.get('id_Cliente').setValue(this.cliente.id_Cliente);
-    this.getTotalesInfo();
-
-    const uFacturacionObservable = this.cliente.idUbicacionFacturacion
-      ? this.ubicacionService.getUbicacion(this.cliente.idUbicacionFacturacion) : null;
-    const uEnvioObservable = this.cliente.idUbicacionEnvio
-      ? this.ubicacionService.getUbicacion(this.cliente.idUbicacionEnvio) : null;
-
-    this.isUbicacionesLoading = true;
-    if (uFacturacionObservable && uEnvioObservable) {
-      forkJoin(uFacturacionObservable, uEnvioObservable)
-        .pipe(finalize(() => this.isUbicacionesLoading = false))
-        .subscribe(
-          (data) => {
-            this.ubicacionFacturacion = data[0];
-            this.checkoutPaso1_5Form.get('clienteUbicacionFacturacion').setValue(this.ubicacionFacturacion);
-            this.ubicacionEnvio = data[1];
-          },
-          err => this.avisoService.openSnackBar(err.error, '', 3500)
-        );
-    } else {
-      if (uFacturacionObservable) {
-        uFacturacionObservable
-          .pipe(finalize(() => this.isUbicacionesLoading = false))
-          .subscribe(
-            (u: Ubicacion) => {
-              this.ubicacionFacturacion = u;
-              this.checkoutPaso1_5Form.get('clienteUbicacionFacturacion').setValue(this.ubicacionFacturacion);
-            },
-            err => this.avisoService.openSnackBar(err.error, '', 3500)
-          );
-      }
-      if (uEnvioObservable) {
-        this.checkoutPaso1_5Form.get('clienteUbicacionFacturacion').setValue(null);
-        uEnvioObservable
-          .pipe(finalize(() => this.isUbicacionesLoading = false))
-          .subscribe(
-            (u: Ubicacion) => {
-              this.ubicacionEnvio = u;
-            },
-            err => this.avisoService.openSnackBar(err.error, '', 3500)
-          );
-      }
-    }
-  }
-
   createForms() {
     this.opcionClienteForm = this.fb.group({
       'id_Cliente': [null, Validators.required]
     });
 
-    this.checkoutPaso1_5Form = this.fb.group({
+    this.datosDelClienteForm = this.fb.group({
       'continueStepValidator': ['whatever', Validators.required],
       'clienteUbicacionFacturacion': [ null, Validators.required ]
     });
 
-    this.checkoutPaso2Form = this.fb.group({
-      'observaciones': ['', Validators.maxLength(this.observacionesMaxLength)]
-    });
-
-    this.checkoutPaso3Form = this.fb.group({
+    this.opcionEnvioForm = this.fb.group({
       sucursal: null,
       opcionEnvio: ['', Validators.required],
     });
 
-    this.checkoutPaso3Form.setValidators(sucursalValidator);
+    this.opcionEnvioForm.setValidators(sucursalValidator);
 
-    this.checkoutPaso3Form.get('opcionEnvio').valueChanges.subscribe(value => {
+    this.opcionEnvioForm.get('opcionEnvio').valueChanges.subscribe(value => {
       if (value === OpcionEnvio.RETIRO_SUCURSAL) {
-        this.checkoutPaso3Form.removeControl('ubicacionEnvio');
+        this.opcionEnvioForm.removeControl('ubicacionEnvio');
       }
       if (value === OpcionEnvio.DIRECCION_FACTURACION) {
-        this.checkoutPaso3Form.get('sucursal').setValue(null);
-        this.checkoutPaso3Form.removeControl('ubicacionEnvio');
+        this.opcionEnvioForm.get('sucursal').setValue(null);
+        this.opcionEnvioForm.removeControl('ubicacionEnvio');
       }
       if (value === OpcionEnvio.DIRECCION_ENVIO) {
-        this.checkoutPaso3Form.get('sucursal').setValue(null);
+        this.opcionEnvioForm.get('sucursal').setValue(null);
       }
     });
 
-    this.checkoutPaso3Form.get('sucursal').valueChanges.subscribe((value: Empresa) => this.sucursal = value);
+    this.opcionEnvioForm.get('sucursal').valueChanges.subscribe((value: Empresa) => {
+      this.asignarSucursal(value);
+    });
+
+    this.resumenForm = this.fb.group({
+      'observaciones': ['', Validators.maxLength(this.observacionesMaxLength)]
+    });
   }
 
   formInitialized(name: string, form: FormGroup, value: Ubicacion) {
-    this.checkoutPaso3Form.setControl(name, form);
-    const u = this.checkoutPaso3Form.get(name);
+    this.opcionEnvioForm.setControl(name, form);
+    const u = this.opcionEnvioForm.get(name);
 
     u.setValue({
       buscador: '',
@@ -335,7 +282,93 @@ export class CheckoutComponent implements OnInit {
   }
 
   modeStatusChanged($event) {
-    this.checkoutPaso1_5Form.get('continueStepValidator').setValue($event ? null : 'whatever');
+    this.datosDelClienteForm.get('continueStepValidator').setValue($event ? null : 'whatever');
+  }
+
+  asignarCliente(newCliente: Cliente | null) {
+    this.cliente = newCliente;
+    this.ubicacionFacturacion = null;
+    this.ubicacionEnvio = null;
+
+    if (!this.cliente) {
+      this.ubicacionEnvio = null;
+      this.opcionClienteForm.get('id_Cliente').setValue(null);
+      this.datosDelClienteForm.get('clienteUbicacionFacturacion').setValue(null);
+      return;
+    }
+
+    this.opcionClienteForm.get('id_Cliente').setValue(this.cliente.id_Cliente);
+    this.getTotalesInfo();
+
+    const uFacturacionObservable = this.cliente.idUbicacionFacturacion
+      ? this.ubicacionService.getUbicacion(this.cliente.idUbicacionFacturacion) : null;
+    const uEnvioObservable = this.cliente.idUbicacionEnvio
+      ? this.ubicacionService.getUbicacion(this.cliente.idUbicacionEnvio) : null;
+
+    this.isUbicacionesLoading = true;
+    if (uFacturacionObservable && uEnvioObservable) {
+      forkJoin(uFacturacionObservable, uEnvioObservable)
+        .pipe(finalize(() => this.isUbicacionesLoading = false))
+        .subscribe(
+          (data) => {
+            this.ubicacionFacturacion = data[0];
+            this.datosDelClienteForm.get('clienteUbicacionFacturacion').setValue(this.ubicacionFacturacion);
+            this.ubicacionEnvio = data[1];
+          },
+          err => this.avisoService.openSnackBar(err.error, '', 3500)
+        );
+    } else {
+      if (uFacturacionObservable) {
+        uFacturacionObservable
+          .pipe(finalize(() => this.isUbicacionesLoading = false))
+          .subscribe(
+            (u: Ubicacion) => {
+              this.ubicacionFacturacion = u;
+              this.datosDelClienteForm.get('clienteUbicacionFacturacion').setValue(this.ubicacionFacturacion);
+            },
+            err => this.avisoService.openSnackBar(err.error, '', 3500)
+          );
+      }
+      if (uEnvioObservable) {
+        this.datosDelClienteForm.get('clienteUbicacionFacturacion').setValue(null);
+        uEnvioObservable
+          .pipe(finalize(() => this.isUbicacionesLoading = false))
+          .subscribe(
+            (u: Ubicacion) => {
+              this.ubicacionEnvio = u;
+            },
+            err => this.avisoService.openSnackBar(err.error, '', 3500)
+          );
+      }
+    }
+  }
+
+  getSucursales() {
+    this.empresasService.getEmpresas()
+      .subscribe((data: Empresa[]) => {
+        this.sucursales = data;
+      });
+  }
+
+  asignarSucursal(sucursal: Empresa) {
+    this.sucursal = sucursal;
+    this.ubicacionSucursal = null;
+
+    if (!sucursal) { return; }
+
+    if (this.sucursal.idUbicacion) {
+      this.isUbicacionSucursalLoading = true;
+      this.ubicacionService.getUbicacion(this.sucursal.idUbicacion)
+        .pipe(finalize(() => this.isUbicacionSucursalLoading = false))
+        .subscribe(
+          (ubicacion: Ubicacion) => this.ubicacionSucursal = ubicacion,
+          err => this.avisoService.openSnackBar(err.error, '', 3500)
+        );
+    }
+  }
+
+  getUbicacionStr(): string {
+    return this.sucursal ? this.sucursal.detalleUbicacion : '(no seleccionada)';
   }
 
   getTotalesInfo() {
@@ -352,38 +385,29 @@ export class CheckoutComponent implements OnInit {
     }
   }
 
-  getSucursales() {
-    this.empresasService.getEmpresas()
-      .subscribe((data: Empresa[]) => {
-        this.sucursales = data.filter((value: Empresa) => value.ubicacion.latitud && value.ubicacion.longitud);
-      });
-  }
-
-  getUbicacionStr(): string {
-    const s = this.checkoutPaso3Form.get('sucursal').value;
-    return s ? `${s.nombre} (${s.ubicacion.descripcion})` : '(no seleccionada)';
-  }
-
   cerrarOrden() {
     if (
-      this.cliente && this.opcionClienteForm.valid && this.checkoutPaso1_5Form.valid &&
-      this.checkoutPaso2Form.valid && this.checkoutPaso3Form.valid
+      this.cliente && this.opcionClienteForm.valid && this.datosDelClienteForm.valid &&
+      this.resumenForm.valid && this.opcionEnvioForm.valid
     ) {
 
-      const dataEnvio = this.checkoutPaso3Form.value;
-      const usarUbicacionDeFacturacion = dataEnvio.opcionEnvio === OpcionEnvio.DIRECCION_FACTURACION;
+      const dataEnvio = this.opcionEnvioForm.value;
+
+      let tipoDeEnvio = null;
       let uEnvio = null;
+      let idEmpresa = null;
 
       if (dataEnvio.opcionEnvio === OpcionEnvio.RETIRO_SUCURSAL) {
-        uEnvio = dataEnvio.sucursal.ubicacion;
-        if (this.ubicacionEnvio && this.ubicacionEnvio.idUbicacion) {
-          uEnvio.idUbicacion = this.ubicacionEnvio.idUbicacion;
-        } else {
-          uEnvio.idUbicacion = null;
-        }
+        tipoDeEnvio = TipoDeEnvio.RETIRO_EN_SUCURSAL;
+        idEmpresa = dataEnvio.sucursal.id_Empresa;
+      }
+
+      if (dataEnvio.opcionEnvio === OpcionEnvio.DIRECCION_FACTURACION) {
+        tipoDeEnvio = TipoDeEnvio.USAR_UBICACION_FACTURACION;
       }
 
       if (dataEnvio.opcionEnvio === OpcionEnvio.DIRECCION_ENVIO) {
+        tipoDeEnvio = TipoDeEnvio.USAR_UBICACION_ENVIO;
         uEnvio = dataEnvio.ubicacionEnvio;
         delete uEnvio.buscador;
 
@@ -395,12 +419,12 @@ export class CheckoutComponent implements OnInit {
       }
 
       this.opcionClienteForm.disable();
-      this.checkoutPaso2Form.disable();
-      this.checkoutPaso3Form.disable();
+      this.resumenForm.disable();
+      this.opcionEnvioForm.disable();
       this.enviarOrdenLoading = true;
 
       const cerrarOrdenObservable = this.carritoCompraService.enviarOrden(
-        usarUbicacionDeFacturacion, this.checkoutPaso2Form.get('observaciones').value,
+        tipoDeEnvio, this.resumenForm.get('observaciones').value, idEmpresa,
         this.authService.getLoggedInIdUsuario(), this.cliente.id_Cliente
       );
 
@@ -423,7 +447,7 @@ export class CheckoutComponent implements OnInit {
   }
 
   getEnvioLabel() {
-    const dataEnvio = this.checkoutPaso3Form.value;
+    const dataEnvio = this.opcionEnvioForm.value;
     let ret = '';
     if (dataEnvio) {
       for (let i = 0; i < this.opcionesEnvio.length; i += 1) {
@@ -434,17 +458,17 @@ export class CheckoutComponent implements OnInit {
       }
 
       if (dataEnvio.opcionEnvio === OpcionEnvio.RETIRO_SUCURSAL) {
-        ret += dataEnvio.sucursal ? ` [${dataEnvio.sucursal.nombre}]` : '';
+        ret = 'Retiro en Sucursal';
       }
 
       if (dataEnvio.opcionEnvio === OpcionEnvio.DIRECCION_FACTURACION) {
-        ret += this.cliente && this.cliente.idUbicacionFacturacion ? ` [${this.cliente.detalleUbicacionFacturacion}]` : '';
+        ret = this.cliente && this.cliente.idUbicacionFacturacion ? this.cliente.detalleUbicacionFacturacion : '';
       }
 
       if (dataEnvio.opcionEnvio === OpcionEnvio.DIRECCION_ENVIO) {
-        const ubicacionEnvio = this.checkoutPaso3Form.get('ubicacionEnvio').value;
-        ret += ubicacionEnvio
-          ? ` [${ubicacionEnvio.calle} ${ubicacionEnvio.numero} ${ubicacionEnvio.nombreLocalidad}, ${ubicacionEnvio.nombreProvincia}]`
+        const ubicacionEnvio = this.opcionEnvioForm.get('ubicacionEnvio').value;
+        ret = ubicacionEnvio
+          ? ` ${ubicacionEnvio.calle} ${ubicacionEnvio.numero} ${ubicacionEnvio.nombreLocalidad}, ${ubicacionEnvio.nombreProvincia}`
           : '';
       }
 
@@ -461,8 +485,8 @@ export class CheckoutComponent implements OnInit {
   cerrarOrdenError(err) {
     this.avisoService.openSnackBar(err.error, '', 3500);
     this.opcionClienteForm.enable();
-    this.checkoutPaso2Form.enable();
-    this.checkoutPaso3Form.enable();
+    this.resumenForm.enable();
+    this.opcionEnvioForm.enable();
     this.enviarOrdenLoading = false;
   }
 

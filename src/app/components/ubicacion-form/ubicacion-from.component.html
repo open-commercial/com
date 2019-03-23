@@ -1,5 +1,5 @@
 <div [formGroup]="ubicacionForm">
-    <div fxLayout="column" fxLayoutGap="0.7rem" *ngIf="isMapApiLoaded">
+    <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.7rem" *ngIf="isMapApiLoaded">
       <mat-form-field fxFlex>
         <input matInput placeholder="Localidad: {{ubicacionForm.get('nombreLocalidad').value ? getLocalidadFullName() : '(No selecionada)' }}"
                formControlName="buscador" ngx-google-places-autocomplete (onAddressChange)="handleAddressChange($event)" [options]="acOptions" />
@@ -7,16 +7,16 @@
           Inválido
         </mat-error>
       </mat-form-field>
-    </div>
-    <input type="hidden" formControlName="nombreLocalidad">
-    <input type="hidden" formControlName="nombreProvincia">
-    <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.7rem">
       <mat-form-field fxFlex>
         <input matInput placeholder="Codigo Postal" formControlName="codigoPostal">
         <mat-error *ngIf="ubicacionForm.get('codigoPostal').hasError('required')">
           Requerido
         </mat-error>
       </mat-form-field>
+    </div>
+    <input type="hidden" formControlName="nombreLocalidad">
+    <input type="hidden" formControlName="nombreProvincia">
+    <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.7rem">
       <mat-form-field fxFlex>
         <input matInput placeholder="Calle" formControlName="calle">
         <mat-error *ngIf="ubicacionForm.get('calle').hasError('required')">

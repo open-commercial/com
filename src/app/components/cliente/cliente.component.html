@@ -47,10 +47,10 @@
         </mat-form-field>
       </div>
       <sic-com-ubicacion-form (formReady)="formInitialized('ubicacionFacturacion', $event, ubicacionFacturacion)"></sic-com-ubicacion-form>
-      <mat-action-row fxLayoutGap="0.7rem">
+      <div fxLayoutGap="0.7rem">
         <button mat-raised-button type="submit" color="primary">Guardar</button>
         <button *ngIf="cliente" mat-raised-button type="button" (click)="toggleEdit()">Cancelar</button>
-      </mat-action-row>
+      </div>
     </form>
     <div *ngIf="cliente && !inEdition" class="info">
       <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.7rem">
@@ -92,7 +92,7 @@
               <mat-icon>email</mat-icon>
               <span>{{ cliente.email }}</span>
             </span>
-            <span fxLayout="row" fxLayoutGap="1rem" fxLayoutAlign="start center" *ngIf="cliente.email">
+            <span fxLayout="row" fxLayoutGap="1rem" fxLayoutAlign="start center" *ngIf="cliente.detalleUbicacionFacturacion">
               <mat-icon>room</mat-icon>
               <span>{{ cliente.detalleUbicacionFacturacion }}</span>
             </span>
@@ -100,9 +100,7 @@
         </div>
       </div>
       <br>
-      <mat-action-row>
-        <button mat-raised-button color="primary" (click)="toggleEdit()">Modificar</button>
-      </mat-action-row>
+      <button mat-raised-button color="primary" (click)="toggleEdit()">Modificar</button>
     </div>
   </div>
   <div *ngIf="isLoading" fxLayout="row" fxLayoutAlign="center center">

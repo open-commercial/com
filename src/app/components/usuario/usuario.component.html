@@ -41,10 +41,10 @@
       </mat-form-field>
     </div>
     <br>
-    <mat-action-row fxLayoutGap="0.7rem" *ngIf="inEdition">
+    <div fxLayoutGap="0.7rem" *ngIf="inEdition">
       <button mat-raised-button type="submit" color="primary">Guardar</button>
       <button mat-raised-button type="button" (click)="toggleEdit()">Cancelar</button>
-    </mat-action-row>
+    </div>
   </form>
   <div *ngIf="!isLoading && usuario && !inEdition" class="info">
     <div fxLayout="row" fxLayoutGap="0.4rem" fxLayoutAlign="start center">
@@ -67,9 +67,7 @@
       <span class="user-word-break">{{ usuario.roles }}</span>
     </div>
     <br>
-    <mat-action-row>
-      <button mat-raised-button color="primary" (click)="toggleEdit()">Modificar</button>
-    </mat-action-row>
+    <button mat-raised-button color="primary" (click)="toggleEdit()">Modificar</button>
   </div>
   <div *ngIf="isLoading" fxLayout="row" fxLayoutAlign="center center">
     <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
