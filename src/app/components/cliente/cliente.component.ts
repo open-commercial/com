@@ -172,10 +172,8 @@ export class ClienteComponent implements OnInit, OnChanges {
     const u = this.clienteForm.get(name);
 
     u.setValue({
-      buscador: '',
-      nombreLocalidad: value && value.nombreLocalidad ? value.nombreLocalidad : '',
-      nombreProvincia: value && value.nombreProvincia ? value.nombreProvincia : '',
-      codigoPostal: value && value.codigoPostal ? value.codigoPostal : '',
+      idLocalidad: value && value.idLocalidad ? value.idLocalidad : null,
+      idProvincia: value && value.idProvincia ? value.idProvincia : null,
       calle: value && value.calle ? value.calle : '',
       numero: value && value.numero ? value.numero : '',
       piso: value && value.piso ? value.piso : '',
@@ -196,11 +194,10 @@ export class ClienteComponent implements OnInit, OnChanges {
       piso: values.piso,
       departamento: values.departamento,
       eliminada: uOriginal ? uOriginal.eliminada : null,
-      idLocalidad: null,
-      nombreLocalidad: values.nombreLocalidad,
-      codigoPostal: values.codigoPostal,
-      idProvincia: null,
-      nombreProvincia: values.nombreProvincia,
+      idLocalidad: values.idLocalidad,
+      nombreLocalidad: '',
+      idProvincia: values.idProvincia,
+      nombreProvincia: '',
     };
   }
 

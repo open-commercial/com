@@ -1,7 +1,11 @@
 import {Component, OnInit, EventEmitter, Output, Input} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {LatLng, MapsAPILoader} from '@agm/core';
 import {Ubicacion} from '../../models/ubicacion';
+import {Provincia} from '../../models/provincia';
+import {Localidad} from '../../models/localidad';
+import {UbicacionService} from '../../services/ubicacion.service';
+import {AvisoService} from '../../services/aviso.service';
+import {finalize} from 'rxjs/operators';
 
 @Component({
   selector: 'sic-com-ubicacion-form',
@@ -12,79 +16,73 @@ export class UbicacionFromComponent implements OnInit {
   @Output()
   formReady = new EventEmitter<FormGroup>();
 
-  private _ubicacion: Ubicacion;
+  private ubicacion: Ubicacion;
   ubicacionForm: FormGroup;
 
-  // Google Maps
-  isMapApiLoaded = false;
-  acOptions = {
-    types: ['(cities)'],
-    componentRestrictions: { country: 'AR' }
-  };
+  provincias: Provincia[] = [];
+  localidades: Localidad[] = [];
+
+  isProvinciasLoading = false;
+  isLocalidadesLoading = false;
 
   constructor(private fb: FormBuilder,
-              private mapsApiLoader: MapsAPILoader) {
-  }
+              private ubicacionService: UbicacionService,
+              private avisoService: AvisoService) {}
 
   ngOnInit() {
-    this.mapsApiLoader.load().then(() => this.isMapApiLoaded = true);
     this.createForm();
+    this.isProvinciasLoading = true;
+    this.ubicacionService.getProvincias()
+      .pipe(finalize(() => this.isProvinciasLoading = false))
+      .subscribe(
+        (data: Provincia[]) => this.provincias = data,
+        err => this.avisoService.openSnackBar(err.error, '', 3500)
+      );
   }
 
   createForm() {
     this.ubicacionForm = this.fb.group({
-      buscador: '',
-      nombreLocalidad: ['', Validators.required],
-      nombreProvincia: '',
-      codigoPostal: ['', Validators.required],
+      idProvincia: [null, Validators.required],
+      idLocalidad: [null, Validators.required],
       calle: ['', Validators.required],
       numero: ['', Validators.required],
       piso: '',
       departamento: '',
     });
 
-    this.formReady.emit(this.ubicacionForm);
-
-    this.ubicacionForm.get('nombreLocalidad').valueChanges
+    this.ubicacionForm.get('idProvincia').valueChanges
       .subscribe((value) => {
-        this.ubicacionForm.get('buscador').setValue(this.getLocalidadFullName());
-        this.ubicacionForm.get('buscador').markAsTouched();
-      });
-    this.ubicacionForm.get('nombreLocalidad').statusChanges
-      .subscribe((value) => {
-        if (value === 'INVALID') {
-          this.ubicacionForm.get('buscador').setErrors({'invalid': true});
-        } else {
-          this.ubicacionForm.get('buscador').setErrors(null);
+        if (!value) {
+          this.localidades = [];
+          this.ubicacionForm.get('idLocalidad').setValue(null);
+          this.ubicacionForm.get('idLocalidad').markAsTouched();
+          return;
         }
-        this.ubicacionForm.get('buscador').markAsTouched();
+
+        this.isLocalidadesLoading = true;
+        this.ubicacionService.getLocalidades(value)
+          .pipe(finalize(() => this.isLocalidadesLoading = false))
+          .subscribe(
+            (data: Localidad[]) => {
+              const idLocalidad = this.ubicacionForm.get('idLocalidad').value;
+              this.localidades = data;
+              if (!idLocalidad) { return; }
+              if (!this.inLocalidades(idLocalidad)) {
+                this.ubicacionForm.get('idLocalidad').setValue(null);
+                this.ubicacionForm.get('idLocalidad').markAsTouched();
+              }
+            },
+            err => this.avisoService.openSnackBar(err.error, '', 3500)
+          );
       });
 
-    this.ubicacionForm.get('buscador').setValue(this.getLocalidadFullName());
+    this.formReady.emit(this.ubicacionForm);
   }
 
-  handleAddressChange($event) {
-    const lastNombreProvincia = this.ubicacionForm.get('nombreProvincia').value;
-    const nombreProvincia = this.getNombreProvincia($event);
-    if (nombreProvincia !== lastNombreProvincia) {
-      this.ubicacionForm.get('nombreProvincia').setValue(nombreProvincia);
+  inLocalidades(idLocalidad) {
+    for (const l of this.localidades) {
+      if (l.id_Localidad === idLocalidad) { return true; }
     }
-
-    const lastNombreLocalidad = this.ubicacionForm.get('nombreLocalidad').value;
-    const nombreLocalidad = $event.name;
-    if (lastNombreLocalidad !== nombreLocalidad) {
-      this.ubicacionForm.get('nombreLocalidad').setValue(nombreLocalidad);
-    }
-  }
-
-  getLocalidadFullName() {
-    return this.ubicacionForm.get('nombreLocalidad').value
-      ? (this.ubicacionForm.get('nombreLocalidad').value + ', ' + this.ubicacionForm.get('nombreProvincia').value + ', Argentina')
-      : '';
-  }
-
-  getNombreProvincia(data) {
-    const found = data.address_components.filter((value) => value.types.indexOf('administrative_area_level_1') > -1);
-    return found.length ? found[0].short_name : '';
+    return false;
   }
 }

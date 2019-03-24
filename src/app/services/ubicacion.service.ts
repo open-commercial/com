@@ -5,6 +5,8 @@ import {Ubicacion} from '../models/ubicacion';
 import {Observable} from 'rxjs';
 import {Cliente} from '../models/cliente';
 import get = Reflect.get;
+import {Provincia} from '../models/provincia';
+import {Localidad} from '../models/localidad';
 
 @Injectable()
 export class UbicacionService {
@@ -29,4 +31,11 @@ export class UbicacionService {
     return this.http.put<void>(this.url, ubicacion);
   }
 
+  getProvincias(): Observable<Provincia[]> {
+    return this.http.get<Provincia[]>(`${this.url}/provincias`);
+  }
+
+  getLocalidades(idProvincia): Observable<Localidad[]> {
+    return this.http.get<Localidad[]>(`${this.url}/localidades/provincias/${idProvincia}`);
+  }
 }

@@ -1,21 +1,26 @@
 <div [formGroup]="ubicacionForm">
-    <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.7rem" *ngIf="isMapApiLoaded">
+    <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.7rem">
       <mat-form-field fxFlex>
-        <input matInput placeholder="Localidad: {{ubicacionForm.get('nombreLocalidad').value ? getLocalidadFullName() : '(No selecionada)' }}"
-               formControlName="buscador" ngx-google-places-autocomplete (onAddressChange)="handleAddressChange($event)" [options]="acOptions" />
-        <mat-error *ngIf="ubicacionForm.get('buscador').hasError('invalid')">
-          Inválido
-        </mat-error>
+        <mat-select formControlName="idProvincia" placeholder="Provincia" required [disabled]="isProvinciasLoading || isLocalidadesLoading">
+          <mat-option *ngFor="let p of provincias" [value]="p.id_Provincia">
+            {{p.nombre}}
+          </mat-option>
+        </mat-select>
       </mat-form-field>
       <mat-form-field fxFlex>
-        <input matInput placeholder="Codigo Postal" formControlName="codigoPostal">
-        <mat-error *ngIf="ubicacionForm.get('codigoPostal').hasError('required')">
+        <mat-select formControlName="idLocalidad" placeholder="Localidad" required [disabled]="isProvinciasLoading || isLocalidadesLoading">
+          <mat-option *ngFor="let l of localidades" [value]="l.id_Localidad">
+            {{l.nombre}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="ubicacionForm.get('idLocalidad').hasError('required')">
           Requerido
         </mat-error>
       </mat-form-field>
+      <div *ngIf="isProvinciasLoading || isLocalidadesLoading" fxLayout="row" fxLayoutAlign="center center"><!-- fxLayout="row" fxLayoutAlign="center center" -->
+        <mat-spinner [diameter]="20" [strokeWidth]="3"></mat-spinner>
+      </div>
     </div>
-    <input type="hidden" formControlName="nombreLocalidad">
-    <input type="hidden" formControlName="nombreProvincia">
     <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.7rem">
       <mat-form-field fxFlex>
         <input matInput placeholder="Calle" formControlName="calle">
