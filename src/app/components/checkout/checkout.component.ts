@@ -465,7 +465,11 @@ export class CheckoutComponent implements OnInit {
 
 
       if (dataEnvio.opcionEnvio === OpcionEnvio.RETIRO_SUCURSAL) {
-        ret = dataEnvio.sucursal ? `Retiro en Sucursal: ${dataEnvio.sucursal.nombre} (${dataEnvio.sucursal.detalleUbicacion})` : '';
+        ret = dataEnvio.sucursal
+          ? `Retiro en Sucursal: ${dataEnvio.sucursal.nombre}`
+            + (dataEnvio.sucursal.detalleUbicacion ? ` (${dataEnvio.sucursal.detalleUbicacion})` : '')
+          : ''
+        ;
       }
 
       if (dataEnvio.opcionEnvio === OpcionEnvio.DIRECCION_FACTURACION) {

@@ -29,7 +29,7 @@
         </mat-error>
       </mat-form-field>
       <mat-form-field fxFlex>
-        <input matInput placeholder="Número" formControlName="numero" required>
+        <input type="number" matInput placeholder="Número" formControlName="numero" required>
         <mat-error *ngIf="ubicacionForm.get('numero').hasError('required')">
           Requerido
         </mat-error>

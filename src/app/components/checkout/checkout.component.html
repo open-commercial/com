@@ -54,7 +54,9 @@
         </div>
         <div *ngIf="!isUbicacionesLoading">
           <div *ngIf="!datosDelClienteForm.get('clienteUbicacionFacturacion').value" class="ubicacion-error">
-            EL CLIENTE NO POSEE DIRECCIÓN DE FACTURACION. Puede agregar esta dirección haciendo click en botón "Modificar".
+            EL CLIENTE NO POSEE DIRECCIÓN DE FACTURACION.<br>
+            Puede agregar esta dirección haciendo click en botón "Modificar".
+
           </div>
           <sic-com-cliente [c]="cliente" [editionMode]="clienteEditionMode" (updated)="clienteUpdated($event)" (modeStatusChanged)="modeStatusChanged($event)" ></sic-com-cliente>
         </div>
@@ -86,7 +88,7 @@
                 <mat-select placeholder="Sucursal" formControlName="sucursal">
                   <mat-option></mat-option>
                   <mat-option *ngFor="let s of sucursales" [value]="s">
-                    {{ s.nombre + ' (' + s.detalleUbicacion + ')' }}
+                    {{ s.nombre + (s.detalleUbicacion ? ' (' + s.detalleUbicacion  + ')' : '') }}
                   </mat-option>
                 </mat-select>
               </mat-form-field>
