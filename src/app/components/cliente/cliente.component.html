@@ -34,35 +34,6 @@
       </div>
       <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.7rem">
         <mat-form-field fxFlex>
-          <input matInput placeholder="Dirección" formControlName="direccion">
-        </mat-form-field>
-        <mat-form-field fxFlex>
-          <mat-select placeholder="País" formControlName="idPais">
-            <mat-option></mat-option>
-            <mat-option *ngFor="let p of paises" [value]="p.id_Pais">
-              {{ p.nombre }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-      <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.7rem">
-        <mat-form-field fxFlex>
-          <mat-select placeholder="Provincia" formControlName="idProvincia">
-            <mat-option *ngFor="let pr of provincias" [value]="pr.id_Provincia">
-              {{ pr.nombre }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-        <mat-form-field fxFlex>
-          <mat-select placeholder="Localidad" formControlName="idLocalidad">
-            <mat-option *ngFor="let l of localidades" [value]="l.id_Localidad">
-              {{ l.nombre }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-      <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.7rem">
-        <mat-form-field fxFlex>
           <input matInput placeholder="Teléfono" formControlName="telefono" required>
           <mat-error *ngIf="clienteForm.get('telefono').hasError('required')">
             Requerido
@@ -75,11 +46,11 @@
           </mat-error>
         </mat-form-field>
       </div>
-      <br>
-      <mat-action-row fxLayoutGap="0.7rem">
+      <sic-com-ubicacion-form (formReady)="formInitialized('ubicacionFacturacion', $event, ubicacionFacturacion)"></sic-com-ubicacion-form>
+      <div fxLayoutGap="0.7rem">
         <button mat-raised-button type="submit" color="primary">Guardar</button>
         <button *ngIf="cliente" mat-raised-button type="button" (click)="toggleEdit()">Cancelar</button>
-      </mat-action-row>
+      </div>
     </form>
     <div *ngIf="cliente && !inEdition" class="info">
       <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.7rem">
@@ -113,13 +84,6 @@
               <mat-icon>account_balance</mat-icon>
               <span>{{ categoriasIVA[cliente.categoriaIVA] }}</span>
             </span>
-            <span fxLayout="row" fxLayoutGap="1rem" fxLayoutAlign="start center" *ngIf="cliente.nombreLocalidad">
-              <mat-icon>place</mat-icon>
-              <span>
-                <span *ngIf="cliente.direccion"> {{ cliente.direccion }},</span>
-                {{ cliente.nombreLocalidad }}, {{ cliente.nombreProvincia }}, {{ cliente.nombrePais }}
-              </span>
-            </span>
             <span fxLayout="row" fxLayoutGap="1rem" fxLayoutAlign="start center" *ngIf="cliente.telefono">
               <mat-icon>phone</mat-icon>
               <span>{{ cliente.telefono }}</span>
@@ -128,13 +92,15 @@
               <mat-icon>email</mat-icon>
               <span>{{ cliente.email }}</span>
             </span>
+            <span fxLayout="row" fxLayoutGap="1rem" fxLayoutAlign="start center" *ngIf="cliente.detalleUbicacionFacturacion">
+              <mat-icon>room</mat-icon>
+              <span>{{ cliente.detalleUbicacionFacturacion }}</span>
+            </span>
           </div>
         </div>
       </div>
       <br>
-      <mat-action-row>
-        <button mat-raised-button color="primary" (click)="toggleEdit()">Modificar</button>
-      </mat-action-row>
+      <button mat-raised-button color="primary" (click)="toggleEdit()">Modificar</button>
     </div>
   </div>
   <div *ngIf="isLoading" fxLayout="row" fxLayoutAlign="center center">

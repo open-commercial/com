@@ -30,8 +30,6 @@ import {ClienteComponent} from '../components/cliente/cliente.component';
 import {PedidosComponent} from '../components/pedidos/pedidos.component';
 import {PedidosService} from '../services/pedidos.service';
 import {PaisesService} from '../services/paises.service';
-import {ProvinciasService} from '../services/provincias.service';
-import {LocalidadesService} from '../services/localidades.service';
 import {CantidadProductoDialogComponent} from '../components/carrito-compra/cantidadProductoDialog/cantidad-producto-dialog.component';
 import {PasswordRecoveryRequestComponent} from '../components/password-recovery-request/password-recovery-request.component';
 import {PasswordRecoveryComponent} from '../components/password-recovery/password-recovery.component';
@@ -42,10 +40,15 @@ import {RegistracionService} from '../services/registracion.service';
 import {CheckoutComponent} from '../components/checkout/checkout.component';
 import {SlideshowModule} from 'ng-simple-slideshow';
 import {HomeComponent} from '../components/home/home.component';
+import {UbicacionFromComponent} from '../components/ubicacion-form/ubicacion-from.component';
 import {registerLocaleData} from '@angular/common';
 import localeEs from '@angular/common/locales/es';
 import localeEsExtra from '@angular/common/locales/extra/es-AR';
 import {SlideshowService} from '../services/slideshow.service';
+import {UbicacionService} from '../services/ubicacion.service';
+import {AgmCoreModule} from '@agm/core';
+import {AgmSnazzyInfoWindowModule} from '@agm/snazzy-info-window';
+import {GooglePlaceModule} from 'ngx-google-places-autocomplete';
 
 registerLocaleData(localeEs, 'es-AR', localeEsExtra);
 
@@ -69,7 +72,8 @@ registerLocaleData(localeEs, 'es-AR', localeEsExtra);
     PasswordRecoveryComponent,
     CuentaCorrienteComponent,
     CheckoutComponent,
-    HomeComponent
+    HomeComponent,
+    UbicacionFromComponent
   ],
   imports: [
     HttpClientModule,
@@ -81,7 +85,13 @@ registerLocaleData(localeEs, 'es-AR', localeEsExtra);
     BrowserAnimationsModule,
     sicComRouting,
     NgxCaptchaModule,
-    SlideshowModule
+    SlideshowModule,
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyCB4ieC2bSFgfWwHcpdFGegDH7vb8K5YG8',
+      libraries: [ 'places' ]
+    }),
+    AgmSnazzyInfoWindowModule,
+    GooglePlaceModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
@@ -95,11 +105,10 @@ registerLocaleData(localeEs, 'es-AR', localeEsExtra);
     UsuariosService,
     PedidosService,
     PaisesService,
-    ProvinciasService,
-    LocalidadesService,
     CuentasCorrienteService,
     RegistracionService,
     SlideshowService,
+    UbicacionService,
   ],
   entryComponents: [
     ConfirmationDialogComponent,

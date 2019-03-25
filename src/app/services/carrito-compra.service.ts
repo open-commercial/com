@@ -4,6 +4,7 @@ import {environment} from 'environments/environment';
 import {HttpClient} from '@angular/common/http';
 import {CarritoCompra} from '../models/carrito-compra';
 import {ItemCarritoCompra} from '../models/item-carrito-compra';
+import {TipoDeEnvio} from '../models/tipo-de-envio';
 
 @Injectable()
 export class CarritoCompraService {
@@ -53,8 +54,10 @@ export class CarritoCompraService {
     return this.http.delete(uriDelete);
   }
 
-  enviarOrden(observaciones: string, idUsuario, idCliente) {
-    const uriPost = `${this.uri}?idEmpresa=${environment.idEmpresa}&idUsuario=${idUsuario}&idCliente=${idCliente}`;
+  enviarOrden(tipoDeEnvio: TipoDeEnvio, observaciones: string, idEmpresa, idUsuario, idCliente) {
+    const uriPost = `${this.uri}?` + (idEmpresa ? `idEmpresa=${idEmpresa}&` : `idEmpresa=${environment.idEmpresa}&`)
+      + `idUsuario=${idUsuario}&idCliente=${idCliente}&tipoDeEnvio=${TipoDeEnvio[tipoDeEnvio]}`;
+
     return this.http.post(uriPost, observaciones);
   }
 }

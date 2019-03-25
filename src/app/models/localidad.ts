@@ -1,7 +1,5 @@
 export interface Localidad {
-
-  id_Localidad: number;
+  idLocalidad: number;
   nombre: string;
   codigoPostal: string;
-
 }

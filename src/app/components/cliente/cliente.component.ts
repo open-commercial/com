@@ -1,31 +1,31 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnChanges, SimpleChange, OnInit, EventEmitter, Output} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AuthService} from '../../services/auth.service';
 import {Cliente} from '../../models/cliente';
 import {ClientesService} from '../../services/clientes.service';
 import {AvisoService} from '../../services/aviso.service';
 import {CategoriaIVA} from '../../models/categoria-iva';
-import {Pais} from '../../models/pais';
-import {PaisesService} from '../../services/paises.service';
-import {Provincia} from '../../models/provincia';
-import {ProvinciasService} from '../../services/provincias.service';
-import {Localidad} from '../../models/localidad';
-import {LocalidadesService} from '../../services/localidades.service';
+import {Ubicacion} from '../../models/ubicacion';
+import {UbicacionService} from '../../services/ubicacion.service';
+import {forkJoin} from 'rxjs';
+import {finalize} from 'rxjs/operators';
 
 @Component({
   selector: 'sic-com-cliente',
   templateUrl: 'cliente.component.html',
   styleUrls: ['cliente.component.scss']
 })
-export class ClienteComponent implements OnInit {
+export class ClienteComponent implements OnInit, OnChanges {
+
+  @Input() c: Cliente;
+  @Input() editionMode = true;
+  @Output() updated = new EventEmitter<Cliente>(true);
+  @Output() modeStatusChanged = new EventEmitter<boolean>(true);
 
   inEdition = false;
   clienteForm: FormGroup;
   cliente: Cliente = null;
-  paises: Array<Pais> = [];
-  provincias: Array<Provincia> = [];
-  localidades: Array<Localidad> = [];
-  isLoading = true;
+  isLoading = false;
 
   // Lo siguiente es para poder iterar sobre el enum de CategoriaIVA en la vista:
   // Se guarda el metodo keys de Object en una variable
@@ -33,14 +33,13 @@ export class ClienteComponent implements OnInit {
   // Asigno el enum a una variable
   categoriasIVA = CategoriaIVA;
 
+  ubicacionFacturacion: Ubicacion = null;
+
   constructor(private authService: AuthService,
               private fb: FormBuilder,
               private avisoService: AvisoService,
               private clientesService: ClientesService,
-              private paisesService: PaisesService,
-              private provinciasService: ProvinciasService,
-              private localidadesService: LocalidadesService) {
-    this.createForm();
+              private ubicacionService: UbicacionService) {
   }
 
   createForm() {
@@ -49,10 +48,6 @@ export class ClienteComponent implements OnInit {
       nombreFiscal: ['', Validators.required],
       nombreFantasia: '',
       categoriaIVA: [null, Validators.required],
-      direccion: '',
-      idPais: null,
-      idProvincia: null,
-      idLocalidad: null,
       telefono: ['', Validators.required],
       email: ['', Validators.email],
     });
@@ -67,79 +62,87 @@ export class ClienteComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.isLoading = true;
-    this.getPaises();
-    this.clienteForm.get('idPais').valueChanges.subscribe(
-      idPais => {
-        if (!idPais) {
-          this.provincias.splice(0, this.provincias.length);
-          this.localidades.splice(0, this.localidades.length);
-          this.clienteForm.get('idProvincia').setValue(null);
-          return;
-        }
-        this.provinciasService.getProvincias(idPais).subscribe(
-          (data: Provincia[]) => {
-            this.provincias = data;
-            const provinciaFormValue = this.clienteForm.get('idProvincia').value;
-            if (!this.provinciasHasId(provinciaFormValue)) {
-              const idPorvincia = this.provincias.length ? this.provincias[0].id_Provincia : null;
-              this.clienteForm.get('idProvincia').setValue(idPorvincia);
-            }
+    this.createForm();
+
+    if (!this.c) {
+      this.isLoading = true;
+      this.clientesService.getClienteDelUsuario(this.authService.getLoggedInIdUsuario()).subscribe(
+        (cliente: Cliente) => {
+          if (cliente) {
+            this.asignarCliente(cliente);
           }
+        },
+        error => this.isLoading = false
+      );
+    }
+  }
+
+  asignarCliente(newCliente: Cliente) {
+    this.cliente = newCliente;
+
+    if (!this.cliente) {
+      this.ubicacionFacturacion = null;
+      return;
+    }
+
+    // Sincronizo la ubicación de Facturación
+    if (this.cliente.idUbicacionFacturacion) {
+      if (!this.isLoading) { this.isLoading = true; }
+      this.ubicacionService.getUbicacion(this.cliente.idUbicacionFacturacion)
+        .pipe(finalize(() => this.isLoading = false))
+        .subscribe(
+          (u: Ubicacion) => this.ubicacionFacturacion = u,
+          err => this.avisoService.openSnackBar(err.error, '', 3500)
         );
-      }
-    );
-    this.clienteForm.get('idProvincia').valueChanges.subscribe(
-      idProvincia => {
-        if (!idProvincia) {
-          this.localidades.splice(0, this.localidades.length);
-          this.clienteForm.get('idLocalidad').setValue(null);
-          return;
-        }
-        this.localidadesService.getLocalidades(idProvincia).subscribe(
-          (data: Localidad[]) => {
-            this.localidades = data;
-            const localidadFormValue = this.clienteForm.get('idLocalidad').value;
-            if (!this.localidadHasId(localidadFormValue)) {
-              const idLocalidad = this.localidades.length ? this.localidades[0].id_Localidad : null;
-              this.clienteForm.get('idLocalidad').setValue(idLocalidad);
-            }
-          }
-        );
-      }
-    );
-    this.clientesService.getClienteDelUsuario(this.authService.getLoggedInIdUsuario()).subscribe(
-      (cliente: Cliente) => {
-        if (cliente) {
-          this.cliente = cliente;
-        }
-        this.isLoading = false;
-      },
-      error => this.isLoading = false
-    );
+    } else {
+      this.isLoading = false;
+    }
+  }
+
+  ngOnChanges(changes: {[propKey: string]: SimpleChange}) {
+    if (changes.c !== undefined) {
+      this.asignarCliente(changes.c.currentValue);
+    }
+
+    if (changes.editionMode !== undefined) {
+      this.changeModeStatus(changes.editionMode.currentValue);
+    }
   }
 
   toggleEdit() {
-    this.inEdition = !this.inEdition;
+    this.changeModeStatus(!this.inEdition);
     this.rebuildForm();
+  }
+
+  changeModeStatus(status) {
+    this.inEdition = status;
+    this.modeStatusChanged.emit(status);
   }
 
   submit() {
     if (this.clienteForm.valid) {
       const cliente = this.getFormValues();
+      const ubicacionFacturacion = this.getUbicacionFormValues('ubicacionFacturacion', this.ubicacionFacturacion);
+
+      const clienteObservable   = this.clientesService.saveCliente(cliente);
+      const ubicacionObservable = this.ubicacionFacturacion && this.ubicacionFacturacion.idUbicacion
+        ? this.ubicacionService.updateUbicacion(ubicacionFacturacion)
+        : this.ubicacionService.createUbicacionFacturacionCliente(cliente, ubicacionFacturacion);
+
       this.isLoading = true;
-      this.clientesService.saveCliente(cliente).subscribe(
-        data => {
-          this.clientesService.getClienteDelUsuario(this.authService.getLoggedInIdUsuario())
-            .subscribe(
-              (newcliente: Cliente) => {
-                if (cliente) {
-                  this.cliente = newcliente;
-                  this.inEdition = false;
-                }
+
+      forkJoin(clienteObservable, ubicacionObservable)
+        .subscribe((data) => {
+          this.clientesService.getCliente(this.cliente.id_Cliente)
+            .subscribe((newcliente: Cliente) => {
+              if (newcliente) {
+                this.asignarCliente(newcliente);
+                this.updated.emit(this.cliente);
+                this.changeModeStatus(false);
+              } else {
                 this.isLoading = false;
               }
-            );
+            });
         },
         err => {
           this.isLoading = false;
@@ -154,15 +157,50 @@ export class ClienteComponent implements OnInit {
       id_Cliente: this.cliente ? this.cliente.id_Cliente : null,
       nombreFiscal: this.clienteForm.get('nombreFiscal').value,
       nombreFantasia: this.clienteForm.get('nombreFantasia').value,
-      direccion: this.clienteForm.get('direccion').value,
       idFiscal: this.clienteForm.get('idFiscal').value,
       email: this.clienteForm.get('email').value,
       telefono: this.clienteForm.get('telefono').value,
       contacto: this.cliente ? this.cliente.contacto : '',
-      idLocalidad: this.clienteForm.get('idLocalidad').value,
       categoriaIVA: this.clienteForm.get('categoriaIVA').value,
       idCredencial: this.authService.getLoggedInIdUsuario(),
       idViajante: this.cliente ? this.cliente.idViajante : null,
+    };
+  }
+
+
+  formInitialized(name: string, form: FormGroup, value: Ubicacion) {
+    this.clienteForm.setControl(name, form);
+    const u = this.clienteForm.get(name);
+
+    u.setValue({
+      idLocalidad: value && value.idLocalidad ? value.idLocalidad : null,
+      idProvincia: value && value.idProvincia ? value.idProvincia : null,
+      calle: value && value.calle ? value.calle : '',
+      numero: value && value.numero ? value.numero : '',
+      piso: value && value.piso ? value.piso : '',
+      departamento: value && value.departamento ? value.departamento : '',
+      nombreProvincia: value && value.nombreProvincia ? value.nombreProvincia : '',
+      nombreLocalidad: value && value.nombreLocalidad ? value.nombreLocalidad : '',
+    });
+  }
+
+
+  getUbicacionFormValues(nombre: string, uOriginal: Ubicacion = null): any {
+    const values = this.clienteForm.get(nombre).value;
+    return {
+      idUbicacion: uOriginal ? uOriginal.idUbicacion : null,
+      descripcion: uOriginal ? uOriginal.descripcion : '',
+      latitud: uOriginal ? uOriginal.latitud : null,
+      longitud: uOriginal ? uOriginal.longitud : null,
+      calle: values.calle,
+      numero: values.numero,
+      piso: values.piso,
+      departamento: values.departamento,
+      eliminada: uOriginal ? uOriginal.eliminada : null,
+      idLocalidad: values.idLocalidad,
+      nombreLocalidad: '',
+      idProvincia: values.idProvincia,
+      nombreProvincia: '',
     };
   }
 
@@ -175,39 +213,10 @@ export class ClienteComponent implements OnInit {
         nombreFiscal: this.cliente.nombreFiscal,
         nombreFantasia: this.cliente.nombreFantasia,
         categoriaIVA: this.cliente.categoriaIVA,
-        direccion: this.cliente.direccion,
-        idPais: this.cliente.idPais,
-        idProvincia: this.cliente.idProvincia,
-        idLocalidad: this.cliente.idLocalidad,
         telefono: this.cliente.telefono,
         contacto: this.cliente.contacto,
-        email: this.cliente.email
+        email: this.cliente.email,
       });
     }
-  }
-
-  getPaises() {
-    this.paisesService.getPaises()
-      .subscribe((data: Pais[]) => {
-        this.paises = data;
-      });
-  }
-
-  provinciasHasId(idProvincia) {
-    for (let i = 0; i < this.provincias.length; i += 1) {
-      if (this.provincias[i].id_Provincia === idProvincia) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  localidadHasId(idLocalidad) {
-    for (let i = 0; i < this.localidades.length; i += 1) {
-      if (this.localidades[i].id_Localidad === idLocalidad) {
-        return true;
-      }
-    }
-    return false;
   }
 }

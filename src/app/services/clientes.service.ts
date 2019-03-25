@@ -43,13 +43,14 @@ export class ClientesService {
     return this.http.get<Cliente>(this.uriClientes + '/usuarios/' + idUsuario + '/empresas/' + environment.idEmpresa);
   }
 
+  getCliente(idCliente): Observable<Cliente> {
+    return this.http.get<Cliente>(this.uriClientes + '/' + idCliente);
+  }
+
   saveCliente(cliente) {
     const arr = ['idEmpresa=' + environment.idEmpresa];
     if (cliente.idLocalidad) {
       arr.push('idLocalidad=' + cliente.idLocalidad);
-    }
-    if (cliente.idCredencial) {
-      arr.push('idCredencial=' + cliente.idCredencial);
     }
     if (cliente.idViajante) {
       arr.push('idViajante=' + cliente.idViajante);
