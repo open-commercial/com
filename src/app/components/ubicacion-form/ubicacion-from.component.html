@@ -2,14 +2,14 @@
     <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.7rem">
       <mat-form-field fxFlex>
         <mat-select formControlName="idProvincia" placeholder="Provincia" required [disabled]="isProvinciasLoading || isLocalidadesLoading">
-          <mat-option *ngFor="let p of provincias" [value]="p.id_Provincia">
+          <mat-option *ngFor="let p of provincias" [value]="p.idProvincia">
             {{p.nombre}}
           </mat-option>
         </mat-select>
       </mat-form-field>
       <mat-form-field fxFlex>
         <mat-select formControlName="idLocalidad" placeholder="Localidad" required [disabled]="isProvinciasLoading || isLocalidadesLoading">
-          <mat-option *ngFor="let l of localidades" [value]="l.id_Localidad">
+          <mat-option *ngFor="let l of localidades" [value]="l.idLocalidad">
             {{l.nombre}}
           </mat-option>
         </mat-select>
@@ -17,19 +17,19 @@
           Requerido
         </mat-error>
       </mat-form-field>
-      <div *ngIf="isProvinciasLoading || isLocalidadesLoading" fxLayout="row" fxLayoutAlign="center center"><!-- fxLayout="row" fxLayoutAlign="center center" -->
+      <div *ngIf="isProvinciasLoading || isLocalidadesLoading" fxLayout="row" fxLayoutAlign="center center">
         <mat-spinner [diameter]="20" [strokeWidth]="3"></mat-spinner>
       </div>
     </div>
     <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.7rem">
       <mat-form-field fxFlex>
-        <input matInput placeholder="Calle" formControlName="calle">
+        <input matInput placeholder="Calle" formControlName="calle" required>
         <mat-error *ngIf="ubicacionForm.get('calle').hasError('required')">
           Requerido
         </mat-error>
       </mat-form-field>
       <mat-form-field fxFlex>
-        <input matInput placeholder="Número" formControlName="numero">
+        <input matInput placeholder="Número" formControlName="numero" required>
         <mat-error *ngIf="ubicacionForm.get('numero').hasError('required')">
           Requerido
         </mat-error>

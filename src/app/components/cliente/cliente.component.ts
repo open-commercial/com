@@ -25,7 +25,7 @@ export class ClienteComponent implements OnInit, OnChanges {
   inEdition = false;
   clienteForm: FormGroup;
   cliente: Cliente = null;
-  isLoading = true;
+  isLoading = false;
 
   // Lo siguiente es para poder iterar sobre el enum de CategoriaIVA en la vista:
   // Se guarda el metodo keys de Object en una variable
@@ -63,8 +63,9 @@ export class ClienteComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.createForm();
-    this.isLoading = true;
+
     if (!this.c) {
+      this.isLoading = true;
       this.clientesService.getClienteDelUsuario(this.authService.getLoggedInIdUsuario()).subscribe(
         (cliente: Cliente) => {
           if (cliente) {
@@ -178,6 +179,8 @@ export class ClienteComponent implements OnInit, OnChanges {
       numero: value && value.numero ? value.numero : '',
       piso: value && value.piso ? value.piso : '',
       departamento: value && value.departamento ? value.departamento : '',
+      nombreProvincia: value && value.nombreProvincia ? value.nombreProvincia : '',
+      nombreLocalidad: value && value.nombreLocalidad ? value.nombreLocalidad : '',
     });
   }
 

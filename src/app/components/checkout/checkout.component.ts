@@ -212,14 +212,14 @@ export class CheckoutComponent implements OnInit {
     const u = this.opcionEnvioForm.get(name);
 
     u.setValue({
-      buscador: '',
       nombreLocalidad: value && value.nombreLocalidad ? value.nombreLocalidad : '',
       nombreProvincia: value && value.nombreProvincia ? value.nombreProvincia : '',
-      codigoPostal: value && value.codigoPostal ? value.codigoPostal : '',
       calle: value && value.calle ? value.calle : '',
       numero: value && value.numero ? value.numero : '',
       piso: value && value.piso ? value.piso : '',
       departamento: value && value.departamento ? value.departamento : '',
+      idProvincia: value && value.idProvincia ? value.idProvincia : null,
+      idLocalidad: value && value.idLocalidad ? value.idLocalidad : null,
     });
   }
 
@@ -292,22 +292,24 @@ export class CheckoutComponent implements OnInit {
     this.ubicacionEnvio = null;
 
     if (!this.cliente) {
-      this.ubicacionEnvio = null;
       this.opcionClienteForm.get('id_Cliente').setValue(null);
       this.datosDelClienteForm.get('clienteUbicacionFacturacion').setValue(null);
       return;
     }
 
     this.opcionClienteForm.get('id_Cliente').setValue(this.cliente.id_Cliente);
-    this.getTotalesInfo();
 
     const uFacturacionObservable = this.cliente.idUbicacionFacturacion
       ? this.ubicacionService.getUbicacion(this.cliente.idUbicacionFacturacion) : null;
     const uEnvioObservable = this.cliente.idUbicacionEnvio
       ? this.ubicacionService.getUbicacion(this.cliente.idUbicacionEnvio) : null;
 
-    this.isUbicacionesLoading = true;
+    if (!uFacturacionObservable && !uEnvioObservable) {
+      return;
+    }
+
     if (uFacturacionObservable && uEnvioObservable) {
+      this.isUbicacionesLoading = true;
       forkJoin(uFacturacionObservable, uEnvioObservable)
         .pipe(finalize(() => this.isUbicacionesLoading = false))
         .subscribe(
@@ -320,6 +322,7 @@ export class CheckoutComponent implements OnInit {
         );
     } else {
       if (uFacturacionObservable) {
+        this.isUbicacionesLoading = true;
         uFacturacionObservable
           .pipe(finalize(() => this.isUbicacionesLoading = false))
           .subscribe(
@@ -331,6 +334,7 @@ export class CheckoutComponent implements OnInit {
           );
       }
       if (uEnvioObservable) {
+        this.isUbicacionesLoading = true;
         this.datosDelClienteForm.get('clienteUbicacionFacturacion').setValue(null);
         uEnvioObservable
           .pipe(finalize(() => this.isUbicacionesLoading = false))
@@ -342,6 +346,8 @@ export class CheckoutComponent implements OnInit {
           );
       }
     }
+
+    this.getTotalesInfo();
   }
 
   getSucursales() {
@@ -410,7 +416,8 @@ export class CheckoutComponent implements OnInit {
       if (dataEnvio.opcionEnvio === OpcionEnvio.DIRECCION_ENVIO) {
         tipoDeEnvio = TipoDeEnvio.USAR_UBICACION_ENVIO;
         uEnvio = dataEnvio.ubicacionEnvio;
-        delete uEnvio.buscador;
+        delete uEnvio.nombreLocalidad;
+        delete uEnvio.nombreProvincia;
 
         if (this.ubicacionEnvio && this.ubicacionEnvio.idUbicacion) {
           uEnvio.idUbicacion = this.ubicacionEnvio.idUbicacion;
@@ -466,6 +473,7 @@ export class CheckoutComponent implements OnInit {
       }
 
       if (dataEnvio.opcionEnvio === OpcionEnvio.DIRECCION_ENVIO) {
+        if (!this.opcionEnvioForm.get('ubicacionEnvio')) { return ''; }
         const ubicacionEnvio = this.opcionEnvioForm.get('ubicacionEnvio').value;
         ret = ubicacionEnvio
           ? ` ${ubicacionEnvio.calle} ${ubicacionEnvio.numero} ${ubicacionEnvio.nombreLocalidad}, ${ubicacionEnvio.nombreProvincia}`

@@ -128,7 +128,6 @@
         <div class="botonera">
           <button mat-raised-button color="primary" matStepperNext [disabled]="!cliente || !opcionEnvioForm.valid">Continuar</button>
         </div>
-        <!--{{ opcionEnvioForm.value | json }}-->
       </form>
     </mat-step>
     <mat-step [stepControl]="resumenForm" *ngIf="resumenForm">
