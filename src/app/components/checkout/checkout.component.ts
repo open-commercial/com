@@ -402,11 +402,11 @@ export class CheckoutComponent implements OnInit {
 
       let tipoDeEnvio = null;
       let uEnvio = null;
-      let idEmpresa = null;
+      let idSucursal = null;
 
       if (dataEnvio.opcionEnvio === OpcionEnvio.RETIRO_SUCURSAL) {
         tipoDeEnvio = TipoDeEnvio.RETIRO_EN_SUCURSAL;
-        idEmpresa = dataEnvio.sucursal.id_Empresa;
+        idSucursal = dataEnvio.sucursal.id_Empresa;
       }
 
       if (dataEnvio.opcionEnvio === OpcionEnvio.DIRECCION_FACTURACION) {
@@ -432,7 +432,7 @@ export class CheckoutComponent implements OnInit {
       this.enviarOrdenLoading = true;
 
       const cerrarOrdenObservable = this.carritoCompraService.enviarOrden(
-        tipoDeEnvio, this.resumenForm.get('observaciones').value, idEmpresa,
+        tipoDeEnvio, this.resumenForm.get('observaciones').value, idSucursal,
         this.authService.getLoggedInIdUsuario(), this.cliente.id_Cliente
       );
 

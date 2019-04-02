@@ -54,9 +54,9 @@ export class CarritoCompraService {
     return this.http.delete(uriDelete);
   }
 
-  enviarOrden(tipoDeEnvio: TipoDeEnvio, observaciones: string, idEmpresa, idUsuario, idCliente) {
-    const uriPost = `${this.uri}?` + (idEmpresa ? `idEmpresa=${idEmpresa}&` : `idEmpresa=${environment.idEmpresa}&`)
-      + `idUsuario=${idUsuario}&idCliente=${idCliente}&tipoDeEnvio=${TipoDeEnvio[tipoDeEnvio]}`;
+  enviarOrden(tipoDeEnvio: TipoDeEnvio, observaciones: string, idSucursal, idUsuario, idCliente) {
+    const uriPost = `${this.uri}?idEmpresa=${environment.idEmpresa}` + (idSucursal ? `&idSucursal=${idSucursal}` : '' )
+      + `&idUsuario=${idUsuario}&idCliente=${idCliente}&tipoDeEnvio=${TipoDeEnvio[tipoDeEnvio]}`;
 
     return this.http.post(uriPost, observaciones);
   }
