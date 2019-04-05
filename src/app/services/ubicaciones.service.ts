@@ -4,12 +4,11 @@ import {HttpClient} from '@angular/common/http';
 import {Ubicacion} from '../models/ubicacion';
 import {Observable} from 'rxjs';
 import {Cliente} from '../models/cliente';
-import get = Reflect.get;
 import {Provincia} from '../models/provincia';
 import {Localidad} from '../models/localidad';
 
 @Injectable()
-export class UbicacionService {
+export class UbicacionesService {
 
   url = environment.apiUrl + '/api/v1/ubicaciones';
 

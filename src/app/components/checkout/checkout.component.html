@@ -108,7 +108,7 @@
                   <agm-snazzy-info-window [maxWidth]="200" [closeWhenOthersOpen]="true" [isOpen]="true">
                     <ng-template>
                       <!--{{ s.nombre + '(' + s.ubicacion.descripcion + ')' }}-->
-                      {{ getUbicacionStr() }}
+                      {{ getUbicacionSucursalStr() }}
                     </ng-template>
                   </agm-snazzy-info-window>
                 </agm-marker>
@@ -118,8 +118,9 @@
           <div *ngIf="opcionEnvioForm.get('opcionEnvio').value === opcionEnvio.DIRECCION_FACTURACION">
             <strong>Dirección de Facturación a usar:</strong>
             <em *ngIf="!isUbicacionesLoading && ubicacionFacturacion">
-              {{ ubicacionFacturacion.calle }} {{ ubicacionFacturacion.numero }}
-              {{ ubicacionFacturacion.nombreLocalidad }}, {{ ubicacionFacturacion.nombreProvincia }}
+              <!--{{ ubicacionFacturacion.calle }} {{ ubicacionFacturacion.numero }}
+              {{ ubicacionFacturacion.nombreLocalidad }}, {{ ubicacionFacturacion.nombreProvincia }}-->
+              {{ getUbicacionStr(ubicacionFacturacion) }}
             </em>
           </div>
           <div *ngIf="opcionEnvioForm.get('opcionEnvio').value === opcionEnvio.DIRECCION_ENVIO">

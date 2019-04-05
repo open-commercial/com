@@ -1,0 +1,9 @@
+<div class="sic-com-cliente-ubicaciones">
+  <div *ngIf="isLoading" fxLayout="row" fxLayoutAlign="center center">
+    <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
+  </div>
+  <div *ngIf="!isLoading && cliente">
+    <sic-com-ubicacion [ubicacion]="ubicacionFacturacion"></sic-com-ubicacion>
+    <sic-com-ubicacion [ubicacion]="ubicacionEnvio"></sic-com-ubicacion>
+  </div>
+</div>

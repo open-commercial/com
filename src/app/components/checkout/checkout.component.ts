@@ -15,7 +15,7 @@ import {Router} from '@angular/router';
 import {Ubicacion} from '../../models/ubicacion';
 import {EmpresasService} from '../../services/empresas.service';
 import {Empresa} from '../../models/empresa';
-import {UbicacionService} from '../../services/ubicacion.service';
+import {UbicacionesService} from '../../services/ubicaciones.service';
 import {TipoDeEnvio} from '../../models/tipo-de-envio';
 
 enum OpcionCliente {
@@ -108,7 +108,7 @@ export class CheckoutComponent implements OnInit {
               private authService: AuthService,
               private clientesService: ClientesService,
               private empresasService: EmpresasService,
-              private ubicacionService: UbicacionService,
+              private ubicacionesService: UbicacionesService,
               private fb: FormBuilder,
               private router: Router) {
   }
@@ -300,9 +300,9 @@ export class CheckoutComponent implements OnInit {
     this.opcionClienteForm.get('id_Cliente').setValue(this.cliente.id_Cliente);
 
     const uFacturacionObservable = this.cliente.idUbicacionFacturacion
-      ? this.ubicacionService.getUbicacion(this.cliente.idUbicacionFacturacion) : null;
+      ? this.ubicacionesService.getUbicacion(this.cliente.idUbicacionFacturacion) : null;
     const uEnvioObservable = this.cliente.idUbicacionEnvio
-      ? this.ubicacionService.getUbicacion(this.cliente.idUbicacionEnvio) : null;
+      ? this.ubicacionesService.getUbicacion(this.cliente.idUbicacionEnvio) : null;
 
     if (!uFacturacionObservable && !uEnvioObservable) {
       return;
@@ -365,7 +365,7 @@ export class CheckoutComponent implements OnInit {
 
     if (this.sucursal.idUbicacion) {
       this.isUbicacionSucursalLoading = true;
-      this.ubicacionService.getUbicacion(this.sucursal.idUbicacion)
+      this.ubicacionesService.getUbicacion(this.sucursal.idUbicacion)
         .pipe(finalize(() => this.isUbicacionSucursalLoading = false))
         .subscribe(
           (ubicacion: Ubicacion) => this.ubicacionSucursal = ubicacion,
@@ -374,8 +374,22 @@ export class CheckoutComponent implements OnInit {
     }
   }
 
-  getUbicacionStr(): string {
+  getUbicacionSucursalStr(): string {
     return this.sucursal ? this.sucursal.detalleUbicacion : '(no seleccionada)';
+  }
+
+  getUbicacionStr(u: Ubicacion) {
+    const str = [];
+    if (u) {
+      str.push(u.calle ? u.calle : '');
+      str.push(u.numero ? u.numero : '');
+      str.push(u.piso ? u.piso : '');
+      str.push(u.piso ? u.piso : '');
+      str.push(u.departamento ? u.departamento : '');
+      str.push(u.nombreLocalidad + ' ' + u.nombreProvincia);
+    }
+
+    return str.join(' ');
   }
 
   getTotalesInfo() {
@@ -438,8 +452,8 @@ export class CheckoutComponent implements OnInit {
 
       if (uEnvio) {
         const ubicacionObservable: Observable<void|Ubicacion> = uEnvio.idUbicacion
-          ? this.ubicacionService.updateUbicacion(uEnvio)
-          : this.ubicacionService.createUbicacionEnvioCliente(this.cliente, uEnvio);
+          ? this.ubicacionesService.updateUbicacion(uEnvio)
+          : this.ubicacionesService.createUbicacionEnvioCliente(this.cliente, uEnvio);
         ubicacionObservable.subscribe(
           u => {
             cerrarOrdenObservable.subscribe(

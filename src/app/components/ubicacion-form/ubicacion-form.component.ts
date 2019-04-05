@@ -3,16 +3,16 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Ubicacion} from '../../models/ubicacion';
 import {Provincia} from '../../models/provincia';
 import {Localidad} from '../../models/localidad';
-import {UbicacionService} from '../../services/ubicacion.service';
+import {UbicacionesService} from '../../services/ubicaciones.service';
 import {AvisoService} from '../../services/aviso.service';
 import {finalize} from 'rxjs/operators';
 
 @Component({
   selector: 'sic-com-ubicacion-form',
-  templateUrl: 'ubicacion-from.component.html',
-  styleUrls: ['ubicacion-from.component.scss']
+  templateUrl: 'ubicacion-form.component.html',
+  styleUrls: ['ubicacion-form.component.scss']
 })
-export class UbicacionFromComponent implements OnInit {
+export class UbicacionFormComponent implements OnInit {
   @Output()
   formReady = new EventEmitter<FormGroup>(true);
 
@@ -26,37 +26,29 @@ export class UbicacionFromComponent implements OnInit {
   isLocalidadesLoading = false;
 
   constructor(private fb: FormBuilder,
-              private ubicacionService: UbicacionService,
+              private ubicacionesService: UbicacionesService,
               private avisoService: AvisoService) {}
 
   ngOnInit() {
     this.createForm();
     this.isProvinciasLoading = true;
-    this.ubicacionService.getProvincias()
+    this.ubicacionesService.getProvincias()
       .pipe(
-        finalize(() => {
-          this.isProvinciasLoading = false;
-        })
+        finalize(() => this.isProvinciasLoading = false)
       )
       .subscribe(
-        (data: Provincia[]) => {
-          this.provincias = data;
-          setTimeout(() => {
-            if (!this.ubicacionForm.get('idProvincia').value) {
-               if (this.provincias.length) { this.ubicacionForm.get('idProvincia').setValue(this.provincias[0].idProvincia); }
-            }
-          }, 1000);
-        },
+        (data: Provincia[]) => this.provincias = data,
         err => this.avisoService.openSnackBar(err.error, '', 3500)
-      );
+      )
+    ;
   }
 
   createForm() {
     this.ubicacionForm = this.fb.group({
       idProvincia: [null, Validators.required],
       idLocalidad: [null, Validators.required],
-      calle: ['', Validators.required],
-      numero: ['', Validators.required],
+      calle: '',
+      numero: '',
       piso: '',
       departamento: '',
       nombreLocalidad: '',
@@ -75,7 +67,7 @@ export class UbicacionFromComponent implements OnInit {
         }
 
         this.isLocalidadesLoading = true;
-        this.ubicacionService.getLocalidades(value)
+        this.ubicacionesService.getLocalidades(value)
           .pipe(
             finalize(() => {
               this.isLocalidadesLoading = false;
@@ -86,7 +78,7 @@ export class UbicacionFromComponent implements OnInit {
               const idLocalidad = this.ubicacionForm.get('idLocalidad').value;
               this.localidades = data;
               if (!this.inLocalidades(idLocalidad)) {
-                this.ubicacionForm.get('idLocalidad').setValue(this.localidades.length ? this.localidades[0].idLocalidad : null);
+                this.ubicacionForm.get('idLocalidad').setValue(null);
                 this.ubicacionForm.get('idLocalidad').markAsTouched();
               }
             },
