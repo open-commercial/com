@@ -2,8 +2,30 @@
   <div *ngIf="isLoading" fxLayout="row" fxLayoutAlign="center center">
     <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
   </div>
-  <div *ngIf="!isLoading && cliente">
-    <sic-com-ubicacion [ubicacion]="ubicacionFacturacion"></sic-com-ubicacion>
-    <sic-com-ubicacion [ubicacion]="ubicacionEnvio"></sic-com-ubicacion>
-  </div>
+  <mat-accordion *ngIf="!isLoading && cliente">
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>Ubicación de Facturación</mat-panel-title>
+        <!--<mat-icon>fingerprint</mat-icon>-->
+      </mat-expansion-panel-header>
+      <div *ngIf="ufUpdating" fxLayout="row" fxLayoutAlign="center center">
+        <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
+      </div>
+      <sic-com-ubicacion *ngIf="!ufUpdating"
+                         [ubicacion]="ubicacionFacturacion" (updated)="ubicacionFacturacionUpdated($event)"
+                         [inEdition]="ufInEdition" (editionStateChange)="ufInEdition = $event"></sic-com-ubicacion>
+    </mat-expansion-panel>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>Ubicacion de Envío</mat-panel-title>
+        <!--<mat-icon>how_to_reg</mat-icon>-->
+      </mat-expansion-panel-header>
+      <div *ngIf="ueUpdating" fxLayout="row" fxLayoutAlign="center center">
+        <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
+      </div>
+      <sic-com-ubicacion *ngIf="!ueUpdating"
+                         [ubicacion]="ubicacionEnvio" (updated)="ubicacionEnvioUpdated($event)"
+                         [inEdition]="ueInEdition" (editionStateChange)="ueInEdition = $event"></sic-com-ubicacion>
+    </mat-expansion-panel>
+  </mat-accordion>
 </div>

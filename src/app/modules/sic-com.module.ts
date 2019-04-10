@@ -77,7 +77,7 @@ registerLocaleData(localeEs, 'es-AR', localeEsExtra);
     HomeComponent,
     UbicacionFormComponent,
     UbicacionComponent,
-    ClienteUbicacionesComponent
+    ClienteUbicacionesComponent,
   ],
   imports: [
     HttpClientModule,
