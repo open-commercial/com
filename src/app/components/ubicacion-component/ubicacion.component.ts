@@ -68,8 +68,8 @@ export class UbicacionComponent implements OnInit, OnChanges {
 
   createForm() {
     this.ubicacionForm = this.fb.group({
-      idProvincia: [{value: null, disabled: true}, Validators.required],
-      idLocalidad: [{value: null, disabled: true}, Validators.required],
+      idProvincia: [null, Validators.required],
+      idLocalidad: [null, Validators.required],
       calle: '',
       numero: '',
       piso: '',

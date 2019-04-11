@@ -15,6 +15,9 @@
           {{p.nombre}}
         </mat-option>
       </mat-select>
+      <mat-error *ngIf="ubicacionForm.get('idProvincia').hasError('required')">
+        Requerido
+      </mat-error>
     </mat-form-field>
     <mat-form-field fxFlex>
       <mat-select formControlName="idLocalidad" placeholder="Localidad" required><!-- [disabled]="isProvinciasLoading || isLocalidadesLoading"-->
