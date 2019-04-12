@@ -7,7 +7,6 @@ import {finalize} from 'rxjs/operators';
 import {Localidad} from '../../models/localidad';
 import {Provincia} from '../../models/provincia';
 import {Ubicacion} from '../../models/ubicacion';
-import {Cliente} from '../../models/cliente';
 
 @Component({
   selector: 'sic-com-ubicacion',
@@ -139,34 +138,12 @@ export class UbicacionComponent implements OnInit, OnChanges {
     const arr = [];
     arr.push(this.ubicacion.calle ? this.ubicacion.calle : '');
     arr.push(this.ubicacion.numero ? this.ubicacion.numero : '');
-    arr.push(this.ubicacion.piso ? this.ubicacion.piso + ' Piso' : '');
-    arr.push(this.ubicacion.departamento ? 'Dpto ' + this.ubicacion.departamento : '');
-    arr.push(this.ubicacion.nombreLocalidad ? ' - ' + this.ubicacion.nombreLocalidad : ' - ');
+    arr.push(this.ubicacion.piso ? this.ubicacion.piso : '');
+    arr.push(this.ubicacion.departamento ? this.ubicacion.departamento : '');
+    arr.push(this.ubicacion.nombreLocalidad ? this.ubicacion.nombreLocalidad : '');
     arr.push(this.ubicacion.nombreProvincia ? this.ubicacion.nombreProvincia : '');
     return arr.join(' ');
   }
-
-/*
-  indexOfProvincia(idProvincia) {
-    for (let i = 0; i < this.provincias.length; i += 1) {
-      if (this.provincias[i].idProvincia === idProvincia) {
-        return i;
-      }
-    }
-
-    return -1;
-  }
-
-  indexOfLocalidad(idLocalidad) {
-    for (let i = 0; i < this.localidades.length; i += 1) {
-      if (this.localidades[i].idLocalidad === idLocalidad) {
-        return i;
-      }
-    }
-
-    return -1;
-  }
-*/
 
   inLocalidades(idLocalidad) {
     for (const l of this.localidades) {

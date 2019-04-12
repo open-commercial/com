@@ -8,8 +8,8 @@ import {ClientesService} from '../../services/clientes.service';
 import {Usuario} from '../../models/usuario';
 import {Cliente} from '../../models/cliente';
 import {Rol} from '../../models/rol';
-import {forkJoin, observable, Observable, Subject} from 'rxjs';
-import {debounceTime, filter, finalize} from 'rxjs/operators';
+import {Subject} from 'rxjs';
+import {debounceTime, finalize} from 'rxjs/operators';
 import {MatStepper} from '@angular/material';
 import {Router} from '@angular/router';
 import {Ubicacion} from '../../models/ubicacion';
@@ -83,12 +83,12 @@ export class CheckoutComponent implements OnInit {
   isUbicacionSucursalLoading = false;
 
   ubicacionFacturacion: Ubicacion = null;
-  ufUpdating = false;
-  ufInEdition = false;
+  ubicacionFacturacionUpdating = false;
+  ubicacionFacturacionInEdition = false;
 
   ubicacionEnvio: Ubicacion = null;
-  ueUpdating = false;
-  ueInEdition = false;
+  ubicacionEnvioUpdating = false;
+  ubicacionEnvioInEdition = false;
 
   isUbicacionesLoading = false;
 
@@ -281,8 +281,8 @@ export class CheckoutComponent implements OnInit {
 
   asignarCliente(newCliente: Cliente | null) {
     this.cliente = newCliente;
-    this.ubicacionFacturacion = null;
-    this.ubicacionEnvio = null;
+    this.ubicacionFacturacion = newCliente.ubicacionFacturacion;
+    this.ubicacionEnvio = newCliente.ubicacionEnvio;
 
     if (!this.cliente) {
       this.opcionClienteForm.get('id_Cliente').setValue(null);
@@ -290,52 +290,6 @@ export class CheckoutComponent implements OnInit {
     }
 
     this.opcionClienteForm.get('id_Cliente').setValue(this.cliente.id_Cliente);
-
-    const uFacturacionObservable = this.cliente.idUbicacionFacturacion
-      ? this.ubicacionesService.getUbicacion(this.cliente.idUbicacionFacturacion) : null;
-    const uEnvioObservable = this.cliente.idUbicacionEnvio
-      ? this.ubicacionesService.getUbicacion(this.cliente.idUbicacionEnvio) : null;
-
-    if (!uFacturacionObservable && !uEnvioObservable) {
-      return;
-    }
-
-    if (uFacturacionObservable && uEnvioObservable) {
-      this.isUbicacionesLoading = true;
-      forkJoin(uFacturacionObservable, uEnvioObservable)
-        .pipe(finalize(() => this.isUbicacionesLoading = false))
-        .subscribe(
-          (data) => {
-            this.ubicacionFacturacion = data[0];
-            this.ubicacionEnvio = data[1];
-          },
-          err => this.avisoService.openSnackBar(err.error, '', 3500)
-        );
-    } else {
-      if (uFacturacionObservable) {
-        this.isUbicacionesLoading = true;
-        uFacturacionObservable
-          .pipe(finalize(() => this.isUbicacionesLoading = false))
-          .subscribe(
-            (u: Ubicacion) => {
-              this.ubicacionFacturacion = u;
-            },
-            err => this.avisoService.openSnackBar(err.error, '', 3500)
-          );
-      }
-      if (uEnvioObservable) {
-        this.isUbicacionesLoading = true;
-        uEnvioObservable
-          .pipe(finalize(() => this.isUbicacionesLoading = false))
-          .subscribe(
-            (u: Ubicacion) => {
-              this.ubicacionEnvio = u;
-            },
-            err => this.avisoService.openSnackBar(err.error, '', 3500)
-          );
-      }
-    }
-
     this.getTotalesInfo();
   }
 
@@ -372,8 +326,8 @@ export class CheckoutComponent implements OnInit {
     if (u) {
       str.push(u.calle ? u.calle : '');
       str.push(u.numero ? u.numero : '');
-      str.push(u.piso ? u.piso + ' Piso' : '');
-      str.push(u.departamento ? 'Dpto ' + u.departamento : '');
+      str.push(u.piso ? u.piso : '');
+      str.push(u.departamento ? u.departamento : '');
       str.push(u.nombreLocalidad + ' ' + u.nombreProvincia);
     }
 
@@ -381,76 +335,56 @@ export class CheckoutComponent implements OnInit {
   }
 
   ubicacionFacturacionUpdated(ubicacion: Ubicacion) {
-    this.ufUpdating = true;
-    if (ubicacion.idUbicacion) {
-      this.ubicacionesService.updateUbicacion(ubicacion)
-        .subscribe(
-          () => {
-            this.ubicacionesService.getUbicacion(this.ubicacionFacturacion.idUbicacion)
-              .pipe(finalize(() => this.ufUpdating = false))
-              .subscribe(u => {
-                this.ubicacionFacturacion = u;
-                this.ufInEdition = false;
-                this.opcionEnvioForm.get('continueStepValidator').setValue('whatever');
-              });
-          },
-          err => {
-            this.ufUpdating = false;
-            this.avisoService.openSnackBar(err.error, '', 3500);
-          }
-        )
-      ;
-    } else {
-      this.ubicacionesService.createUbicacionFacturacionCliente(this.cliente, ubicacion)
-        .pipe(finalize(() => this.ufUpdating = false))
-        .subscribe(u => {
-          this.ubicacionFacturacion = u;
-          this.ufInEdition = false;
-          this.opcionEnvioForm.get('continueStepValidator').setValue('whatever');
-        })
-      ;
-    }
+    this.ubicacionFacturacionUpdating = true;
+    this.cliente.ubicacionFacturacion = ubicacion;
+    this.clientesService.saveCliente(this.cliente)
+      .subscribe(
+        () => {
+          this.clientesService.getCliente(this.cliente.id_Cliente)
+            .pipe(finalize(() => this.ubicacionFacturacionUpdating = false))
+            .subscribe(
+              (c: Cliente) => {
+              this.ubicacionFacturacion = c.ubicacionFacturacion;
+              this.ubicacionFacturacionInEdition = false;
+              this.opcionEnvioForm.get('continueStepValidator').setValue('whatever');
+            });
+        },
+        err => {
+          this.ubicacionFacturacionUpdating = false;
+          this.avisoService.openSnackBar(err.error, '', 3500);
+        }
+      );
   }
 
   ubicacionEnvioUpdated(ubicacion: Ubicacion) {
-    this.ueUpdating = true;
-    if (ubicacion.idUbicacion) {
-      this.ubicacionesService.updateUbicacion(ubicacion)
-        .subscribe(
-          () => {
-            this.ubicacionesService.getUbicacion(this.ubicacionEnvio.idUbicacion)
-              .pipe(finalize(() => this.ueUpdating = false))
-              .subscribe(u => {
-                this.ubicacionEnvio = u;
-                this.ueInEdition = false;
-                this.opcionEnvioForm.get('continueStepValidator').setValue('whatever');
-              });
-          },
-          err => {
-            this.ueUpdating = false;
-            this.avisoService.openSnackBar(err.error, '', 3500);
-          }
-        )
-      ;
-    } else {
-      this.ubicacionesService.createUbicacionEnvioCliente(this.cliente, ubicacion)
-        .pipe(finalize(() => this.ueUpdating = false))
-        .subscribe(u => {
-          this.ubicacionEnvio = u;
-          this.ueInEdition = false;
-          this.opcionEnvioForm.get('continueStepValidator').setValue('whatever');
-        })
-      ;
-    }
+    this.ubicacionEnvioUpdating = true;
+
+    this.cliente.ubicacionEnvio = ubicacion;
+    this.clientesService.saveCliente(this.cliente)
+      .subscribe(
+        () => {
+          this.clientesService.getCliente(this.cliente.id_Cliente)
+            .pipe(finalize(() => this.ubicacionEnvioUpdating = false))
+            .subscribe((c: Cliente) => {
+              this.ubicacionEnvio = c.ubicacionEnvio;
+              this.ubicacionEnvioInEdition = false;
+              this.opcionEnvioForm.get('continueStepValidator').setValue('whatever');
+            });
+        },
+        err => {
+          this.ubicacionEnvioUpdating = false;
+          this.avisoService.openSnackBar(err.error, '', 3500);
+        }
+      );
   }
 
   ufEditionStateChange(inEdition: boolean) {
-    this.ufInEdition = inEdition;
+    this.ubicacionFacturacionInEdition = inEdition;
     this.opcionEnvioForm.get('continueStepValidator').setValue((inEdition || !this.ubicacionFacturacion) ? null : 'whatever');
   }
 
   ueEditionStateChange(inEdition: boolean) {
-    this.ueInEdition = inEdition;
+    this.ubicacionEnvioInEdition = inEdition;
     this.opcionEnvioForm.get('continueStepValidator').setValue((inEdition || !this.ubicacionEnvio) ? null : 'whatever');
   }
 
@@ -460,8 +394,8 @@ export class CheckoutComponent implements OnInit {
 
     ret = ret && (
       (opcionEnvio === OpcionEnvio.RETIRO_SUCURSAL && this.opcionEnvioForm.get('sucursal').value) ||
-      (opcionEnvio === OpcionEnvio.DIRECCION_FACTURACION && this.ubicacionFacturacion && !this.ufInEdition) ||
-      (opcionEnvio === OpcionEnvio.DIRECCION_ENVIO && this.ubicacionEnvio && !this.ueInEdition)
+      (opcionEnvio === OpcionEnvio.DIRECCION_FACTURACION && this.ubicacionFacturacion && !this.ubicacionFacturacionInEdition) ||
+      (opcionEnvio === OpcionEnvio.DIRECCION_ENVIO && this.ubicacionEnvio && !this.ubicacionEnvioInEdition)
     );
 
     return ret;
@@ -509,7 +443,7 @@ export class CheckoutComponent implements OnInit {
       this.opcionEnvioForm.disable();
       this.enviarOrdenLoading = true;
 
-      const cerrarOrdenObservable = this.carritoCompraService.enviarOrden(
+      this.carritoCompraService.enviarOrden(
         tipoDeEnvio, this.resumenForm.get('observaciones').value, idSucursal,
         this.authService.getLoggedInIdUsuario(), this.cliente.id_Cliente
       )

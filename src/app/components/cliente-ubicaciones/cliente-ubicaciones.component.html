@@ -6,26 +6,24 @@
     <mat-expansion-panel>
       <mat-expansion-panel-header>
         <mat-panel-title>Ubicación de Facturación</mat-panel-title>
-        <!--<mat-icon>fingerprint</mat-icon>-->
       </mat-expansion-panel-header>
-      <div *ngIf="ufUpdating" fxLayout="row" fxLayoutAlign="center center">
+      <div *ngIf="ubicacionFacturacionUpdating" fxLayout="row" fxLayoutAlign="center center">
         <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
       </div>
-      <sic-com-ubicacion *ngIf="!ufUpdating"
+      <sic-com-ubicacion *ngIf="!ubicacionFacturacionUpdating"
                          [ubicacion]="ubicacionFacturacion" (updated)="ubicacionFacturacionUpdated($event)"
-                         [inEdition]="ufInEdition" (editionStateChange)="ufInEdition = $event"></sic-com-ubicacion>
+                         [inEdition]="ubicacionFacturacionInEdition" (editionStateChange)="ubicacionFacturacionInEdition = $event"></sic-com-ubicacion>
     </mat-expansion-panel>
     <mat-expansion-panel>
       <mat-expansion-panel-header>
         <mat-panel-title>Ubicacion de Envío</mat-panel-title>
-        <!--<mat-icon>how_to_reg</mat-icon>-->
       </mat-expansion-panel-header>
-      <div *ngIf="ueUpdating" fxLayout="row" fxLayoutAlign="center center">
+      <div *ngIf="ubicacionEnvioUpdating" fxLayout="row" fxLayoutAlign="center center">
         <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
       </div>
-      <sic-com-ubicacion *ngIf="!ueUpdating"
+      <sic-com-ubicacion *ngIf="!ubicacionEnvioUpdating"
                          [ubicacion]="ubicacionEnvio" (updated)="ubicacionEnvioUpdated($event)"
-                         [inEdition]="ueInEdition" (editionStateChange)="ueInEdition = $event"></sic-com-ubicacion>
+                         [inEdition]="ubicacionEnvioInEdition" (editionStateChange)="ubicacionEnvioInEdition = $event"></sic-com-ubicacion>
     </mat-expansion-panel>
   </mat-accordion>
 </div>

@@ -112,15 +112,21 @@
           <br>
           <div *ngIf="opcionEnvioForm.get('opcionEnvio').value === opcionEnvio.DIRECCION_FACTURACION">
             <strong>UBICACIÓN DE FACTURACIÓN</strong>
-            <sic-com-ubicacion *ngIf="!isUbicacionesLoading && !ufUpdating"
+            <div fxLayout="row" fxLayoutAlign="center center" *ngIf="ubicacionFacturacionUpdating" class="sic-com-spinner-container">
+              <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
+            </div>
+            <sic-com-ubicacion *ngIf="!ubicacionFacturacionUpdating"
                                [ubicacion]="ubicacionFacturacion" (updated)="ubicacionFacturacionUpdated($event)"
-                               [inEdition]="ufInEdition" (editionStateChange)="ufEditionStateChange($event)"></sic-com-ubicacion>
+                               [inEdition]="ubicacionFacturacionInEdition" (editionStateChange)="ufEditionStateChange($event)"></sic-com-ubicacion>
           </div>
           <div *ngIf="opcionEnvioForm.get('opcionEnvio').value === opcionEnvio.DIRECCION_ENVIO">
             <strong>UBICACIÓN DE ENVIO</strong>
-            <sic-com-ubicacion *ngIf="!isUbicacionesLoading && !ueUpdating"
+            <div fxLayout="row" fxLayoutAlign="center center" *ngIf="ubicacionEnvioUpdating" class="sic-com-spinner-container">
+              <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
+            </div>
+            <sic-com-ubicacion *ngIf="!ubicacionEnvioUpdating"
                                [ubicacion]="ubicacionEnvio" (updated)="ubicacionEnvioUpdated($event)"
-                               [inEdition]="ueInEdition" (editionStateChange)="ueEditionStateChange($event)"></sic-com-ubicacion>
+                               [inEdition]="ubicacionEnvioInEdition" (editionStateChange)="ueEditionStateChange($event)"></sic-com-ubicacion>
           </div>
         </div>
         <br>

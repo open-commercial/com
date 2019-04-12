@@ -48,15 +48,7 @@ export class ClientesService {
   }
 
   saveCliente(cliente) {
-    const arr = ['idEmpresa=' + environment.idEmpresa];
-    if (cliente.idLocalidad) {
-      arr.push('idLocalidad=' + cliente.idLocalidad);
-    }
-    if (cliente.idViajante) {
-      arr.push('idViajante=' + cliente.idViajante);
-    }
-    const url = this.uriClientes + '?' + arr.join('&');
-
-    return this.http.put(url, cliente);
+    cliente.idEmpresa = environment.idEmpresa;
+    return this.http.put(this.uriClientes, cliente);
   }
 }
