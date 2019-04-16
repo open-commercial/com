@@ -63,7 +63,8 @@ export class LoginComponent implements OnInit {
                 if (cliente) {
                   this.router.navigate(['']);
                 } else {
-                  this.avisoService.openSnackBar('Su usuario no posee cuenta de cliente asociada.', '', 3500);
+                  this.avisoService.openSnackBar(
+                    'Su usuario no posee cuenta de cliente asociada. Por favor, comuníquese con nosotros.', '', 3500);
                   this.authService.logout();
                 }
                 this.loading = false;
