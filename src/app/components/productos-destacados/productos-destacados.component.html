@@ -1,0 +1,20 @@
+<div class="sic-com-productos-destacados">
+  <div class="scroll-container">
+    <mat-card *ngFor="let p of destacados" class="destacado">
+      <mat-card-header>
+<!--        <div mat-card-avatar class="example-header-image"></div>-->
+        <mat-card-title>$ {{ (estaBonificado(p) ? p.precioBonificado : p.precioLista) | number:'1.2-2':'es-AR' }}</mat-card-title>
+<!--        <mat-card-subtitle>Dog Breed</mat-card-subtitle>-->
+      </mat-card-header>
+      <img mat-card-image [src]="p.urlImagen ? p.urlImagen : 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1545616229/assets/sin_imagen.png'" alt="Imagen del producto">
+      <mat-card-content>
+        <p>
+          {{ p.descripcion }}
+        </p>
+      </mat-card-content>
+      <mat-card-actions>
+        <a mat-raised-button [routerLink]="['/producto/' + p.idProducto]" color="primary">Ver Producto</a>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</div>
