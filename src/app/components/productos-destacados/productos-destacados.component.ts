@@ -11,12 +11,13 @@ import {AuthService} from '../../services/auth.service';
 export class ProductosDestacadosComponent implements OnInit {
 
   destacados: Producto[] = [];
+
   constructor(private productosService: ProductosService,
               private authService: AuthService) {}
 
   ngOnInit(): void {
     this.productosService.getProductosDestacados(0)
-      .subscribe((data) => this.destacados = data.content);
+      .subscribe((data) => this.destacados = data['content']);
   }
 
   estaBonificado(p) {
