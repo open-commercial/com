@@ -1,14 +1,12 @@
-import {Component, Input, OnChanges, SimpleChange, OnInit, EventEmitter, Output} from '@angular/core';
+import {Component, Input, OnChanges, SimpleChange, OnInit, EventEmitter, Output, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AuthService} from '../../services/auth.service';
 import {Cliente} from '../../models/cliente';
 import {ClientesService} from '../../services/clientes.service';
 import {AvisoService} from '../../services/aviso.service';
 import {CategoriaIVA} from '../../models/categoria-iva';
-import {Ubicacion} from '../../models/ubicacion';
-import {UbicacionService} from '../../services/ubicacion.service';
-import {forkJoin} from 'rxjs';
 import {finalize} from 'rxjs/operators';
+import {UbicacionFormComponent} from '../ubicacion-form/ubicacion-form.component';
 
 @Component({
   selector: 'sic-com-cliente',
@@ -22,6 +20,9 @@ export class ClienteComponent implements OnInit, OnChanges {
   @Output() updated = new EventEmitter<Cliente>(true);
   @Output() modeStatusChanged = new EventEmitter<boolean>(true);
 
+  @ViewChild(UbicacionFormComponent)
+  private ufComponent: UbicacionFormComponent;
+
   inEdition = false;
   clienteForm: FormGroup;
   cliente: Cliente = null;
@@ -33,13 +34,10 @@ export class ClienteComponent implements OnInit, OnChanges {
   // Asigno el enum a una variable
   categoriasIVA = CategoriaIVA;
 
-  ubicacionFacturacion: Ubicacion = null;
-
   constructor(private authService: AuthService,
               private fb: FormBuilder,
               private avisoService: AvisoService,
-              private clientesService: ClientesService,
-              private ubicacionService: UbicacionService) {
+              private clientesService: ClientesService) {
   }
 
   createForm() {
@@ -66,42 +64,18 @@ export class ClienteComponent implements OnInit, OnChanges {
 
     if (!this.c) {
       this.isLoading = true;
-      this.clientesService.getClienteDelUsuario(this.authService.getLoggedInIdUsuario()).subscribe(
-        (cliente: Cliente) => {
-          if (cliente) {
-            this.asignarCliente(cliente);
-          }
-        },
-        error => this.isLoading = false
-      );
-    }
-  }
-
-  asignarCliente(newCliente: Cliente) {
-    this.cliente = newCliente;
-
-    if (!this.cliente) {
-      this.ubicacionFacturacion = null;
-      return;
-    }
-
-    // Sincronizo la ubicación de Facturación
-    if (this.cliente.idUbicacionFacturacion) {
-      if (!this.isLoading) { this.isLoading = true; }
-      this.ubicacionService.getUbicacion(this.cliente.idUbicacionFacturacion)
+      this.clientesService.getClienteDelUsuario(this.authService.getLoggedInIdUsuario())
         .pipe(finalize(() => this.isLoading = false))
         .subscribe(
-          (u: Ubicacion) => this.ubicacionFacturacion = u,
+          cliente => this.cliente = cliente,
           err => this.avisoService.openSnackBar(err.error, '', 3500)
         );
-    } else {
-      this.isLoading = false;
     }
   }
 
   ngOnChanges(changes: {[propKey: string]: SimpleChange}) {
     if (changes.c !== undefined) {
-      this.asignarCliente(changes.c.currentValue);
+      this.cliente = changes.c.currentValue;
     }
 
     if (changes.editionMode !== undefined) {
@@ -121,27 +95,17 @@ export class ClienteComponent implements OnInit, OnChanges {
 
   submit() {
     if (this.clienteForm.valid) {
-      const cliente = this.getFormValues();
-      const ubicacionFacturacion = this.getUbicacionFormValues('ubicacionFacturacion', this.ubicacionFacturacion);
-
-      const clienteObservable   = this.clientesService.saveCliente(cliente);
-      const ubicacionObservable = this.ubicacionFacturacion && this.ubicacionFacturacion.idUbicacion
-        ? this.ubicacionService.updateUbicacion(ubicacionFacturacion)
-        : this.ubicacionService.createUbicacionFacturacionCliente(cliente, ubicacionFacturacion);
+      const clienteFormValues = this.getFormValues();
 
       this.isLoading = true;
-
-      forkJoin(clienteObservable, ubicacionObservable)
+      this.clientesService.saveCliente(clienteFormValues)
         .subscribe((data) => {
           this.clientesService.getCliente(this.cliente.id_Cliente)
-            .subscribe((newcliente: Cliente) => {
-              if (newcliente) {
-                this.asignarCliente(newcliente);
+            .pipe(finalize(() => this.isLoading = false))
+            .subscribe(cliente => {
+                this.cliente = cliente;
                 this.updated.emit(this.cliente);
                 this.changeModeStatus(false);
-              } else {
-                this.isLoading = false;
-              }
             });
         },
         err => {
@@ -164,43 +128,6 @@ export class ClienteComponent implements OnInit, OnChanges {
       categoriaIVA: this.clienteForm.get('categoriaIVA').value,
       idCredencial: this.authService.getLoggedInIdUsuario(),
       idViajante: this.cliente ? this.cliente.idViajante : null,
-    };
-  }
-
-
-  formInitialized(name: string, form: FormGroup, value: Ubicacion) {
-    this.clienteForm.setControl(name, form);
-    const u = this.clienteForm.get(name);
-
-    u.setValue({
-      idLocalidad: value && value.idLocalidad ? value.idLocalidad : null,
-      idProvincia: value && value.idProvincia ? value.idProvincia : null,
-      calle: value && value.calle ? value.calle : '',
-      numero: value && value.numero ? value.numero : '',
-      piso: value && value.piso ? value.piso : '',
-      departamento: value && value.departamento ? value.departamento : '',
-      nombreProvincia: value && value.nombreProvincia ? value.nombreProvincia : '',
-      nombreLocalidad: value && value.nombreLocalidad ? value.nombreLocalidad : '',
-    });
-  }
-
-
-  getUbicacionFormValues(nombre: string, uOriginal: Ubicacion = null): any {
-    const values = this.clienteForm.get(nombre).value;
-    return {
-      idUbicacion: uOriginal ? uOriginal.idUbicacion : null,
-      descripcion: uOriginal ? uOriginal.descripcion : '',
-      latitud: uOriginal ? uOriginal.latitud : null,
-      longitud: uOriginal ? uOriginal.longitud : null,
-      calle: values.calle,
-      numero: values.numero,
-      piso: values.piso,
-      departamento: values.departamento,
-      eliminada: uOriginal ? uOriginal.eliminada : null,
-      idLocalidad: values.idLocalidad,
-      nombreLocalidad: '',
-      idProvincia: values.idProvincia,
-      nombreProvincia: '',
     };
   }
 

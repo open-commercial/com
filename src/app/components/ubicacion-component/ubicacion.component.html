@@ -1,0 +1,60 @@
+<div *ngIf="ubicacion && !inEdition">
+  <span fxLayout="row" fxLayoutGap=".7rem" fxLayoutAlign="start center">
+    <mat-icon>location_on</mat-icon>
+    <span>{{ getUbicacionLabel() }}</span>
+  </span>
+  <br>
+  <button mat-raised-button type="button" color="primary" (click)="toggleEdit()">Modificar</button>
+</div>
+<form [formGroup]="ubicacionForm" (ngSubmit)="submit()" *ngIf="!ubicacion || (ubicacion && inEdition)">
+  <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.7rem">
+    <mat-form-field fxFlex>
+      <mat-select formControlName="idProvincia" placeholder="Provincia" required>
+        <mat-option></mat-option>
+        <mat-option *ngFor="let p of provincias" [value]="p.idProvincia">
+          {{p.nombre}}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="ubicacionForm.get('idProvincia').hasError('required')">
+        Requerido
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field fxFlex>
+      <mat-select formControlName="idLocalidad" placeholder="Localidad" required>
+        <mat-option></mat-option>
+        <mat-option *ngFor="let l of localidades" [value]="l.idLocalidad">
+          {{l.nombre}}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="ubicacionForm.get('idLocalidad').hasError('required')">
+        Requerido
+      </mat-error>
+    </mat-form-field>
+  </div>
+  <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.7rem">
+    <mat-form-field fxFlex>
+      <input matInput placeholder="Calle" formControlName="calle">
+      <mat-error *ngIf="ubicacionForm.get('calle').hasError('required')">
+        Requerido
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field fxFlex>
+      <input type="number" matInput placeholder="Número" formControlName="numero">
+      <mat-error *ngIf="ubicacionForm.get('numero').hasError('required')">
+        Requerido
+      </mat-error>
+    </mat-form-field>
+  </div>
+  <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.7rem">
+    <mat-form-field fxFlex>
+      <input matInput placeholder="Piso" formControlName="piso">
+    </mat-form-field>
+    <mat-form-field fxFlex>
+      <input matInput placeholder="Dpto." formControlName="departamento">
+    </mat-form-field>
+  </div>
+  <div fxLayoutGap="0.7rem">
+    <button mat-raised-button type="submit" color="primary">Guardar</button>
+    <button *ngIf="ubicacion" mat-raised-button type="button" (click)="toggleEdit()">Cancelar</button>
+  </div>
+</form>

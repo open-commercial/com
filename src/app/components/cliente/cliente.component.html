@@ -46,7 +46,7 @@
           </mat-error>
         </mat-form-field>
       </div>
-      <sic-com-ubicacion-form (formReady)="formInitialized('ubicacionFacturacion', $event, ubicacionFacturacion)"></sic-com-ubicacion-form>
+<!--      <sic-com-ubicacion-form (formReady)="formInitialized('ubicacionFacturacion', $event, ubicacionFacturacion)"></sic-com-ubicacion-form>-->
       <div fxLayoutGap="0.7rem">
         <button mat-raised-button type="submit" color="primary">Guardar</button>
         <button *ngIf="cliente" mat-raised-button type="button" (click)="toggleEdit()">Cancelar</button>
@@ -91,10 +91,6 @@
             <span fxLayout="row" fxLayoutGap="1rem" fxLayoutAlign="start center" *ngIf="cliente.email">
               <mat-icon>email</mat-icon>
               <span>{{ cliente.email }}</span>
-            </span>
-            <span fxLayout="row" fxLayoutGap="1rem" fxLayoutAlign="start center" *ngIf="cliente.detalleUbicacionFacturacion">
-              <mat-icon>room</mat-icon>
-              <span>{{ cliente.detalleUbicacionFacturacion }}</span>
             </span>
           </div>
         </div>
