@@ -15,23 +15,59 @@
     padding-top: .4rem;
     padding-left: .4rem;
 
-    mat-card.destacado {
+    .destacado {
+      vertical-align: middle;
       display: inline-block;
-      height: 370px;
-      width: 250px;
+      //height: 360px;
+      //width: 250px;
       margin-right: .3rem;
       white-space: normal;
-      background: white;
-      padding: .5rem;
-
-      img {
-        max-width: 100%;
-        height: auto;
-        margin: 0 auto;
+      padding: 0;
+      a {
+        text-decoration: none;
+        display: inline-block;
       }
 
-      mat-card-actions {
-        margin: 0;
+      .img-container {
+        height: 250px;
+        display: block;
+        margin-bottom: 10px;
+        img {
+          height: 100%;
+          width: 100%;
+          -o-object-fit: contain;
+          object-fit: contain;
+          object-position: center center;
+          margin: 0;
+        }
+      }
+
+      .precio {
+
+        &.no-bonificado {
+          font-weight: normal;
+          text-decoration: line-through;
+        }
+        &.bonificado {
+          font-weight: bold;
+          color: green;
+        }
+      }
+
+      mat-card {
+        background: white;
+        padding: .5rem;
+        height: 360px;
+        width: 250px;
+        mat-card-content {
+          min-height: 60px;
+          font-size: 1rem;
+          margin: 0;
+        }
+
+        mat-card-actions {
+          margin: 0;
+        }
       }
     }
   }
