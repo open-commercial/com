@@ -52,8 +52,6 @@ import {UbicacionesService} from '../services/ubicaciones.service';
 import {AgmCoreModule} from '@agm/core';
 import {AgmSnazzyInfoWindowModule} from '@agm/snazzy-info-window';
 import {GooglePlaceModule} from 'ngx-google-places-autocomplete';
-import {UbicacionFromComponent} from '../components/ubicacion-form/ubicacion-from.component';
-
 
 registerLocaleData(localeEs, 'es-AR', localeEsExtra);
 
@@ -78,8 +76,7 @@ registerLocaleData(localeEs, 'es-AR', localeEsExtra);
     CuentaCorrienteComponent,
     CheckoutComponent,
     HomeComponent,
-    UbicacionFromComponent,
-    ProductosDestacadosComponent
+    ProductosDestacadosComponent,
     UbicacionFormComponent,
     UbicacionComponent,
     ClienteUbicacionesComponent,
