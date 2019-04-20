@@ -1,7 +1,11 @@
+@import "../../../_colors.scss";
+
 .sic-com-productos-destacados {
   position: relative;
-  height: 400px;
-
+  height: 318px;
+  &.desktop {
+    height: 400px;
+  }
   .scroll-container {
     position: absolute;
     top: 0;
@@ -16,10 +20,12 @@
     padding-left: .4rem;
 
     .destacado {
+      &.first-loading {
+        display: block;
+        height: 100%;
+      }
       vertical-align: middle;
       display: inline-block;
-      //height: 360px;
-      //width: 250px;
       margin-right: .3rem;
       white-space: normal;
       padding: 0;
@@ -27,9 +33,11 @@
         text-decoration: none;
         display: inline-block;
       }
-
       .img-container {
-        height: 250px;
+        height: 160px;
+        &.desktop {
+          height: 250px;
+        }
         display: block;
         margin-bottom: 10px;
         img {
@@ -57,17 +65,38 @@
       mat-card {
         background: white;
         padding: .5rem;
-        height: 360px;
-        width: 250px;
+        height: 280px;
+        width: 200px;
+        &.desktop {
+          height: 360px;
+          width: 250px;
+        }
         mat-card-content {
-          min-height: 60px;
-          font-size: 1rem;
+          min-height: 85px;
           margin: 0;
+          font-weight: bold;
+          color: $color-primary;
+          p {
+            margin: 0;
+          }
+          .codigo {
+            font-weight: normal;
+            font-size: 0.9em;
+            color: black;
+            display: inline-block;
+            margin-bottom: 0.3em;
+          }
         }
 
-        mat-card-actions {
-          margin: 0;
+        mat-card-header mat-card-title {
+          font-size: 1rem;
+          margin: 0 -16px;
         }
+      }
+
+      .spinner {
+        height: 100%;
+        padding: 0 7px;
       }
     }
   }

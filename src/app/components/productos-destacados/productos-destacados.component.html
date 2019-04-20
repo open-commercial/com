@@ -1,4 +1,4 @@
-<div class="sic-com-productos-destacados" *ngIf="destacados.length">
+<div class="sic-com-productos-destacados">
   <div class="scroll-container">
     <div class="destacado" *ngFor="let p of destacados">
       <a [routerLink]="['/producto/' + p.idProducto]">
@@ -7,6 +7,7 @@
         <img mat-card-image [src]="p.urlImagen ? p.urlImagen : 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1545616229/assets/sin_imagen.png'" alt="Imagen del producto">
         </div>
         <mat-card-content>
+          <span class="codigo">{{ p.codigo }}</span>
           <p>
             {{ p.descripcion }}
           </p>
@@ -24,11 +25,11 @@
       </mat-card>
       </a>
     </div>
-    <div class="destacado">
+    <div class="destacado" [class.first-loading]="!destacados.length">
       <button mat-raised-button fxLayoutAlign="center center" *ngIf="!loading && pagina + 1< totalPaginas" (click)="paginaSiguiente()">
         <span></span><mat-icon aria-label="Página siguiente">more_horiz</mat-icon>
       </button>
-      <div *ngIf="loading">
+      <div *ngIf="loading" fxLayoutAlign="center center" class="spinner">
         <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
       </div>
     </div>
