@@ -40,6 +40,7 @@ import {RegistracionService} from '../services/registracion.service';
 import {CheckoutComponent} from '../components/checkout/checkout.component';
 import {SlideshowModule} from 'ng-simple-slideshow';
 import {HomeComponent} from '../components/home/home.component';
+import {ProductosDestacadosComponent} from '../components/productos-destacados/productos-destacados.component';
 import {UbicacionFormComponent} from '../components/ubicacion-form/ubicacion-form.component';
 import {UbicacionComponent} from '../components/ubicacion-component/ubicacion.component';
 import {ClienteUbicacionesComponent} from '../components/cliente-ubicaciones/cliente-ubicaciones.component';
@@ -75,6 +76,7 @@ registerLocaleData(localeEs, 'es-AR', localeEsExtra);
     CuentaCorrienteComponent,
     CheckoutComponent,
     HomeComponent,
+    ProductosDestacadosComponent,
     UbicacionFormComponent,
     UbicacionComponent,
     ClienteUbicacionesComponent,
@@ -92,7 +94,7 @@ registerLocaleData(localeEs, 'es-AR', localeEsExtra);
     SlideshowModule,
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyCB4ieC2bSFgfWwHcpdFGegDH7vb8K5YG8',
-      libraries: [ 'places' ]
+      libraries: ['places']
     }),
     AgmSnazzyInfoWindowModule,
     GooglePlaceModule

@@ -26,12 +26,17 @@ export class ProductosService {
       'descripcion=' + this.getBusquedaCriteria(),
       'pagina=' + pagina
     ];
+
     return  '&' + arr.join('&');
   }
 
   getProductos(pagina: number) {
     const criteria = this.getCriteriaBusqueda(pagina);
     return this.http.get(this.urlBusqueda + criteria);
+  }
+
+  getProductosDestacados(pagina: number) {
+    return this.http.get(this.urlBusqueda + `&destacados=true&pagina=${pagina}`);
   }
 
   getProducto(idProducto: number): Observable<Producto> {

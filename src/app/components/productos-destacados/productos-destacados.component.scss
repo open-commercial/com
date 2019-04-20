@@ -1,0 +1,103 @@
+@import "../../../_colors.scss";
+
+.sic-com-productos-destacados {
+  position: relative;
+  height: 318px;
+  &.desktop {
+    height: 400px;
+  }
+  .scroll-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    overflow-y: hidden;
+    overflow-x: auto;
+    white-space: nowrap;
+    background: #efefef;
+    padding-top: .4rem;
+    padding-left: .4rem;
+
+    .destacado {
+      &.first-loading {
+        display: block;
+        height: 100%;
+      }
+      vertical-align: middle;
+      display: inline-block;
+      margin-right: .3rem;
+      white-space: normal;
+      padding: 0;
+      a {
+        text-decoration: none;
+        display: inline-block;
+      }
+      .img-container {
+        height: 160px;
+        &.desktop {
+          height: 250px;
+        }
+        display: block;
+        margin-bottom: 10px;
+        img {
+          height: 100%;
+          width: 100%;
+          -o-object-fit: contain;
+          object-fit: contain;
+          object-position: center center;
+          margin: 0;
+        }
+      }
+
+      .precio {
+
+        &.no-bonificado {
+          font-weight: normal;
+          text-decoration: line-through;
+        }
+        &.bonificado {
+          font-weight: bold;
+          color: green;
+        }
+      }
+
+      mat-card {
+        background: white;
+        padding: .5rem;
+        height: 280px;
+        width: 200px;
+        &.desktop {
+          height: 360px;
+          width: 250px;
+        }
+        mat-card-content {
+          min-height: 85px;
+          margin: 0;
+          font-weight: bold;
+          color: $color-primary;
+          p {
+            margin: 0;
+          }
+          .codigo {
+            font-weight: normal;
+            font-size: 0.9em;
+            color: black;
+            display: inline-block;
+            margin-bottom: 0.3em;
+          }
+        }
+
+        mat-card-header mat-card-title {
+          font-size: 1rem;
+          margin: 0 -16px;
+        }
+      }
+
+      .spinner {
+        height: 100%;
+        padding: 0 7px;
+      }
+    }
+  }
+}

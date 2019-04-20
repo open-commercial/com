@@ -25,7 +25,8 @@
     </button>
     <span class="page">{{ this.pagina + 1 }}</span>
     <button mat-button color="primary" [disabled]="pagina + 1 >= totalPaginas" (click)="paginaSiguiente()">
-      <span>Siguiente</span><mat-icon aria-label="Página siguiente">navigate_next</mat-icon></button>
+      <span>Siguiente</span><mat-icon aria-label="Página siguiente">navigate_next</mat-icon>
+    </button>
   </div>
   <div class="sic-com-mas-resultados" fxLayoutAlign="center center" *ngIf="loadingProducts">
     <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>

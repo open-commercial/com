@@ -1,0 +1,37 @@
+<div class="sic-com-productos-destacados">
+  <div class="scroll-container">
+    <div class="destacado" *ngFor="let p of destacados">
+      <a [routerLink]="['/producto/' + p.idProducto]">
+      <mat-card>
+        <div class="img-container">
+        <img mat-card-image [src]="p.urlImagen ? p.urlImagen : 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1545616229/assets/sin_imagen.png'" alt="Imagen del producto">
+        </div>
+        <mat-card-content>
+          <span class="codigo">{{ p.codigo }}</span>
+          <p>
+            {{ p.descripcion }}
+          </p>
+        </mat-card-content>
+        <mat-card-header fxLayoutAlign="end center">
+          <mat-card-title>
+            <span class="precio" [class.no-bonificado]="estaBonificado(p)">
+            $ {{p.precioLista | number:'1.2-2':'es-AR'}}
+            </span>
+            <span class="precio bonificado" *ngIf="estaBonificado(p)">
+              &nbsp;$ {{p.precioBonificado | number:'1.2-2':'es-AR'}}
+            </span>
+          </mat-card-title>
+        </mat-card-header>
+      </mat-card>
+      </a>
+    </div>
+    <div class="destacado" [class.first-loading]="!destacados.length">
+      <button mat-raised-button fxLayoutAlign="center center" *ngIf="!loading && pagina + 1< totalPaginas" (click)="paginaSiguiente()">
+        <span></span><mat-icon aria-label="Página siguiente">more_horiz</mat-icon>
+      </button>
+      <div *ngIf="loading" fxLayoutAlign="center center" class="spinner">
+        <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
+      </div>
+    </div>
+  </div>
+</div>
