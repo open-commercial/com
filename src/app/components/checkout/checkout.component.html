@@ -53,11 +53,6 @@
           <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
         </div>
         <div *ngIf="!isUbicacionesLoading">
-          <div *ngIf="!datosDelClienteForm.get('clienteUbicacionFacturacion').value" class="ubicacion-error">
-            EL CLIENTE NO POSEE DIRECCIÓN DE FACTURACION.<br>
-            Puede agregar esta dirección haciendo click en botón "Modificar".
-
-          </div>
           <sic-com-cliente [c]="cliente" [editionMode]="clienteEditionMode" (updated)="clienteUpdated($event)" (modeStatusChanged)="modeStatusChanged($event)" ></sic-com-cliente>
         </div>
         <div class="botonera">
@@ -107,28 +102,36 @@
                             >
                   <agm-snazzy-info-window [maxWidth]="200" [closeWhenOthersOpen]="true" [isOpen]="true">
                     <ng-template>
-                      <!--{{ s.nombre + '(' + s.ubicacion.descripcion + ')' }}-->
-                      {{ getUbicacionStr() }}
+                      {{ getUbicacionSucursalStr() }}
                     </ng-template>
                   </agm-snazzy-info-window>
                 </agm-marker>
               </agm-map>
             </div>
           </div>
+          <br>
           <div *ngIf="opcionEnvioForm.get('opcionEnvio').value === opcionEnvio.DIRECCION_FACTURACION">
-            <strong>Dirección de Facturación a usar:</strong>
-            <em *ngIf="!isUbicacionesLoading && ubicacionFacturacion">
-              {{ ubicacionFacturacion.calle }} {{ ubicacionFacturacion.numero }}
-              {{ ubicacionFacturacion.nombreLocalidad }}, {{ ubicacionFacturacion.nombreProvincia }}
-            </em>
+            <strong>UBICACIÓN DE FACTURACIÓN</strong>
+            <div fxLayout="row" fxLayoutAlign="center center" *ngIf="ubicacionFacturacionUpdating" class="sic-com-spinner-container">
+              <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
+            </div>
+            <sic-com-ubicacion *ngIf="!ubicacionFacturacionUpdating"
+                               [ubicacion]="ubicacionFacturacion" (updated)="ubicacionFacturacionUpdated($event)"
+                               [inEdition]="ubicacionFacturacionInEdition" (editionStateChange)="ufEditionStateChange($event)"></sic-com-ubicacion>
           </div>
           <div *ngIf="opcionEnvioForm.get('opcionEnvio').value === opcionEnvio.DIRECCION_ENVIO">
-            <sic-com-ubicacion-form (formReady)="formInitialized('ubicacionEnvio', $event, ubicacionEnvio)"></sic-com-ubicacion-form>
+            <strong>UBICACIÓN DE ENVIO</strong>
+            <div fxLayout="row" fxLayoutAlign="center center" *ngIf="ubicacionEnvioUpdating" class="sic-com-spinner-container">
+              <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
+            </div>
+            <sic-com-ubicacion *ngIf="!ubicacionEnvioUpdating"
+                               [ubicacion]="ubicacionEnvio" (updated)="ubicacionEnvioUpdated($event)"
+                               [inEdition]="ubicacionEnvioInEdition" (editionStateChange)="ueEditionStateChange($event)"></sic-com-ubicacion>
           </div>
         </div>
         <br>
         <div class="botonera">
-          <button mat-raised-button color="primary" matStepperNext [disabled]="!cliente || !opcionEnvioForm.valid">Continuar</button>
+          <button mat-raised-button color="primary" matStepperNext [disabled]="!envioValidToContinueNextStep()">Continuar</button>
         </div>
       </form>
     </mat-step>

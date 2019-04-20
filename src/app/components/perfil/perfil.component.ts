@@ -8,6 +8,7 @@ export class PerfilComponent {
 
   isUsuarioPanelOpened = false;
   isClientePanelOpened = false;
+  isUbicacionesPanelOpened = false;
   isPedidosPanelOpened = false;
   isCuentaCorrientePanelOpened = false;
 

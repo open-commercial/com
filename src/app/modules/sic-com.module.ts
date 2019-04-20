@@ -41,11 +41,14 @@ import {CheckoutComponent} from '../components/checkout/checkout.component';
 import {SlideshowModule} from 'ng-simple-slideshow';
 import {HomeComponent} from '../components/home/home.component';
 import {ProductosDestacadosComponent} from '../components/productos-destacados/productos-destacados.component';
+import {UbicacionFormComponent} from '../components/ubicacion-form/ubicacion-form.component';
+import {UbicacionComponent} from '../components/ubicacion-component/ubicacion.component';
+import {ClienteUbicacionesComponent} from '../components/cliente-ubicaciones/cliente-ubicaciones.component';
 import {registerLocaleData} from '@angular/common';
 import localeEs from '@angular/common/locales/es';
 import localeEsExtra from '@angular/common/locales/extra/es-AR';
 import {SlideshowService} from '../services/slideshow.service';
-import {UbicacionService} from '../services/ubicacion.service';
+import {UbicacionesService} from '../services/ubicaciones.service';
 import {AgmCoreModule} from '@agm/core';
 import {AgmSnazzyInfoWindowModule} from '@agm/snazzy-info-window';
 import {GooglePlaceModule} from 'ngx-google-places-autocomplete';
@@ -77,6 +80,9 @@ registerLocaleData(localeEs, 'es-AR', localeEsExtra);
     HomeComponent,
     UbicacionFromComponent,
     ProductosDestacadosComponent
+    UbicacionFormComponent,
+    UbicacionComponent,
+    ClienteUbicacionesComponent,
   ],
   imports: [
     HttpClientModule,
@@ -111,7 +117,7 @@ registerLocaleData(localeEs, 'es-AR', localeEsExtra);
     CuentasCorrienteService,
     RegistracionService,
     SlideshowService,
-    UbicacionService,
+    UbicacionesService,
   ],
   entryComponents: [
     ConfirmationDialogComponent,

@@ -1,0 +1,29 @@
+<div class="sic-com-cliente-ubicaciones">
+  <div *ngIf="isLoading" fxLayout="row" fxLayoutAlign="center center">
+    <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
+  </div>
+  <mat-accordion *ngIf="!isLoading && cliente">
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>Ubicación de Facturación</mat-panel-title>
+      </mat-expansion-panel-header>
+      <div *ngIf="ubicacionFacturacionUpdating" fxLayout="row" fxLayoutAlign="center center">
+        <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
+      </div>
+      <sic-com-ubicacion *ngIf="!ubicacionFacturacionUpdating"
+                         [ubicacion]="ubicacionFacturacion" (updated)="ubicacionFacturacionUpdated($event)"
+                         [inEdition]="ubicacionFacturacionInEdition" (editionStateChange)="ubicacionFacturacionInEdition = $event"></sic-com-ubicacion>
+    </mat-expansion-panel>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>Ubicacion de Envío</mat-panel-title>
+      </mat-expansion-panel-header>
+      <div *ngIf="ubicacionEnvioUpdating" fxLayout="row" fxLayoutAlign="center center">
+        <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
+      </div>
+      <sic-com-ubicacion *ngIf="!ubicacionEnvioUpdating"
+                         [ubicacion]="ubicacionEnvio" (updated)="ubicacionEnvioUpdated($event)"
+                         [inEdition]="ubicacionEnvioInEdition" (editionStateChange)="ubicacionEnvioInEdition = $event"></sic-com-ubicacion>
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>

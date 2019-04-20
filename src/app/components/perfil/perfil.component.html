@@ -17,6 +17,15 @@
             <sic-com-cliente *ngIf="isClientePanelOpened"></sic-com-cliente>
         </ng-template>
     </mat-expansion-panel>
+    <mat-expansion-panel hideToggle (closed)="isUbicacionesPanelOpened=false" (opened)="isUbicacionesPanelOpened=true">
+        <mat-expansion-panel-header>
+            <mat-panel-title>Mis Ubicaciones</mat-panel-title>
+            <mat-icon>location_on</mat-icon>
+        </mat-expansion-panel-header>
+        <ng-template matExpansionPanelContent>
+          <sic-com-cliente-ubicaciones *ngIf="isUbicacionesPanelOpened"></sic-com-cliente-ubicaciones>
+        </ng-template>
+    </mat-expansion-panel>
     <mat-expansion-panel hideToggle (closed)="isPedidosPanelOpened=false" (opened)="isPedidosPanelOpened=true">
         <mat-expansion-panel-header>
             <mat-panel-title>Mis Pedidos</mat-panel-title>
