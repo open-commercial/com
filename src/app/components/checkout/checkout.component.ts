@@ -198,11 +198,13 @@ export class CheckoutComponent implements OnInit {
       }
       if (value === OpcionEnvio.DIRECCION_FACTURACION) {
         this.opcionEnvioForm.get('sucursal').setValue(null);
+        this.opcionEnvioForm.get('sucursal').markAsUntouched();
         this.opcionEnvioForm.removeControl('ubicacionEnvio');
         this.opcionEnvioForm.get('continueStepValidator').setValue(this.ubicacionFacturacion ? 'whatever' : null);
       }
       if (value === OpcionEnvio.DIRECCION_ENVIO) {
         this.opcionEnvioForm.get('sucursal').setValue(null);
+        this.opcionEnvioForm.get('sucursal').markAsUntouched();
         this.opcionEnvioForm.get('continueStepValidator').setValue(this.ubicacionEnvio ? 'whatever' : null);
       }
     });
@@ -281,8 +283,8 @@ export class CheckoutComponent implements OnInit {
 
   asignarCliente(newCliente: Cliente | null) {
     this.cliente = newCliente;
-    this.ubicacionFacturacion = newCliente.ubicacionFacturacion;
-    this.ubicacionEnvio = newCliente.ubicacionEnvio;
+    this.ubicacionFacturacion = newCliente ? newCliente.ubicacionFacturacion : null;
+    this.ubicacionEnvio = newCliente ? newCliente.ubicacionEnvio : null;
 
     if (!this.cliente) {
       this.opcionClienteForm.get('id_Cliente').setValue(null);
@@ -302,19 +304,7 @@ export class CheckoutComponent implements OnInit {
 
   asignarSucursal(sucursal: Empresa) {
     this.sucursal = sucursal;
-    this.ubicacionSucursal = null;
-
-    if (!sucursal) { return; }
-
-    if (this.sucursal.idUbicacion) {
-      this.isUbicacionSucursalLoading = true;
-      this.ubicacionesService.getUbicacion(this.sucursal.idUbicacion)
-        .pipe(finalize(() => this.isUbicacionSucursalLoading = false))
-        .subscribe(
-          (ubicacion: Ubicacion) => this.ubicacionSucursal = ubicacion,
-          err => this.avisoService.openSnackBar(err.error, '', 3500)
-        );
-    }
+    this.ubicacionSucursal = this.sucursal ? this.sucursal.ubicacion : null;
   }
 
   getUbicacionSucursalStr(): string {
