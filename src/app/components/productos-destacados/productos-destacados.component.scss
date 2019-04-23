@@ -1,5 +1,10 @@
 @import "../../../_colors.scss";
-
+.label {
+  background: $color-primary;
+  margin-bottom: 0;
+  margin-top: 0;
+  padding: .2rem .5rem;
+}
 .sic-com-productos-destacados {
   position: relative;
   height: 318px;

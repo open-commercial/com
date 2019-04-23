@@ -87,7 +87,7 @@
                   </mat-option>
                 </mat-select>
               </mat-form-field>
-              <div *ngIf="opcionEnvioForm.errors?.requiredSucursal" class="sucursal-error">
+              <div *ngIf="opcionEnvioForm.get('sucursal').touched && opcionEnvioForm.errors?.requiredSucursal" class="sucursal-error">
                 Requerido
               </div>
             </div>
@@ -98,11 +98,11 @@
               <agm-map [latitude]="ubicacionSucursal.latitud" [longitude]="ubicacionSucursal.longitud" [zoom]="15" [streetViewControl]="false">
                 <agm-marker [latitude]="ubicacionSucursal.latitud"
                             [longitude]="ubicacionSucursal.longitud"
-                            [title]="sucursal.detalleUbicacion"
+                            [title]="getUbicacionStr(ubicacionSucursal)"
                             >
                   <agm-snazzy-info-window [maxWidth]="200" [closeWhenOthersOpen]="true" [isOpen]="true">
                     <ng-template>
-                      {{ getUbicacionSucursalStr() }}
+                      {{ getUbicacionStr(ubicacionSucursal) }}
                     </ng-template>
                   </agm-snazzy-info-window>
                 </agm-marker>

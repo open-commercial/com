@@ -1,9 +1,18 @@
+@import "../../../_colors.scss";
 .sic-com-home {
   .map {
     margin: .5rem 0;
     border: none;
     height: 400px;
     width: 100%;
+  }
+
+  .label {
+    background: $color-primary;
+    margin-bottom: 0;
+    margin-top: 0;
+    padding: .2rem .5rem;
+
   }
 
   .info {
@@ -16,6 +25,7 @@
   }
 
   ul.marcas {
+    margin-top: 0;
     padding: 0;
     text-align: center;
     li.marca {

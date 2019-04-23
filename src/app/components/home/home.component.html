@@ -11,6 +11,7 @@
     [stopAutoPlayOnSlide]="false">
   </slideshow>
   <sic-com-productos-destacados></sic-com-productos-destacados>
+  <h3 class="label">Globo Envíos</h3>
   <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap=".5rem" class="info">
     <div>
       <img src="https://res.cloudinary.com/hf0vu1bg2/image/upload/v1545110884/assets/truck_envio.png" alt="Envio gratis">
@@ -28,6 +29,7 @@
     </div>
   </div>
   <iframe class="map" src="https://www.google.com/maps/d/embed?mid=1VOhcfOoN-NZWuCBltvk2Po9x9t7xySRm"></iframe>
+  <h3 class="label">Algunas de nuestras marcas</h3>
   <ul class="marcas">
     <li class="marca" *ngFor="let m of marcas">
       <a [routerLink]="m.routeLink">
