@@ -36,15 +36,24 @@ export class ProductosDestacadosComponent implements OnInit {
       .pipe(finalize(() => this.loading = false))
       .subscribe(
         (data) => {
+          data['content'] = this.shuffle(data['content']);
           data['content'].forEach(p => this.destacados.push(p));
           this.totalPaginas = data['totalPages'];
         },
-        err => this.avisoService.openSnackBar(err.error, '', 3500)
+        err => { console.log(err); this.avisoService.openSnackBar(err.error, '', 3500); }
       );
   }
 
   paginaSiguiente() {
     this.pagina += 1;
     this.cargarProductos();
+  }
+
+  shuffle(a) {
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
   }
 }

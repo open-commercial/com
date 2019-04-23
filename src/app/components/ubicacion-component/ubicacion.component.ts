@@ -83,23 +83,14 @@ export class UbicacionComponent implements OnInit, OnChanges {
         if (!value) {
           this.ubicacionForm.get('nombreProvincia').setValue('');
           this.ubicacionForm.get('idLocalidad').setValue(null);
-          this.ubicacionForm.get('idLocalidad').markAsTouched();
           this.ubicacionForm.get('nombreLocalidad').setValue('');
           return;
         }
 
         this.isLocalidadesLoading = true;
-        if (this.ubicacionForm.get('idProvincia').enabled) {
-          this.ubicacionForm.get('idProvincia').disable({ onlySelf: true, emitEvent: false });
-        }
-        this.ubicacionForm.get('idLocalidad').disable({ onlySelf: true, emitEvent: false });
         this.ubicacionesService.getLocalidades(value)
           .pipe(
-            finalize(() => {
-              this.isLocalidadesLoading = false;
-              this.ubicacionForm.get('idProvincia').enable({ onlySelf: true, emitEvent: false });
-              this.ubicacionForm.get('idLocalidad').enable({ onlySelf: true, emitEvent: false });
-            })
+            finalize(() => this.isLocalidadesLoading = false)
           )
           .subscribe(
             (data: Localidad[]) => {
@@ -107,7 +98,6 @@ export class UbicacionComponent implements OnInit, OnChanges {
               this.localidades = data;
               if (!this.inLocalidades(idLocalidad)) {
                 this.ubicacionForm.get('idLocalidad').setValue(null);
-                this.ubicacionForm.get('idLocalidad').markAsTouched();
               }
             },
             err => this.avisoService.openSnackBar(err.error, '', 3500)
