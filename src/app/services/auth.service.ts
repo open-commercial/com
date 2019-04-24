@@ -12,13 +12,15 @@ import {UsuariosService} from './usuarios.service';
 export class AuthService {
 
   urlLogin = environment.apiUrl + '/api/v1/login';
+  urlLogout = environment.apiUrl + '/api/v1/logout';
   urlPasswordRecovery = environment.apiUrl + '/api/v1/password-recovery?idEmpresa=' + environment.idEmpresa;
   jwtHelper = new JwtHelperService();
   private nombreUsuarioLoggedInSubject = new Subject<string>();
   nombreUsuarioLoggedIn$ = this.nombreUsuarioLoggedInSubject.asObservable();
 
-  constructor(private http: HttpClient, private router: Router, private usuariosService: UsuariosService) {
-  }
+  constructor(private http: HttpClient,
+              private router: Router,
+              private usuariosService: UsuariosService) {}
 
   setNombreUsuarioLoggedIn(nombre: string) {
     this.nombreUsuarioLoggedInSubject.next(nombre);
@@ -44,7 +46,7 @@ export class AuthService {
   }
 
   logout() {
-    localStorage.clear();
+    this.http.put(this.urlLogout, null).subscribe(data => localStorage.clear());
     this.router.navigate(['']);
   }
 
