@@ -7,6 +7,7 @@ import {finalize} from 'rxjs/operators';
 import {Localidad} from '../../models/localidad';
 import {Provincia} from '../../models/provincia';
 import {Ubicacion} from '../../models/ubicacion';
+import {NgOption} from '@ng-select/ng-select';
 
 @Component({
   selector: 'sic-com-ubicacion',
@@ -23,6 +24,7 @@ export class UbicacionComponent implements OnInit, OnChanges {
 
   provincias: Provincia[] = [];
   localidades: Localidad[] = [];
+  ngsLocalidades: NgOption[] = [];
 
   isProvinciasLoading = false;
   isLocalidadesLoading = false;
@@ -36,12 +38,12 @@ export class UbicacionComponent implements OnInit, OnChanges {
     this.rebuildForm();
     this.isProvinciasLoading = true;
     if (this.ubicacionForm.get('idProvincia').enabled) {
-      this.ubicacionForm.get('idProvincia').disable({ onlySelf: true, emitEvent: false });
+      this.ubicacionForm.get('idProvincia').disable();
     }
     this.ubicacionesService.getProvincias()
       .pipe(finalize(() => {
         this.isProvinciasLoading = false;
-        this.ubicacionForm.get('idProvincia').enable({ onlySelf: true, emitEvent: false });
+        this.ubicacionForm.get('idProvincia').enable();
       }))
       .subscribe(
         (data: Provincia[]) => this.provincias = data,
@@ -73,17 +75,13 @@ export class UbicacionComponent implements OnInit, OnChanges {
       numero: '',
       piso: '',
       departamento: '',
-      nombreLocalidad: '',
-      nombreProvincia: '',
     });
 
     this.ubicacionForm.get('idProvincia').valueChanges
       .subscribe((value) => {
         this.localidades = [];
         if (!value) {
-          this.ubicacionForm.get('nombreProvincia').setValue('');
           this.ubicacionForm.get('idLocalidad').setValue(null);
-          this.ubicacionForm.get('nombreLocalidad').setValue('');
           return;
         }
 
@@ -96,6 +94,9 @@ export class UbicacionComponent implements OnInit, OnChanges {
             (data: Localidad[]) => {
               const idLocalidad = this.ubicacionForm.get('idLocalidad').value;
               this.localidades = data;
+              this.ngsLocalidades = data.map(function(l: Localidad) {
+                return { value: l.idLocalidad, label: l.nombre };
+              });
               if (!this.inLocalidades(idLocalidad)) {
                 this.ubicacionForm.get('idLocalidad').setValue(null);
               }
@@ -117,8 +118,6 @@ export class UbicacionComponent implements OnInit, OnChanges {
         numero: this.ubicacion.numero,
         piso: this.ubicacion.piso,
         departamento: this.ubicacion.departamento,
-        nombreLocalidad: this.ubicacion.nombreLocalidad,
-        nombreProvincia: this.ubicacion.nombreProvincia,
       });
     }
   }
@@ -162,6 +161,9 @@ export class UbicacionComponent implements OnInit, OnChanges {
   }
 
   submit() {
+    if (this.ubicacionForm.get('idLocalidad').invalid && this.ubicacionForm.get('idLocalidad').untouched) {
+      this.ubicacionForm.get('idLocalidad').markAsTouched();
+    }
     if (this.ubicacionForm.valid) {
       const ubicacion: Ubicacion = this.getFormValues();
       this.updated.emit(ubicacion);

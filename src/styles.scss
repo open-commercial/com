@@ -1,3 +1,54 @@
+@import "~@ng-select/ng-select/themes/material.theme.css";
+@import "_colors.scss";
+
+.ng-select {
+  padding-bottom: 0;
+  .ng-select-container {
+    align-items: center;
+    //min-height: 38.5px;
+    min-height: 2.82195em;
+    .ng-value-container {
+      padding: 0;
+      align-items: center;
+    }
+  }
+
+  &.ng-select-focused {
+    .ng-select-container {
+      &:after {
+        border-bottom-color: $color-primary;
+      }
+      .ng-value-container .ng-placeholder {
+        color: $color-primary;
+      }
+      .ng-arrow-wrapper .ng-arrow {
+        color: $color-primary;
+      }
+    }
+  }
+
+  &.ng-invalid.ng-touched {
+    .ng-select-container {
+      &:after {
+        border-bottom-color: $color-primary;
+      }
+      .ng-value-container .ng-placeholder {
+        color: $color-primary;
+      }
+      .ng-arrow-wrapper .ng-arrow {
+        color: $color-primary;
+      }
+    }
+  }
+
+  & + mat-error {
+    font-size: 75%;
+    margin-top: 0.2em;
+  }
+}
+
+.ng-select .ng-select-container .ng-value-container .ng-placeholder
+
 html, body {
   height: 100%;
   margin: 0;
