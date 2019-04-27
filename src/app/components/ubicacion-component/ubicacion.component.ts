@@ -23,6 +23,8 @@ export class UbicacionComponent implements OnInit, OnChanges {
   ubicacionForm: FormGroup;
 
   provincias: Provincia[] = [];
+  ngsProvincias: NgOption[] = [];
+
   localidades: Localidad[] = [];
   ngsLocalidades: NgOption[] = [];
 
@@ -46,7 +48,12 @@ export class UbicacionComponent implements OnInit, OnChanges {
         this.ubicacionForm.get('idProvincia').enable();
       }))
       .subscribe(
-        (data: Provincia[]) => this.provincias = data,
+        (data: Provincia[]) => {
+          this.provincias = data;
+          this.ngsProvincias = data.map(function(p: Provincia) {
+            return { value: p.idProvincia, label: p.nombre };
+          });
+        },
         err => this.avisoService.openSnackBar(err.error, '', 3500)
       )
     ;

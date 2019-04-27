@@ -8,7 +8,7 @@
 </div>
 <form [formGroup]="ubicacionForm" (ngSubmit)="submit()" *ngIf="!ubicacion || (ubicacion && inEdition)">
   <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.7rem">
-    <mat-form-field fxFlex>
+    <!--<mat-form-field fxFlex>
       <mat-select formControlName="idProvincia" placeholder="Provincia" required>
         <mat-option></mat-option>
         <mat-option *ngFor="let p of provincias" [value]="p.idProvincia">
@@ -18,7 +18,19 @@
       <mat-error *ngIf="ubicacionForm.get('idProvincia').hasError('required')">
         Requerido
       </mat-error>
-    </mat-form-field>
+    </mat-form-field>-->
+    <div class="ng-select-wrapper" fxFlex>
+      <ng-select [items]="ngsProvincias"
+                 [selectOnTab]="true"
+                 bindValue="value"
+                 placeholder="Seleccione una Provincia *"
+                 formControlName="idProvincia"
+      >
+      </ng-select>
+      <mat-error *ngIf="ubicacionForm.get('idLocalidad').touched && ubicacionForm.get('idLocalidad').invalid">
+        Requerido
+      </mat-error>
+    </div>
     <!--<mat-form-field fxFlex>
       <mat-select formControlName="idLocalidad" placeholder="Localidad" required>
         <mat-option></mat-option>
@@ -30,7 +42,7 @@
         Requerido
       </mat-error>
     </mat-form-field>-->
-    <div fxFlex>
+    <div class="ng-select-wrapper" fxFlex>
       <ng-select [items]="ngsLocalidades"
                  [selectOnTab]="true"
                  bindValue="value"
@@ -38,7 +50,7 @@
                  formControlName="idLocalidad"
                  >
       </ng-select>
-      <mat-error class="custom-error" *ngIf="ubicacionForm.get('idLocalidad').touched && ubicacionForm.get('idLocalidad').invalid">
+      <mat-error *ngIf="ubicacionForm.get('idLocalidad').touched && ubicacionForm.get('idLocalidad').invalid">
         Requerido
       </mat-error>
     </div>

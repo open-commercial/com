@@ -1,6 +1,10 @@
 @import "~@ng-select/ng-select/themes/material.theme.css";
 @import "_colors.scss";
 
+.ng-select-wrapper {
+  padding-bottom: 1.25em;
+}
+
 .ng-select {
   padding-bottom: 0;
   .ng-select-container {
@@ -47,7 +51,9 @@
   }
 }
 
-.ng-select .ng-select-container .ng-value-container .ng-placeholder
+.ng-dropdown-panel.ng-select-bottom {
+  top: 100%;
+}
 
 html, body {
   height: 100%;
