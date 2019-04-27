@@ -168,6 +168,9 @@ export class UbicacionComponent implements OnInit, OnChanges {
   }
 
   submit() {
+    if (this.ubicacionForm.get('idProvincia').invalid && this.ubicacionForm.get('idProvincia').untouched) {
+      this.ubicacionForm.get('idProvincia').markAsTouched();
+    }
     if (this.ubicacionForm.get('idLocalidad').invalid && this.ubicacionForm.get('idLocalidad').untouched) {
       this.ubicacionForm.get('idLocalidad').markAsTouched();
     }

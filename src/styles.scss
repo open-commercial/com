@@ -3,6 +3,8 @@
 
 .ng-select-wrapper {
   padding-bottom: 1.25em;
+  //margin-bottom: 0 !important;
+  //margin-bottom: 0.5rem;
 }
 
 .ng-select {
@@ -48,6 +50,8 @@
   & + mat-error {
     font-size: 75%;
     margin-top: 0.2em;
+    //margin-bottom: 0;
+    position: absolute;
   }
 }
 
