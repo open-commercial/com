@@ -19,12 +19,14 @@
         Requerido
       </mat-error>
     </mat-form-field>-->
-    <div class="ng-select-wrapper" fxFlex>
-      <ng-select [items]="ngsProvincias"
+    <div class="ng-select-wrapper" fxFlex="50" fxLayout="row">
+      <ng-select [items]="provincias"
                  [selectOnTab]="true"
-                 bindValue="value"
+                 bindValue="idProvincia"
+                 bindLabel="nombre"
                  placeholder="Seleccione una Provincia *"
                  formControlName="idProvincia"
+                 fxFlex
       >
       </ng-select>
       <mat-error *ngIf="ubicacionForm.get('idProvincia').touched && ubicacionForm.get('idProvincia').invalid">
@@ -42,10 +44,11 @@
         Requerido
       </mat-error>
     </mat-form-field>-->
-    <div class="ng-select-wrapper" fxFlex>
-      <ng-select [items]="ngsLocalidades"
+    <div class="ng-select-wrapper" fxFlex="50">
+      <ng-select [items]="localidades"
                  [selectOnTab]="true"
-                 bindValue="value"
+                 bindValue="idLocalidad"
+                 bindLabel="nombre"
                  placeholder="Seleccione una localidad *"
                  formControlName="idLocalidad"
                  >
