@@ -70,4 +70,10 @@
   .sic-com-precio-bonificado {
     font-weight: bold;
   }
+
+  .mat-list-base .mat-list-item.mat-3-line, .mat-list-base .mat-list-option.mat-3-line {
+    height: auto;
+    min-height: 3rem;
+    padding: .3rem 0;
+  }
 }

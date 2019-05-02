@@ -4,6 +4,9 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {AvisoService} from 'app/services/aviso.service';
 import {combineLatest, Subscription} from 'rxjs';
 import {AuthService} from '../../services/auth.service';
+import {Producto} from '../../models/producto';
+import {CarritoCompraService} from '../../services/carrito-compra.service';
+import {Cliente} from '../../models/cliente';
 
 @Component({
   selector: 'sic-com-productos',
@@ -18,12 +21,14 @@ export class ProductosComponent implements OnInit, OnDestroy {
   pagina = 0;
   busquedaCriteria = '';
   buscarProductosSubscription: Subscription;
+  cliente: Cliente = null;
 
   constructor(private productosService: ProductosService,
               private route: ActivatedRoute,
               private avisoService: AvisoService,
               private authService: AuthService,
-              private router: Router) {
+              private router: Router,
+              private carritoCompraService: CarritoCompraService) {
   }
 
   ngOnInit() {
@@ -77,5 +82,37 @@ export class ProductosComponent implements OnInit, OnDestroy {
   paginaSiguiente() {
     if (this.pagina + 1 >= this.totalPaginas) { return; }
     this.router.navigate(['/productos', { q: this.busquedaCriteria || '' }], { queryParams: { p: this.pagina + 2 } });
+  }
+
+  agregarAlCarrito(p: Producto) {
+    if (!this.authService.isAuthenticated()) {
+      return;
+    }
+
+    /*
+    this.cargandoAlCarrito = true;
+    this.carritoCompraService.agregarQuitarAlPedido(this.producto, this.cantidad)
+      .subscribe(
+        data => {
+          if (this.cliente) {
+            this.carritoCompraService.getCarritoCompra(this.cliente.id_Cliente)
+              .subscribe(
+                (carrito: CarritoCompra) => {
+                  this.carritoCompraService.setCantidadItemsEnCarrito(carrito.cantRenglones);
+                  this.cargandoAlCarrito = false;
+                },
+                err => {
+                  this.avisoService.openSnackBar(err.error, '', 3500);
+                  this.cargandoAlCarrito = false;
+                }
+              );
+          }
+        },
+        err => {
+          this.cargandoAlCarrito = false;
+          this.avisoService.openSnackBar(err.error, '', 3500);
+        }
+      );
+    */
   }
 }
