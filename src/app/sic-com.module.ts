@@ -44,14 +44,16 @@ import {ProductosDestacadosComponent} from './components/productos-destacados/pr
 import {UbicacionFormComponent} from './components/ubicacion-form/ubicacion-form.component';
 import {UbicacionComponent} from './components/ubicacion-component/ubicacion.component';
 import {ClienteUbicacionesComponent} from './components/cliente-ubicaciones/cliente-ubicaciones.component';
-import {registerLocaleData} from '@angular/common';
-import localeEs from '@angular/common/locales/es';
-import localeEsExtra from '@angular/common/locales/extra/es-AR';
 import {SlideshowService} from './services/slideshow.service';
 import {UbicacionesService} from './services/ubicaciones.service';
 import {AgmCoreModule} from '@agm/core';
 import {AgmSnazzyInfoWindowModule} from '@agm/snazzy-info-window';
 import {GooglePlaceModule} from 'ngx-google-places-autocomplete';
+import {AgregarAlCarritoComponent} from './components/agregar-al-carrito/agregar-al-carrito.component';
+import {AgregarAlCarritoDialogComponent} from './components/agregar-al-carrito/agregarAlCarritoDialog/agregar-al-carrito-dialog.component';
+import {registerLocaleData} from '@angular/common';
+import localeEs from '@angular/common/locales/es';
+import localeEsExtra from '@angular/common/locales/extra/es-AR';
 
 registerLocaleData(localeEs, 'es-AR', localeEsExtra);
 
@@ -80,6 +82,8 @@ registerLocaleData(localeEs, 'es-AR', localeEsExtra);
     UbicacionFormComponent,
     UbicacionComponent,
     ClienteUbicacionesComponent,
+    AgregarAlCarritoComponent,
+    AgregarAlCarritoDialogComponent,
   ],
   imports: [
     HttpClientModule,
@@ -119,6 +123,7 @@ registerLocaleData(localeEs, 'es-AR', localeEsExtra);
   entryComponents: [
     ConfirmationDialogComponent,
     CantidadProductoDialogComponent,
+    AgregarAlCarritoDialogComponent,
   ],
   bootstrap: [
     SicComComponent

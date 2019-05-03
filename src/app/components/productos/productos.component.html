@@ -20,9 +20,7 @@
           <button mat-icon-button color="primary" [routerLink]="['/producto/' + p.idProducto]">
             <mat-icon>info</mat-icon>
           </button>
-          <button mat-icon-button color="warn" (click)="agregarAlCarrito(p)" *ngIf="authService.isAuthenticated()">
-            <mat-icon>add_shopping_cart</mat-icon>
-          </button>
+          <sic-com-agregar-al-carrito [producto]="p"></sic-com-agregar-al-carrito>
         </div>
       </mat-list-item>
       <mat-divider></mat-divider>

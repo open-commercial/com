@@ -1,0 +1,23 @@
+<h1 mat-dialog-title>{{titulo}}</h1>
+<mat-dialog-content class="sic-com-agregar-al-carrito-dialog">
+  <p>
+    {{producto.descripcion}}
+  </p>
+  <div fxLayoutAlign="center center">
+    <button mat-mini-fab color="accent" (click)="menosUno(cantidad)" [disabled]="loading">
+      <mat-icon>remove</mat-icon>
+    </button>
+    <mat-form-field class="input-cantidad">
+      <input matInput autofocus type="number" [(ngModel)]='cantidad' placeholder="Cantidad"
+             min="0" [disabled]="loading">
+    </mat-form-field>
+    <button mat-mini-fab color="primary" (click)="masUno(cantidad)" [disabled]="loading">
+      <mat-icon>add</mat-icon>
+    </button>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions fxLayoutAlign="center center">
+  <button mat-raised-button color="primary"  (click)="aceptar()" [disabled]="cantidad <= 0" cdkFocusInitial>Aceptar</button>
+  <button mat-raised-button mat-dialog-close>Cancelar</button>
+<!--  <mat-spinner [diameter]="50" [strokeWidth]="6" *ngIf="loading"></mat-spinner>-->
+</mat-dialog-actions>
