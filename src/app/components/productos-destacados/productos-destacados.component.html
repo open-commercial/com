@@ -1,5 +1,5 @@
-<h3 class="label">¡Productos destacados!</h3>
-<div class="sic-com-productos-destacados">
+<h3 class="label" *ngIf="destacados.length">¡Productos destacados!</h3>
+<div class="sic-com-productos-destacados" *ngIf="destacados.length">
   <div class="scroll-container">
     <div class="destacado" *ngFor="let p of destacados">
       <a [routerLink]="['/producto/' + p.idProducto]">
