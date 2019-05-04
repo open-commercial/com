@@ -50,7 +50,7 @@ import {AgmCoreModule} from '@agm/core';
 import {AgmSnazzyInfoWindowModule} from '@agm/snazzy-info-window';
 import {GooglePlaceModule} from 'ngx-google-places-autocomplete';
 import {AgregarAlCarritoComponent} from './components/agregar-al-carrito/agregar-al-carrito.component';
-import {AgregarAlCarritoDialogComponent} from './components/agregar-al-carrito/agregarAlCarritoDialog/agregar-al-carrito-dialog.component';
+import {AgregarAlCarritoDialogComponent} from './components/agregar-al-carrito-dialog/agregar-al-carrito-dialog.component';
 import {registerLocaleData} from '@angular/common';
 import localeEs from '@angular/common/locales/es';
 import localeEsExtra from '@angular/common/locales/extra/es-AR';

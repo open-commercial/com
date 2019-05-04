@@ -1,9 +1,11 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {ProductosService} from '../../services/productos.service';
 import {Producto} from '../../models/producto';
 import {AuthService} from '../../services/auth.service';
 import {finalize} from 'rxjs/operators';
 import {AvisoService} from '../../services/aviso.service';
+import {Cliente} from '../../models/cliente';
+import {ClientesService} from '../../services/clientes.service';
 
 @Component({
   selector: 'sic-com-productos-destacados',
@@ -11,7 +13,7 @@ import {AvisoService} from '../../services/aviso.service';
   styleUrls: ['./productos-destacados.component.scss']
 })
 export class ProductosDestacadosComponent implements OnInit {
-
+  cliente: Cliente;
   destacados: Producto[] = [];
 
   loading = false;
@@ -20,10 +22,15 @@ export class ProductosDestacadosComponent implements OnInit {
 
   constructor(private productosService: ProductosService,
               private authService: AuthService,
+              private clienteService: ClientesService,
               private avisoService: AvisoService) {}
 
   ngOnInit(): void {
     this.cargarProductos();
+    if (this.authService.isAuthenticated()) {
+      this.clienteService.getClienteDelUsuario(this.authService.getLoggedInIdUsuario())
+        .subscribe((c: Cliente) => this.cliente = c);
+    }
   }
 
   estaBonificado(p) {
@@ -40,7 +47,7 @@ export class ProductosDestacadosComponent implements OnInit {
           data['content'].forEach(p => this.destacados.push(p));
           this.totalPaginas = data['totalPages'];
         },
-        err => { console.log(err); this.avisoService.openSnackBar(err.error, '', 3500); }
+        err => { this.avisoService.openSnackBar(err.error, '', 3500); }
       );
   }
 

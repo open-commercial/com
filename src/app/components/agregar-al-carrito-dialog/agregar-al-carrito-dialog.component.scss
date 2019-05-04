@@ -1,0 +1,16 @@
+@import "../../../colors";
+
+.sic-com-agregar-al-carrito-dialog {
+  p.descripcion {
+    color: $color-primary;
+    font-weight: bold;
+  }
+  .input-cantidad {
+    width: 100px;
+    padding: 0 10px;
+    input {
+      text-align: right;
+    }
+  }
+
+}

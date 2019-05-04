@@ -1,6 +1,5 @@
-<h1 mat-dialog-title>{{titulo}}</h1>
 <mat-dialog-content class="sic-com-agregar-al-carrito-dialog">
-  <p>
+  <p class="descripcion">
     {{producto.descripcion}}
   </p>
   <div fxLayoutAlign="center center">
@@ -17,7 +16,7 @@
   </div>
 </mat-dialog-content>
 <mat-dialog-actions fxLayoutAlign="center center">
-  <button mat-raised-button color="primary"  (click)="aceptar()" [disabled]="cantidad <= 0" cdkFocusInitial>Aceptar</button>
-  <button mat-raised-button mat-dialog-close>Cancelar</button>
-<!--  <mat-spinner [diameter]="50" [strokeWidth]="6" *ngIf="loading"></mat-spinner>-->
+  <button mat-raised-button color="primary" *ngIf="!loading"  (click)="aceptar()" [disabled]="cantidad <= 0" cdkFocusInitial>Aceptar</button>
+  <button mat-raised-button mat-dialog-close *ngIf="!loading">Cancelar</button>
+  <mat-spinner [diameter]="50" [strokeWidth]="6" *ngIf="loading"></mat-spinner>
 </mat-dialog-actions>

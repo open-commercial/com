@@ -1,8 +1,9 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {AuthService} from '../../services/auth.service';
 import {Producto} from '../../models/producto';
-import {MatDialog, MatDialogRef} from '@angular/material';
-import {AgregarAlCarritoDialogComponent} from './agregarAlCarritoDialog/agregar-al-carrito-dialog.component';
+import {MatDialog} from '@angular/material';
+import {AgregarAlCarritoDialogComponent} from '../agregar-al-carrito-dialog/agregar-al-carrito-dialog.component';
+import {Cliente} from '../../models/cliente';
 
 @Component({
   selector: 'sic-com-agregar-al-carrito',
@@ -11,6 +12,7 @@ import {AgregarAlCarritoDialogComponent} from './agregarAlCarritoDialog/agregar-
 })
 export class AgregarAlCarritoComponent implements OnInit {
   @Input() producto: Producto;
+  @Input() cliente: Cliente;
 
   constructor(private authService: AuthService,
               private dialog: MatDialog) { }
@@ -18,14 +20,11 @@ export class AgregarAlCarritoComponent implements OnInit {
   ngOnInit() {
   }
 
-  agregarAlCarrito() {
+  showDialog($event) {
     const dialogRef = this.dialog.open(AgregarAlCarritoDialogComponent);
+    $event.stopPropagation();
     dialogRef.componentInstance.producto = this.producto;
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        console.log(dialogRef.componentInstance.cantidad);
-      }
-    });
+    dialogRef.componentInstance.cliente = this.cliente;
   }
 }
 

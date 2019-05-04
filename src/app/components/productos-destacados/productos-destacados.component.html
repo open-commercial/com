@@ -2,6 +2,7 @@
 <div class="sic-com-productos-destacados">
   <div class="scroll-container">
     <div class="destacado" *ngFor="let p of destacados">
+      <sic-com-agregar-al-carrito [producto]="p" [cliente]="cliente"></sic-com-agregar-al-carrito>
       <a [routerLink]="['/producto/' + p.idProducto]">
       <mat-card>
         <div class="img-container">
@@ -14,7 +15,7 @@
           </p>
         </mat-card-content>
         <mat-card-header fxLayoutAlign="end center">
-          <mat-card-title>
+          <mat-card-title fxLayoutAlign="center center">
             <span class="precio" [class.no-bonificado]="estaBonificado(p)">
             $ {{p.precioLista | number:'1.2-2':'es-AR'}}
             </span>
