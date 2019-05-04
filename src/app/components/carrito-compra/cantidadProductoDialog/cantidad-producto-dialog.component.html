@@ -1,4 +1,7 @@
 <mat-dialog-content class="sic-com-cantidad-producto">
+  <p class="descripcion">
+    {{ producto.descripcion}}
+  </p>
   <div fxLayoutAlign="center center">
     <button mat-mini-fab color="accent" (click)="cambiarCantidad(cantidad, 0)" [disabled]="loading">
       <mat-icon>remove</mat-icon>
@@ -12,9 +15,9 @@
     </button>
   </div>
 </mat-dialog-content>
-<mat-dialog-actions fxLayoutAlign="center center">
+<div fxLayoutAlign="center center" fxLayoutGap="0.5rem">
   <button mat-raised-button color="primary" (click)="aceptar()" *ngIf="!loading" [disabled]="cantidad <= 0">Aceptar</button>
   <button mat-raised-button mat-dialog-close *ngIf="!loading">Cancelar</button>
   <mat-spinner [diameter]="50" [strokeWidth]="6" *ngIf="loading"></mat-spinner>
-</mat-dialog-actions>
+</div>
 

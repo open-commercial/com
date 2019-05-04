@@ -15,8 +15,8 @@
     </button>
   </div>
 </mat-dialog-content>
-<mat-dialog-actions fxLayoutAlign="center center">
+<div fxLayoutAlign="center center" fxLayoutGap="0.5rem">
   <button mat-raised-button color="primary" *ngIf="!loading"  (click)="aceptar()" [disabled]="cantidad <= 0" cdkFocusInitial>Aceptar</button>
   <button mat-raised-button mat-dialog-close *ngIf="!loading">Cancelar</button>
   <mat-spinner [diameter]="50" [strokeWidth]="6" *ngIf="loading"></mat-spinner>
-</mat-dialog-actions>
+</div>

@@ -3,6 +3,7 @@ import {MatDialogRef} from '@angular/material';
 import {CarritoCompraService} from '../../../services/carrito-compra.service';
 import {AvisoService} from '../../../services/aviso.service';
 import {ItemCarritoCompra} from '../../../models/item-carrito-compra';
+import {Producto} from '../../../models/producto';
 
 @Component({
   selector: 'sic-com-cantidad-producto-dialog',
@@ -13,6 +14,7 @@ export class CantidadProductoDialogComponent implements OnInit {
 
   itemCarritoCompra: ItemCarritoCompra = null;
   cantidad;
+  producto: Producto;
   loading = false;
 
   constructor(private dialogRef: MatDialogRef<CantidadProductoDialogComponent>,
@@ -23,6 +25,7 @@ export class CantidadProductoDialogComponent implements OnInit {
 
   ngOnInit() {
     this.cantidad = this.itemCarritoCompra.cantidad;
+    this.producto = this.itemCarritoCompra.producto;
   }
 
   cambiarCantidad(cantidad, masMenos) {
@@ -42,6 +45,7 @@ export class CantidadProductoDialogComponent implements OnInit {
     this.carritoCompraService.actualizarAlPedido(this.itemCarritoCompra.producto, this.cantidad).subscribe(
       () => {
         this.dialogRef.close(true);
+        this.avisoService.openSnackBar('Tu carrito de compra fue modificado', '', 3500);
         this.loading = false;
       },
       err => {
