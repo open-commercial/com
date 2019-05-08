@@ -6,6 +6,8 @@ import {finalize} from 'rxjs/operators';
 import {AvisoService} from '../../services/aviso.service';
 import {Cliente} from '../../models/cliente';
 import {ClientesService} from '../../services/clientes.service';
+import {AgregarAlCarritoDialogComponent} from '../agregar-al-carrito-dialog/agregar-al-carrito-dialog.component';
+import {MatDialog} from '@angular/material';
 
 @Component({
   selector: 'sic-com-productos-destacados',
@@ -23,7 +25,8 @@ export class ProductosDestacadosComponent implements OnInit {
   constructor(private productosService: ProductosService,
               private authService: AuthService,
               private clienteService: ClientesService,
-              private avisoService: AvisoService) {}
+              private avisoService: AvisoService,
+              private dialog: MatDialog) {}
 
   ngOnInit(): void {
     this.cargarProductos();
@@ -63,4 +66,12 @@ export class ProductosDestacadosComponent implements OnInit {
     }
     return a;
   }
+
+  showDialog($event, producto: Producto) {
+    const dialogRef = this.dialog.open(AgregarAlCarritoDialogComponent);
+    $event.stopPropagation();
+    dialogRef.componentInstance.producto = producto;
+    dialogRef.componentInstance.cliente = this.cliente;
+  }
+
 }

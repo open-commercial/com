@@ -1,6 +1,11 @@
 @import "../../../colors";
 
 .sic-com-agregar-al-carrito-dialog {
+  span.codigo {
+    font-size: .8em;
+    font-weight: normal;
+    color: black;
+  }
   p.descripcion {
     color: $color-primary;
     font-weight: bold;

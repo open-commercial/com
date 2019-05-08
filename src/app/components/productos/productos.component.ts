@@ -5,9 +5,10 @@ import {AvisoService} from 'app/services/aviso.service';
 import {combineLatest, Subscription} from 'rxjs';
 import {AuthService} from '../../services/auth.service';
 import {Producto} from '../../models/producto';
-import {CarritoCompraService} from '../../services/carrito-compra.service';
 import {Cliente} from '../../models/cliente';
 import {ClientesService} from '../../services/clientes.service';
+import {MatDialog} from '@angular/material';
+import {AgregarAlCarritoDialogComponent} from '../agregar-al-carrito-dialog/agregar-al-carrito-dialog.component';
 
 @Component({
   selector: 'sic-com-productos',
@@ -30,7 +31,7 @@ export class ProductosComponent implements OnInit, OnDestroy {
               private avisoService: AvisoService,
               private authService: AuthService,
               private router: Router,
-              private carritoCompraService: CarritoCompraService) {
+              private dialog: MatDialog) {
   }
 
   ngOnInit() {
@@ -89,5 +90,12 @@ export class ProductosComponent implements OnInit, OnDestroy {
   paginaSiguiente() {
     if (this.pagina + 1 >= this.totalPaginas) { return; }
     this.router.navigate(['/productos', { q: this.busquedaCriteria || '' }], { queryParams: { p: this.pagina + 2 } });
+  }
+
+  showDialog($event, producto: Producto) {
+    const dialogRef = this.dialog.open(AgregarAlCarritoDialogComponent);
+    $event.stopPropagation();
+    dialogRef.componentInstance.producto = producto;
+    dialogRef.componentInstance.cliente = this.cliente;
   }
 }

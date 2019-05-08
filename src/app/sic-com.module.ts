@@ -29,7 +29,6 @@ import {UsuariosService} from './services/usuarios.service';
 import {ClienteComponent} from './components/cliente/cliente.component';
 import {PedidosComponent} from './components/pedidos/pedidos.component';
 import {PedidosService} from './services/pedidos.service';
-import {PaisesService} from './services/paises.service';
 import {CantidadProductoDialogComponent} from './components/carrito-compra/cantidadProductoDialog/cantidad-producto-dialog.component';
 import {PasswordRecoveryRequestComponent} from './components/password-recovery-request/password-recovery-request.component';
 import {PasswordRecoveryComponent} from './components/password-recovery/password-recovery.component';
@@ -49,7 +48,6 @@ import {UbicacionesService} from './services/ubicaciones.service';
 import {AgmCoreModule} from '@agm/core';
 import {AgmSnazzyInfoWindowModule} from '@agm/snazzy-info-window';
 import {GooglePlaceModule} from 'ngx-google-places-autocomplete';
-import {AgregarAlCarritoComponent} from './components/agregar-al-carrito/agregar-al-carrito.component';
 import {AgregarAlCarritoDialogComponent} from './components/agregar-al-carrito-dialog/agregar-al-carrito-dialog.component';
 import {registerLocaleData} from '@angular/common';
 import localeEs from '@angular/common/locales/es';
@@ -82,7 +80,6 @@ registerLocaleData(localeEs, 'es-AR', localeEsExtra);
     UbicacionFormComponent,
     UbicacionComponent,
     ClienteUbicacionesComponent,
-    AgregarAlCarritoComponent,
     AgregarAlCarritoDialogComponent,
   ],
   imports: [
@@ -114,7 +111,6 @@ registerLocaleData(localeEs, 'es-AR', localeEsExtra);
     AvisoService,
     UsuariosService,
     PedidosService,
-    PaisesService,
     CuentasCorrienteService,
     RegistracionService,
     SlideshowService,

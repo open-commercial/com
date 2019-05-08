@@ -47,7 +47,7 @@ export class AgregarAlCarritoDialogComponent {
                   this.carritoCompraService.setCantidadItemsEnCarrito(carrito.cantRenglones);
                   this.loading = false;
                   this.dialogRef.close(true);
-                  this.avisoService.openSnackBar('Tu carrito de compra fue modificado', '', 3500);
+                  this.avisoService.openSnackBar('Tu carrito de compra fué modificado', '', 3500);
                 },
                 err => {
                   this.avisoService.openSnackBar(err.error, '', 3500);

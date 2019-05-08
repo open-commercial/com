@@ -15,7 +15,9 @@
           <span class="sic-com-precio-lista" [class.bonificado]="estaBonificado(p)">$ {{p.precioLista | number:'1.2-2':'es-AR' }}</span>
           <span class="sic-com-precio-bonificado" *ngIf="estaBonificado(p)">&nbsp;&nbsp;$ {{ p.precioBonificado | number:'1.2-2':'es-AR' }}</span>
         </p>
-        <sic-com-agregar-al-carrito [producto]="p" [cliente]="cliente"></sic-com-agregar-al-carrito>
+        <button mat-icon-button color="warn" (click)="showDialog($event, p)" *ngIf="authService.isAuthenticated() && cliente">
+          <mat-icon>add_shopping_cart</mat-icon>
+        </button>
       </mat-list-item>
       <mat-divider></mat-divider>
     </div>
