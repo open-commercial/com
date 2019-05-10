@@ -2,16 +2,14 @@
 @import "_colors.scss";
 
 .ng-select-wrapper {
-  padding-bottom: 1.25em;
-  //margin-bottom: 0 !important;
-  //margin-bottom: 0.5rem;
+  display: block !important;
+  margin-bottom: 1.25em !important;
 }
 
 .ng-select {
   padding-bottom: 0;
   .ng-select-container {
     align-items: center;
-    //min-height: 38.5px;
     min-height: 2.82195em;
     .ng-value-container {
       padding: 0;
@@ -50,7 +48,6 @@
   & + mat-error {
     font-size: 75%;
     margin-top: 0.2em;
-    //margin-bottom: 0;
     position: absolute;
   }
 }

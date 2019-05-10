@@ -7,7 +7,6 @@ import {finalize} from 'rxjs/operators';
 import {Localidad} from '../../models/localidad';
 import {Provincia} from '../../models/provincia';
 import {Ubicacion} from '../../models/ubicacion';
-import {NgOption} from '@ng-select/ng-select';
 
 @Component({
   selector: 'sic-com-ubicacion',
