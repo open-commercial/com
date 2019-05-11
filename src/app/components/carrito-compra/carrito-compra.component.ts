@@ -112,12 +112,11 @@ export class CarritoCompraComponent implements OnInit {
       this.pagina = 0;
     }
     this.carritoCompraService.getItems(this.cliente.id_Cliente, this.pagina)
-      .pipe(
-        finalize(() => {
-          this.loadingRenglones = false;
-          this.loadingCarritoCompra = false;
-        })
-      )
+      .pipe(finalize(() => {
+        this.loadingRenglones = false;
+        this.loadingCarritoCompra = false;
+        this.carritoCompraService.setCantidadItemsEnCarrito(this.itemsCarritoCompra.length);
+      }))
       .subscribe(
         data => {
           data['content'].forEach(item => {
@@ -151,16 +150,11 @@ export class CarritoCompraComponent implements OnInit {
         this.loadingCarritoCompra = true;
         this.loadingTotales =  true;
         this.carritoCompraService.eliminarItem(itemCarritoCompra.producto.idProducto)
-          .pipe(
-            finalize(() => {
-              this.deleting = false;
-            })
-          )
+          .pipe(finalize(() => this.deleting = false))
           .subscribe(
             data => {
               this.avisoService.openSnackBar('Se eliminó el articulo del listado', '', 3500);
               this.cargarItemsCarritoCompra(true);
-              this.carritoCompraService.setCantidadItemsEnCarrito(this.itemsCarritoCompra.length);
             },
             err => this.avisoService.openSnackBar(err.error, '', 3500)
           );

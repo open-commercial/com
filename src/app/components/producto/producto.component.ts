@@ -9,6 +9,8 @@ import {ClientesService} from '../../services/clientes.service';
 import {Cliente} from '../../models/cliente';
 import {CarritoCompra} from '../../models/carrito-compra';
 import {Location} from '@angular/common';
+import {finalize} from 'rxjs/operators';
+import {ItemCarritoCompra} from '../../models/item-carrito-compra';
 
 @Component({
   selector: 'sic-com-producto',
@@ -52,8 +54,13 @@ export class ProductoComponent implements OnInit {
         if (this.producto.urlImagen == null || this.producto.urlImagen === '') {
           this.producto.urlImagen = 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1545616229/assets/sin_imagen.png';
         }
-        this.cantidad = 1;
-        this.loadingProducto = false;
+        this.carritoCompraService.getCantidadEnCarrito(this.producto.idProducto)
+          .pipe(finalize(() => this.loadingProducto = false))
+          .subscribe(
+            (icc: ItemCarritoCompra) => this.cantidad = icc ? icc.cantidad : 1,
+            err => this.avisoService.openSnackBar(err.error, '', 3500)
+          )
+        ;
       },
       err => {
         this.loadingProducto = false;
@@ -68,7 +75,7 @@ export class ProductoComponent implements OnInit {
 
   cargarAlCarrito() {
     this.cargandoAlCarrito = true;
-    this.carritoCompraService.agregarQuitarAlPedido(this.producto, this.cantidad)
+    this.carritoCompraService.actualizarAlPedido(this.producto, this.cantidad)
       .subscribe(
         data => {
           if (this.cliente) {
