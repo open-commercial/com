@@ -2,7 +2,7 @@
 <div class="sic-com-productos-destacados">
   <div class="scroll-container">
     <div class="destacado" *ngFor="let p of destacados">
-      <button class="add-to-cart" mat-icon-button color="warn" (click)="showDialog($event, p)" *ngIf="authService.isAuthenticated() && cliente">
+      <button class="add-to-cart" mat-icon-button color="warn" (click)="showDialogCantidad($event, p)" *ngIf="authService.isAuthenticated() && cliente">
         <mat-icon>add_shopping_cart</mat-icon>
       </button>
       <a [routerLink]="['/producto/' + p.idProducto]">

@@ -29,7 +29,6 @@ import {UsuariosService} from './services/usuarios.service';
 import {ClienteComponent} from './components/cliente/cliente.component';
 import {PedidosComponent} from './components/pedidos/pedidos.component';
 import {PedidosService} from './services/pedidos.service';
-import {CantidadProductoDialogComponent} from './components/carrito-compra/cantidadProductoDialog/cantidad-producto-dialog.component';
 import {PasswordRecoveryRequestComponent} from './components/password-recovery-request/password-recovery-request.component';
 import {PasswordRecoveryComponent} from './components/password-recovery/password-recovery.component';
 import {CuentasCorrienteService} from './services/cuentas-corriente.service';
@@ -70,7 +69,6 @@ registerLocaleData(localeEs, 'es-AR', localeEsExtra);
     UsuarioComponent,
     ClienteComponent,
     PedidosComponent,
-    CantidadProductoDialogComponent,
     PasswordRecoveryRequestComponent,
     PasswordRecoveryComponent,
     CuentaCorrienteComponent,
@@ -118,7 +116,6 @@ registerLocaleData(localeEs, 'es-AR', localeEsExtra);
   ],
   entryComponents: [
     ConfirmationDialogComponent,
-    CantidadProductoDialogComponent,
     AgregarAlCarritoDialogComponent,
   ],
   bootstrap: [

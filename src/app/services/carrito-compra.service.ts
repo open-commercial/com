@@ -24,16 +24,10 @@ export class CarritoCompraService {
     this.cantidadItemsEnCarritoSubject.next(cantidad);
   }
 
-  agregarQuitarAlPedido(producto, cantidad): Observable<ItemCarritoCompra> {
-    const idUsuario = localStorage.getItem('id_Usuario');
-    const uriPost = `${this.uri}/usuarios/${idUsuario}/productos/${producto['idProducto']}?cantidad=${cantidad}`;
-    return this.http.post<ItemCarritoCompra>(uriPost, {});
-  }
-
   actualizarAlPedido(producto, cantidad) {
     const idUsuario = localStorage.getItem('id_Usuario');
-    const uriPut = `${this.uri}/usuarios/${idUsuario}/productos/${producto['idProducto']}?cantidad=${cantidad}`;
-    return this.http.put(uriPut, {});
+    const uriPost = `${this.uri}/usuarios/${idUsuario}/productos/${producto['idProducto']}?cantidad=${cantidad}`;
+    return this.http.post(uriPost, {});
   }
 
   getItems(idCliente: number, pagina: number) {
@@ -59,5 +53,10 @@ export class CarritoCompraService {
       + `&idUsuario=${idUsuario}&idCliente=${idCliente}&tipoDeEnvio=${TipoDeEnvio[tipoDeEnvio]}`;
 
     return this.http.post(uriPost, observaciones);
+  }
+
+  getCantidadEnCarrito(idProducto): Observable<ItemCarritoCompra> {
+    const idUsuario = localStorage.getItem('id_Usuario');
+    return this.http.get<ItemCarritoCompra>(`${this.uri}/usuarios/${idUsuario}/productos/${idProducto}`);
   }
 }

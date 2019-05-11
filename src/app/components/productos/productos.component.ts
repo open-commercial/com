@@ -92,7 +92,7 @@ export class ProductosComponent implements OnInit, OnDestroy {
     this.router.navigate(['/productos', { q: this.busquedaCriteria || '' }], { queryParams: { p: this.pagina + 2 } });
   }
 
-  showDialog($event, producto: Producto) {
+  showDialogCantidad($event, producto: Producto) {
     const dialogRef = this.dialog.open(AgregarAlCarritoDialogComponent);
     $event.stopPropagation();
     dialogRef.componentInstance.producto = producto;

@@ -1,17 +1,19 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Producto} from '../../models/producto';
 import {MatDialogRef} from '@angular/material';
 import {CarritoCompra} from '../../models/carrito-compra';
 import {CarritoCompraService} from '../../services/carrito-compra.service';
 import {Cliente} from '../../models/cliente';
 import {AvisoService} from '../../services/aviso.service';
+import {finalize} from 'rxjs/operators';
+import {ItemCarritoCompra} from '../../models/item-carrito-compra';
 
 @Component({
   selector: 'sic-com-agregar-al-carrito-dialog',
   templateUrl: './agregar-al-carrito-dialog.component.html',
   styleUrls: ['./agregar-al-carrito-dialog.component.scss']
 })
-export class AgregarAlCarritoDialogComponent {
+export class AgregarAlCarritoDialogComponent implements OnInit {
   producto: Producto;
   cliente: Cliente;
   cantidad = 1;
@@ -21,6 +23,16 @@ export class AgregarAlCarritoDialogComponent {
               private carritoCompraService: CarritoCompraService,
               private avisoService: AvisoService) {
     dialogRef.disableClose = true;
+  }
+
+  ngOnInit(): void {
+    this.loading = true;
+    this.carritoCompraService.getCantidadEnCarrito(this.producto.idProducto)
+      .pipe(finalize(() => this.loading = false))
+      .subscribe((icc: ItemCarritoCompra) => {
+        this.cantidad = icc ? icc.cantidad : 1;
+      })
+    ;
   }
 
   menosUno(cantidad) {
@@ -37,7 +49,7 @@ export class AgregarAlCarritoDialogComponent {
 
   aceptar() {
     this.loading = true;
-    this.carritoCompraService.agregarQuitarAlPedido(this.producto, this.cantidad)
+    this.carritoCompraService.actualizarAlPedido(this.producto, this.cantidad)
       .subscribe(
         data => {
           if (this.cliente) {

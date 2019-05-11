@@ -67,11 +67,10 @@ export class ProductosDestacadosComponent implements OnInit {
     return a;
   }
 
-  showDialog($event, producto: Producto) {
+  showDialogCantidad($event, producto: Producto) {
     const dialogRef = this.dialog.open(AgregarAlCarritoDialogComponent);
     $event.stopPropagation();
     dialogRef.componentInstance.producto = producto;
     dialogRef.componentInstance.cliente = this.cliente;
   }
-
 }
