@@ -52,6 +52,7 @@ import {UbicacionesService} from './services/ubicaciones.service';
 import {AgmCoreModule} from '@agm/core';
 import {AgmSnazzyInfoWindowModule} from '@agm/snazzy-info-window';
 import {GooglePlaceModule} from 'ngx-google-places-autocomplete';
+import {NgSelectModule} from '@ng-select/ng-select';
 
 registerLocaleData(localeEs, 'es-AR', localeEsExtra);
 
@@ -97,7 +98,8 @@ registerLocaleData(localeEs, 'es-AR', localeEsExtra);
       libraries: ['places']
     }),
     AgmSnazzyInfoWindowModule,
-    GooglePlaceModule
+    GooglePlaceModule,
+    NgSelectModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},

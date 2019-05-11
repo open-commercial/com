@@ -40,7 +40,7 @@ export class ProductosDestacadosComponent implements OnInit {
           data['content'].forEach(p => this.destacados.push(p));
           this.totalPaginas = data['totalPages'];
         },
-        err => { console.log(err); this.avisoService.openSnackBar(err.error, '', 3500); }
+        err => this.avisoService.openSnackBar(err.error, '', 3500)
       );
   }
 
