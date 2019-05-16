@@ -6,7 +6,6 @@ import {ClientesService} from '../../services/clientes.service';
 import {AvisoService} from '../../services/aviso.service';
 import {CategoriaIVA} from '../../models/categoria-iva';
 import {finalize} from 'rxjs/operators';
-import {UbicacionFormComponent} from '../ubicacion-form/ubicacion-form.component';
 
 @Component({
   selector: 'sic-com-cliente',
@@ -19,9 +18,6 @@ export class ClienteComponent implements OnInit, OnChanges {
   @Input() editionMode = true;
   @Output() updated = new EventEmitter<Cliente>(true);
   @Output() modeStatusChanged = new EventEmitter<boolean>(true);
-
-  @ViewChild(UbicacionFormComponent)
-  private ufComponent: UbicacionFormComponent;
 
   inEdition = false;
   clienteForm: FormGroup;

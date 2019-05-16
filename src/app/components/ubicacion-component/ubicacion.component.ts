@@ -22,6 +22,7 @@ export class UbicacionComponent implements OnInit, OnChanges {
   ubicacionForm: FormGroup;
 
   provincias: Provincia[] = [];
+
   localidades: Localidad[] = [];
 
   isProvinciasLoading = false;
@@ -36,15 +37,17 @@ export class UbicacionComponent implements OnInit, OnChanges {
     this.rebuildForm();
     this.isProvinciasLoading = true;
     if (this.ubicacionForm.get('idProvincia').enabled) {
-      this.ubicacionForm.get('idProvincia').disable({ onlySelf: true, emitEvent: false });
+      this.ubicacionForm.get('idProvincia').disable();
     }
     this.ubicacionesService.getProvincias()
       .pipe(finalize(() => {
         this.isProvinciasLoading = false;
-        this.ubicacionForm.get('idProvincia').enable({ onlySelf: true, emitEvent: false });
+        this.ubicacionForm.get('idProvincia').enable();
       }))
       .subscribe(
-        (data: Provincia[]) => this.provincias = data,
+        (data: Provincia[]) => {
+          this.provincias = data;
+        },
         err => this.avisoService.openSnackBar(err.error, '', 3500)
       )
     ;
@@ -73,17 +76,13 @@ export class UbicacionComponent implements OnInit, OnChanges {
       numero: '',
       piso: '',
       departamento: '',
-      nombreLocalidad: '',
-      nombreProvincia: '',
     });
 
     this.ubicacionForm.get('idProvincia').valueChanges
       .subscribe((value) => {
         this.localidades = [];
         if (!value) {
-          this.ubicacionForm.get('nombreProvincia').setValue('');
           this.ubicacionForm.get('idLocalidad').setValue(null);
-          this.ubicacionForm.get('nombreLocalidad').setValue('');
           return;
         }
 
@@ -117,8 +116,6 @@ export class UbicacionComponent implements OnInit, OnChanges {
         numero: this.ubicacion.numero,
         piso: this.ubicacion.piso,
         departamento: this.ubicacion.departamento,
-        nombreLocalidad: this.ubicacion.nombreLocalidad,
-        nombreProvincia: this.ubicacion.nombreProvincia,
       });
     }
   }
@@ -162,6 +159,12 @@ export class UbicacionComponent implements OnInit, OnChanges {
   }
 
   submit() {
+    if (this.ubicacionForm.get('idProvincia').invalid && this.ubicacionForm.get('idProvincia').untouched) {
+      this.ubicacionForm.get('idProvincia').markAsTouched();
+    }
+    if (this.ubicacionForm.get('idLocalidad').invalid && this.ubicacionForm.get('idLocalidad').untouched) {
+      this.ubicacionForm.get('idLocalidad').markAsTouched();
+    }
     if (this.ubicacionForm.valid) {
       const ubicacion: Ubicacion = this.getFormValues();
       this.updated.emit(ubicacion);

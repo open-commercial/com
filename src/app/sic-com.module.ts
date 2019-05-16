@@ -51,6 +51,7 @@ import {AgregarAlCarritoDialogComponent} from './components/agregar-al-carrito-d
 import {registerLocaleData} from '@angular/common';
 import localeEs from '@angular/common/locales/es';
 import localeEsExtra from '@angular/common/locales/extra/es-AR';
+import {NgSelectModule} from '@ng-select/ng-select';
 
 registerLocaleData(localeEs, 'es-AR', localeEsExtra);
 
@@ -96,7 +97,8 @@ registerLocaleData(localeEs, 'es-AR', localeEsExtra);
       libraries: ['places']
     }),
     AgmSnazzyInfoWindowModule,
-    GooglePlaceModule
+    GooglePlaceModule,
+    NgSelectModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
