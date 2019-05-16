@@ -4,6 +4,11 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {AvisoService} from 'app/services/aviso.service';
 import {combineLatest, Subscription} from 'rxjs';
 import {AuthService} from '../../services/auth.service';
+import {Producto} from '../../models/producto';
+import {Cliente} from '../../models/cliente';
+import {ClientesService} from '../../services/clientes.service';
+import {MatDialog} from '@angular/material';
+import {AgregarAlCarritoDialogComponent} from '../agregar-al-carrito-dialog/agregar-al-carrito-dialog.component';
 
 @Component({
   selector: 'sic-com-productos',
@@ -18,12 +23,15 @@ export class ProductosComponent implements OnInit, OnDestroy {
   pagina = 0;
   busquedaCriteria = '';
   buscarProductosSubscription: Subscription;
+  cliente: Cliente = null;
 
-  constructor(private productosService: ProductosService,
+  constructor(private clienteService: ClientesService,
+              private productosService: ProductosService,
               private route: ActivatedRoute,
               private avisoService: AvisoService,
               private authService: AuthService,
-              private router: Router) {
+              private router: Router,
+              private dialog: MatDialog) {
   }
 
   ngOnInit() {
@@ -37,6 +45,11 @@ export class ProductosComponent implements OnInit, OnDestroy {
         this.pagina = (Number(queryParams['params'].p) - 1) || 0;
         this.productosService.buscarProductos(params['params'].q || '');
       });
+
+    if (this.authService.isAuthenticated()) {
+      this.clienteService.getClienteDelUsuario(this.authService.getLoggedInIdUsuario())
+        .subscribe((c: Cliente) => this.cliente = c);
+    }
   }
 
   ngOnDestroy() {
@@ -77,5 +90,12 @@ export class ProductosComponent implements OnInit, OnDestroy {
   paginaSiguiente() {
     if (this.pagina + 1 >= this.totalPaginas) { return; }
     this.router.navigate(['/productos', { q: this.busquedaCriteria || '' }], { queryParams: { p: this.pagina + 2 } });
+  }
+
+  showDialogCantidad($event, producto: Producto) {
+    const dialogRef = this.dialog.open(AgregarAlCarritoDialogComponent);
+    $event.stopPropagation();
+    dialogRef.componentInstance.producto = producto;
+    dialogRef.componentInstance.cliente = this.cliente;
   }
 }

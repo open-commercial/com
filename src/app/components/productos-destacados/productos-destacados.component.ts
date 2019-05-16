@@ -1,9 +1,13 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {ProductosService} from '../../services/productos.service';
 import {Producto} from '../../models/producto';
 import {AuthService} from '../../services/auth.service';
 import {finalize} from 'rxjs/operators';
 import {AvisoService} from '../../services/aviso.service';
+import {Cliente} from '../../models/cliente';
+import {ClientesService} from '../../services/clientes.service';
+import {AgregarAlCarritoDialogComponent} from '../agregar-al-carrito-dialog/agregar-al-carrito-dialog.component';
+import {MatDialog} from '@angular/material';
 
 @Component({
   selector: 'sic-com-productos-destacados',
@@ -11,7 +15,7 @@ import {AvisoService} from '../../services/aviso.service';
   styleUrls: ['./productos-destacados.component.scss']
 })
 export class ProductosDestacadosComponent implements OnInit {
-
+  cliente: Cliente;
   destacados: Producto[] = [];
 
   loading = false;
@@ -20,10 +24,16 @@ export class ProductosDestacadosComponent implements OnInit {
 
   constructor(private productosService: ProductosService,
               private authService: AuthService,
-              private avisoService: AvisoService) {}
+              private clienteService: ClientesService,
+              private avisoService: AvisoService,
+              private dialog: MatDialog) {}
 
   ngOnInit(): void {
     this.cargarProductos();
+    if (this.authService.isAuthenticated()) {
+      this.clienteService.getClienteDelUsuario(this.authService.getLoggedInIdUsuario())
+        .subscribe((c: Cliente) => this.cliente = c);
+    }
   }
 
   estaBonificado(p) {
@@ -55,5 +65,12 @@ export class ProductosDestacadosComponent implements OnInit {
       [a[i], a[j]] = [a[j], a[i]];
     }
     return a;
+  }
+
+  showDialogCantidad($event, producto: Producto) {
+    const dialogRef = this.dialog.open(AgregarAlCarritoDialogComponent);
+    $event.stopPropagation();
+    dialogRef.componentInstance.producto = producto;
+    dialogRef.componentInstance.cliente = this.cliente;
   }
 }

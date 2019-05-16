@@ -29,8 +29,6 @@ import {UsuariosService} from './services/usuarios.service';
 import {ClienteComponent} from './components/cliente/cliente.component';
 import {PedidosComponent} from './components/pedidos/pedidos.component';
 import {PedidosService} from './services/pedidos.service';
-import {PaisesService} from './services/paises.service';
-import {CantidadProductoDialogComponent} from './components/carrito-compra/cantidadProductoDialog/cantidad-producto-dialog.component';
 import {PasswordRecoveryRequestComponent} from './components/password-recovery-request/password-recovery-request.component';
 import {PasswordRecoveryComponent} from './components/password-recovery/password-recovery.component';
 import {CuentasCorrienteService} from './services/cuentas-corriente.service';
@@ -44,14 +42,15 @@ import {ProductosDestacadosComponent} from './components/productos-destacados/pr
 import {UbicacionFormComponent} from './components/ubicacion-form/ubicacion-form.component';
 import {UbicacionComponent} from './components/ubicacion-component/ubicacion.component';
 import {ClienteUbicacionesComponent} from './components/cliente-ubicaciones/cliente-ubicaciones.component';
-import {registerLocaleData} from '@angular/common';
-import localeEs from '@angular/common/locales/es';
-import localeEsExtra from '@angular/common/locales/extra/es-AR';
 import {SlideshowService} from './services/slideshow.service';
 import {UbicacionesService} from './services/ubicaciones.service';
 import {AgmCoreModule} from '@agm/core';
 import {AgmSnazzyInfoWindowModule} from '@agm/snazzy-info-window';
 import {GooglePlaceModule} from 'ngx-google-places-autocomplete';
+import {AgregarAlCarritoDialogComponent} from './components/agregar-al-carrito-dialog/agregar-al-carrito-dialog.component';
+import {registerLocaleData} from '@angular/common';
+import localeEs from '@angular/common/locales/es';
+import localeEsExtra from '@angular/common/locales/extra/es-AR';
 import {NgSelectModule} from '@ng-select/ng-select';
 
 registerLocaleData(localeEs, 'es-AR', localeEsExtra);
@@ -71,7 +70,6 @@ registerLocaleData(localeEs, 'es-AR', localeEsExtra);
     UsuarioComponent,
     ClienteComponent,
     PedidosComponent,
-    CantidadProductoDialogComponent,
     PasswordRecoveryRequestComponent,
     PasswordRecoveryComponent,
     CuentaCorrienteComponent,
@@ -81,6 +79,7 @@ registerLocaleData(localeEs, 'es-AR', localeEsExtra);
     UbicacionFormComponent,
     UbicacionComponent,
     ClienteUbicacionesComponent,
+    AgregarAlCarritoDialogComponent,
   ],
   imports: [
     HttpClientModule,
@@ -112,7 +111,6 @@ registerLocaleData(localeEs, 'es-AR', localeEsExtra);
     AvisoService,
     UsuariosService,
     PedidosService,
-    PaisesService,
     CuentasCorrienteService,
     RegistracionService,
     SlideshowService,
@@ -120,7 +118,7 @@ registerLocaleData(localeEs, 'es-AR', localeEsExtra);
   ],
   entryComponents: [
     ConfirmationDialogComponent,
-    CantidadProductoDialogComponent,
+    AgregarAlCarritoDialogComponent,
   ],
   bootstrap: [
     SicComComponent

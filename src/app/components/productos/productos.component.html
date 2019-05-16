@@ -5,7 +5,7 @@
       &nbsp;Sin Resultados
     </span>
   </div>
-  <mat-nav-list class="sic-com-listado">
+  <mat-nav-list class="sic-com-listado" disableRipple="true">
     <div *ngFor="let p of productos">
       <mat-list-item [routerLink]="['/producto/' + p.idProducto]">
         <img mat-list-avatar class="sic-com-avatar" [src]=p.urlImagen>
@@ -15,6 +15,9 @@
           <span class="sic-com-precio-lista" [class.bonificado]="estaBonificado(p)">$ {{p.precioLista | number:'1.2-2':'es-AR' }}</span>
           <span class="sic-com-precio-bonificado" *ngIf="estaBonificado(p)">&nbsp;&nbsp;$ {{ p.precioBonificado | number:'1.2-2':'es-AR' }}</span>
         </p>
+        <button mat-icon-button color="warn" (click)="showDialogCantidad($event, p)" *ngIf="authService.isAuthenticated() && cliente">
+          <mat-icon>add_shopping_cart</mat-icon>
+        </button>
       </mat-list-item>
       <mat-divider></mat-divider>
     </div>

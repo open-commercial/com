@@ -2,6 +2,9 @@
 <div class="sic-com-productos-destacados" *ngIf="destacados.length">
   <div class="scroll-container">
     <div class="destacado" *ngFor="let p of destacados">
+      <button class="add-to-cart" mat-icon-button color="warn" (click)="showDialogCantidad($event, p)" *ngIf="authService.isAuthenticated() && cliente">
+        <mat-icon>add_shopping_cart</mat-icon>
+      </button>
       <a [routerLink]="['/producto/' + p.idProducto]">
       <mat-card>
         <div class="img-container">
@@ -14,7 +17,7 @@
           </p>
         </mat-card-content>
         <mat-card-header fxLayoutAlign="end center">
-          <mat-card-title>
+          <mat-card-title fxLayoutAlign="center center">
             <span class="precio" [class.no-bonificado]="estaBonificado(p)">
             $ {{p.precioLista | number:'1.2-2':'es-AR'}}
             </span>

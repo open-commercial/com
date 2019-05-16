@@ -44,7 +44,7 @@
           </div>
           <div fxLayout fxFlex="40">
             <div fxFlex="40" fxLayoutAlign="center center">
-              <button mat-raised-button (click)="editCantidadProducto(icc)" color="primary" [disabled]="disabledButtons()">Cantidad {{icc.cantidad | number:'1.0-2':'es-AR' }}</button>
+              <button mat-raised-button (click)="showDialogCantidad($event, icc.producto)" color="primary" [disabled]="disabledButtons()">Cantidad {{icc.cantidad | number:'1.0-2':'es-AR' }}</button>
             </div>
             <div fxFlex="40" fxLayoutAlign="center center">
               <strong *ngIf="!(cliente && cliente.bonificacion > 0)">$ {{icc.importe | number:'1.2-2':'es-AR'}}</strong>

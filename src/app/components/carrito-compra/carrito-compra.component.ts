@@ -5,11 +5,12 @@ import {ClientesService} from '../../services/clientes.service';
 import {AvisoService} from '../../services/aviso.service';
 import {AuthService} from '../../services/auth.service';
 import {ConfirmationDialogComponent} from '../confirmation-dialog/confirmation-dialog.component';
-import {CantidadProductoDialogComponent} from './cantidadProductoDialog/cantidad-producto-dialog.component';
 import {ProductosService} from '../../services/productos.service';
 import {Router} from '@angular/router';
 import {Cliente} from '../../models/cliente';
 import {finalize} from 'rxjs/operators';
+import {Producto} from '../../models/producto';
+import {AgregarAlCarritoDialogComponent} from '../agregar-al-carrito-dialog/agregar-al-carrito-dialog.component';
 
 @Component({
   selector: 'sic-com-carrito-compra',
@@ -111,12 +112,11 @@ export class CarritoCompraComponent implements OnInit {
       this.pagina = 0;
     }
     this.carritoCompraService.getItems(this.cliente.id_Cliente, this.pagina)
-      .pipe(
-        finalize(() => {
-          this.loadingRenglones = false;
-          this.loadingCarritoCompra = false;
-        })
-      )
+      .pipe(finalize(() => {
+        this.loadingRenglones = false;
+        this.loadingCarritoCompra = false;
+        this.carritoCompraService.setCantidadItemsEnCarrito(this.itemsCarritoCompra.length);
+      }))
       .subscribe(
         data => {
           data['content'].forEach(item => {
@@ -150,16 +150,11 @@ export class CarritoCompraComponent implements OnInit {
         this.loadingCarritoCompra = true;
         this.loadingTotales =  true;
         this.carritoCompraService.eliminarItem(itemCarritoCompra.producto.idProducto)
-          .pipe(
-            finalize(() => {
-              this.deleting = false;
-            })
-          )
+          .pipe(finalize(() => this.deleting = false))
           .subscribe(
             data => {
               this.avisoService.openSnackBar('Se eliminó el articulo del listado', '', 3500);
               this.cargarItemsCarritoCompra(true);
-              this.carritoCompraService.setCantidadItemsEnCarrito(this.itemsCarritoCompra.length);
             },
             err => this.avisoService.openSnackBar(err.error, '', 3500)
           );
@@ -167,9 +162,11 @@ export class CarritoCompraComponent implements OnInit {
     });
   }
 
-  editCantidadProducto(itemCarritoCompra) {
-    const dialogRef = this.dialog.open(CantidadProductoDialogComponent);
-    dialogRef.componentInstance.itemCarritoCompra = itemCarritoCompra;
+  showDialogCantidad($event, producto: Producto) {
+    const dialogRef = this.dialog.open(AgregarAlCarritoDialogComponent);
+    $event.stopPropagation();
+    dialogRef.componentInstance.producto = producto;
+    dialogRef.componentInstance.cliente = this.cliente;
     dialogRef.afterClosed().subscribe(data => {
       if (data) {
         this.loadingCarritoCompra = true;
