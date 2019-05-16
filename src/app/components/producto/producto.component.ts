@@ -54,13 +54,17 @@ export class ProductoComponent implements OnInit {
         if (this.producto.urlImagen == null || this.producto.urlImagen === '') {
           this.producto.urlImagen = 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1545616229/assets/sin_imagen.png';
         }
-        this.carritoCompraService.getCantidadEnCarrito(this.producto.idProducto)
-          .pipe(finalize(() => this.loadingProducto = false))
-          .subscribe(
-            (icc: ItemCarritoCompra) => this.cantidad = icc ? icc.cantidad : 1,
-            err => this.avisoService.openSnackBar(err.error, '', 3500)
-          )
-        ;
+        if (this.authService.isAuthenticated()) {
+          this.carritoCompraService.getCantidadEnCarrito(this.producto.idProducto)
+            .pipe(finalize(() => this.loadingProducto = false))
+            .subscribe(
+              (icc: ItemCarritoCompra) => this.cantidad = icc ? icc.cantidad : 1,
+              err => this.avisoService.openSnackBar(err.error, '', 3500)
+            )
+          ;
+        } else {
+          this.loadingProducto = false;
+        }
       },
       err => {
         this.loadingProducto = false;
