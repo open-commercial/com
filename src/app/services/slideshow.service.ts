@@ -13,8 +13,11 @@ export class SlideshowService {
   getSlideshowDataForDesktop(): (string | IImage)[] {
     return [
       {
-        url: 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1549499114/slideshow/oferta-pala-1280x550px.png',
-        clickAction: () => this.router.navigate(['/productos', { q: 'pala tramontina emp plast'}])
+        url: 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1558410150/slideshow/caloventor-1280x550.jpg',
+        clickAction: () => this.router.navigate(['/productos', { q: 'caloventor'}])
+      },
+      {
+        url: 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1558410150/slideshow/redes-1280x550.jpg'
       }
     ];
   }
@@ -22,8 +25,11 @@ export class SlideshowService {
   getSlideshowDataForMobile(): (string | IImage)[] {
     return [
       {
-        url: 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1549499113/slideshow/oferta-pala-850x450px.png',
-        clickAction: () => this.router.navigate(['/productos', { q: 'pala tramontina emp plast'}])
+        url: 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1558410196/slideshow/caloventor-800x450.jpg',
+        clickAction: () => this.router.navigate(['/productos', { q: 'caloventor'}])
+      },
+      {
+        url: 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1558410141/slideshow/redes-800x450.jpg'
       }
     ];
   }
