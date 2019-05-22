@@ -6,10 +6,10 @@ export class AvisoService {
 
   constructor(private snackBar: MatSnackBar) {}
 
-  openSnackBar(message: string, action: string, duration: number) {
+  openSnackBar(message: string, action: string, duration: number = 3500) {
     const config = new MatSnackBarConfig();
     config.duration = duration;
     config.verticalPosition = 'top';
-    this.snackBar.open(message, action, config);
+    return this.snackBar.open(message, action, config);
   }
 }
