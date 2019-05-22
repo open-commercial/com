@@ -7,6 +7,7 @@ import {Cliente} from '../../models/cliente';
 import {AvisoService} from '../../services/aviso.service';
 import {finalize} from 'rxjs/operators';
 import {ItemCarritoCompra} from '../../models/item-carrito-compra';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'sic-com-agregar-al-carrito-dialog',
@@ -21,7 +22,8 @@ export class AgregarAlCarritoDialogComponent implements OnInit {
 
   constructor(private dialogRef: MatDialogRef<AgregarAlCarritoDialogComponent>,
               private carritoCompraService: CarritoCompraService,
-              private avisoService: AvisoService) {
+              private avisoService: AvisoService,
+              private router: Router) {
     dialogRef.disableClose = true;
   }
 
@@ -57,7 +59,8 @@ export class AgregarAlCarritoDialogComponent implements OnInit {
                   this.carritoCompraService.setCantidadItemsEnCarrito(carrito.cantRenglones);
                   this.loading = false;
                   this.dialogRef.close(true);
-                  this.avisoService.openSnackBar('Tu carrito de compra fué modificado', '', 3500);
+                  this.avisoService.openSnackBar('Tu carrito de compra fué modificado', 'Ver', 5000)
+                    .onAction().subscribe(() => this.router.navigate(['/carrito-compra']));
                 },
                 err => {
                   this.avisoService.openSnackBar(err.error, '', 3500);
