@@ -60,9 +60,14 @@
       </mat-list-item>
     </mat-list>
   </div>
-  <div fxLayoutAlign="center center" class="sic-com-mas-resultados" (click)="masItemsCarritoCompra()"
-       *ngIf="(itemsCarritoCompra.length > 0) && (totalPaginas > (pagina + 1)) && !(loadingRenglones || loadingTotales || loadingTotales)">
-    <strong>MAS RESULTADOS</strong>
+  <div class="sic-com-paginator" *ngIf="!loadingRenglones && (itemsCarritoCompra.length > 0)" fxLayout="row" fxLayoutAlign="center center">
+    <button mat-button color="primary" [disabled]="pagina <= 0" (click)="paginaAnterior()">
+      <mat-icon aria-label="Página anterior">navigate_before</mat-icon><span>Anterior</span>
+    </button>
+    <span class="page">{{ this.pagina + 1 }}/{{ totalPaginas }}</span>
+    <button mat-button color="primary" [disabled]="pagina + 1 >= totalPaginas" (click)="paginaSiguiente()">
+      <span>Siguiente</span><mat-icon aria-label="Página siguiente">navigate_next</mat-icon>
+    </button>
   </div>
   <div class="sic-com-spinner-container" fxLayoutAlign="center center" *ngIf="loadingCarritoCompra || loadingRenglones || loadingTotales">
     <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
