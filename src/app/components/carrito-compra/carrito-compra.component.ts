@@ -6,7 +6,7 @@ import {AvisoService} from '../../services/aviso.service';
 import {AuthService} from '../../services/auth.service';
 import {ConfirmationDialogComponent} from '../confirmation-dialog/confirmation-dialog.component';
 import {ProductosService} from '../../services/productos.service';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {Cliente} from '../../models/cliente';
 import {finalize} from 'rxjs/operators';
 import {Producto} from '../../models/producto';
@@ -22,6 +22,7 @@ export class CarritoCompraComponent implements OnInit {
   cantidadRenglones = 0;
   pagina = 0;
   totalPaginas = 0;
+  totalElements = 0;
   loadingCarritoCompra = false;
   loadingRenglones = false;
   loadingTotales = false;
@@ -38,17 +39,20 @@ export class CarritoCompraComponent implements OnInit {
               private authService: AuthService,
               private productosService: ProductosService,
               private dialog: MatDialog,
+              private route: ActivatedRoute,
               private router: Router) {
   }
 
   ngOnInit() {
     this.loadingCarritoCompra = true;
 
+
+
     this.clientesService.getClienteDelUsuario(this.authService.getLoggedInIdUsuario()).subscribe(
       (cliente: Cliente) => {
         if (cliente) {
           this.cliente = cliente;
-          this.cargarItemsCarritoCompra(true);
+          this.cargarItemsCarritoCompra();
         } else {
           this.loadingCarritoCompra = false;
         }
@@ -77,7 +81,7 @@ export class CarritoCompraComponent implements OnInit {
           .subscribe(
             data => {
               this.cargarCarritoCompra();
-              this.cargarItemsCarritoCompra(true);
+              this.cargarItemsCarritoCompra();
               this.carritoCompraService.setCantidadItemsEnCarrito(0);
               this.avisoService.openSnackBar('Se borraron todos los articulos del listado', '', 3500);
             },
@@ -105,32 +109,33 @@ export class CarritoCompraComponent implements OnInit {
       err => this.avisoService.openSnackBar(err.error, '', 3500));
   }
 
-  cargarItemsCarritoCompra(reset: boolean) {
+  cargarItemsCarritoCompra() {
     this.loadingRenglones = true;
-    if (reset) {
-      this.itemsCarritoCompra = [];
-      this.pagina = 0;
-    }
-    this.carritoCompraService.getItems(this.cliente.id_Cliente, this.pagina)
-      .pipe(finalize(() => {
-        this.loadingRenglones = false;
-        this.loadingCarritoCompra = false;
-        this.carritoCompraService.setCantidadItemsEnCarrito(this.itemsCarritoCompra.length);
-      }))
-      .subscribe(
-        data => {
-          data['content'].forEach(item => {
-            if (item.producto.urlImagen == null || item.producto.urlImagen === '') {
-              item.producto.urlImagen = 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1545616229/assets/sin_imagen.png';
-            }
-            this.itemsCarritoCompra.push(item);
-          });
-          this.totalPaginas = data['totalPages'];
-          if (reset) {
-            this.cargarCarritoCompra();
-          }
-        },
-        err => this.avisoService.openSnackBar(err.error, '', 3500));
+    this.route.queryParamMap.subscribe(
+      queryParams => {
+        this.pagina = (Number(queryParams['params'].p) - 1) || 0;
+        this.carritoCompraService.getItems(this.cliente.id_Cliente, this.pagina)
+          .pipe(finalize(() => {
+            this.loadingRenglones = false;
+            this.loadingCarritoCompra = false;
+            this.carritoCompraService.setCantidadItemsEnCarrito(this.totalElements);
+          }))
+          .subscribe(
+            data => {
+              this.itemsCarritoCompra = [];
+              data['content'].forEach(item => {
+                if (item.producto.urlImagen == null || item.producto.urlImagen === '') {
+                  item.producto.urlImagen = 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1545616229/assets/sin_imagen.png';
+                }
+                this.itemsCarritoCompra.push(item);
+              });
+              this.totalPaginas = data['totalPages'];
+              this.totalElements = data['totalElements'];
+              this.cargarCarritoCompra();
+            },
+            err => this.avisoService.openSnackBar(err.error, '', 3500));
+      }
+    );
   }
 
   precioListaBonificado(item) {
@@ -154,7 +159,7 @@ export class CarritoCompraComponent implements OnInit {
           .subscribe(
             data => {
               this.avisoService.openSnackBar('Se eliminó el articulo del listado', '', 3500);
-              this.cargarItemsCarritoCompra(true);
+              this.cargarItemsCarritoCompra();
             },
             err => this.avisoService.openSnackBar(err.error, '', 3500)
           );
@@ -170,7 +175,7 @@ export class CarritoCompraComponent implements OnInit {
     dialogRef.afterClosed().subscribe(data => {
       if (data) {
         this.loadingCarritoCompra = true;
-        this.cargarItemsCarritoCompra(true);
+        this.cargarItemsCarritoCompra();
       }
     });
   }
@@ -179,7 +184,7 @@ export class CarritoCompraComponent implements OnInit {
     this.loadingRenglones = true;
     if ((this.pagina + 1) < this.totalPaginas) {
       this.pagina++;
-      this.cargarItemsCarritoCompra(false);
+      this.cargarItemsCarritoCompra();
     }
   }
 
@@ -194,5 +199,15 @@ export class CarritoCompraComponent implements OnInit {
 
   disabledButtons() {
     return this.loadingRenglones || this.deleting;
+  }
+
+  paginaAnterior() {
+    if (this.pagina <= 0) { return; }
+    this.router.navigate(['/carrito-compra'], { queryParams: { p: this.pagina } });
+  }
+
+  paginaSiguiente() {
+    if (this.pagina + 1 >= this.totalPaginas) { return; }
+    this.router.navigate(['/carrito-compra'], { queryParams: { p: this.pagina + 2 } });
   }
 }
