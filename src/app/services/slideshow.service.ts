@@ -13,7 +13,7 @@ export class SlideshowService {
   getSlideshowDataForDesktop(): (string | IImage)[] {
     return [
       {
-        url: 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1558410150/slideshow/caloventor-1280x550.jpg',
+        url: 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1558558477/slideshow/caloventor-1280x550-nueva.jpg',
         clickAction: () => this.router.navigate(['/productos', { q: 'caloventor'}])
       },
       {
@@ -25,7 +25,7 @@ export class SlideshowService {
   getSlideshowDataForMobile(): (string | IImage)[] {
     return [
       {
-        url: 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1558410196/slideshow/caloventor-800x450.jpg',
+        url: 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1558558475/slideshow/caloventor-800x450-nueva.jpg',
         clickAction: () => this.router.navigate(['/productos', { q: 'caloventor'}])
       },
       {
