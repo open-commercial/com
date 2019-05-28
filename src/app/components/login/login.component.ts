@@ -3,7 +3,7 @@ import {AuthService} from '../../services/auth.service';
 import {AvisoService} from '../../services/aviso.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Usuario} from '../../models/usuario';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {Cliente} from '../../models/cliente';
 import {ClientesService} from '../../services/clientes.service';
 import {finalize} from 'rxjs/operators';
@@ -19,18 +19,22 @@ export class LoginComponent implements OnInit {
   returnUrl = '';
   loginForm: FormGroup;
   usuario: Usuario;
+  redirectProductId = 0;
 
   constructor(private router: Router,
               private authService: AuthService,
               private avisoService: AvisoService,
               private clientesService: ClientesService,
-              private fb: FormBuilder) {
+              private fb: FormBuilder,
+              private route: ActivatedRoute) {
     this.buildForm();
   }
 
   ngOnInit() {
     if (this.authService.isAuthenticated()) {
       this.router.navigate(['']);
+    } else {
+      this.route.paramMap.subscribe(params => this.redirectProductId = (Number(params['params'].pid)) || 0);
     }
   }
 
@@ -61,7 +65,11 @@ export class LoginComponent implements OnInit {
             .subscribe(
               (cliente: Cliente) => {
                 if (cliente) {
-                  this.router.navigate(['']);
+                  if (this.redirectProductId) {
+                    this.router.navigate(['/producto', this.redirectProductId]);
+                  } else {
+                    this.router.navigate(['']);
+                  }
                 } else {
                   this.avisoService.openSnackBar(
                     'Su usuario no posee cuenta de cliente asociada. Por favor, comuníquese con nosotros.', '', 3500);
