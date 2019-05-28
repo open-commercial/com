@@ -18,6 +18,7 @@ export class AgregarAlCarritoDialogComponent implements OnInit {
   producto: Producto;
   cliente: Cliente;
   cantidad = 1;
+  cantidadEnCarrito = 0;
   loading = false;
 
   constructor(private dialogRef: MatDialogRef<AgregarAlCarritoDialogComponent>,
@@ -31,7 +32,7 @@ export class AgregarAlCarritoDialogComponent implements OnInit {
     this.loading = true;
     this.carritoCompraService.getCantidadEnCarrito(this.producto.idProducto)
       .pipe(finalize(() => this.loading = false))
-      .subscribe((icc: ItemCarritoCompra) => this.cantidad = icc ? icc.cantidad : 1)
+      .subscribe((icc: ItemCarritoCompra) => this.cantidadEnCarrito = icc ? icc.cantidad : 0)
     ;
   }
 

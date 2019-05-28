@@ -50,6 +50,9 @@
           <mat-form-field class="sic-com-input-cantidad">
             <input matInput autofocus type="number" [(ngModel)]='cantidad' placeholder="Cantidad"
                    min="0" [disabled]="cargandoAlCarrito">
+            <mat-hint *ngIf="cantidadEnCarrito" fxLayoutAlign="center center">
+              <mat-icon>shopping_cart</mat-icon>: {{ cantidadEnCarrito }}
+            </mat-hint>
           </mat-form-field>
           <button mat-mini-fab color="primary" (click)="cambiarCantidad(cantidad, 1)" [disabled]="cargandoAlCarrito">
             <mat-icon>add</mat-icon>
