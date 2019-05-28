@@ -20,7 +20,8 @@ import {ItemCarritoCompra} from '../../models/item-carrito-compra';
 export class ProductoComponent implements OnInit {
 
   producto: Producto;
-  cantidad;
+  cantidad = 1;
+  cantidadEnCarrito = 0;
   loadingProducto = false;
   cargandoAlCarrito = false;
   cliente: Cliente = null;
@@ -58,7 +59,7 @@ export class ProductoComponent implements OnInit {
           this.carritoCompraService.getCantidadEnCarrito(this.producto.idProducto)
             .pipe(finalize(() => this.loadingProducto = false))
             .subscribe(
-              (icc: ItemCarritoCompra) => this.cantidad = icc ? icc.cantidad : 1,
+              (icc: ItemCarritoCompra) => this.cantidadEnCarrito = icc ? icc.cantidad : 0,
               err => this.avisoService.openSnackBar(err.error, '', 3500)
             )
           ;
