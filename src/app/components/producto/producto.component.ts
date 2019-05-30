@@ -59,7 +59,10 @@ export class ProductoComponent implements OnInit {
           this.carritoCompraService.getCantidadEnCarrito(this.producto.idProducto)
             .pipe(finalize(() => this.loadingProducto = false))
             .subscribe(
-              (icc: ItemCarritoCompra) => this.cantidadEnCarrito = icc ? icc.cantidad : 0,
+              (icc: ItemCarritoCompra) => {
+                this.cantidad = icc ? icc.cantidad : 1;
+                this.cantidadEnCarrito = icc ? icc.cantidad : 0;
+              },
               err => this.avisoService.openSnackBar(err.error, '', 3500)
             )
           ;

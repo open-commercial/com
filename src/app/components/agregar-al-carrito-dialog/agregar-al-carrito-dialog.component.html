@@ -1,7 +1,6 @@
 <mat-dialog-content class="sic-com-agregar-al-carrito-dialog">
   <span class="codigo">{{producto.codigo}}</span>
   <p class="descripcion">
-
     {{producto.descripcion}}
   </p>
   <div fxLayoutAlign="center center">
@@ -23,7 +22,7 @@
   <br>
 </mat-dialog-content>
 <div fxLayoutAlign="center center" fxLayoutGap="0.5rem">
-  <button mat-raised-button color="primary" *ngIf="!loading"  (click)="aceptar()" [disabled]="cantidad <= 0" cdkFocusInitial>Agregar</button>
+  <button mat-raised-button color="primary" *ngIf="!loading"  (click)="aceptar()" [disabled]="cantidad <= 0" cdkFocusInitial>Aceptar</button>
   <button mat-raised-button mat-dialog-close *ngIf="!loading">Cancelar</button>
   <mat-spinner [diameter]="50" [strokeWidth]="6" *ngIf="loading"></mat-spinner>
 </div>
