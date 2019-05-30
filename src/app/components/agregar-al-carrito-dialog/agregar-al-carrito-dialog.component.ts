@@ -32,7 +32,10 @@ export class AgregarAlCarritoDialogComponent implements OnInit {
     this.loading = true;
     this.carritoCompraService.getCantidadEnCarrito(this.producto.idProducto)
       .pipe(finalize(() => this.loading = false))
-      .subscribe((icc: ItemCarritoCompra) => this.cantidadEnCarrito = icc ? icc.cantidad : 0)
+      .subscribe((icc: ItemCarritoCompra) => {
+        this.cantidad = icc ? icc.cantidad : 1;
+        this.cantidadEnCarrito = icc ? icc.cantidad : 0;
+      })
     ;
   }
 
