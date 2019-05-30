@@ -98,13 +98,13 @@ export class CheckoutComponent implements OnInit {
   loadingTotales = false;
   enviarOrdenLoading = false;
 
-  @ViewChild('stepper')
+  @ViewChild('stepper', { static: false })
   stepper: MatStepper;
 
-  @ViewChild('busquedaInput')
+  @ViewChild('busquedaInput', { static: false })
   busquedaInputRef: ElementRef;
 
-  @ViewChild('observacionesTextArea')
+  @ViewChild('observacionesTextArea', { static: false })
   observacionesTextAreaRef: ElementRef;
   observacionesMaxLength = 200;
 

@@ -24,7 +24,7 @@ export class RegistracionComponent implements OnInit {
   keys = Object.keys;
   categoriasIVA = CategoriaIVA;
 
-  @ViewChild('captchaElem') captchaElem: ReCaptcha2Component;
+  @ViewChild('captchaElem', { static: true }) captchaElem: ReCaptcha2Component;
 
   constructor(private authService: AuthService,
               private router: Router,
