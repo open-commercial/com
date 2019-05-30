@@ -10,7 +10,7 @@ import {Cliente} from '../../models/cliente';
 import {Rol} from '../../models/rol';
 import {Subject} from 'rxjs';
 import {debounceTime, finalize} from 'rxjs/operators';
-import {MatStepper} from '@angular/material';
+import { MatStepper } from '@angular/material/stepper';
 import {Router} from '@angular/router';
 import {Ubicacion} from '../../models/ubicacion';
 import {EmpresasService} from '../../services/empresas.service';

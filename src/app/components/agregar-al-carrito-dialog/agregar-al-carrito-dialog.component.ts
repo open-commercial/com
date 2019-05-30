@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Producto} from '../../models/producto';
-import {MatDialogRef} from '@angular/material';
+import { MatDialogRef } from '@angular/material/dialog';
 import {CarritoCompra} from '../../models/carrito-compra';
 import {CarritoCompraService} from '../../services/carrito-compra.service';
 import {Cliente} from '../../models/cliente';
