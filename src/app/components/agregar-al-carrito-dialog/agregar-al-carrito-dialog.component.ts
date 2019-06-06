@@ -63,8 +63,9 @@ export class AgregarAlCarritoDialogComponent implements OnInit {
                   this.carritoCompraService.setCantidadItemsEnCarrito(carrito.cantRenglones);
                   this.loading = false;
                   this.dialogRef.close(true);
-                  this.avisoService.openSnackBar('Tu carrito de compra fué modificado', 'Ver', 5000)
-                    .onAction().subscribe(() => this.router.navigate(['/carrito-compra']));
+                  this.avisoService.openSnackBar('Tu carrito de compra fué modificado', 'Ver', 1500)
+                    .onAction()
+                    .subscribe(() => this.router.navigate(['/carrito-compra']));
                 },
                 err => {
                   this.avisoService.openSnackBar(err.error, '', 3500);
