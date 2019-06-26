@@ -17,6 +17,7 @@ import {EmpresasService} from '../../services/empresas.service';
 import {Empresa} from '../../models/empresa';
 import {UbicacionesService} from '../../services/ubicaciones.service';
 import {TipoDeEnvio} from '../../models/tipo-de-envio';
+import {NuevaOrdenDeCarritoCompra} from '../../models/nuevaOrdenDeCarritoCompra';
 
 enum OpcionCliente {
   CLIENTE_USUARIO = '1',
@@ -438,11 +439,16 @@ export class CheckoutComponent implements OnInit {
       this.resumenForm.disable();
       this.opcionEnvioForm.disable();
       this.enviarOrdenLoading = true;
-
-      this.carritoCompraService.enviarOrden(
-        tipoDeEnvio, this.resumenForm.get('observaciones').value, idSucursal,
-        this.authService.getLoggedInIdUsuario(), this.cliente.id_Cliente
-      )
+      const orden: NuevaOrdenDeCarritoCompra = {
+        idSucursal: idSucursal,
+        idCliente: this.cliente.id_Cliente,
+        idUsuario: this.authService.getLoggedInIdUsuario(),
+        tipoDeEnvio: tipoDeEnvio,
+        observaciones : this.resumenForm.get('observaciones').value,
+        idEmpresa: null,
+        pago: null
+      };
+      this.carritoCompraService.enviarOrden(orden)
         .pipe(finalize(() => this.enviarOrdenLoading = false))
         .subscribe(
         data => {
