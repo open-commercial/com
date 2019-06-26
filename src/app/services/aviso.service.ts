@@ -6,7 +6,7 @@ export class AvisoService {
 
   constructor(private snackBar: MatSnackBar) {}
 
-  openSnackBar(message: string, action: string, duration: number = 3500) {
+  openSnackBar(message: string, action: string = '', duration: number = 3500) {
     const config = new MatSnackBarConfig();
     config.duration = duration;
     config.verticalPosition = 'top';

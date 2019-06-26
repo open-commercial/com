@@ -167,9 +167,19 @@
             </mat-hint>
           </mat-form-field>
         </div>
+        <br>
+        <div class="botonera">
+          <button mat-raised-button color="primary" matStepperNext [disabled]="!envioValidToContinueNextStep()">Continuar</button>
+        </div>
+      </form>
+    </mat-step>
+    <mat-step>
+      <form [formGroup]="pagoForm" *ngIf="pagoForm">
+        <ng-template matStepLabel>Pago</ng-template>
+        <sic-com-mercado-pago [c]="cliente" [m]="total"></sic-com-mercado-pago>
         <div *ngIf="!enviarOrdenLoading" class="acciones">
           <button mat-raised-button color="primary" (click)="cerrarOrden()"
-                  [disabled]="loadingTotales || !cliente || opcionClienteForm.invalid || resumenForm.invalid || opcionEnvioForm.invalid">
+                  [disabled]="loadingTotales || !cliente || opcionClienteForm.invalid || resumenForm.invalid || opcionEnvioForm.invalid || pagoForm.invalid">
             Confirmar
           </button>
         </div>

@@ -50,6 +50,7 @@ export class CheckoutComponent implements OnInit {
   datosDelClienteForm: FormGroup = null;
   opcionEnvioForm: FormGroup = null;
   resumenForm: FormGroup = null;
+  pagoForm: FormGroup = null;
 
   // Cliente
   opcionesCliente = [
@@ -215,6 +216,11 @@ export class CheckoutComponent implements OnInit {
 
     this.resumenForm = this.fb.group({
       'observaciones': ['', Validators.maxLength(this.observacionesMaxLength)]
+    });
+
+    this.pagoForm = this.fb.group({
+      opcion: ['', Validators.required],
+      opcionData: null,
     });
   }
 
