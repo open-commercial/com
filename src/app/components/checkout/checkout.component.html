@@ -176,10 +176,16 @@
     <mat-step>
       <form [formGroup]="pagoForm" *ngIf="pagoForm">
         <ng-template matStepLabel>Pago</ng-template>
-        <sic-com-mercado-pago [c]="cliente" [m]="total"></sic-com-mercado-pago>
+        <mat-radio-group color="primary" fxLayout="column" fxLayoutGap="1rem" formControlName="opcion">
+          <mat-radio-button [value]="1">Pago al Retirar o Recibir el pedio</mat-radio-button>
+          <mat-radio-button [value]="2">Pago por medio de MERCADOPAGO</mat-radio-button>
+        </mat-radio-group>
+        <br>
+        <sic-com-mercado-pago [c]="cliente" [m]="total" (updated)="mercadopagoUpdated($event)" *ngIf="pagoForm.get('opcion').value === 2"></sic-com-mercado-pago>
+        <br>
         <div *ngIf="!enviarOrdenLoading" class="acciones">
           <button mat-raised-button color="primary" (click)="cerrarOrden()"
-                  [disabled]="loadingTotales || !cliente || opcionClienteForm.invalid || resumenForm.invalid || opcionEnvioForm.invalid || pagoForm.invalid">
+                  [disabled]="loadingTotales || !cliente || opcionClienteForm.invalid || resumenForm.invalid || opcionEnvioForm.invalid || !isValidPagoForm()">
             Confirmar
           </button>
         </div>

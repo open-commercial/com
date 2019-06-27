@@ -439,6 +439,8 @@ export class CheckoutComponent implements OnInit {
       this.resumenForm.disable();
       this.opcionEnvioForm.disable();
       this.enviarOrdenLoading = true;
+
+      const dataPago = this.pagoForm.value;
       const orden: NuevaOrdenDeCarritoCompra = {
         idSucursal: idSucursal,
         idCliente: this.cliente.id_Cliente,
@@ -446,7 +448,7 @@ export class CheckoutComponent implements OnInit {
         tipoDeEnvio: tipoDeEnvio,
         observaciones : this.resumenForm.get('observaciones').value,
         idEmpresa: null,
-        pago: null
+        pago: (dataPago.opcion === 2 && dataPago.opcionData ? dataPago.opcionData : null),
       };
       this.carritoCompraService.enviarOrden(orden)
         .pipe(finalize(() => this.enviarOrdenLoading = false))
@@ -497,5 +499,19 @@ export class CheckoutComponent implements OnInit {
     if ($event.selectedIndex === 3) {
       setTimeout(() => this.observacionesTextAreaRef.nativeElement.focus(), 300);
     }
+  }
+
+  mercadopagoUpdated($event) {
+    this.pagoForm.get('opcionData').setValue($event);
+  }
+
+  isValidPagoForm() {
+    const data = this.pagoForm.value;
+    const aux = [1, 2].indexOf(data.opcion) >= 0;
+    if (aux) {
+      return data.opcion === 1 || (data.opcion === 2 && data.opcionData);
+    }
+
+    return false;
   }
 }

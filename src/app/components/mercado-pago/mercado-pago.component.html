@@ -1,10 +1,10 @@
 <div class="sic-com-mercado-pago">
-  <form [formGroup]="mpForm" (ngSubmit)="submit($event)" id="pay" name="pay" fxLayout="column" *ngIf="mpForm" fxLayoutGap="0.7rem">
-    <!--<mat-form-field>
-      <mat-label>Email</mat-label>
-      <input matInput id="email" name="email" value="test_user_19653727@testuser.com" type="email" placeholder="Email"
-             formControlName="email"/>
-    </mat-form-field>-->
+  <span fxLayout="row" fxLayoutGap="0.5rem" fxLayoutAlign="start center" *ngIf="mpForm">
+    <mat-icon>attach_money</mat-icon>
+    <span>{{ monto| number:'1.2-2':'es-AR' }}</span>
+  </span>
+  <br>
+  <form [formGroup]="mpForm" (ngSubmit)="submit($event)" id="pay" name="pay" fxLayout="column" *ngIf="mpForm && !pago" fxLayoutGap="0.7rem">
     <mat-radio-group fxLayout="column" fxLayoutGap="1rem" formControlName="opcionPago">
       <mat-radio-button color="primary" *ngFor="let op of opcionesPago" [value]="op.value">{{ op.text }}</mat-radio-button>
     </mat-radio-group>
@@ -127,6 +127,27 @@
       <button mat-raised-button color="primary" type="submit">Verificar</button> <!--  [disabled]="!mpForm.valid" -->
     </div>
   </form>
-  {{ this.mpForm.get('cardNumber') ? (this.mpForm.get('cardNumber').errors|json) : '' }}
+  <!-- {{ this.mpForm.get('cardNumber') ? (this.mpForm.get('cardNumber').errors|json) : '' }} -->
 
+  <div *ngIf="mpForm && pago">
+    <div fxLayout="column" fxLayoutGap="0.7rem">
+      <span fxLayout="row" fxLayoutGap="0.5rem" fxLayoutAlign="start center">
+        <mat-icon>info</mat-icon>
+        <span>{{ getOpcionPagoStr() }}:</span>
+      </span>
+      <span fxLayout="row" fxLayoutGap="0.5rem" fxLayoutAlign="start center">
+        <mat-icon>grade</mat-icon>
+        <span>{{ getPaymentMethodData().name }}</span>
+        <img [src]="getPaymentMethodData().secure_thumbnail" alt="Payment image">
+      </span>
+      <span fxLayout="row" fxLayoutGap="0.5rem" fxLayoutAlign="start center" *ngIf="mpForm.get('opcionPago').value == opcionPago.TARJETA_CREDITO || mpForm.get('opcionPago').value == opcionPago.TARJETA_DEBITO">
+        <mat-icon>credit_card</mat-icon>
+        <span>Nro: {{ mpForm.get('cardNumber').value }}</span>
+      </span>
+      <span fxLayout="row" fxLayoutGap="0.5rem" fxLayoutAlign="start center" *ngIf="mpForm.get('opcionPago').value == opcionPago.TARJETA_CREDITO">
+        <mat-icon>view_column</mat-icon>
+        <span>Cuotas: {{ getCuotaStr() }}</span>
+      </span>
+    </div>
+  </div>
 </div>

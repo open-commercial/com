@@ -42,6 +42,8 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
 
   pmSecureThumbnail = '';
 
+  pago: MPPago = null;
+
   constructor(private dynamicScriptLoader: DynamicScriptLoaderService,
               private fb: FormBuilder,
               private avisoService: AvisoService) { }
@@ -55,9 +57,6 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
       });
       this.mp.getAllPaymentMethods((s, d: [any]) => {
         this.paymentMethods = d.filter(function(v) { return v['status'] === 'active'; });
-        /*this.tarjetas = this.paymentMethods.filter(function (v) {
-          return ['credit_card', 'debit_card'].indexOf(v['payment_type_id']) >= 0;
-        });*/
         this.pagosEfectivo = this.paymentMethods.filter(function (v) {
           return ['ticket', 'atm', 'bank_transfer', 'prepaid_card'].indexOf(v['payment_type_id']) >= 0;
         });
@@ -81,11 +80,11 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
       this.toggleControls(value);
     });
 
-    this.mpForm.get('paymentMethod').valueChanges.subscribe(paymentoMethod => {
-      if (paymentoMethod) {
+    this.mpForm.get('paymentMethod').valueChanges.subscribe(pm => {
+      if (pm) {
         this.checkPaymentMethod();
         this.checkPaymentAmount();
-        this.pmSecureThumbnail = paymentoMethod.secure_thumbnail;
+        this.pmSecureThumbnail = pm.secure_thumbnail;
       } else {
         this.pmSecureThumbnail = '';
       }
@@ -121,6 +120,14 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
         this.mpForm.get('installments').valueChanges.subscribe((v) => {
           this.checkInstallmentsPaymentAmount();
         });
+
+        this.mpForm.get('installmentsPaymentMethod').valueChanges.subscribe(pm => {
+          if (pm) {
+            this.pmSecureThumbnail = pm.issuer.secure_thumbnail;
+          } else {
+            this.pmSecureThumbnail = '';
+          }
+        });
       }
 
       this.mpForm.addControl('token', new FormControl(''));
@@ -136,11 +143,9 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
       this.mp.getPaymentMethod({ 'bin': bin }, (status, response) => {
         if (status === 200) {
           const paymentMethod = response[0];
-          console.log(paymentMethod);
           this.mpForm.get('paymentMethod').setValue(paymentMethod);
-          if (paymentMethod.payment_type_id === 'credit_card') {
+          if (paymentMethod.payment_type_id === 'credit_card' && this.mpForm.get('installmentsPaymentMethod')) {
             this.mp.getInstallments({'bin': bin, 'amount': this.monto}, (s, data) => {
-              console.log(data);
               this.mpForm.get('installmentsPaymentMethod').setValue(data[data.length - 1]);
               this.cuotas = data[data.length - 1].payer_costs.map(function (c) {
                 const labels = c.labels.filter((l: string) => l.toUpperCase().startsWith('CFT')).join(', ');
@@ -156,7 +161,6 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
           }
         } else {
           this.clearValues();
-          console.log(response);
           this.avisoService.openSnackBar('Error al obtener el método de pago: ' + response.message);
         }
       });
@@ -166,8 +170,11 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
   }
 
   clearValues() {
+    this.pago = null;
+    this.updated.emit(this.pago);
     this.mpForm.get('paymentMethod').setValue('');
     if (this.mpForm.get('installmentsPaymentMethod')) {
+      this.mpForm.get('installments').setValue('');
       this.mpForm.get('installmentsPaymentMethod').setValue('');
     }
     this.cuotas = [];
@@ -210,9 +217,44 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
     }
   }
 
+  getOpcionPagoStr() {
+    if (this.mpForm) {
+      const op = this.mpForm.get('opcionPago').value;
+      if ([MPOpcionPago.TARJETA_CREDITO, MPOpcionPago.TARJETA_DEBITO, MPOpcionPago.EFECTIVO].indexOf(op) >= 0) {
+        const aux = this.opcionesPago.filter(v => v.value === op);
+        if (aux.length > 0) { return aux[0].text; }
+      }
+    }
+    return '';
+  }
+
+  getPaymentMethodData() {
+    let pm = null;
+    if (this.mpForm) {
+      pm = this.mpForm.get('paymentMethod').value;
+      if (this.mpForm.get('installmentsPaymentMethod')) {
+        pm = this.mpForm.get('installmentsPaymentMethod').value;
+        if (pm) { pm = pm.issuer; }
+      }
+    }
+    return pm;
+  }
+
+  getCuotaStr() {
+    if (this.mpForm && this.mpForm.get('installments')) {
+      const installments = this.mpForm.get('installments').value;
+      const aux = this.cuotas.filter(function (c) {
+        return c.cuotas === installments;
+      });
+      if (aux.length > 0) { return aux[0].texto; }
+    }
+    return '';
+  }
+
   submit($event) {
     if (this.mpForm.valid) {
       const data = this.mpForm.value;
+
       if (data.opcionPago === MPOpcionPago.TARJETA_CREDITO || data.opcionPago === MPOpcionPago.TARJETA_DEBITO) {
         const form = $event.target;
         this.mp.createToken(form, (status, response) => {
@@ -220,26 +262,23 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
             alert('Por favor, verifique los datos ingresados.');
           } else {
             this.mpForm.get('token').setValue(response.id);
-            const pago = this.getPago();
-            console.log(pago);
+            this.emitPago();
           }
         });
       } else {
-        const pago = this.getPago();
-        console.log(pago);
+        this.emitPago();
       }
     }
   }
 
-  getPago() {
+  emitPago() {
     const data = this.mpForm.value;
-    const pago: MPPago = {
-      issuerId: null,
-      paymentMethodId: data.paymentMethod.id,
+    this.pago = {
+      issuerId: data.installmentsPaymentMethod ? data.installmentsPaymentMethod.issuer.id : null,
+      paymentMethodId: data.installmentsPaymentMethod ? data.installmentsPaymentMethod.payment_method_id : data.paymentMethod.id,
       installments: data.opcionPago === MPOpcionPago.TARJETA_CREDITO ? data.installments : null,
       token: data.opcionPago === MPOpcionPago.TARJETA_CREDITO || data.opcionPago === MPOpcionPago.TARJETA_DEBITO ? data.token : null,
     };
-
-    return pago;
+    this.updated.emit(this.pago);
   }
 }
