@@ -1,5 +1,4 @@
 import {TipoDeEnvio} from './tipo-de-envio';
-import {MPPago} from './mercadopago/mp-pago';
 
 export interface NuevaOrdenDeCarritoCompra {
   idEmpresa: string;
@@ -8,5 +7,4 @@ export interface NuevaOrdenDeCarritoCompra {
   tipoDeEnvio: TipoDeEnvio;
   idSucursal: number;
   observaciones: string;
-  pago: MPPago;
 }

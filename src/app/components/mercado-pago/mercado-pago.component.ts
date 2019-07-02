@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange} from '@angular/core';
 import {environment} from '../../../environments/environment';
 import {DynamicScriptLoaderService} from '../../services/dynamic-script-loader.service';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {AbstractControl, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Cliente} from '../../models/cliente';
 import {AvisoService} from '../../services/aviso.service';
 import {MPOpcionPago, MPPago} from '../../models/mercadopago/mp-pago';
@@ -13,12 +13,13 @@ import {MPOpcionPago, MPPago} from '../../models/mercadopago/mp-pago';
 })
 export class MercadoPagoComponent implements OnInit, OnChanges {
 
-  @Input() c: Cliente;
-  @Input() m: number;
+  @Input() cliente: Cliente = null;
+  @Input() monto = 1;
+  @Input() showMontoControl = false;
   @Output() updated = new EventEmitter<MPPago>(true);
 
-  cliente: Cliente = null;
-  monto = 0;
+  // cliente: Cliente = null;
+  // monto = 0;
 
   mp = null;
   mpForm: FormGroup;
@@ -46,15 +47,18 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
 
   constructor(private dynamicScriptLoader: DynamicScriptLoaderService,
               private fb: FormBuilder,
-              private avisoService: AvisoService) { }
+              private avisoService: AvisoService) {
+    this.createForm();
+  }
 
   ngOnInit() {
     this.dynamicScriptLoader.load('mercadopago').then(data => {
       this.mp = window['Mercadopago'];
       this.mp.setPublishableKey(environment.mercadoPagoPublicKey);
-      this.mp.getIdentificationTypes((s, tdData) => {
+      /*this.mp.getIdentificationTypes((s, tdData) => {
+        console.log(tdData);
         this.tiposDocumento = tdData;
-      });
+      });*/
       this.mp.getAllPaymentMethods((s, d: [any]) => {
         this.paymentMethods = d.filter(function(v) { return v['status'] === 'active'; });
         this.pagosEfectivo = this.paymentMethods.filter(function (v) {
@@ -62,12 +66,35 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
         });
       });
     }).catch(err => this.avisoService.openSnackBar(err.error, ''));
-    this.createForm();
   }
 
   ngOnChanges(changes: {[propKey: string]: SimpleChange}) {
-    if (changes.c !== undefined) { this.cliente = changes.c.currentValue; }
-    if (changes.m !== undefined) { this.monto = changes.m.currentValue; }
+    if (changes.cliente !== undefined) { this.cliente = changes.cliente.currentValue; }
+    if (changes.monto !== undefined) { this.monto = changes.monto.currentValue; }
+
+    if (changes.showMontoControl !== undefined) {
+      if (!this.mpForm) { return; }
+
+      const value = changes.showMontoControl.currentValue;
+      if (value === true) {
+        if (!this.mpForm.get('monto')) {
+          this.mpForm.addControl('monto', new FormControl('', [Validators.required]));
+          this.mpForm.get('monto').setValue(this.monto);
+          this.mpForm.get('monto').valueChanges.subscribe(m => {
+            this.monto = m;
+            if (this.mpForm.get('installments')) {
+              const bin = this.mpForm.get('cardNumber').value;
+              this.getInstallments(bin);
+              this.checkInstallmentsPaymentAmount();
+            }
+            this.checkPaymentAmount();
+
+          });
+        }
+      } else {
+        this.mpForm.removeControl('monto');
+      }
+    }
   }
 
   createForm() {
@@ -110,7 +137,8 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
       this.mpForm.addControl('cardExpirationMonth', new FormControl('', [Validators.required]));
       this.mpForm.addControl('cardExpirationYear', new FormControl('', [Validators.required]));
       this.mpForm.addControl('cardholderName', new FormControl('', [Validators.required]));
-      this.mpForm.addControl('docType', new FormControl('', [Validators.required]));
+      this.mpForm.addControl('docType', new FormControl('DNI', [Validators.required]));
+      // this.mpForm.get('docType').setValue('DNI');
       this.mpForm.addControl('docNumber', new FormControl('', [Validators.required]));
 
       if (value === MPOpcionPago.TARJETA_CREDITO) {
@@ -144,21 +172,7 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
         if (status === 200) {
           const paymentMethod = response[0];
           this.mpForm.get('paymentMethod').setValue(paymentMethod);
-          if (paymentMethod.payment_type_id === 'credit_card' && this.mpForm.get('installmentsPaymentMethod')) {
-            this.mp.getInstallments({'bin': bin, 'amount': this.monto}, (s, data) => {
-              this.mpForm.get('installmentsPaymentMethod').setValue(data[data.length - 1]);
-              this.cuotas = data[data.length - 1].payer_costs.map(function (c) {
-                const labels = c.labels.filter((l: string) => l.toUpperCase().startsWith('CFT')).join(', ');
-                const mensaje = c.recommended_message  + (labels.length ? ' (' + labels + ')' : '');
-                return {
-                  cuotas: c.installments,
-                  texto: mensaje,
-                  min_allowed_amount: c.min_allowed_amount,
-                  max_allowed_amount: c.max_allowed_amount,
-                };
-              });
-            });
-          }
+          this.getInstallments(bin);
         } else {
           this.clearValues();
           this.avisoService.openSnackBar('Error al obtener el método de pago: ' + response.message);
@@ -166,6 +180,27 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
       });
     } else {
       this.clearValues();
+    }
+  }
+
+  getInstallments(bin) {
+    if (bin.length < 6) { return; }
+    if (this.monto <= 0) { this.cuotas = []; }
+    const paymentMethod = this.mpForm.get('paymentMethod').value;
+    if (paymentMethod.payment_type_id === 'credit_card' && this.mpForm.get('installmentsPaymentMethod')) {
+      this.mp.getInstallments({'bin': bin, 'amount': this.monto}, (s, data) => {
+        this.mpForm.get('installmentsPaymentMethod').setValue(data[data.length - 1]);
+        this.cuotas = data[data.length - 1].payer_costs.map(function (c) {
+          const labels = c.labels.filter((l: string) => l.toUpperCase().startsWith('CFT')).join(', ');
+          const mensaje = c.recommended_message  + (labels.length ? ' (' + labels + ')' : '');
+          return {
+            cuotas: c.installments,
+            texto: mensaje,
+            min_allowed_amount: c.min_allowed_amount,
+            max_allowed_amount: c.max_allowed_amount,
+          };
+        });
+      });
     }
   }
 
@@ -180,6 +215,20 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
     this.cuotas = [];
   }
 
+  addError(ctrl: AbstractControl, key: string) {
+    if (ctrl) {
+      const errors = ctrl.errors || {};
+      errors[key] = true;
+      ctrl.setErrors(errors);
+    }
+  }
+
+  removeError(ctrl: AbstractControl, key: string) {
+    if (ctrl && ctrl.errors && ctrl.errors[key] !== undefined) {
+      delete ctrl.errors[key];
+    }
+  }
+
   checkPaymentMethod() {
     const op: MPOpcionPago = this.mpForm.get('opcionPago').value;
     const pm = this.mpForm.get('paymentMethod').value;
@@ -190,11 +239,15 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
       (op === MPOpcionPago.TARJETA_CREDITO && pm.payment_type_id !== 'credit_card') ||
       (op === MPOpcionPago.TARJETA_DEBITO && pm.payment_type_id !== 'debit_card')
     ) {
-      this.mpForm.get('cardNumber').setErrors({ 'invalid_type': true });
+      this.addError(this.mpForm.get('cardNumber'), 'invalid_type');
+    } else {
+      this.removeError(this.mpForm.get('cardNumber'), 'invalid_type');
     }
 
     if (op === MPOpcionPago.EFECTIVO && ['ticket', 'atm', 'bank_transfer', 'prepaid_card'].indexOf(pm.payment_type_id) < 0) {
-      this.mpForm.get('paymentMethod').setErrors({ 'invalid_type': true });
+      this.addError(this.mpForm.get('paymentMethod'), 'invalid_type');
+    } else {
+      this.removeError(this.mpForm.get('paymentMethod'), 'invalid_type');
     }
   }
 
@@ -205,15 +258,20 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
     const pm = this.mpForm.get('paymentMethod').value;
 
     if (this.monto < pm.min_allowed_amount || this.monto > pm.max_allowed_amount) {
-      this.mpForm.get('paymentMethod').setErrors({ 'amount_not_allowed': true });
+      this.addError(this.mpForm.get('paymentMethod'), 'amount_not_allowed');
+    } else {
+      this.removeError(this.mpForm.get('paymentMethod'), 'amount_not_allowed');
     }
   }
 
   checkInstallmentsPaymentAmount() {
+    if (!this.mpForm.get('installments')) { return; }
     const installments = this.mpForm.get('installments').value;
 
     if (this.monto < installments.min_allowed_amount || this.monto > installments.max_allowed_amount) {
-      this.mpForm.get('paymentMethod').setErrors({ 'amount_not_allowed': true });
+      this.addError(this.mpForm.get('paymentMethod'), 'amount_not_allowed');
+    } else {
+      this.removeError(this.mpForm.get('paymentMethod'), 'amount_not_allowed');
     }
   }
 

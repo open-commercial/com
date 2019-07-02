@@ -4,36 +4,105 @@
     <span>{{ monto| number:'1.2-2':'es-AR' }}</span>
   </span>
   <br>
-  <form [formGroup]="mpForm" (ngSubmit)="submit($event)" id="pay" name="pay" fxLayout="column" *ngIf="mpForm && !pago" fxLayoutGap="0.7rem">
-    <mat-radio-group fxLayout="column" fxLayoutGap="1rem" formControlName="opcionPago">
-      <mat-radio-button color="primary" *ngFor="let op of opcionesPago" [value]="op.value">{{ op.text }}</mat-radio-button>
-    </mat-radio-group>
-    <br>
-    <div *ngIf="mpForm.get('opcionPago').value == opcionPago.TARJETA_CREDITO || mpForm.get('opcionPago').value == opcionPago.TARJETA_DEBITO" fxLayout="column">
+  <form [formGroup]="mpForm" (ngSubmit)="submit($event)" id="pay" name="pay" fxLayout="column" *ngIf="mpForm && !pago">
+    <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.5rem">
+      <mat-form-field *ngIf="mpForm.get('monto')" fxFlex>
+        <input type="number" matInput formControlName="monto" required>
+        <mat-error *ngIf="mpForm.get('monto').hasError('required')">
+          Requerido
+        </mat-error>
+      </mat-form-field>
+      <div fxFlex fxLayoutAlign="center center">
+        <mat-radio-group fxLayout="column" fxLayoutGap="1rem" formControlName="opcionPago">
+          <mat-radio-button color="primary" *ngFor="let op of opcionesPago" [value]="op.value">{{ op.text }}</mat-radio-button>
+        </mat-radio-group>
+      </div>
+    </div>
+    <div *ngIf="mpForm.get('opcionPago').value == opcionPago.TARJETA_CREDITO || mpForm.get('opcionPago').value == opcionPago.TARJETA_DEBITO" fxLayout="column" fxLayoutGap="0.5rem">
       <p>
         <strong>Ingrese los datos tal cual están en su tarjeta.</strong>
       </p>
       <p>VISA CREDITO: 4509 9535 6623 3704</p>
       <p>VISA DEBITO:  4055 1678 0230 2037</p>
-      <div  fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="0.7rem">
-        <mat-form-field fxFlex="80">
-          <mat-label>Nº de Tarjeta</mat-label>
-          <input matInput required (keyup)="guessingPaymentMethod($event)" type="text" id="cardNumber" data-checkout="cardNumber" formControlName="cardNumber"
-                 placeholder="4509 9535 6623 3704" onselectstart="return false" onpaste="return false" onCopy="return false"
-                 onCut="return false" onDrag="return false" onDrop="return false" autocomplete=off/>
-          <mat-error *ngIf="mpForm.get('cardNumber').hasError('required')">
+      <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.7rem">
+        <div  fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="0.7rem" fxFlex>
+          <mat-form-field fxFlex="80">
+            <mat-label>Nº de Tarjeta</mat-label>
+            <input matInput required (keyup)="guessingPaymentMethod($event)" type="text" id="cardNumber" data-checkout="cardNumber" formControlName="cardNumber"
+                   placeholder="4509 9535 6623 3704" onselectstart="return false" onpaste="return false" onCopy="return false"
+                   onCut="return false" onDrag="return false" onDrop="return false" autocomplete=off/>
+            <mat-error *ngIf="mpForm.get('cardNumber').hasError('required')">
+              Requerido
+            </mat-error>
+            <mat-error *ngIf="mpForm.get('cardNumber').hasError('invalid_type')">
+              El medio de pago no coincide con la opción de pago seleccionada.
+            </mat-error>
+            <mat-error *ngIf="mpForm.get('cardNumber').hasError('amount_not_allowed')">
+              El monto esta fuera del rango permitido para este medio de pago.
+            </mat-error>
+          </mat-form-field>
+          <div fxFlex="20" fxLayoutAlign="center center">
+            <img *ngIf="pmSecureThumbnail" [src]="pmSecureThumbnail" alt="Payment method image">
+          </div>
+        </div>
+        <mat-form-field fxFlex>
+          <mat-label>Código de seguridad</mat-label>
+          <input matInput required type="text" id="securityCode" data-checkout="securityCode" formControlName="securityCode"
+                 placeholder="123" onselectstart="return false" onpaste="return false" onCopy="return false" onCut="return false"
+                 onDrag="return false" onDrop="return false" autocomplete=off/>
+          <mat-error *ngIf="mpForm.get('securityCode').hasError('required')">
             Requerido
           </mat-error>
-          <mat-error *ngIf="mpForm.get('cardNumber').hasError('invalid_type')">
-            El medio de pago no coincide con la opción de pago seleccionada.
-          </mat-error>
-          <mat-error *ngIf="mpForm.get('cardNumber').hasError('amount_not_allowed')">
-            El monto esta fuera del rango permitido para este medio de pago.
+        </mat-form-field>
+      </div>
+      <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.7rem">
+        <mat-form-field fxFlex>
+          <mat-label>Mes de Expiración</mat-label>
+          <input matInput required type="text" id="cardExpirationMonth" data-checkout="cardExpirationMonth" formControlName="cardExpirationMonth"
+                 placeholder="12" onselectstart="return false" onpaste="return false" onCopy="return false" onCut="return false"
+                 onDrag="return false" onDrop="return false" autocomplete=off/>
+          <mat-error *ngIf="mpForm.get('cardExpirationMonth').hasError('required')">
+            Requerido
           </mat-error>
         </mat-form-field>
-        <div fxFlex="20" fxLayoutAlign="center center">
-          <img *ngIf="pmSecureThumbnail" [src]="pmSecureThumbnail" alt="Payment method image">
-        </div>
+        <mat-form-field fxFlex>
+          <mat-label>Año de Expiración</mat-label>
+          <input matInput required type="text" id="cardExpirationYear" data-checkout="cardExpirationYear" formControlName="cardExpirationYear"
+                 placeholder="2015" onselectstart="return false" onpaste="return false" onCopy="return false" onCut="return false"
+                 onDrag="return false" onDrop="return false" autocomplete=off/>
+          <mat-error *ngIf="mpForm.get('cardExpirationYear').hasError('required')">
+            Requerido
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.7rem">
+        <mat-form-field fxFlex>
+          <mat-label>Titular de la Tarjeta</mat-label>
+          <input matInput required type="text" id="cardholderName" data-checkout="cardholderName" formControlName="cardholderName" placeholder="APRO"/>
+          <mat-error *ngIf="mpForm.get('cardholderName').hasError('required')">
+            Requerido
+          </mat-error>
+        </mat-form-field>
+
+        <!--<mat-form-field>
+          <mat-label>Tipo de Documento</mat-label>
+          <select matNativeControl required id="docType" data-checkout="docType" formControlName="docType">
+            <option value="" selected></option>
+            <option *ngFor="let td of tiposDocumento" [value]="td.id">{{ td.name }}</option>
+          </select>
+          <mat-error *ngIf="mpForm.get('docType').hasError('required')">
+            Requerido
+          </mat-error>
+        </mat-form-field>-->
+        <input type="hidden" id="docType" data-checkout="docType" formControlName="docType">
+
+        <mat-form-field fxFlex>
+          <mat-label>Número de DNI</mat-label>
+          <input matInput required type="text" id="docNumber" data-checkout="docNumber" formControlName="docNumber" placeholder="12345678" />
+          <mat-error *ngIf="mpForm.get('docNumber').hasError('required')">
+            Requerido
+          </mat-error>
+        </mat-form-field>
       </div>
       <mat-form-field *ngIf="mpForm.get('opcionPago').value == opcionPago.TARJETA_CREDITO">
         <mat-label>Cuotas</mat-label>
@@ -44,65 +113,8 @@
           Requerido
         </mat-error>
       </mat-form-field>
-
-      <mat-form-field>
-        <mat-label>Código de seguridad</mat-label>
-        <input matInput required type="text" id="securityCode" data-checkout="securityCode" formControlName="securityCode"
-               placeholder="123" onselectstart="return false" onpaste="return false" onCopy="return false" onCut="return false"
-               onDrag="return false" onDrop="return false" autocomplete=off/>
-        <mat-error *ngIf="mpForm.get('securityCode').hasError('required')">
-          Requerido
-        </mat-error>
-      </mat-form-field>
-
-      <mat-form-field>
-        <mat-label>Mes de Expiración</mat-label>
-        <input matInput required type="text" id="cardExpirationMonth" data-checkout="cardExpirationMonth" formControlName="cardExpirationMonth"
-               placeholder="12" onselectstart="return false" onpaste="return false" onCopy="return false" onCut="return false"
-               onDrag="return false" onDrop="return false" autocomplete=off/>
-        <mat-error *ngIf="mpForm.get('cardExpirationMonth').hasError('required')">
-          Requerido
-        </mat-error>
-      </mat-form-field>
-
-      <mat-form-field>
-        <mat-label>Año de Expiración</mat-label>
-        <input matInput required type="text" id="cardExpirationYear" data-checkout="cardExpirationYear" formControlName="cardExpirationYear"
-               placeholder="2015" onselectstart="return false" onpaste="return false" onCopy="return false" onCut="return false"
-               onDrag="return false" onDrop="return false" autocomplete=off/>
-        <mat-error *ngIf="mpForm.get('cardExpirationYear').hasError('required')">
-          Requerido
-        </mat-error>
-      </mat-form-field>
-
-      <mat-form-field>
-        <mat-label>Titular de la Tarjeta</mat-label>
-        <input matInput required type="text" id="cardholderName" data-checkout="cardholderName" formControlName="cardholderName" placeholder="APRO"/>
-        <mat-error *ngIf="mpForm.get('cardholderName').hasError('required')">
-          Requerido
-        </mat-error>
-      </mat-form-field>
-
-      <mat-form-field>
-        <mat-label>Tipo de Documento</mat-label>
-        <select matNativeControl required id="docType" data-checkout="docType" formControlName="docType">
-          <option value="" selected></option>
-          <option *ngFor="let td of tiposDocumento" [value]="td.id">{{ td.name }}</option>
-        </select>
-        <mat-error *ngIf="mpForm.get('docType').hasError('required')">
-          Requerido
-        </mat-error>
-      </mat-form-field>
-
-      <mat-form-field>
-        <mat-label>Número de Documento</mat-label>
-        <input matInput required type="text" id="docNumber" data-checkout="docNumber" formControlName="docNumber" placeholder="12345678" />
-        <mat-error *ngIf="mpForm.get('docNumber').hasError('required')">
-          Requerido
-        </mat-error>
-      </mat-form-field>
     </div>
-    <div *ngIf="mpForm.get('opcionPago').value == opcionPago.EFECTIVO" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="0.7rem">
+    <div *ngIf="mpForm.get('opcionPago').value == opcionPago.EFECTIVO" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="0.5rem">
       <mat-form-field fxFlex="80">
         <mat-label>Tipo de Pago</mat-label>
         <mat-select formControlName="paymentMethod" required>
@@ -122,13 +134,11 @@
         <img *ngIf="pmSecureThumbnail" [src]="pmSecureThumbnail" alt="Payment method image">
       </div>
     </div>
-    <!--<input type="hidden" name="paymentMethodId" formControlName="paymentMethodId"/>-->
-    <div>
-      <button mat-raised-button color="primary" type="submit">Verificar</button> <!--  [disabled]="!mpForm.valid" -->
+    <br>
+    <div fxLayoutAlign="center center">
+      <button mat-raised-button color="primary" type="submit">Verificar</button>
     </div>
   </form>
-  <!-- {{ this.mpForm.get('cardNumber') ? (this.mpForm.get('cardNumber').errors|json) : '' }} -->
-
   <div *ngIf="mpForm && pago">
     <div fxLayout="column" fxLayoutGap="0.7rem">
       <span fxLayout="row" fxLayoutGap="0.5rem" fxLayoutAlign="start center">

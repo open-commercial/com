@@ -22,6 +22,8 @@ export class CuentaCorrienteComponent implements OnInit {
   pagina = 0;
   totalPaginas = 0;
 
+  showNuevoPago = false;
+
   constructor(private authService: AuthService,
               private avisoService: AvisoService,
               private clientesService: ClientesService,

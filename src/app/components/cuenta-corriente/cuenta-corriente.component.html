@@ -10,6 +10,11 @@
     </span>
   </div>
   <div *ngIf="!isLoading && cuentaCorriente">
+    <button mat-raised-button color="accent" *ngIf="!showNuevoPago" (click)="showNuevoPago = true">Nuevo Pago</button>
+    <div *ngIf="showNuevoPago">
+      <sic-com-mercado-pago [cliente]="cliente" [showMontoControl]="true"></sic-com-mercado-pago>
+      <button mat-raised-button color="accent" (click)="showNuevoPago = false">Cancelar</button>
+    </div>
     <div fxlayout="row" fxLayoutAlign="start center">
       <span fxFlex></span>
       <span>SALDO: <span class="monto" [class.negativo]="cuentaCorriente.saldo < 0">$ {{ cuentaCorriente.saldo | number:'1.2-2':'es-AR' }}</span></span>

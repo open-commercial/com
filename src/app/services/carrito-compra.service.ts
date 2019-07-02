@@ -50,6 +50,7 @@ export class CarritoCompraService {
   }
 
   enviarOrden(nuevaOrdenDeCarritoCompra: NuevaOrdenDeCarritoCompra) {
+    console.log(`${environment.idEmpresa}`);
     nuevaOrdenDeCarritoCompra.idEmpresa = `${environment.idEmpresa}`;
     return this.http.post(this.uri, nuevaOrdenDeCarritoCompra);
   }

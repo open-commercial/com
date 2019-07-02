@@ -51,7 +51,6 @@ export class CheckoutComponent implements OnInit {
   datosDelClienteForm: FormGroup = null;
   opcionEnvioForm: FormGroup = null;
   resumenForm: FormGroup = null;
-  pagoForm: FormGroup = null;
 
   // Cliente
   opcionesCliente = [
@@ -215,13 +214,10 @@ export class CheckoutComponent implements OnInit {
       this.asignarSucursal(value);
     });
 
+    this.opcionEnvioForm.get('opcionEnvio').setValue(OpcionEnvio.RETIRO_SUCURSAL);
+
     this.resumenForm = this.fb.group({
       'observaciones': ['', Validators.maxLength(this.observacionesMaxLength)]
-    });
-
-    this.pagoForm = this.fb.group({
-      opcion: ['', Validators.required],
-      opcionData: null,
     });
   }
 
@@ -440,16 +436,15 @@ export class CheckoutComponent implements OnInit {
       this.opcionEnvioForm.disable();
       this.enviarOrdenLoading = true;
 
-      const dataPago = this.pagoForm.value;
       const orden: NuevaOrdenDeCarritoCompra = {
         idSucursal: idSucursal,
         idCliente: this.cliente.id_Cliente,
         idUsuario: this.authService.getLoggedInIdUsuario(),
         tipoDeEnvio: tipoDeEnvio,
         observaciones : this.resumenForm.get('observaciones').value,
-        idEmpresa: null,
-        pago: (dataPago.opcion === 2 && dataPago.opcionData ? dataPago.opcionData : null),
+        idEmpresa: null
       };
+
       this.carritoCompraService.enviarOrden(orden)
         .pipe(finalize(() => this.enviarOrdenLoading = false))
         .subscribe(
@@ -499,19 +494,5 @@ export class CheckoutComponent implements OnInit {
     if ($event.selectedIndex === 3) {
       setTimeout(() => this.observacionesTextAreaRef.nativeElement.focus(), 300);
     }
-  }
-
-  mercadopagoUpdated($event) {
-    this.pagoForm.get('opcionData').setValue($event);
-  }
-
-  isValidPagoForm() {
-    const data = this.pagoForm.value;
-    const aux = [1, 2].indexOf(data.opcion) >= 0;
-    if (aux) {
-      return data.opcion === 1 || (data.opcion === 2 && data.opcionData);
-    }
-
-    return false;
   }
 }
