@@ -1,23 +1,22 @@
 <div class="sic-com-mercado-pago">
-  <span fxLayout="row" fxLayoutGap="0.5rem" fxLayoutAlign="start center" *ngIf="mpForm">
-    <mat-icon>attach_money</mat-icon>
-    <span>{{ monto| number:'1.2-2':'es-AR' }}</span>
-  </span>
-  <br>
-  <form [formGroup]="mpForm" (ngSubmit)="submit($event)" id="pay" name="pay" fxLayout="column" *ngIf="mpForm && !pago">
-    <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.5rem">
-      <mat-form-field *ngIf="mpForm.get('monto')" fxFlex>
-        <input type="number" matInput formControlName="monto" required>
+  <form [formGroup]="mpForm" (ngSubmit)="submit($event)" id="pay" name="pay" fxLayout="column" *ngIf="mpForm">
+    <div fxLayout="row" fxLayoutGap="0.5rem" fxLayoutAlign="start center">
+      <mat-form-field *ngIf="showMontoControl && mpForm.get('monto')">
+        <mat-icon matPrefix>attach_money</mat-icon>
+        <input type="number" matInput formControlName="monto" placeholder="Monto" required>
         <mat-error *ngIf="mpForm.get('monto').hasError('required')">
           Requerido
         </mat-error>
       </mat-form-field>
-      <div fxFlex fxLayoutAlign="center center">
-        <mat-radio-group fxLayout="column" fxLayoutGap="1rem" formControlName="opcionPago">
-          <mat-radio-button color="primary" *ngFor="let op of opcionesPago" [value]="op.value">{{ op.text }}</mat-radio-button>
-        </mat-radio-group>
+      <div fxLayout="row" fxLayoutGap="0.5rem" fxLayoutAlign="start center" *ngIf="!showMontoControl">
+        <mat-icon>attach_money</mat-icon>
+        <span>{{ monto| number:'1.2-2':'es-AR' }}</span>
       </div>
     </div>
+    <mat-radio-group fxLayout="column" fxLayoutGap="1rem" formControlName="opcionPago">
+      <mat-radio-button color="primary" *ngFor="let op of opcionesPago" [value]="op.value">{{ op.text }}</mat-radio-button>
+    </mat-radio-group>
+    <br>
     <div *ngIf="mpForm.get('opcionPago').value == opcionPago.TARJETA_CREDITO || mpForm.get('opcionPago').value == opcionPago.TARJETA_DEBITO" fxLayout="column" fxLayoutGap="0.5rem">
       <p>
         <strong>Ingrese los datos tal cual están en su tarjeta.</strong>
@@ -43,6 +42,7 @@
           </mat-form-field>
           <div fxFlex="20" fxLayoutAlign="center center">
             <img *ngIf="pmSecureThumbnail" [src]="pmSecureThumbnail" alt="Payment method image">
+            <mat-icon *ngIf="!pmSecureThumbnail">credit_card</mat-icon>
           </div>
         </div>
         <mat-form-field fxFlex>
@@ -83,19 +83,7 @@
             Requerido
           </mat-error>
         </mat-form-field>
-
-        <!--<mat-form-field>
-          <mat-label>Tipo de Documento</mat-label>
-          <select matNativeControl required id="docType" data-checkout="docType" formControlName="docType">
-            <option value="" selected></option>
-            <option *ngFor="let td of tiposDocumento" [value]="td.id">{{ td.name }}</option>
-          </select>
-          <mat-error *ngIf="mpForm.get('docType').hasError('required')">
-            Requerido
-          </mat-error>
-        </mat-form-field>-->
         <input type="hidden" id="docType" data-checkout="docType" formControlName="docType">
-
         <mat-form-field fxFlex>
           <mat-label>Número de DNI</mat-label>
           <input matInput required type="text" id="docNumber" data-checkout="docNumber" formControlName="docNumber" placeholder="12345678" />
@@ -135,29 +123,9 @@
       </div>
     </div>
     <br>
-    <div fxLayoutAlign="center center">
-      <button mat-raised-button color="primary" type="submit">Verificar</button>
+    <div fxLayoutAlign="start center" fxLayoutGap="0.7rem">
+      <button mat-raised-button color="primary" type="submit">Generar Pago</button>
+      <a mat-raised-button routerLink="." (click)="cancel()">Cancelar</a>
     </div>
   </form>
-  <div *ngIf="mpForm && pago">
-    <div fxLayout="column" fxLayoutGap="0.7rem">
-      <span fxLayout="row" fxLayoutGap="0.5rem" fxLayoutAlign="start center">
-        <mat-icon>info</mat-icon>
-        <span>{{ getOpcionPagoStr() }}:</span>
-      </span>
-      <span fxLayout="row" fxLayoutGap="0.5rem" fxLayoutAlign="start center">
-        <mat-icon>grade</mat-icon>
-        <span>{{ getPaymentMethodData().name }}</span>
-        <img [src]="getPaymentMethodData().secure_thumbnail" alt="Payment image">
-      </span>
-      <span fxLayout="row" fxLayoutGap="0.5rem" fxLayoutAlign="start center" *ngIf="mpForm.get('opcionPago').value == opcionPago.TARJETA_CREDITO || mpForm.get('opcionPago').value == opcionPago.TARJETA_DEBITO">
-        <mat-icon>credit_card</mat-icon>
-        <span>Nro: {{ mpForm.get('cardNumber').value }}</span>
-      </span>
-      <span fxLayout="row" fxLayoutGap="0.5rem" fxLayoutAlign="start center" *ngIf="mpForm.get('opcionPago').value == opcionPago.TARJETA_CREDITO">
-        <mat-icon>view_column</mat-icon>
-        <span>Cuotas: {{ getCuotaStr() }}</span>
-      </span>
-    </div>
-  </div>
 </div>

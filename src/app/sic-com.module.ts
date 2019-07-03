@@ -54,6 +54,7 @@ import localeEsExtra from '@angular/common/locales/extra/es-AR';
 import {NgSelectModule} from '@ng-select/ng-select';
 import {DynamicScriptLoaderService} from './services/dynamic-script-loader.service';
 import {MercadoPagoComponent} from './components/mercado-pago/mercado-pago.component';
+import {PagosService} from './services/pagos.service';
 
 registerLocaleData(localeEs, 'es-AR', localeEsExtra);
 
@@ -119,6 +120,7 @@ registerLocaleData(localeEs, 'es-AR', localeEsExtra);
     SlideshowService,
     UbicacionesService,
     DynamicScriptLoaderService,
+    PagosService
   ],
   entryComponents: [
     ConfirmationDialogComponent,

@@ -6,6 +6,8 @@ import {AvisoService} from '../../services/aviso.service';
 import {CuentasCorrienteService} from '../../services/cuentas-corriente.service';
 import {RenglonCuentaCorriente} from '../../models/renglon-cuenta-corriente';
 import {finalize} from 'rxjs/operators';
+import {MPPago} from '../../models/mercadopago/mp-pago';
+import {PagosService} from '../../services/pagos.service';
 
 @Component({
   selector: 'sic-com-cuenta-corriente',
@@ -27,7 +29,8 @@ export class CuentaCorrienteComponent implements OnInit {
   constructor(private authService: AuthService,
               private avisoService: AvisoService,
               private clientesService: ClientesService,
-              private cuentasCorrienteService: CuentasCorrienteService) {
+              private cuentasCorrienteService: CuentasCorrienteService,
+              private pagosService: PagosService) {
   }
 
   ngOnInit() {
@@ -114,5 +117,19 @@ export class CuentaCorrienteComponent implements OnInit {
     }
 
     return '';
+  }
+
+  generarPago(pago: MPPago) {
+    this.isLoading = true;
+    this.showNuevoPago = false;
+    this.pagosService.generarMPPago(pago)
+      .subscribe(
+        v => this.cargarRenglones(true),
+        err => {
+          this.isLoading = false;
+          this.avisoService.openSnackBar(err.error);
+        }
+      )
+    ;
   }
 }
