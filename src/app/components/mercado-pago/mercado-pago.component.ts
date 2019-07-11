@@ -5,6 +5,7 @@ import {AbstractControl, FormBuilder, FormControl, FormGroup, Validators} from '
 import {Cliente} from '../../models/cliente';
 import {AvisoService} from '../../services/aviso.service';
 import {MPOpcionPago, MPPago} from '../../models/mercadopago/mp-pago';
+import {errorsInfo} from '../../models/mercadopago/errors';
 
 @Component({
   selector: 'sic-com-mercado-pago',
@@ -46,6 +47,13 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
 
   pago: MPPago = null;
 
+  cft = '';
+  tea = '';
+
+  mpErrors = [];
+
+  amountNotAllowedErrorMsg = '';
+
   constructor(private dynamicScriptLoader: DynamicScriptLoaderService,
               private fb: FormBuilder,
               private avisoService: AvisoService) {
@@ -74,7 +82,7 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
 
       const value = changes.showMontoControl.currentValue;
       if (!this.mpForm.get('monto')) {
-        this.mpForm.addControl('monto', new FormControl('', [Validators.required]));
+        this.mpForm.addControl('monto', new FormControl('', [Validators.required, Validators.min(1)]));
         this.mpForm.get('monto').setValue(this.monto);
       }
       if (value === true) {
@@ -82,15 +90,13 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
         this.mpForm.get('monto').valueChanges.subscribe(m => {
           this.monto = m;
           if (this.mpForm.get('installments')) {
-            const bin = this.mpForm.get('cardNumber').value;
-            this.getInstallments(bin);
             this.checkInstallmentsPaymentAmount();
+          } else {
+            this.checkPaymentAmount();
           }
-          this.checkPaymentAmount();
         });
       } else {
         this.mpForm.get('monto').disable();
-        // this.mpForm.removeControl('monto');
       }
     }
   }
@@ -130,14 +136,17 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
     this.mpForm.removeControl('token');
 
     if (value === MPOpcionPago.TARJETA_CREDITO || value === MPOpcionPago.TARJETA_DEBITO) {
-      this.mpForm.addControl('cardNumber', new FormControl('', [Validators.required]));
+      this.mpForm.addControl('cardNumber', new FormControl('', [
+        Validators.required
+      ]));
       this.mpForm.addControl('securityCode', new FormControl('', [Validators.required]));
       this.mpForm.addControl('cardExpirationMonth', new FormControl('', [Validators.required]));
       this.mpForm.addControl('cardExpirationYear', new FormControl('', [Validators.required]));
       this.mpForm.addControl('cardholderName', new FormControl('', [Validators.required]));
       this.mpForm.addControl('docType', new FormControl('DNI', [Validators.required]));
-      // this.mpForm.get('docType').setValue('DNI');
-      this.mpForm.addControl('docNumber', new FormControl('', [Validators.required]));
+      this.mpForm.addControl('docNumber', new FormControl('', [
+        Validators.required, Validators.pattern('[1-9][0-9]{6}[0-9]?')
+      ]));
 
       if (value === MPOpcionPago.TARJETA_CREDITO) {
         this.mpForm.addControl('installments', new FormControl('', [Validators.required]));
@@ -145,6 +154,13 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
 
         this.mpForm.get('installments').valueChanges.subscribe((v) => {
           this.checkInstallmentsPaymentAmount();
+          if (v) {
+            this.cft = v.cft;
+            this.tea = v.tea;
+          } else {
+            this.cft = '';
+            this.tea = '';
+          }
         });
 
         this.mpForm.get('installmentsPaymentMethod').valueChanges.subscribe(pm => {
@@ -163,6 +179,9 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
   }
 
   guessingPaymentMethod($event) {
+    if (this.mpForm.get('installments')) {
+      this.mpForm.get('installments').setValue(null);
+    }
     if (!this.monto || this.monto < 1) { return; }
     const bin = $event.target.value;
     if (bin.length >= 6) {
@@ -187,15 +206,23 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
     const paymentMethod = this.mpForm.get('paymentMethod').value;
     if (paymentMethod.payment_type_id === 'credit_card' && this.mpForm.get('installmentsPaymentMethod')) {
       this.mp.getInstallments({'bin': bin, 'amount': this.monto}, (s, data) => {
+        if (!data.length) {
+          this.cuotas = [];
+          this.mpForm.get('installmentsPaymentMethod').setValue(null);
+          return;
+        }
         this.mpForm.get('installmentsPaymentMethod').setValue(data[data.length - 1]);
         this.cuotas = data[data.length - 1].payer_costs.map(function (c) {
-          const labels = c.labels.filter((l: string) => l.toUpperCase().startsWith('CFT')).join(', ');
-          const mensaje = c.recommended_message  + (labels.length ? ' (' + labels + ')' : '');
+          const labelsArray = c.labels.filter((l: string) => l.toUpperCase().startsWith('CFT'));
+          const aux = labelsArray[0].split('|');
+          const mensaje = c.recommended_message;
           return {
             cuotas: c.installments,
             texto: mensaje,
             min_allowed_amount: c.min_allowed_amount,
             max_allowed_amount: c.max_allowed_amount,
+            cft: aux[0].replace('CFT_', ''),
+            tea: aux[1].replace('TEA_', '')
           };
         });
       });
@@ -205,11 +232,13 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
   clearValues() {
     this.pago = null;
     this.mpForm.get('paymentMethod').setValue('');
-    if (this.mpForm.get('installmentsPaymentMethod')) {
+    if (this.mpForm.get('installments')) {
       this.mpForm.get('installments').setValue('');
       this.mpForm.get('installmentsPaymentMethod').setValue('');
     }
     this.cuotas = [];
+    this.cft = '';
+    this.tea = '';
   }
 
   addError(ctrl: AbstractControl, key: string) {
@@ -217,12 +246,14 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
       const errors = ctrl.errors || {};
       errors[key] = true;
       ctrl.setErrors(errors);
+      this.mpForm.updateValueAndValidity();
     }
   }
 
   removeError(ctrl: AbstractControl, key: string) {
     if (ctrl && ctrl.errors && ctrl.errors[key] !== undefined) {
       delete ctrl.errors[key];
+      this.mpForm.updateValueAndValidity();
     }
   }
 
@@ -255,32 +286,37 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
     const pm = this.mpForm.get('paymentMethod').value;
 
     if (this.monto < pm.min_allowed_amount || this.monto > pm.max_allowed_amount) {
-      this.addError(this.mpForm.get('paymentMethod'), 'amount_not_allowed');
+      this.addError(this.mpForm.get('monto'), 'amount_not_allowed');
+      this.amountNotAllowedErrorMsg = `El monto debe ser un valor entre ${pm.min_allowed_amount} y ${pm.max_allowed_amount}`;
     } else {
-      this.removeError(this.mpForm.get('paymentMethod'), 'amount_not_allowed');
+      this.removeError(this.mpForm.get('monto'), 'amount_not_allowed');
+      this.amountNotAllowedErrorMsg = '';
     }
   }
 
   checkInstallmentsPaymentAmount() {
-    if (!this.mpForm.get('installments')) { return; }
+    if (!this.mpForm.get('installments') || !this.mpForm.get('installments').value) { return; }
     const installments = this.mpForm.get('installments').value;
 
     if (this.monto < installments.min_allowed_amount || this.monto > installments.max_allowed_amount) {
-      this.addError(this.mpForm.get('paymentMethod'), 'amount_not_allowed');
+      this.addError(this.mpForm.get('monto'), 'amount_not_allowed');
+      this.amountNotAllowedErrorMsg
+        = `El monto debe ser un valor entre ${installments.min_allowed_amount} y ${installments.max_allowed_amount}`;
     } else {
-      this.removeError(this.mpForm.get('paymentMethod'), 'amount_not_allowed');
+      this.removeError(this.mpForm.get('monto'), 'amount_not_allowed');
+      this.amountNotAllowedErrorMsg = '';
     }
   }
 
   submit($event) {
+    this.showCardsErrorMessages();
     if (this.mpForm.valid) {
       const data = this.mpForm.value;
-
       if (data.opcionPago === MPOpcionPago.TARJETA_CREDITO || data.opcionPago === MPOpcionPago.TARJETA_DEBITO) {
         const form = $event.target;
         this.mp.createToken(form, (status, response) => {
           if (status !== 200 && status !== 201) {
-            alert('Por favor, verifique los datos ingresados.');
+            this.showErrorMessages(response);
           } else {
             this.mpForm.get('token').setValue(response.id);
             this.emitPago();
@@ -297,7 +333,7 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
     this.pago = {
       issuerId: data.installmentsPaymentMethod ? data.installmentsPaymentMethod.issuer.id : null,
       paymentMethodId: data.installmentsPaymentMethod ? data.installmentsPaymentMethod.payment_method_id : data.paymentMethod.id,
-      installments: data.opcionPago === MPOpcionPago.TARJETA_CREDITO ? data.installments : null,
+      installments: data.opcionPago === MPOpcionPago.TARJETA_CREDITO ? data.installments.cuotas : null,
       token: data.opcionPago === MPOpcionPago.TARJETA_CREDITO || data.opcionPago === MPOpcionPago.TARJETA_DEBITO ? data.token : null,
       idCliente: this.cliente.id_Cliente,
       monto: this.monto,
@@ -308,4 +344,117 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
   cancel() {
     this.canceled.emit();
   }
+
+  showErrorMessages(errors) {
+    this.clearMPErrors();
+    if (errors.cause.length) {
+      const fieldErrors = [];
+      for (const e of errors.cause) {
+        const ei = errorsInfo[e.code] || null;
+        if (ei && ei['field']) { fieldErrors.push(ei); }
+      }
+      if (fieldErrors.length) {
+        for (const ei of fieldErrors) {
+          const ctrl = this.mpForm.get(ei.field);
+          this.addError(ctrl, 'mp_error');
+          this.mpErrors[ei.field] = ei.message;
+        }
+        return;
+      }
+
+      const nonFieldErrors = [];
+      for (const e of errors.cause) {
+        const ei = errorsInfo[e.code] || null;
+        if (ei && !ei['field']) { nonFieldErrors.push(ei); }
+      }
+      if (nonFieldErrors.length) {
+        this.avisoService.openSnackBar(nonFieldErrors[0]['message']);
+      }
+    }
+  }
+
+  clearMPErrors() {
+    this.removeError(this.mpForm.get('cardNumber'), 'mp_error');
+    this.removeError(this.mpForm.get('securityCode'), 'mp_error');
+    this.removeError(this.mpForm.get('cardExpirationMonth'), 'mp_error');
+    this.removeError(this.mpForm.get('cardExpirationYear'), 'mp_error');
+    this.removeError(this.mpForm.get('cardholderName'), 'mp_error');
+    this.removeError(this.mpForm.get('docType'), 'mp_error');
+    this.removeError(this.mpForm.get('docNumber'), 'mp_error');
+    this.removeError(this.mpForm.get('installments'), 'mp_error');
+    this.removeError(this.mpForm.get('installmentsPaymentMethod'), 'mp_error');
+    this.removeError(this.mpForm.get('token'), 'mp_error');
+
+    this.mpErrors['cardNumber'] = '';
+    this.mpErrors['securityCode'] = '';
+    this.mpErrors['cardExpirationMonth'] = '';
+    this.mpErrors['cardExpirationYear'] = '';
+    this.mpErrors['cardholderName'] = '';
+    this.mpErrors['docType'] = '';
+    this.mpErrors['docNumber'] = '';
+    this.mpErrors['installments'] = '';
+    this.mpErrors['installmentsPaymentMethod'] = '';
+    this.mpErrors['token'] = '';
+  }
+
+  showCardsErrorMessages() {
+    const op: MPOpcionPago = this.mpForm.get('opcionPago').value;
+    if (op !== MPOpcionPago.TARJETA_CREDITO && op !== MPOpcionPago.TARJETA_DEBITO) {
+      return;
+    }
+
+    this.clearMPErrors();
+    const pm = this.mpForm.get('paymentMethod').value;
+    const cardNumber = this.mpForm.get('cardNumber').value;
+    const securityCode = this.mpForm.get('securityCode').value;
+
+    if (!pm) {
+      this.addError(this.mpForm.get('cardNumber'), 'mp_error');
+      this.mpErrors['cardNumber'] = 'Error: Revise el nro de tarjeta ingresado.';
+      return;
+    }
+
+    if (!pm && !cardNumber || !securityCode) { return; }
+
+    if (['credit_card', 'debit_card'].indexOf(pm.payment_type_id) < 0) { return; }
+
+    const settings = pm['settings'];
+    if (settings && settings.length) {
+      /* Obtengo el setting con el cual corresponde */
+      const fs = settings.filter((s) => {
+        const binPattern = s['bin']['pattern'];
+        return binPattern && (new RegExp(binPattern)).test(cardNumber); /* test si el número de tarjeta coincide con el patrón del bin. */
+      });
+
+      const setting = fs.length ? fs[0] : null;
+
+      if (setting) {
+        const binInstallmentsPattern = setting['bin']['installments_pattern'];
+        /* test si el número de tarjeta coincide con el patrón de cuotas. */
+        if (binInstallmentsPattern && !(new RegExp(binInstallmentsPattern)).test(cardNumber)) {
+          // No se adminten cuotas
+        }
+
+        const binExclusionPattern = setting['bin']['exclusion_pattern'];
+        /* test si el número de tarjeta no coincide con el patrón de exclusión. */
+        if (binExclusionPattern && (new RegExp(binExclusionPattern)).test(cardNumber)) {
+          // esta excluido el numero de tarjeta.
+        }
+
+        const cardNumberLength = setting['card_number']['length'];
+
+        if (cardNumberLength && String(cardNumber).length !== cardNumberLength) {
+          this.addError(this.mpForm.get('cardNumber'), 'mp_error');
+          this.mpErrors['cardNumber'] = `Debe tener ${cardNumberLength} dígitos.`;
+        }
+
+        const securityCodeLength = setting['security_code']['length'];
+        if (securityCodeLength && String(cardNumber).length !== securityCodeLength) {
+          this.addError(this.mpForm.get('securityCode'), 'mp_error');
+          this.mpErrors['securityCode'] = `Debe tener ${securityCodeLength} dígitos.`;
+        }
+      }
+    }
+  }
 }
+
