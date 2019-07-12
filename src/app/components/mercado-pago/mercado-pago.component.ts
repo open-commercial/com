@@ -67,7 +67,8 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
       this.mp.getAllPaymentMethods((s, d: [any]) => {
         this.paymentMethods = d.filter(function(v) { return v['status'] === 'active'; });
         this.pagosEfectivo = this.paymentMethods.filter(function (v) {
-          return ['ticket', 'atm', 'bank_transfer', 'prepaid_card'].indexOf(v['payment_type_id']) >= 0;
+          return ['ticket', 'atm', 'bank_transfer', 'prepaid_card'].indexOf(v['payment_type_id']) >= 0 &&
+            ['bapropagos', 'cargavirtual'].indexOf(v['id']) < 0;
         });
       });
     }).catch(err => this.avisoService.openSnackBar(err.error, ''));
@@ -90,9 +91,8 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
         this.mpForm.get('monto').valueChanges.subscribe(m => {
           this.monto = m;
           if (this.mpForm.get('installments')) {
-            this.checkInstallmentsPaymentAmount();
-          } else {
-            this.checkPaymentAmount();
+            const bin = this.mpForm.get('cardNumber').value;
+            this.getInstallments(bin);
           }
         });
       } else {
@@ -114,7 +114,6 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
     this.mpForm.get('paymentMethod').valueChanges.subscribe(pm => {
       if (pm) {
         this.checkPaymentMethod();
-        this.checkPaymentAmount();
         this.pmSecureThumbnail = pm.secure_thumbnail;
       } else {
         this.pmSecureThumbnail = '';
@@ -153,7 +152,6 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
         this.mpForm.addControl('installmentsPaymentMethod', new FormControl('', [Validators.required]));
 
         this.mpForm.get('installments').valueChanges.subscribe((v) => {
-          this.checkInstallmentsPaymentAmount();
           if (v) {
             this.cft = v.cft;
             this.tea = v.tea;
@@ -258,6 +256,9 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
   }
 
   checkPaymentMethod() {
+    this.removeError(this.mpForm.get('cardNumber'), 'invalid_type');
+    this.removeError(this.mpForm.get('paymentMethod'), 'invalid_type');
+
     const op: MPOpcionPago = this.mpForm.get('opcionPago').value;
     const pm = this.mpForm.get('paymentMethod').value;
 
@@ -268,49 +269,62 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
       (op === MPOpcionPago.TARJETA_DEBITO && pm.payment_type_id !== 'debit_card')
     ) {
       this.addError(this.mpForm.get('cardNumber'), 'invalid_type');
-    } else {
-      this.removeError(this.mpForm.get('cardNumber'), 'invalid_type');
     }
 
     if (op === MPOpcionPago.EFECTIVO && ['ticket', 'atm', 'bank_transfer', 'prepaid_card'].indexOf(pm.payment_type_id) < 0) {
       this.addError(this.mpForm.get('paymentMethod'), 'invalid_type');
-    } else {
-      this.removeError(this.mpForm.get('paymentMethod'), 'invalid_type');
     }
   }
 
   checkPaymentAmount() {
+    this.removeError(this.mpForm.get('monto'), 'amount_not_allowed');
     const op: MPOpcionPago = this.mpForm.get('opcionPago').value;
-    if (op === MPOpcionPago.TARJETA_CREDITO) { return; }
+    const monto = this.mpForm.get('monto').value;
 
-    const pm = this.mpForm.get('paymentMethod').value;
+    if (!op || !monto) { return; }
 
-    if (this.monto < pm.min_allowed_amount || this.monto > pm.max_allowed_amount) {
+    let pm = this.mpForm.get('paymentMethod').value;
+    if (op === MPOpcionPago.TARJETA_CREDITO && this.mpForm.get('installments') && this.mpForm.get('installments').value) {
+      pm = this.mpForm.get('installments').value;
+    }
+
+    const min = this.getMontoMinimo();
+
+    // if (monto < pm.min_allowed_amount || monto > pm.max_allowed_amount) {
+    if (monto < min || monto > pm.max_allowed_amount) {
       this.addError(this.mpForm.get('monto'), 'amount_not_allowed');
-      this.amountNotAllowedErrorMsg = `El monto debe ser un valor entre ${pm.min_allowed_amount} y ${pm.max_allowed_amount}`;
+      this.amountNotAllowedErrorMsg = `El monto debe ser un valor entre ${min} y ${pm.max_allowed_amount}`;
     } else {
-      this.removeError(this.mpForm.get('monto'), 'amount_not_allowed');
       this.amountNotAllowedErrorMsg = '';
     }
   }
 
-  checkInstallmentsPaymentAmount() {
-    if (!this.mpForm.get('installments') || !this.mpForm.get('installments').value) { return; }
-    const installments = this.mpForm.get('installments').value;
+  getMontoMinimo() {
+    const op: MPOpcionPago = this.mpForm.get('opcionPago').value;
 
-    if (this.monto < installments.min_allowed_amount || this.monto > installments.max_allowed_amount) {
-      this.addError(this.mpForm.get('monto'), 'amount_not_allowed');
-      this.amountNotAllowedErrorMsg
-        = `El monto debe ser un valor entre ${installments.min_allowed_amount} y ${installments.max_allowed_amount}`;
-    } else {
-      this.removeError(this.mpForm.get('monto'), 'amount_not_allowed');
-      this.amountNotAllowedErrorMsg = '';
+    if (!op) { return; }
+
+    if (op === MPOpcionPago.TARJETA_CREDITO) {
+      return 2;
     }
+
+    if (op === MPOpcionPago.TARJETA_DEBITO) {
+      return 1;
+    }
+
+    if (op === MPOpcionPago.EFECTIVO) {
+      return 10;
+    }
+
+    return 10;
   }
 
   submit($event) {
-    this.showCardsErrorMessages();
     if (this.mpForm.valid) {
+      this.checkPaymentAmount();
+      if (!this.mpForm.valid) { return; }
+      this.showCardsErrorMessages();
+      if (!this.mpForm.valid) { return; }
       const data = this.mpForm.value;
       if (data.opcionPago === MPOpcionPago.TARJETA_CREDITO || data.opcionPago === MPOpcionPago.TARJETA_DEBITO) {
         const form = $event.target;
@@ -449,7 +463,8 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
         }
 
         const securityCodeLength = setting['security_code']['length'];
-        if (securityCodeLength && String(cardNumber).length !== securityCodeLength) {
+
+        if (securityCodeLength && String(securityCode).length !== securityCodeLength) {
           this.addError(this.mpForm.get('securityCode'), 'mp_error');
           this.mpErrors['securityCode'] = `Debe tener ${securityCodeLength} dígitos.`;
         }
