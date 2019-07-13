@@ -37,7 +37,7 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
   opcionesPago = [
     { value: MPOpcionPago.TARJETA_CREDITO, text: 'Tarjeta de Crédito' },
     { value: MPOpcionPago.TARJETA_DEBITO, text: 'Tarjeta de Débito' },
-    { value: MPOpcionPago.EFECTIVO, text: 'Otras Opciones' },
+    // { value: MPOpcionPago.EFECTIVO, text: 'Otras Opciones' },
   ];
 
   // enum MPOpcionPago para el template
@@ -136,9 +136,12 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
 
     if (value === MPOpcionPago.TARJETA_CREDITO || value === MPOpcionPago.TARJETA_DEBITO) {
       this.mpForm.addControl('cardNumber', new FormControl('', [
-        Validators.required
+        Validators.required, Validators.min(0)
       ]));
-      this.mpForm.addControl('securityCode', new FormControl('', [Validators.required]));
+
+      this.mpForm.addControl('securityCode', new FormControl('', [
+        Validators.required, Validators.min(0)
+      ]));
       this.mpForm.addControl('cardExpirationMonth', new FormControl('', [Validators.required]));
       this.mpForm.addControl('cardExpirationYear', new FormControl('', [Validators.required]));
       this.mpForm.addControl('cardholderName', new FormControl('', [Validators.required]));
@@ -147,28 +150,26 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
         Validators.required, Validators.pattern('[1-9][0-9]{6}[0-9]?')
       ]));
 
-      if (value === MPOpcionPago.TARJETA_CREDITO) {
-        this.mpForm.addControl('installments', new FormControl('', [Validators.required]));
-        this.mpForm.addControl('installmentsPaymentMethod', new FormControl('', [Validators.required]));
+      this.mpForm.addControl('installments', new FormControl('', [Validators.required]));
+      this.mpForm.addControl('installmentsPaymentMethod', new FormControl('', [Validators.required]));
 
-        this.mpForm.get('installments').valueChanges.subscribe((v) => {
-          if (v) {
-            this.cft = v.cft;
-            this.tea = v.tea;
-          } else {
-            this.cft = '';
-            this.tea = '';
-          }
-        });
+      this.mpForm.get('installments').valueChanges.subscribe((v) => {
+        if (v) {
+          this.cft = v.cft;
+          this.tea = v.tea;
+        } else {
+          this.cft = '';
+          this.tea = '';
+        }
+      });
 
-        this.mpForm.get('installmentsPaymentMethod').valueChanges.subscribe(pm => {
-          if (pm) {
-            this.pmSecureThumbnail = pm.issuer.secure_thumbnail;
-          } else {
-            this.pmSecureThumbnail = '';
-          }
-        });
-      }
+      this.mpForm.get('installmentsPaymentMethod').valueChanges.subscribe(pm => {
+        if (pm) {
+          this.pmSecureThumbnail = pm.issuer.secure_thumbnail;
+        } else {
+          this.pmSecureThumbnail = '';
+        }
+      });
 
       this.mpForm.addControl('token', new FormControl(''));
     }
@@ -202,7 +203,7 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
     if (bin.length < 6) { return; }
     if (this.monto <= 0) { this.cuotas = []; }
     const paymentMethod = this.mpForm.get('paymentMethod').value;
-    if (paymentMethod.payment_type_id === 'credit_card' && this.mpForm.get('installmentsPaymentMethod')) {
+    if (this.mpForm.get('installmentsPaymentMethod')) {
       this.mp.getInstallments({'bin': bin, 'amount': this.monto}, (s, data) => {
         if (!data.length) {
           this.cuotas = [];
@@ -223,6 +224,10 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
             tea: aux[1].replace('TEA_', '')
           };
         });
+
+        if (this.cuotas.length && paymentMethod.payment_type_id === 'debit_card') {
+          this.mpForm.get('installments').setValue(this.cuotas[0]);
+        }
       });
     }
   }
@@ -344,6 +349,7 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
 
   emitPago() {
     const data = this.mpForm.value;
+
     this.pago = {
       issuerId: data.installmentsPaymentMethod ? data.installmentsPaymentMethod.issuer.id : null,
       paymentMethodId: data.installmentsPaymentMethod ? data.installmentsPaymentMethod.payment_method_id : data.paymentMethod.id,
@@ -352,6 +358,7 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
       idCliente: this.cliente.id_Cliente,
       monto: this.monto,
     };
+
     this.updated.emit(this.pago);
   }
 
@@ -470,6 +477,10 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
         }
       }
     }
+  }
+
+  getAnioActual() {
+    return (new Date()).getFullYear();
   }
 }
 

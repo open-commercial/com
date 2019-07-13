@@ -3,7 +3,7 @@
     <div fxLayout="row" fxLayoutGap="0.5rem" fxLayoutAlign="start center">
       <mat-form-field *ngIf="showMontoControl && mpForm.get('monto')" id="monto">
         <mat-icon matPrefix>attach_money</mat-icon>
-        <input type="number" matInput formControlName="monto" placeholder="Monto" required>
+        <input type="number" min="1" matInput formControlName="monto" placeholder="Monto" required>
         <mat-error *ngIf="mpForm.get('monto').hasError('required')">
           Requerido
         </mat-error>
@@ -29,9 +29,9 @@
         <div  fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="0.7rem" fxFlex>
           <mat-form-field fxFlex="80">
             <mat-label>Nº de Tarjeta</mat-label>
-            <input matInput required (keyup)="guessingPaymentMethod($event)" type="number" id="cardNumber" data-checkout="cardNumber" formControlName="cardNumber"
-                   onselectstart="return false" onpaste="return false" onCopy="return false"
-                   onCut="return false" onDrag="return false" onDrop="return false" autocomplete=off/>
+            <input matInput required (keyup)="guessingPaymentMethod($event)" type="number" min="0" id="cardNumber" data-checkout="cardNumber" formControlName="cardNumber"
+                   onselectstart="return false"  onCopy="return false"
+                   onCut="return false" onDrag="return false" onDrop="return false" autocomplete=off/> <!--onpaste="return false"-->
             <mat-error *ngIf="mpForm.get('cardNumber').hasError('required')">
               Requerido
             </mat-error>
@@ -52,7 +52,7 @@
         </div>
         <mat-form-field fxFlex>
           <mat-label>Código de seguridad</mat-label>
-          <input matInput required type="number" id="securityCode" data-checkout="securityCode" formControlName="securityCode"
+          <input matInput required type="number" min="0" max="999" id="securityCode" data-checkout="securityCode" formControlName="securityCode"
                  onselectstart="return false" onpaste="return false" onCopy="return false" onCut="return false"
                  onDrag="return false" onDrop="return false" autocomplete=off/>
           <mat-error *ngIf="mpForm.get('securityCode').hasError('required')">
@@ -66,7 +66,7 @@
       <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.7rem">
         <mat-form-field fxFlex>
           <mat-label>Mes de Expiración</mat-label>
-          <input matInput required type="number" id="cardExpirationMonth" data-checkout="cardExpirationMonth" formControlName="cardExpirationMonth"
+          <input matInput required type="number" min="1" max="12" id="cardExpirationMonth" data-checkout="cardExpirationMonth" formControlName="cardExpirationMonth"
                  onselectstart="return false" onpaste="return false" onCopy="return false" onCut="return false"
                  onDrag="return false" onDrop="return false" autocomplete=off/>
           <mat-error *ngIf="mpForm.get('cardExpirationMonth').hasError('required')">
@@ -78,7 +78,7 @@
         </mat-form-field>
         <mat-form-field fxFlex>
           <mat-label>Año de Expiración</mat-label>
-          <input matInput required type="number" id="cardExpirationYear" data-checkout="cardExpirationYear" formControlName="cardExpirationYear"
+          <input matInput required type="number" min="{{ getAnioActual() }}" id="cardExpirationYear" data-checkout="cardExpirationYear" formControlName="cardExpirationYear"
                  onselectstart="return false" onpaste="return false" onCopy="return false" onCut="return false"
                  onDrag="return false" onDrop="return false" autocomplete=off/>
           <mat-error *ngIf="mpForm.get('cardExpirationYear').hasError('required')">
@@ -115,7 +115,7 @@
           </mat-error>
         </mat-form-field>
       </div>
-      <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.7rem" *ngIf="mpForm.get('opcionPago').value == opcionPago.TARJETA_CREDITO">
+      <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.7rem">
         <mat-form-field fxFlex="">
           <mat-label>Cuotas</mat-label>
           <mat-select required formControlName="installments">
