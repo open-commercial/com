@@ -12,7 +12,7 @@
   <div *ngIf="!isLoading && cuentaCorriente">
     <button mat-raised-button color="primary" *ngIf="!showNuevoPago" (click)="showNuevoPago = true">Ingresar Dinero</button>
     <div *ngIf="showNuevoPago">
-      <sic-com-mercado-pago [cliente]="cliente" [showMontoControl]="true" (updated)="generarPago($event)" (canceled)="showNuevoPago = false"></sic-com-mercado-pago>
+      <sic-com-mercado-pago [cliente]="cliente" [showMontoControl]="true" (updated)="updated($event)" (canceled)="showNuevoPago = false"></sic-com-mercado-pago>
     </div>
     <div *ngIf="!showNuevoPago">
       <div fxLayout="row" fxLayoutAlign="start center">

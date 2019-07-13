@@ -6,6 +6,8 @@ import {Cliente} from '../../models/cliente';
 import {AvisoService} from '../../services/aviso.service';
 import {MPOpcionPago, MPPago} from '../../models/mercadopago/mp-pago';
 import {errorsInfo} from '../../models/mercadopago/errors';
+import {PagosService} from '../../services/pagos.service';
+import {finalize} from 'rxjs/operators';
 
 @Component({
   selector: 'sic-com-mercado-pago',
@@ -17,11 +19,10 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
   @Input() cliente: Cliente = null;
   @Input() monto = 1;
   @Input() showMontoControl = false;
-  @Output() updated  = new EventEmitter<MPPago>(true);
+  @Output() updated  = new EventEmitter<boolean>(true);
   @Output() canceled = new EventEmitter<void>(true);
 
-  // cliente: Cliente = null;
-  // monto = 0;
+  loading = false;
 
   mp = null;
   mpForm: FormGroup;
@@ -37,7 +38,7 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
   opcionesPago = [
     { value: MPOpcionPago.TARJETA_CREDITO, text: 'Tarjeta de Crédito' },
     { value: MPOpcionPago.TARJETA_DEBITO, text: 'Tarjeta de Débito' },
-    // { value: MPOpcionPago.EFECTIVO, text: 'Otras Opciones' },
+    { value: MPOpcionPago.EFECTIVO, text: 'Efectivo' },
   ];
 
   // enum MPOpcionPago para el template
@@ -54,8 +55,12 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
 
   amountNotAllowedErrorMsg = '';
 
+  meses = Array(12).fill(null).map((x, i) => i + 1 );
+  anios = Array(30).fill(null).map((x, i) => i + 2019);
+
   constructor(private dynamicScriptLoader: DynamicScriptLoaderService,
               private fb: FormBuilder,
+              private pagosService: PagosService,
               private avisoService: AvisoService) {
     this.createForm();
   }
@@ -68,10 +73,11 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
         this.paymentMethods = d.filter(function(v) { return v['status'] === 'active'; });
         this.pagosEfectivo = this.paymentMethods.filter(function (v) {
           return ['ticket', 'atm', 'bank_transfer', 'prepaid_card'].indexOf(v['payment_type_id']) >= 0 &&
-            ['bapropagos', 'cargavirtual'].indexOf(v['id']) < 0;
+            ['bapropagos', 'redlink'].indexOf(v['id']) < 0;
         });
       });
     }).catch(err => this.avisoService.openSnackBar(err.error, ''));
+    this.mpForm.get('opcionPago').setValue(MPOpcionPago.TARJETA_CREDITO);
   }
 
   ngOnChanges(changes: {[propKey: string]: SimpleChange}) {
@@ -139,6 +145,8 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
         Validators.required, Validators.min(0)
       ]));
 
+      this.mpForm.get('cardNumber').valueChanges.subscribe(v => this.guessingPaymentMethod(v));
+
       this.mpForm.addControl('securityCode', new FormControl('', [
         Validators.required, Validators.min(0)
       ]));
@@ -177,13 +185,12 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
     this.mpForm.updateValueAndValidity();
   }
 
-  guessingPaymentMethod($event) {
+  guessingPaymentMethod(bin) {
     if (this.mpForm.get('installments')) {
       this.mpForm.get('installments').setValue(null);
     }
     if (!this.monto || this.monto < 1) { return; }
-    const bin = $event.target.value;
-    if (bin.length >= 6) {
+    if (String(bin).length >= 6) {
       this.mp.getPaymentMethod({ 'bin': bin }, (status, response) => {
         if (status === 200) {
           const paymentMethod = response[0];
@@ -200,7 +207,7 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
   }
 
   getInstallments(bin) {
-    if (bin.length < 6) { return; }
+    if (String(bin).length < 6) { return; }
     if (this.monto <= 0) { this.cuotas = []; }
     const paymentMethod = this.mpForm.get('paymentMethod').value;
     if (this.mpForm.get('installmentsPaymentMethod')) {
@@ -242,6 +249,15 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
     this.cuotas = [];
     this.cft = '';
     this.tea = '';
+
+
+   /* issuerId: data.installmentsPaymentMethod ? data.installmentsPaymentMethod.issuer.id : null,
+      paymentMethodId: data.installmentsPaymentMethod ? data.installmentsPaymentMethod.payment_method_id : data.paymentMethod.id,
+      installments: data.opcionPago === MPOpcionPago.TARJETA_CREDITO ? data.installments.cuotas : null,
+      token: data.opcionPago === MPOpcionPago.TARJETA_CREDITO || data.opcionPago === MPOpcionPago.TARJETA_DEBITO ? data.token : null,
+      idCliente: this.cliente.id_Cliente,
+      monto: this.monto,
+    */
   }
 
   addError(ctrl: AbstractControl, key: string) {
@@ -287,8 +303,10 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
     const monto = this.mpForm.get('monto').value;
 
     if (!op || !monto) { return; }
-
     let pm = this.mpForm.get('paymentMethod').value;
+    console.log(monto, pm);
+
+
     if (op === MPOpcionPago.TARJETA_CREDITO && this.mpForm.get('installments') && this.mpForm.get('installments').value) {
       pm = this.mpForm.get('installments').value;
     }
@@ -325,41 +343,55 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
   }
 
   submit($event) {
+    this.checkPaymentAmount();
+    this.showCardsErrorMessages();
     if (this.mpForm.valid) {
-      this.checkPaymentAmount();
-      if (!this.mpForm.valid) { return; }
-      this.showCardsErrorMessages();
-      if (!this.mpForm.valid) { return; }
       const data = this.mpForm.value;
       if (data.opcionPago === MPOpcionPago.TARJETA_CREDITO || data.opcionPago === MPOpcionPago.TARJETA_DEBITO) {
         const form = $event.target;
         this.mp.createToken(form, (status, response) => {
           if (status !== 200 && status !== 201) {
             this.showErrorMessages(response);
+            return;
           } else {
             this.mpForm.get('token').setValue(response.id);
-            this.emitPago();
+            this.generarPago();
           }
         });
       } else {
-        this.emitPago();
+        this.generarPago();
       }
     }
   }
 
-  emitPago() {
+  generarPago() {
     const data = this.mpForm.value;
 
-    this.pago = {
+    const pago = {
       issuerId: data.installmentsPaymentMethod ? data.installmentsPaymentMethod.issuer.id : null,
       paymentMethodId: data.installmentsPaymentMethod ? data.installmentsPaymentMethod.payment_method_id : data.paymentMethod.id,
-      installments: data.opcionPago === MPOpcionPago.TARJETA_CREDITO ? data.installments.cuotas : null,
+      installments: data.opcionPago === MPOpcionPago.TARJETA_CREDITO || data.opcionPago === MPOpcionPago.TARJETA_CREDITO
+        ? data.installments.cuotas : null,
       token: data.opcionPago === MPOpcionPago.TARJETA_CREDITO || data.opcionPago === MPOpcionPago.TARJETA_DEBITO ? data.token : null,
       idCliente: this.cliente.id_Cliente,
       monto: this.monto,
     };
 
-    this.updated.emit(this.pago);
+    this.loading = true;
+    this.pagosService.generarMPPago(pago)
+      .pipe(finalize(() => {
+        this.loading = false;
+      }))
+      .subscribe(
+        v => {
+          this.mpForm.reset();
+          this.updated.emit(true);
+        },
+        err => {
+          this.avisoService.openSnackBar(err.error);
+        }
+      )
+    ;
   }
 
   cancel() {

@@ -29,7 +29,7 @@
         <div  fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="0.7rem" fxFlex>
           <mat-form-field fxFlex="80">
             <mat-label>Nº de Tarjeta</mat-label>
-            <input matInput required (keyup)="guessingPaymentMethod($event)" type="number" min="0" id="cardNumber" data-checkout="cardNumber" formControlName="cardNumber"
+            <input matInput required type="number" min="0" id="cardNumber" data-checkout="cardNumber" formControlName="cardNumber"
                    onselectstart="return false"  onCopy="return false"
                    onCut="return false" onDrag="return false" onDrop="return false" autocomplete=off/> <!--onpaste="return false"-->
             <mat-error *ngIf="mpForm.get('cardNumber').hasError('required')">
@@ -66,9 +66,9 @@
       <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.7rem">
         <mat-form-field fxFlex>
           <mat-label>Mes de Expiración</mat-label>
-          <input matInput required type="number" min="1" max="12" id="cardExpirationMonth" data-checkout="cardExpirationMonth" formControlName="cardExpirationMonth"
-                 onselectstart="return false" onpaste="return false" onCopy="return false" onCut="return false"
-                 onDrag="return false" onDrop="return false" autocomplete=off/>
+          <select required matNativeControl id="cardExpirationMonth" data-checkout="cardExpirationMonth" formControlName="cardExpirationMonth">
+            <option *ngFor="let m of meses" [value]="m">{{ m }}</option>
+          </select>
           <mat-error *ngIf="mpForm.get('cardExpirationMonth').hasError('required')">
             Requerido
           </mat-error>
@@ -78,9 +78,9 @@
         </mat-form-field>
         <mat-form-field fxFlex>
           <mat-label>Año de Expiración</mat-label>
-          <input matInput required type="number" min="{{ getAnioActual() }}" id="cardExpirationYear" data-checkout="cardExpirationYear" formControlName="cardExpirationYear"
-                 onselectstart="return false" onpaste="return false" onCopy="return false" onCut="return false"
-                 onDrag="return false" onDrop="return false" autocomplete=off/>
+          <select required matNativeControl id="cardExpirationYear" data-checkout="cardExpirationYear" formControlName="cardExpirationYear">
+            <option *ngFor="let a of anios" [value]="a">{{ a }}</option>
+          </select>
           <mat-error *ngIf="mpForm.get('cardExpirationYear').hasError('required')">
             Requerido
           </mat-error>
@@ -115,7 +115,7 @@
           </mat-error>
         </mat-form-field>
       </div>
-      <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.7rem">
+      <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.7rem" *ngIf="mpForm.get('opcionPago').value == opcionPago.TARJETA_CREDITO">
         <mat-form-field fxFlex="">
           <mat-label>Cuotas</mat-label>
           <mat-select required formControlName="installments">
@@ -154,9 +154,12 @@
       </div>
     </div>
     <br>
-    <div fxLayoutAlign="start center" fxLayoutGap="0.7rem">
+    <div fxLayoutAlign="start center" fxLayoutGap="0.7rem" *ngIf="!loading">
       <button mat-raised-button color="primary" type="submit">Pagar</button>
       <a mat-raised-button routerLink="." (click)="cancel()">Cancelar</a>
+    </div>
+    <div *ngIf="loading" fxLayout="row" fxLayoutAlign="center center">
+      <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
     </div>
   </form>
 </div>
