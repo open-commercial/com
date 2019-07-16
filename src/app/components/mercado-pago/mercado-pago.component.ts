@@ -201,7 +201,6 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
     if (!this.monto || this.monto < 1) { return; }
     if (String(bin).length >= 6) {
       this.mp.getPaymentMethod({ 'bin': bin }, (status, response) => {
-        console.log(bin);
         if (status === 200) {
           const paymentMethod = response[0];
           this.mpForm.get('paymentMethod').setValue(paymentMethod);
@@ -305,8 +304,6 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
 
     if (!op || !monto) { return; }
     let pm = this.mpForm.get('paymentMethod').value;
-    console.log(monto, pm);
-
 
     if (op === MPOpcionPago.TARJETA_CREDITO && this.mpForm.get('installments') && this.mpForm.get('installments').value) {
       pm = this.mpForm.get('installments').value;
@@ -344,7 +341,10 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
   }
 
   submit($event) {
-    this.mpForm.get('token').setValue('');
+    if (this.mpForm.get('token')) {
+      this.mpForm.get('token').setValue('');
+    }
+
     this.checkPaymentAmount();
     this.showCardsErrorMessages();
     if (this.mpForm.valid) {
@@ -352,7 +352,6 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
       if (data.opcionPago === MPOpcionPago.TARJETA_CREDITO || data.opcionPago === MPOpcionPago.TARJETA_DEBITO) {
         const form = $event.target;
         this.mp.createToken(form, (status, response) => {
-          console.log(status);
           if (status !== 200 && status !== 201) {
             this.showErrorMessages(response);
             return;
