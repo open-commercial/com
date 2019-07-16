@@ -150,4 +150,11 @@ export const errorsInfo = {
     'reason': 'Already posted the same request in the last minute',
     'message': 'Realizaste un pago similar hace instantes. Intenta nuevamente en unos minutos.'
   },
+  '011': {
+    'code': '011',
+    'reason': 'Not valid action, the resource is in a state that does not allow this operation.' +
+      ' For more information see the state that has the resource.',
+    'message': 'No se pudo actualizar el Token de tarjeta, ya que ha sido usado o expirado'
+  }
 };
+

@@ -1,5 +1,5 @@
 <div class="sic-com-mercado-pago">
-  <form [formGroup]="mpForm" (ngSubmit)="submit($event)" id="pay" name="pay" fxLayout="column" *ngIf="mpForm">
+  <form [formGroup]="mpForm" (ngSubmit)="submit($event)" id="pay" name="pay" fxLayout="column" *ngIf="mpForm && !loading">
     <div fxLayout="row" fxLayoutGap="0.5rem" fxLayoutAlign="start center">
       <mat-form-field *ngIf="showMontoControl && mpForm.get('monto')" id="monto">
         <mat-icon matPrefix>attach_money</mat-icon>
@@ -30,7 +30,7 @@
           <mat-form-field fxFlex="80">
             <mat-label>Nº de Tarjeta</mat-label>
             <input matInput required type="number" min="0" id="cardNumber" data-checkout="cardNumber" formControlName="cardNumber"
-                   onselectstart="return false"  onCopy="return false"
+                   onselectstart="return false"  onCopy="return false" onpaste="return false"
                    onCut="return false" onDrag="return false" onDrop="return false" autocomplete=off/> <!--onpaste="return false"-->
             <mat-error *ngIf="mpForm.get('cardNumber').hasError('required')">
               Requerido
@@ -65,7 +65,7 @@
       </div>
       <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.7rem">
         <mat-form-field fxFlex>
-          <mat-label>Mes de Expiración</mat-label>
+          <mat-label>Mes de Vencimiento</mat-label>
           <select required matNativeControl id="cardExpirationMonth" data-checkout="cardExpirationMonth" formControlName="cardExpirationMonth">
             <option *ngFor="let m of meses" [value]="m">{{ m }}</option>
           </select>
@@ -77,7 +77,7 @@
           </mat-error>
         </mat-form-field>
         <mat-form-field fxFlex>
-          <mat-label>Año de Expiración</mat-label>
+          <mat-label>Año de Vencimiento</mat-label>
           <select required matNativeControl id="cardExpirationYear" data-checkout="cardExpirationYear" formControlName="cardExpirationYear">
             <option *ngFor="let a of anios" [value]="a">{{ a }}</option>
           </select>
@@ -108,7 +108,7 @@
             Requerido
           </mat-error>
           <mat-error *ngIf="mpForm.get('docNumber').hasError('pattern')">
-            Inválido: sólo se admiten 7 u 8 dígitos y el primer dígito debe ser mayor a 0.
+            Debe contener 7 u 8 dígitos.
           </mat-error>
           <mat-error *ngIf="mpForm.get('docNumber').hasError('mp_error')">
             {{ mpErrors['docNumber'] }}
@@ -135,7 +135,7 @@
     </div>
     <div *ngIf="mpForm.get('opcionPago').value == opcionPago.EFECTIVO" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="0.5rem">
       <mat-form-field fxFlex="80">
-        <mat-label>Tipo de Pago</mat-label>
+        <mat-label>Medio de Pago</mat-label>
         <mat-select formControlName="paymentMethod" required>
           <mat-option *ngFor="let pm of pagosEfectivo" [value]="pm">{{ pm.name }}</mat-option>
         </mat-select>
@@ -154,12 +154,12 @@
       </div>
     </div>
     <br>
-    <div fxLayoutAlign="start center" fxLayoutGap="0.7rem" *ngIf="!loading">
-      <button mat-raised-button color="primary" type="submit">Pagar</button>
+    <div fxLayoutAlign="start center" fxLayoutGap="0.7rem">
+      <button mat-raised-button color="primary" type="submit" [disabled]="mpForm.invalid">Pagar</button>
       <a mat-raised-button routerLink="." (click)="cancel()">Cancelar</a>
     </div>
-    <div *ngIf="loading" fxLayout="row" fxLayoutAlign="center center">
-      <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
-    </div>
   </form>
+  <div *ngIf="loading" fxLayout="row" fxLayoutAlign="center center">
+    <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
+  </div>
 </div>

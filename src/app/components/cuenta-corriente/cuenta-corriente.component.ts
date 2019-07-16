@@ -120,6 +120,7 @@ export class CuentaCorrienteComponent implements OnInit {
   updated(result) {
     if (result) {
       this.showNuevoPago = false;
+      this.cargarRenglones(true);
     }
   }
 }

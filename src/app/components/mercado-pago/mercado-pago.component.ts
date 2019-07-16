@@ -7,7 +7,8 @@ import {AvisoService} from '../../services/aviso.service';
 import {MPOpcionPago, MPPago} from '../../models/mercadopago/mp-pago';
 import {errorsInfo} from '../../models/mercadopago/errors';
 import {PagosService} from '../../services/pagos.service';
-import {finalize} from 'rxjs/operators';
+import { debounceTime, finalize} from 'rxjs/operators';
+import {formatNumber} from '@angular/common';
 
 @Component({
   selector: 'sic-com-mercado-pago',
@@ -56,7 +57,7 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
   amountNotAllowedErrorMsg = '';
 
   meses = Array(12).fill(null).map((x, i) => i + 1 );
-  anios = Array(30).fill(null).map((x, i) => i + 2019);
+  anios = Array(12).fill(null).map((x, i) => i + 2019);
 
   constructor(private dynamicScriptLoader: DynamicScriptLoaderService,
               private fb: FormBuilder,
@@ -76,7 +77,7 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
             ['bapropagos', 'redlink'].indexOf(v['id']) < 0;
         });
       });
-    }).catch(err => this.avisoService.openSnackBar(err.error, ''));
+    }).catch(err => this.avisoService.openSnackBar(err.error, 'Ok', 0));
     this.mpForm.get('opcionPago').setValue(MPOpcionPago.TARJETA_CREDITO);
   }
 
@@ -145,7 +146,9 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
         Validators.required, Validators.min(0)
       ]));
 
-      this.mpForm.get('cardNumber').valueChanges.subscribe(v => this.guessingPaymentMethod(v));
+      this.mpForm.get('cardNumber').valueChanges
+        .pipe(debounceTime(1000))
+        .subscribe(v => this.guessingPaymentMethod(v));
 
       this.mpForm.addControl('securityCode', new FormControl('', [
         Validators.required, Validators.min(0)
@@ -182,6 +185,12 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
       this.mpForm.addControl('token', new FormControl(''));
     }
 
+    if (value === MPOpcionPago.EFECTIVO) {
+      if (this.pagosEfectivo.length) {
+        this.mpForm.get('paymentMethod').setValue(this.pagosEfectivo[0]);
+      }
+    }
+
     this.mpForm.updateValueAndValidity();
   }
 
@@ -192,13 +201,14 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
     if (!this.monto || this.monto < 1) { return; }
     if (String(bin).length >= 6) {
       this.mp.getPaymentMethod({ 'bin': bin }, (status, response) => {
+        console.log(bin);
         if (status === 200) {
           const paymentMethod = response[0];
           this.mpForm.get('paymentMethod').setValue(paymentMethod);
           this.getInstallments(bin);
         } else {
           this.clearValues();
-          this.avisoService.openSnackBar('Error al obtener el método de pago: ' + response.message);
+          this.avisoService.openSnackBar('Error al obtener el método de pago: ' + response.message, 'Ok', 0);
         }
       });
     } else {
@@ -249,15 +259,6 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
     this.cuotas = [];
     this.cft = '';
     this.tea = '';
-
-
-   /* issuerId: data.installmentsPaymentMethod ? data.installmentsPaymentMethod.issuer.id : null,
-      paymentMethodId: data.installmentsPaymentMethod ? data.installmentsPaymentMethod.payment_method_id : data.paymentMethod.id,
-      installments: data.opcionPago === MPOpcionPago.TARJETA_CREDITO ? data.installments.cuotas : null,
-      token: data.opcionPago === MPOpcionPago.TARJETA_CREDITO || data.opcionPago === MPOpcionPago.TARJETA_DEBITO ? data.token : null,
-      idCliente: this.cliente.id_Cliente,
-      monto: this.monto,
-    */
   }
 
   addError(ctrl: AbstractControl, key: string) {
@@ -316,7 +317,7 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
     // if (monto < pm.min_allowed_amount || monto > pm.max_allowed_amount) {
     if (monto < min || monto > pm.max_allowed_amount) {
       this.addError(this.mpForm.get('monto'), 'amount_not_allowed');
-      this.amountNotAllowedErrorMsg = `El monto debe ser un valor entre ${min} y ${pm.max_allowed_amount}`;
+      this.amountNotAllowedErrorMsg = `Min $${this.fN(min)}, Max: $${this.fN(pm.max_allowed_amount)}`;
     } else {
       this.amountNotAllowedErrorMsg = '';
     }
@@ -343,6 +344,7 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
   }
 
   submit($event) {
+    this.mpForm.get('token').setValue('');
     this.checkPaymentAmount();
     this.showCardsErrorMessages();
     if (this.mpForm.valid) {
@@ -350,6 +352,7 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
       if (data.opcionPago === MPOpcionPago.TARJETA_CREDITO || data.opcionPago === MPOpcionPago.TARJETA_DEBITO) {
         const form = $event.target;
         this.mp.createToken(form, (status, response) => {
+          console.log(status);
           if (status !== 200 && status !== 201) {
             this.showErrorMessages(response);
             return;
@@ -384,11 +387,11 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
       }))
       .subscribe(
         v => {
-          this.mpForm.reset();
           this.updated.emit(true);
+          // this.mpForm.reset();
         },
         err => {
-          this.avisoService.openSnackBar(err.error);
+          this.avisoService.openSnackBar(err.error, 'Ok', 0);
         }
       )
     ;
@@ -406,6 +409,7 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
         const ei = errorsInfo[e.code] || null;
         if (ei && ei['field']) { fieldErrors.push(ei); }
       }
+
       if (fieldErrors.length) {
         for (const ei of fieldErrors) {
           const ctrl = this.mpForm.get(ei.field);
@@ -421,7 +425,7 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
         if (ei && !ei['field']) { nonFieldErrors.push(ei); }
       }
       if (nonFieldErrors.length) {
-        this.avisoService.openSnackBar(nonFieldErrors[0]['message']);
+        this.avisoService.openSnackBar(nonFieldErrors[0]['message'], 'Ok', 0);
       }
     }
   }
@@ -511,8 +515,8 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
     }
   }
 
-  getAnioActual() {
-    return (new Date()).getFullYear();
+  fN(n: number) {
+    return formatNumber(n, 'es_AR').replace('.', '');
   }
 }
 
