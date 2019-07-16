@@ -1,5 +1,14 @@
 @import "../../../_colors.scss";
 .sic-com-home {
+  .bannerMP {
+    text-align: center;
+    img {
+      //max-width: 100%;
+      width: 100%;
+      height: auto;
+    }
+  }
+
   .map {
     margin: .5rem 0;
     border: none;
