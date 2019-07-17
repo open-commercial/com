@@ -12,7 +12,7 @@
           Requerido
         </mat-error>
         <mat-error *ngIf="mpForm.get('monto').hasError('min')">
-          El monto debe ser >= a 1
+          El monto debe ser positivo
         </mat-error>
         <mat-error *ngIf="mpForm.get('monto').hasError('amount_not_allowed')">
           {{ amountNotAllowedErrorMsg }}
@@ -30,7 +30,7 @@
             <mat-label>Nº de Tarjeta</mat-label>
             <input matInput required type="number" min="0" id="cardNumber" data-checkout="cardNumber" formControlName="cardNumber"
                    onselectstart="return false"  onCopy="return false" onpaste="return false"
-                   onCut="return false" onDrag="return false" onDrop="return false" autocomplete=off /> <!--onpaste="return false"-->
+                   onCut="return false" onDrag="return false" onDrop="return false" autocomplete=off />
             <mat-error *ngIf="mpForm.get('cardNumber').hasError('required')">
               Requerido
             </mat-error>
@@ -44,7 +44,7 @@
               {{ mpErrors['cardNumber'] }}
             </mat-error>
             <mat-error *ngIf="mpForm.get('cardNumber').hasError('invalid_card_number')">
-              Tarjeta invalida.
+              Tarjeta invalida
             </mat-error>
             <mat-error *ngIf="mpForm.get('cardNumber').hasError('pattern')">
               Debe contener entre 14 y 18 dígitos

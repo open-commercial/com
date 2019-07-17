@@ -24,38 +24,23 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
   @Output() canceled = new EventEmitter<void>(true);
 
   loading = false;
-
   mp = null;
   mpForm: FormGroup;
-
-  tiposDocumento = [];
   cuotas = [];
-
   paymentMethods = [];
-  // tarjetas = [];
   pagosEfectivo = [];
-
-  // Opciones de pago
   opcionesPago = [
     { value: MPOpcionPago.TARJETA_CREDITO, text: 'Tarjeta de Crédito' },
     { value: MPOpcionPago.TARJETA_DEBITO, text: 'Tarjeta de Débito' },
     { value: MPOpcionPago.EFECTIVO, text: 'Efectivo' },
   ];
-
-  // enum MPOpcionPago para el template
   opcionPago = MPOpcionPago;
-
   pmSecureThumbnail = '';
-
   pago: MPPago = null;
-
   cft = '';
   tea = '';
-
   mpErrors = [];
-
   amountNotAllowedErrorMsg = '';
-
   meses = Array(12).fill(null).map((x, i) => i + 1 );
   anios = Array(12).fill(null).map((x, i) => i + 2019);
 
@@ -208,7 +193,6 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
           this.mpForm.get('paymentMethod').setValue(paymentMethod);
           this.getInstallments(bin);
         } else {
-          // this.avisoService.openSnackBar('Error al obtener el método de pago: ' + response.message, 'Ok', 0);
           this.addError(this.mpForm.get('cardNumber'), 'invalid_card_number');
           this.clearValues();
         }
@@ -387,7 +371,7 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
           this.mp.clearSession();
           this.updated.emit(true);
           if (data.opcionPago === MPOpcionPago.EFECTIVO) {
-            this.avisoService.openSnackBar('Recibirá un mail con los datos para realizar el deposito', 'OK', 0);
+            this.avisoService.openSnackBar('Recibirá un mail con los datos para realizar el deposito', 'Ok', 0);
           }
         },
         err => {
