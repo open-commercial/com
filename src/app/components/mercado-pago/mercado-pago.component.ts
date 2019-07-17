@@ -145,7 +145,7 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
 
     if (value === MPOpcionPago.TARJETA_CREDITO || value === MPOpcionPago.TARJETA_DEBITO) {
       this.mpForm.addControl('cardNumber', new FormControl('', [
-        Validators.required, Validators.min(0), Validators.pattern('[0-9]{14, 18}')
+        Validators.required, Validators.min(0), Validators.pattern('[0-9]{14}[0-9]?[0-9]?[0-9]?[0-9]?')
       ]));
 
       this.mpForm.get('cardNumber').valueChanges
