@@ -38,7 +38,7 @@ export class CuentaCorrienteComponent implements OnInit {
         (cliente: Cliente) => {
           if (cliente) {
             this.cliente = cliente;
-            this.cuentasCorrienteService.getCuentaCorriente(this.cliente)
+            /*this.cuentasCorrienteService.getCuentaCorriente(this.cliente)
               .subscribe(
                 cc => {
                   if (cc) {
@@ -52,7 +52,30 @@ export class CuentaCorrienteComponent implements OnInit {
                   this.avisoService.openSnackBar(err.error, '', 3500);
                   this.isLoading = false;
                 }
-              );
+              );*/
+              this.reloadCuentaCorriente();
+          } else {
+            this.isLoading = false;
+          }
+        },
+        err => {
+          this.avisoService.openSnackBar(err.error, '', 3500);
+          this.isLoading = false;
+        }
+      )
+    ;
+  }
+
+  reloadCuentaCorriente() {
+    if (!this.isLoading) {
+      this.isLoading = true;
+    }
+    this.cuentasCorrienteService.getCuentaCorriente(this.cliente)
+      .subscribe(
+        cc => {
+          if (cc) {
+            this.cuentaCorriente = cc;
+            this.cargarRenglones(true);
           } else {
             this.isLoading = false;
           }
@@ -120,7 +143,7 @@ export class CuentaCorrienteComponent implements OnInit {
   updated(result) {
     if (result) {
       this.showNuevoPago = false;
-      this.cargarRenglones(true);
+      this.reloadCuentaCorriente();
     }
   }
 }

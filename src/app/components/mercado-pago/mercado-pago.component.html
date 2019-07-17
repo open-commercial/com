@@ -1,14 +1,18 @@
 <div class="sic-com-mercado-pago">
   <form [formGroup]="mpForm" (ngSubmit)="submit($event)" id="pay" name="pay" fxLayout="column" *ngIf="mpForm && !loading">
+    <mat-radio-group fxLayout="column" fxLayoutGap="1rem" formControlName="opcionPago">
+      <mat-radio-button color="primary" *ngFor="let op of opcionesPago" [value]="op.value">{{ op.text }}</mat-radio-button>
+    </mat-radio-group>
+    <br>
     <div fxLayout="row" fxLayoutGap="0.5rem" fxLayoutAlign="start center">
-      <mat-form-field *ngIf="showMontoControl && mpForm.get('monto')" id="monto">
+      <mat-form-field *ngIf="showMontoControl && mpForm.get('monto')" fxFlex="50" fxFlex.xs="100">
         <mat-icon matPrefix>attach_money</mat-icon>
         <input type="number" min="1" matInput formControlName="monto" placeholder="Monto" required>
         <mat-error *ngIf="mpForm.get('monto').hasError('required')">
           Requerido
         </mat-error>
         <mat-error *ngIf="mpForm.get('monto').hasError('min')">
-          El monto debe ser >= a 1.
+          El monto debe ser >= a 1
         </mat-error>
         <mat-error *ngIf="mpForm.get('monto').hasError('amount_not_allowed')">
           {{ amountNotAllowedErrorMsg }}
@@ -19,11 +23,6 @@
         <span>{{ monto| number:'1.2-2':'es-AR' }}</span>
       </div>
     </div>
-    <br>
-    <mat-radio-group fxLayout="column" fxLayoutGap="1rem" formControlName="opcionPago">
-      <mat-radio-button color="primary" *ngFor="let op of opcionesPago" [value]="op.value">{{ op.text }}</mat-radio-button>
-    </mat-radio-group>
-    <br>
     <div *ngIf="mpForm.get('opcionPago').value == opcionPago.TARJETA_CREDITO || mpForm.get('opcionPago').value == opcionPago.TARJETA_DEBITO" fxLayout="column" fxLayoutGap="0.5rem">
       <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.7rem">
         <div  fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="0.7rem" fxFlex>
@@ -31,18 +30,24 @@
             <mat-label>Nº de Tarjeta</mat-label>
             <input matInput required type="number" min="0" id="cardNumber" data-checkout="cardNumber" formControlName="cardNumber"
                    onselectstart="return false"  onCopy="return false" onpaste="return false"
-                   onCut="return false" onDrag="return false" onDrop="return false" autocomplete=off/> <!--onpaste="return false"-->
+                   onCut="return false" onDrag="return false" onDrop="return false" autocomplete=off /> <!--onpaste="return false"-->
             <mat-error *ngIf="mpForm.get('cardNumber').hasError('required')">
               Requerido
             </mat-error>
             <mat-error *ngIf="mpForm.get('cardNumber').hasError('invalid_type')">
-              El medio de pago no coincide con la opción de pago seleccionada.
+              No pertenece a la opcion de pago seleccionada
             </mat-error>
             <mat-error *ngIf="mpForm.get('cardNumber').hasError('amount_not_allowed')">
-              El monto esta fuera del rango permitido para este medio de pago.
+              El monto esta fuera del rango permitido para este medio de pago
             </mat-error>
             <mat-error *ngIf="mpForm.get('cardNumber').hasError('mp_error')">
               {{ mpErrors['cardNumber'] }}
+            </mat-error>
+            <mat-error *ngIf="mpForm.get('cardNumber').hasError('invalid_card_number')">
+              Tarjeta invalida.
+            </mat-error>
+            <mat-error *ngIf="mpForm.get('cardNumber').hasError('pattern')">
+              Debe contener entre 14 y 18 dígitos
             </mat-error>
           </mat-form-field>
           <div fxFlex="20" fxLayoutAlign="center center">
@@ -60,6 +65,9 @@
           </mat-error>
           <mat-error *ngIf="mpForm.get('securityCode').hasError('mp_error')">
             {{ mpErrors['securityCode'] }}
+          </mat-error>
+          <mat-error *ngIf="mpForm.get('securityCode').hasError('pattern')">
+            Debe contener 3 dígitos
           </mat-error>
         </mat-form-field>
       </div>
@@ -108,7 +116,7 @@
             Requerido
           </mat-error>
           <mat-error *ngIf="mpForm.get('docNumber').hasError('pattern')">
-            Debe contener 7 u 8 dígitos.
+            Debe contener 7 u 8 dígitos
           </mat-error>
           <mat-error *ngIf="mpForm.get('docNumber').hasError('mp_error')">
             {{ mpErrors['docNumber'] }}
@@ -143,10 +151,10 @@
           Requerido
         </mat-error>
         <mat-error *ngIf="mpForm.get('paymentMethod').hasError('invalid_type')">
-          El medio de pago no coincide con la opción de pago seleccionada.
+          El medio de pago no coincide con la opción de pago seleccionada
         </mat-error>
         <mat-error *ngIf="mpForm.get('paymentMethod').hasError('amount_not_allowed')">
-          El monto esta fuera del rango permitido para este medio de pago.
+          El monto esta fuera del rango permitido para este medio de pago
         </mat-error>
       </mat-form-field>
       <div fxFlex="20" fxLayoutAlign="center center">
@@ -155,7 +163,7 @@
     </div>
     <br>
     <div fxLayoutAlign="start center" fxLayoutGap="0.7rem">
-      <button mat-raised-button color="primary" type="submit" [disabled]="mpForm.invalid">Pagar</button>
+      <button mat-raised-button color="primary" type="submit">Pagar</button>
       <a mat-raised-button routerLink="." (click)="cancel()">Cancelar</a>
     </div>
   </form>

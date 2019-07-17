@@ -1,11 +1,12 @@
 @import "../../../_colors.scss";
 .sic-com-home {
-  .bannerMP {
-    text-align: center;
+  //text-align: center;
+  a.bannerMP {
+    display: inline-block;
     img {
-      //max-width: 100%;
-      width: 100%;
+      max-width: 100%;
       height: auto;
+      display: inline-block;
     }
   }
 

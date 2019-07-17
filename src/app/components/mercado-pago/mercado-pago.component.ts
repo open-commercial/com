@@ -7,7 +7,7 @@ import {AvisoService} from '../../services/aviso.service';
 import {MPOpcionPago, MPPago} from '../../models/mercadopago/mp-pago';
 import {errorsInfo} from '../../models/mercadopago/errors';
 import {PagosService} from '../../services/pagos.service';
-import { debounceTime, finalize} from 'rxjs/operators';
+import {debounceTime, finalize} from 'rxjs/operators';
 import {formatNumber} from '@angular/common';
 
 @Component({
@@ -69,6 +69,7 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
   ngOnInit() {
     this.dynamicScriptLoader.load('mercadopago').then(data => {
       this.mp = window['Mercadopago'];
+      console.log(this.mp);
       this.mp.setPublishableKey(environment.mercadoPagoPublicKey);
       this.mp.getAllPaymentMethods((s, d: [any]) => {
         this.paymentMethods = d.filter(function(v) { return v['status'] === 'active'; });
@@ -96,6 +97,7 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
       if (value === true) {
         this.mpForm.get('monto').enable();
         this.mpForm.get('monto').valueChanges.subscribe(m => {
+          this.cft = ''; this.tea = '';
           this.monto = m;
           if (this.mpForm.get('installments')) {
             const bin = this.mpForm.get('cardNumber').value;
@@ -143,15 +145,15 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
 
     if (value === MPOpcionPago.TARJETA_CREDITO || value === MPOpcionPago.TARJETA_DEBITO) {
       this.mpForm.addControl('cardNumber', new FormControl('', [
-        Validators.required, Validators.min(0)
+        Validators.required, Validators.min(0), Validators.pattern('[0-9]{14, 18}')
       ]));
 
       this.mpForm.get('cardNumber').valueChanges
-        .pipe(debounceTime(1000))
+        .pipe(debounceTime(700))
         .subscribe(v => this.guessingPaymentMethod(v));
 
       this.mpForm.addControl('securityCode', new FormControl('', [
-        Validators.required, Validators.min(0)
+        Validators.required, Validators.min(0), Validators.pattern('[0-9]{3}')
       ]));
       this.mpForm.addControl('cardExpirationMonth', new FormControl('', [Validators.required]));
       this.mpForm.addControl('cardExpirationYear', new FormControl('', [Validators.required]));
@@ -190,11 +192,11 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
         this.mpForm.get('paymentMethod').setValue(this.pagosEfectivo[0]);
       }
     }
-
     this.mpForm.updateValueAndValidity();
   }
 
   guessingPaymentMethod(bin) {
+    this.removeError(this.mpForm.get('cardNumber'), 'invalid_card_number');
     if (this.mpForm.get('installments')) {
       this.mpForm.get('installments').setValue(null);
     }
@@ -206,8 +208,9 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
           this.mpForm.get('paymentMethod').setValue(paymentMethod);
           this.getInstallments(bin);
         } else {
+          // this.avisoService.openSnackBar('Error al obtener el método de pago: ' + response.message, 'Ok', 0);
+          this.addError(this.mpForm.get('cardNumber'), 'invalid_card_number');
           this.clearValues();
-          this.avisoService.openSnackBar('Error al obtener el método de pago: ' + response.message, 'Ok', 0);
         }
       });
     } else {
@@ -341,10 +344,7 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
   }
 
   submit($event) {
-    if (this.mpForm.get('token')) {
-      this.mpForm.get('token').setValue('');
-    }
-
+    if (!this.mpForm.valid) { return; }
     this.checkPaymentAmount();
     this.showCardsErrorMessages();
     if (this.mpForm.valid) {
@@ -381,13 +381,14 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
 
     this.loading = true;
     this.pagosService.generarMPPago(pago)
-      .pipe(finalize(() => {
-        this.loading = false;
-      }))
+      .pipe(finalize(() => this.loading = false))
       .subscribe(
         v => {
+          this.mp.clearSession();
           this.updated.emit(true);
-          // this.mpForm.reset();
+          if (data.opcionPago === MPOpcionPago.EFECTIVO) {
+            this.avisoService.openSnackBar('Recibirá un mail con los datos para realizar el deposito', 'OK', 0);
+          }
         },
         err => {
           this.avisoService.openSnackBar(err.error, 'Ok', 0);
@@ -466,7 +467,7 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
 
     if (!pm) {
       this.addError(this.mpForm.get('cardNumber'), 'mp_error');
-      this.mpErrors['cardNumber'] = 'Error: Revise el nro de tarjeta ingresado.';
+      this.mpErrors['cardNumber'] = 'Error: Revise el nro de tarjeta ingresado';
       return;
     }
 
@@ -501,14 +502,14 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
 
         if (cardNumberLength && String(cardNumber).length !== cardNumberLength) {
           this.addError(this.mpForm.get('cardNumber'), 'mp_error');
-          this.mpErrors['cardNumber'] = `Debe tener ${cardNumberLength} dígitos.`;
+          this.mpErrors['cardNumber'] = `Debe tener ${cardNumberLength} dígitos`;
         }
 
         const securityCodeLength = setting['security_code']['length'];
 
         if (securityCodeLength && String(securityCode).length !== securityCodeLength) {
           this.addError(this.mpForm.get('securityCode'), 'mp_error');
-          this.mpErrors['securityCode'] = `Debe tener ${securityCodeLength} dígitos.`;
+          this.mpErrors['securityCode'] = `Debe tener ${securityCodeLength} dígitos`;
         }
       }
     }
