@@ -54,7 +54,6 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
   ngOnInit() {
     this.dynamicScriptLoader.load('mercadopago').then(data => {
       this.mp = window['Mercadopago'];
-      console.log(this.mp);
       this.mp.setPublishableKey(environment.mercadoPagoPublicKey);
       this.mp.getAllPaymentMethods((s, d: [any]) => {
         this.paymentMethods = d.filter(function(v) { return v['status'] === 'active'; });
