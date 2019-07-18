@@ -62,7 +62,7 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
             ['bapropagos', 'redlink'].indexOf(v['id']) < 0;
         });
       });
-    }).catch(err => this.avisoService.openSnackBar(err.error, 'Ok', 0));
+    }).catch(err => this.avisoService.openSnackBar(err.error, 'OK', 0));
     this.mpForm.get('opcionPago').setValue(MPOpcionPago.TARJETA_CREDITO);
   }
 
@@ -370,11 +370,11 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
           this.mp.clearSession();
           this.updated.emit(true);
           if (data.opcionPago === MPOpcionPago.EFECTIVO) {
-            this.avisoService.openSnackBar('Recibirá un mail con los datos para realizar el deposito', 'Ok', 0);
+            this.avisoService.openSnackBar('Recibirá un mail con los datos para realizar el deposito', 'OK', 0);
           }
         },
         err => {
-          this.avisoService.openSnackBar(err.error, 'Ok', 0);
+          this.avisoService.openSnackBar(err.error, 'OK', 0);
         }
       )
     ;
@@ -408,7 +408,7 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
         if (ei && !ei['field']) { nonFieldErrors.push(ei); }
       }
       if (nonFieldErrors.length) {
-        this.avisoService.openSnackBar(nonFieldErrors[0]['message'], 'Ok', 0);
+        this.avisoService.openSnackBar(nonFieldErrors[0]['message'], 'OK', 0);
       }
     }
   }
