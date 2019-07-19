@@ -1,5 +1,15 @@
 @import "../../../_colors.scss";
 .sic-com-home {
+  //text-align: center;
+  .bannerMP {
+    display: inline-block;
+    img {
+      max-width: 100%;
+      height: auto;
+      display: inline-block;
+    }
+  }
+
   .map {
     margin: .5rem 0;
     border: none;

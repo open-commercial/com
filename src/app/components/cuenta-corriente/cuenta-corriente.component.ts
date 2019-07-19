@@ -21,6 +21,7 @@ export class CuentaCorrienteComponent implements OnInit {
   renglones = [];
   pagina = 0;
   totalPaginas = 0;
+  showNuevoPago = false;
 
   constructor(private authService: AuthService,
               private avisoService: AvisoService,
@@ -35,21 +36,29 @@ export class CuentaCorrienteComponent implements OnInit {
         (cliente: Cliente) => {
           if (cliente) {
             this.cliente = cliente;
-            this.cuentasCorrienteService.getCuentaCorriente(this.cliente)
-              .subscribe(
-                cc => {
-                  if (cc) {
-                    this.cuentaCorriente = cc;
-                    this.cargarRenglones(true);
-                  } else {
-                    this.isLoading = false;
-                  }
-                },
-                err => {
-                  this.avisoService.openSnackBar(err.error, '', 3500);
-                  this.isLoading = false;
-                }
-              );
+            this.reloadCuentaCorriente();
+          } else {
+            this.isLoading = false;
+          }
+        },
+        err => {
+          this.avisoService.openSnackBar(err.error, '', 3500);
+          this.isLoading = false;
+        }
+      )
+    ;
+  }
+
+  reloadCuentaCorriente() {
+    if (!this.isLoading) {
+      this.isLoading = true;
+    }
+    this.cuentasCorrienteService.getCuentaCorriente(this.cliente)
+      .subscribe(
+        cc => {
+          if (cc) {
+            this.cuentaCorriente = cc;
+            this.cargarRenglones(true);
           } else {
             this.isLoading = false;
           }
@@ -112,5 +121,20 @@ export class CuentaCorrienteComponent implements OnInit {
     }
 
     return '';
+  }
+
+  mostrarFormDePago() {
+    if (!this.cliente.email) {
+      this.avisoService.openSnackBar('Debe tener email cargado en su Cuenta de Cliente para ingresar un pago');
+    } else {
+      this.showNuevoPago = true;
+    }
+  }
+
+  updated(result) {
+    if (result) {
+      this.showNuevoPago = false;
+      this.reloadCuentaCorriente();
+    }
   }
 }

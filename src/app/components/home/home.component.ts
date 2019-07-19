@@ -9,7 +9,8 @@ import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-
+  isMobile = true;
+  urlBannerMP = '';
   height = '50vw';
   imageUrls: (string | IImage)[] = [];
   marcas = [
@@ -59,15 +60,19 @@ export class HomeComponent implements OnInit {
               private breakpointObserver: BreakpointObserver) {}
 
   ngOnInit(): void {
+    // this.urlBannerMP = 'https://imgmp.mlstatic.com/org-img/banners/ar/medios/online/468X60.jpg';
     this.breakpointObserver.observe([
       Breakpoints.XSmall, Breakpoints.Small
     ]).subscribe(result => {
       if (result.matches) {
         this.height = '50vw';
         this.imageUrls = this.slideshowService.getSlideshowDataForMobile();
+        this.isMobile = true;
       } else {
         this.height = '30vw';
         this.imageUrls = this.slideshowService.getSlideshowDataForDesktop();
+        this.isMobile = false;
+        // this.urlBannerMP = 'https://imgmp.mlstatic.com/org-img/banners/ar/medios/online/785X40.jpg"/>';
       }
     });
   }

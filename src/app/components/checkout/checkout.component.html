@@ -167,6 +167,10 @@
             </mat-hint>
           </mat-form-field>
         </div>
+        <br>
+        <!--<div class="botonera">
+          <button mat-raised-button color="primary" matStepperNext [disabled]="!envioValidToContinueNextStep()">Continuar</button>
+        </div>-->
         <div *ngIf="!enviarOrdenLoading" class="acciones">
           <button mat-raised-button color="primary" (click)="cerrarOrden()"
                   [disabled]="loadingTotales || !cliente || opcionClienteForm.invalid || resumenForm.invalid || opcionEnvioForm.invalid">
