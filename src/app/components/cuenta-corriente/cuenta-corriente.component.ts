@@ -140,6 +140,14 @@ export class CuentaCorrienteComponent implements OnInit {
     return '';
   }
 
+  mostrarFormDePago() {
+    if (!this.cliente.email) {
+      this.avisoService.openSnackBar('Debe tener email cargado en su cuenta de usuario para ingresar un pago');
+    } else {
+      this.showNuevoPago = true;
+    }
+  }
+
   updated(result) {
     if (result) {
       this.showNuevoPago = false;

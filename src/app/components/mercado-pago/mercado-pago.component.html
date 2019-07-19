@@ -4,7 +4,7 @@
       <mat-radio-button color="primary" *ngFor="let op of opcionesPago" [value]="op.value">{{ op.text }}</mat-radio-button>
     </mat-radio-group>
     <br>
-    <div fxLayout="row" fxLayoutGap="0.5rem" fxLayoutAlign="start center">
+    <div fxLayout="row" fxLayoutGap="0.7rem" fxLayoutAlign="start center" style="margin-bottom: 0.7rem;">
       <mat-form-field *ngIf="showMontoControl && mpForm.get('monto')" fxFlex="50" fxFlex.xs="100">
         <mat-icon matPrefix>attach_money</mat-icon>
         <input type="number" min="1" matInput formControlName="monto" placeholder="Monto" required>
@@ -13,6 +13,9 @@
         </mat-error>
         <mat-error *ngIf="mpForm.get('monto').hasError('min')">
           El monto debe ser positivo
+        </mat-error>
+        <mat-error *ngIf="mpForm.get('monto').hasError('max')">
+          Limite maximo $1000000
         </mat-error>
         <mat-error *ngIf="mpForm.get('monto').hasError('amount_not_allowed')">
           {{ amountNotAllowedErrorMsg }}
@@ -23,7 +26,6 @@
         <span>{{ monto| number:'1.2-2':'es-AR' }}</span>
       </div>
     </div>
-    <br>
     <div *ngIf="mpForm.get('opcionPago').value == opcionPago.TARJETA_CREDITO || mpForm.get('opcionPago').value == opcionPago.TARJETA_DEBITO" fxLayout="column" fxLayoutGap="0.5rem">
       <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.7rem">
         <div  fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="0.7rem" fxFlex>
@@ -143,23 +145,25 @@
       </div>
     </div>
     <div *ngIf="mpForm.get('opcionPago').value == opcionPago.EFECTIVO" fxLayout="row" fxLayoutGap="0.5rem" fxLayoutAlign="start center">
-      <mat-form-field fxFlex="30" fxFlex.xs="80">
-        <mat-label>Medio de Pago</mat-label>
-        <mat-select formControlName="paymentMethod" required>
-          <mat-option *ngFor="let pm of pagosEfectivo" [value]="pm">{{ pm.name }}</mat-option>
-        </mat-select>
-        <mat-error *ngIf="mpForm.get('paymentMethod').hasError('required')">
-          Requerido
-        </mat-error>
-        <mat-error *ngIf="mpForm.get('paymentMethod').hasError('invalid_type')">
-          El medio de pago no coincide con la opción de pago seleccionada
-        </mat-error>
-        <mat-error *ngIf="mpForm.get('paymentMethod').hasError('amount_not_allowed')">
-          El monto esta fuera del rango permitido para este medio de pago
-        </mat-error>
-      </mat-form-field>
-      <div fxFlex="20" fxLayoutAlign="center center">
-        <img *ngIf="pmSecureThumbnail" [src]="pmSecureThumbnail" alt="Payment method image">
+      <div fxFlex="50" fxFlex.xs="100" fxLayout="row" fxLayoutAlign="center center">
+        <mat-form-field fxFlex="80">
+          <mat-label>Medio de Pago</mat-label>
+          <mat-select formControlName="paymentMethod" required>
+            <mat-option *ngFor="let pm of pagosEfectivo" [value]="pm">{{ pm.name }}</mat-option>
+          </mat-select>
+          <mat-error *ngIf="mpForm.get('paymentMethod').hasError('required')">
+            Requerido
+          </mat-error>
+          <mat-error *ngIf="mpForm.get('paymentMethod').hasError('invalid_type')">
+            El medio de pago no coincide con la opción de pago seleccionada
+          </mat-error>
+          <mat-error *ngIf="mpForm.get('paymentMethod').hasError('amount_not_allowed')">
+            El monto esta fuera del rango permitido para este medio de pago
+          </mat-error>
+        </mat-form-field>
+        <div fxLayoutAlign="center center" fxFlex="20">
+          <img *ngIf="pmSecureThumbnail" [src]="pmSecureThumbnail" alt="Payment method image">
+        </div>
       </div>
     </div>
     <br>

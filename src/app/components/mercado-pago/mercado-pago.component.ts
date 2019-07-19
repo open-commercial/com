@@ -42,7 +42,7 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
   mpErrors = [];
   amountNotAllowedErrorMsg = '';
   meses = Array(12).fill(null).map((x, i) => i + 1 );
-  anios = Array(12).fill(null).map((x, i) => i + 2019);
+  anios = Array(10).fill(null).map((x, i) => i + (new Date()).getFullYear());
 
   constructor(private dynamicScriptLoader: DynamicScriptLoaderService,
               private fb: FormBuilder,
@@ -67,7 +67,9 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: {[propKey: string]: SimpleChange}) {
-    if (changes.cliente !== undefined) { this.cliente = changes.cliente.currentValue; }
+    if (changes.cliente !== undefined) {
+      this.cliente = changes.cliente.currentValue;
+    }
     if (changes.monto !== undefined) { this.monto = changes.monto.currentValue; }
 
     if (changes.showMontoControl !== undefined) {
@@ -75,7 +77,11 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
 
       const value = changes.showMontoControl.currentValue;
       if (!this.mpForm.get('monto')) {
-        this.mpForm.addControl('monto', new FormControl('', [Validators.required, Validators.min(1)]));
+        this.mpForm.addControl(
+          'monto', new FormControl('', [
+            Validators.required, Validators.min(1), Validators.max(1000000)
+          ])
+        );
         this.mpForm.get('monto').setValue(this.monto);
       }
       if (value === true) {
@@ -259,7 +265,6 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
 
   removeError(ctrl: AbstractControl, key: string) {
     if (ctrl && ctrl.errors && ctrl.errors[key] !== undefined) {
-      // delete ctrl.errors[key];
       ctrl.setErrors(null);
       this.mpForm.updateValueAndValidity();
     }
@@ -302,7 +307,8 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
 
     if (monto < min || monto > pm.max_allowed_amount) {
       this.addError(this.mpForm.get('monto'), 'amount_not_allowed');
-      this.amountNotAllowedErrorMsg = `Min $${this.formatearNumero(min)}, Max: $${this.formatearNumero(pm.max_allowed_amount)}`;
+      this.amountNotAllowedErrorMsg =
+        `Min $${this.formatearNumeroConLocale(min)}, Max: $${this.formatearNumeroConLocale(pm.max_allowed_amount)}`;
     } else {
       this.amountNotAllowedErrorMsg = '';
     }
@@ -346,10 +352,12 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
 
     this.loading = true;
     this.pagosService.generarMPPago(pago)
-      .pipe(finalize(() => this.loading = false))
+      .pipe(finalize(() => {
+        this.loading = false;
+        this.mp.clearSession();
+      }))
       .subscribe(
         v => {
-          this.mp.clearSession();
           this.updated.emit(true);
           if (data.opcionPago === MPOpcionPago.EFECTIVO) {
             this.avisoService.openSnackBar('Recibirá un mail con los datos para realizar el deposito', 'OK', 0);
@@ -480,7 +488,7 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
     }
   }
 
-  formatearNumero(n: number) {
+  formatearNumeroConLocale(n: number) {
     return formatNumber(n, 'es_AR').replace('.', '');
   }
 }

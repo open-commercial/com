@@ -88,12 +88,6 @@ export const errorsInfo = {
     'reason': 'invalid parameter docNumber',
     'message': 'Revisa tu documento'
   },
-  '325': {
-    'code': '325',
-    'field': 'cardExpirationMonth',
-    'reason': 'invalid parameter cardExpirationMonth',
-    'message': 'Revisa la fecha'
-  },
   '326': {
     'code': '326',
     'field': 'cardExpirationYear',
