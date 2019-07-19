@@ -102,6 +102,7 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
             const bin = this.mpForm.get('cardNumber').value;
             this.getInstallments(bin);
           }
+          this.checkPaymentAmount();
         });
       } else {
         this.mpForm.get('monto').disable();
@@ -126,6 +127,7 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
       } else {
         this.pmSecureThumbnail = '';
       }
+      this.checkPaymentAmount();
     });
   }
 
@@ -273,7 +275,8 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
 
   removeError(ctrl: AbstractControl, key: string) {
     if (ctrl && ctrl.errors && ctrl.errors[key] !== undefined) {
-      delete ctrl.errors[key];
+      // delete ctrl.errors[key];
+      ctrl.setErrors(null);
       this.mpForm.updateValueAndValidity();
     }
   }
@@ -311,35 +314,14 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
       pm = this.mpForm.get('installments').value;
     }
 
-    const min = this.getMontoMinimo();
+    const min = pm.min_allowed_amount < 1 ? 1 : pm.min_allowed_amount;
 
-    // if (monto < pm.min_allowed_amount || monto > pm.max_allowed_amount) {
     if (monto < min || monto > pm.max_allowed_amount) {
       this.addError(this.mpForm.get('monto'), 'amount_not_allowed');
-      this.amountNotAllowedErrorMsg = `Min $${this.fN(min)}, Max: $${this.fN(pm.max_allowed_amount)}`;
+      this.amountNotAllowedErrorMsg = `Min $${this.formatearNumero(min)}, Max: $${this.formatearNumero(pm.max_allowed_amount)}`;
     } else {
       this.amountNotAllowedErrorMsg = '';
     }
-  }
-
-  getMontoMinimo() {
-    const op: MPOpcionPago = this.mpForm.get('opcionPago').value;
-
-    if (!op) { return; }
-
-    if (op === MPOpcionPago.TARJETA_CREDITO) {
-      return 2;
-    }
-
-    if (op === MPOpcionPago.TARJETA_DEBITO) {
-      return 1;
-    }
-
-    if (op === MPOpcionPago.EFECTIVO) {
-      return 10;
-    }
-
-    return 10;
   }
 
   submit($event) {
@@ -514,7 +496,7 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
     }
   }
 
-  fN(n: number) {
+  formatearNumero(n: number) {
     return formatNumber(n, 'es_AR').replace('.', '');
   }
 }

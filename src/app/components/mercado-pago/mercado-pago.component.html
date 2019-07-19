@@ -23,6 +23,7 @@
         <span>{{ monto| number:'1.2-2':'es-AR' }}</span>
       </div>
     </div>
+    <br>
     <div *ngIf="mpForm.get('opcionPago').value == opcionPago.TARJETA_CREDITO || mpForm.get('opcionPago').value == opcionPago.TARJETA_DEBITO" fxLayout="column" fxLayoutGap="0.5rem">
       <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.7rem">
         <div  fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="0.7rem" fxFlex>
@@ -134,15 +135,15 @@
           </mat-error>
         </mat-form-field>
         <div fxFlex>
-          <span id="cfttea" *ngIf="mpForm.get('installments').value">
+          <span id="cfttea" *ngIf="mpForm.get('installments').value && tea !== '' && cft !== ''">
             <span>TEA: {{ tea }}</span><br>
             <span class="cft">CFT: {{ cft }}</span>
           </span>
         </div>
       </div>
     </div>
-    <div *ngIf="mpForm.get('opcionPago').value == opcionPago.EFECTIVO" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="0.5rem">
-      <mat-form-field fxFlex="80">
+    <div *ngIf="mpForm.get('opcionPago').value == opcionPago.EFECTIVO" fxLayout="row" fxLayoutGap="0.5rem" fxLayoutAlign="start center">
+      <mat-form-field fxFlex="30" fxFlex.xs="80">
         <mat-label>Medio de Pago</mat-label>
         <mat-select formControlName="paymentMethod" required>
           <mat-option *ngFor="let pm of pagosEfectivo" [value]="pm">{{ pm.name }}</mat-option>
