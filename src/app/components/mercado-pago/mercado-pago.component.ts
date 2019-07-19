@@ -41,8 +41,8 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
   tea = '';
   mpErrors = [];
   amountNotAllowedErrorMsg = '';
-  meses = Array(12).fill(null).map((x, i) => i + 1 );
-  anios = Array(10).fill(null).map((x, i) => i + (new Date()).getFullYear());
+  meses = Array(12).fill(null).map((x, i) => i + 1);
+  anios = Array(12).fill(null).map((x, i) => i + (new Date()).getFullYear());
 
   constructor(private dynamicScriptLoader: DynamicScriptLoaderService,
               private fb: FormBuilder,
