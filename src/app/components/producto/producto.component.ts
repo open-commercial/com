@@ -11,7 +11,6 @@ import {CarritoCompra} from '../../models/carrito-compra';
 import {Location} from '@angular/common';
 import {finalize} from 'rxjs/operators';
 import {ItemCarritoCompra} from '../../models/item-carrito-compra';
-import {RouterExtService} from '../../services/router-ext.service';
 
 @Component({
   selector: 'sic-com-producto',
@@ -35,8 +34,7 @@ export class ProductoComponent implements OnInit {
               private clientesService: ClientesService,
               private router: Router,
               private route: ActivatedRoute,
-              private location: Location,
-              private routerService: RouterExtService) {
+              private location: Location) {
   }
 
   ngOnInit() {
@@ -75,17 +73,12 @@ export class ProductoComponent implements OnInit {
       err => {
         this.loadingProducto = false;
         this.avisoService.openSnackBar(err.error, '', 3500);
-        this.irAlListado();
+        this.volver();
       });
   }
 
-  irAlListado() {
-    const pUrl = this.routerService.getPreviousUrl();
-    if (pUrl.startsWith('/productos')) {
-      this.router.navigateByUrl(pUrl);
-    } else {
-      this.router.navigate(['/productos']);
-    }
+  volver() {
+    this.location.back();
   }
 
   cargarAlCarrito() {
@@ -98,7 +91,7 @@ export class ProductoComponent implements OnInit {
               .subscribe(
                 (carrito: CarritoCompra) => {
                   this.carritoCompraService.setCantidadItemsEnCarrito(carrito.cantRenglones);
-                  this.irAlListado();
+                  this.volver();
                   this.cargandoAlCarrito = false;
                   this.avisoService.openSnackBar('Tu carrito de compra fué modificado', 'Ver', 1500)
                     .onAction()

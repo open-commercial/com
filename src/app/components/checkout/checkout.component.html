@@ -4,7 +4,7 @@
   </div>
   <div fxLayoutAlign="start center" class="sic-com-ir-listado" (click)="irAlCarrito()">
     <mat-icon>keyboard_arrow_left</mat-icon>
-    <strong>Ir al Carrito</strong>
+    <strong>Ir al carrito</strong>
   </div>
   <mat-vertical-stepper *ngIf="!isLoading" linear #stepper (selectionChange)="changeStep($event)">
     <mat-step [stepControl]="opcionClienteForm" *ngIf="opcionClienteForm">

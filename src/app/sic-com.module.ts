@@ -55,7 +55,6 @@ import {NgSelectModule} from '@ng-select/ng-select';
 import {DynamicScriptLoaderService} from './services/dynamic-script-loader.service';
 import {MercadoPagoComponent} from './components/mercado-pago/mercado-pago.component';
 import {PagosService} from './services/pagos.service';
-import {RouterExtService} from './services/router-ext.service';
 
 registerLocaleData(localeEs, 'es-AR', localeEsExtra);
 
@@ -122,7 +121,6 @@ registerLocaleData(localeEs, 'es-AR', localeEsExtra);
     UbicacionesService,
     DynamicScriptLoaderService,
     PagosService,
-    RouterExtService,
   ],
   entryComponents: [
     ConfirmationDialogComponent,

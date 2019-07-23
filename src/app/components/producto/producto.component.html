@@ -3,9 +3,9 @@
     <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
   </div>
   <div *ngIf="!loadingProducto">
-    <div fxLayoutAlign="start center" class="sic-com-ir-listado" (click)="irAlListado()">
+    <div fxLayoutAlign="start center" class="sic-com-ir-listado" (click)="volver()">
       <mat-icon>keyboard_arrow_left</mat-icon>
-      <strong>Ir al listado</strong>
+      <strong>Volver</strong>
     </div>
     <div fxLayout="column" fxLayoutAlign="start center">
       <img class="sic-com-img-producto" [src]="producto.urlImagen" (click)="toggleImgViewer()">
