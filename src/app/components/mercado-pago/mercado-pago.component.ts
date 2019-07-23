@@ -150,6 +150,8 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
       this.mpForm.addControl('cardExpirationMonth', new FormControl('', [Validators.required]));
       this.mpForm.addControl('cardExpirationYear', new FormControl('', [Validators.required]));
       this.mpForm.addControl('cardholderName', new FormControl('', [Validators.required]));
+      // this.mpForm.get('cardholderName').valueChanges(v)
+
       this.mpForm.addControl('docType', new FormControl('DNI', [Validators.required]));
       this.mpForm.addControl('docNumber', new FormControl('', [
         Validators.required, Validators.pattern('[1-9][0-9]{6}[0-9]?')
@@ -245,6 +247,7 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
   clearValues() {
     this.pago = null;
     this.mpForm.get('paymentMethod').setValue('');
+    this.pmSecureThumbnail = '';
     if (this.mpForm.get('installments')) {
       this.mpForm.get('installments').setValue('');
       this.mpForm.get('installmentsPaymentMethod').setValue('');

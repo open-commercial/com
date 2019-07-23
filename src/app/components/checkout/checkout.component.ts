@@ -495,4 +495,8 @@ export class CheckoutComponent implements OnInit {
       setTimeout(() => this.observacionesTextAreaRef.nativeElement.focus(), 300);
     }
   }
+
+  irAlCarrito() {
+    this.router.navigate(['/carrito-compra']);
+  }
 }

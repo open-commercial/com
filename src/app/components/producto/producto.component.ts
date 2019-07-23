@@ -11,6 +11,7 @@ import {CarritoCompra} from '../../models/carrito-compra';
 import {Location} from '@angular/common';
 import {finalize} from 'rxjs/operators';
 import {ItemCarritoCompra} from '../../models/item-carrito-compra';
+import {RouterExtService} from '../../services/router-ext.service';
 
 @Component({
   selector: 'sic-com-producto',
@@ -34,7 +35,8 @@ export class ProductoComponent implements OnInit {
               private clientesService: ClientesService,
               private router: Router,
               private route: ActivatedRoute,
-              private location: Location) {
+              private location: Location,
+              private routerService: RouterExtService) {
   }
 
   ngOnInit() {
@@ -78,7 +80,12 @@ export class ProductoComponent implements OnInit {
   }
 
   irAlListado() {
-    this.location.back();
+    const pUrl = this.routerService.getPreviousUrl();
+    if (pUrl.startsWith('/productos')) {
+      this.router.navigateByUrl(pUrl);
+    } else {
+      this.router.navigate(['/productos']);
+    }
   }
 
   cargarAlCarrito() {

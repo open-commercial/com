@@ -1,6 +1,11 @@
 @import "../../../_colors.scss";
 
 .sic-com-checkout {
+  .sic-com-ir-listado {
+    height: 40px;
+    cursor: pointer;
+  }
+
   .sic-com-bonificacion {
     color: white;
     background-color: limegreen;

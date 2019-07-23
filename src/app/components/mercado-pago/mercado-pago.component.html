@@ -103,7 +103,7 @@
       <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.7rem">
         <mat-form-field fxFlex>
           <mat-label>Titular de la Tarjeta</mat-label>
-          <input matInput required type="text" id="cardholderName" data-checkout="cardholderName" formControlName="cardholderName" />
+          <input matInput required type="text" id="cardholderName" data-checkout="cardholderName" formControlName="cardholderName" oninput="this.value = this.value.toUpperCase()" />
           <mat-error *ngIf="mpForm.get('cardholderName').hasError('required')">
             Requerido
           </mat-error>

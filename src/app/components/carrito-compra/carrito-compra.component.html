@@ -8,18 +8,24 @@
       <div fxLayoutAlign="space-around center" class="sic-com-totalizadores" fxLayout.lt-sm="column" *ngIf="!(loadingCarritoCompra || loadingTotales)">
         <div>Cant. Articulos: {{cantidadArticulos | number:'1.0-2':'es-AR' }}</div>
         <div>
-          Subtotal: <span class="subtotal" [class.bonificado]="subTotal != total">$ {{subTotal | number:'1.2-2':'es-AR' }}</span>&nbsp;&nbsp;
-          <span *ngIf="subTotal != total">$ {{total | number:'1.2-2':'es-AR' }}</span>
+          Subtotal: <span class="subtotal" [class.bonificado]="subTotal != total">$ {{subTotal | number:'1.2-2':'es-AR' }}</span>
+          &nbsp;
+          <mat-chip-list>
+            <mat-chip class="sic-com-bonificacion valor" color="primary">
+              {{ cliente.bonificacion | number:'1.0-2':'es-AR' }} %
+            </mat-chip>
+          </mat-chip-list>
+        </div>
+        <div>
+          Total: <span *ngIf="subTotal != total">$ {{total | number:'1.2-2':'es-AR' }}</span>
         </div>
       </div>
-      <div fxLayoutAlign="space-around center" class="sic-com-botonera">
+      <div class="sic-com-botonera" fxLayout.lt-sm="column-reverse" fxLayout="row" fxLayoutAlign.lt-sm="none none" fxLayoutAlign="space-around center" fxLayoutGap=".7rem"> <!--fxLayout.lt-sm="column" fxLayoutAlign="space-around center"-->
         <button mat-raised-button (click)="vaciarCarritoCompra()" [disabled]="!itemsCarritoCompra.length || disabledButtons()">
-          <mat-icon>remove_shopping_cart</mat-icon>
-          <span fxHide.lt-md> Limpiar Listado</span>
+          <mat-icon>remove_shopping_cart</mat-icon> Limpiar Listado
         </button>
         <button mat-raised-button (click)="goToCheckout()" [disabled]="!itemsCarritoCompra.length || disabledButtons()" color="primary">
-          <mat-icon>local_shipping</mat-icon>
-          <span fxHide.lt-md> Cerrar Orden</span>
+          <mat-icon>local_shipping</mat-icon> Cerrar Orden
         </button>
       </div>
     </div>
@@ -31,6 +37,7 @@
               <img mat-list-avatar class="sic-com-img-avatar" [src]=icc.producto.urlImagen>
             </div>
             <div fxFlex="70" fxLayoutAlign="center start" fxLayout="column" [routerLink]="['/producto/' + icc.producto.idProducto]">
+              <div class="sic-com-codigo-producto">{{icc.producto.codigo}}</div>
               <div class="sic-com-descripcion-producto">{{icc.producto.descripcion}}</div>
               <div>
                 <strong class="precio-item" [class.bonificado]="cliente && cliente.bonificacion > 0">

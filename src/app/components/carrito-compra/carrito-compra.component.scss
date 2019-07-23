@@ -18,7 +18,8 @@
   }
 
   .sic-com-botonera {
-    height: 80px;
+    padding: 0 2rem;
+    margin: 0.7rem 0;
   }
 
   .sic-com-renglones-items {
@@ -50,6 +51,19 @@
     font-weight: bold;
     font-size: 15px;
     cursor: pointer;
+  }
+
+  mat-chip-list {
+    display: inline-block;
+  }
+
+  .sic-com-bonificacion {
+    color: white;
+    background-color: limegreen;
+  }
+
+  .valor {
+    white-space: nowrap;
   }
 
   .sic-com-input-cantidad {
