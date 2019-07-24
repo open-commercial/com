@@ -2,7 +2,7 @@
   <div fxLayout="row" fxLayoutAlign="center center" *ngIf="isLoading" class="sic-com-spinner-container">
     <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
   </div>
-  <div fxLayoutAlign="start center" class="sic-com-ir-listado" (click)="irAlCarrito()">
+  <div fxLayoutAlign="start center" class="sic-com-ir-listado" (click)="irAlCarrito()" *ngIf="!isLoading">
     <mat-icon>keyboard_arrow_left</mat-icon>
     <strong>Ir al carrito</strong>
   </div>

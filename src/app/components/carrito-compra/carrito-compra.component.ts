@@ -11,6 +11,7 @@ import {Cliente} from '../../models/cliente';
 import {finalize} from 'rxjs/operators';
 import {Producto} from '../../models/producto';
 import {AgregarAlCarritoDialogComponent} from '../agregar-al-carrito-dialog/agregar-al-carrito-dialog.component';
+import {Location} from '@angular/common';
 
 @Component({
   selector: 'sic-com-carrito-compra',
@@ -40,7 +41,8 @@ export class CarritoCompraComponent implements OnInit {
               private productosService: ProductosService,
               private dialog: MatDialog,
               private route: ActivatedRoute,
-              private router: Router) {
+              private router: Router,
+              private location: Location) {
   }
 
   ngOnInit() {
@@ -188,9 +190,8 @@ export class CarritoCompraComponent implements OnInit {
     }
   }
 
-  irAlListado() {
-    const criteria = this.productosService.getBusquedaCriteria();
-    this.router.navigate(['/productos', {q: criteria}]);
+  volver() {
+    this.location.back();
   }
 
   goToCheckout() {

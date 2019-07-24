@@ -1,15 +1,16 @@
 <div fxLayout="column" class="sic-com-carrito-compra">
   <div *ngIf="!(loadingCarritoCompra || loadingTotales)">
     <div fxLayout="column">
-      <div fxLayoutAlign="start center" class="sic-com-ir-listado" (click)="irAlListado()">
+      <div fxLayoutAlign="start center" class="sic-com-ir-listado" (click)="volver()">
         <mat-icon>keyboard_arrow_left</mat-icon>
-        <strong>Ir al listado</strong>
+        <strong>Volver</strong>
       </div>
       <div fxLayoutAlign="space-around center" class="sic-com-totalizadores" fxLayout.lt-sm="column" *ngIf="!(loadingCarritoCompra || loadingTotales)">
-        <div>Cant. Articulos: {{cantidadArticulos | number:'1.0-2':'es-AR' }}</div>
-        <div>
-          Subtotal: <span class="subtotal" [class.bonificado]="subTotal != total">$ {{subTotal | number:'1.2-2':'es-AR' }}</span>
-          &nbsp;
+        <div>Cant. de Artículos: {{cantidadArticulos | number:'1.0-2':'es-AR' }}</div>
+        <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="0.5rem">
+          <span>
+            Subtotal: <span class="subtotal" [class.bonificado]="subTotal != total">$ {{subTotal | number:'1.2-2':'es-AR' }}</span>
+          </span>
           <mat-chip-list>
             <mat-chip class="sic-com-bonificacion valor" color="primary">
               {{ cliente.bonificacion | number:'1.0-2':'es-AR' }} %
@@ -17,7 +18,7 @@
           </mat-chip-list>
         </div>
         <div>
-          Total: <span *ngIf="subTotal != total">$ {{total | number:'1.2-2':'es-AR' }}</span>
+          Total: <span>$ {{total | number:'1.2-2':'es-AR' }}</span>
         </div>
       </div>
       <div class="sic-com-botonera" fxLayout.lt-sm="column-reverse" fxLayout="row" fxLayoutAlign.lt-sm="none none" fxLayoutAlign="space-around center" fxLayoutGap=".7rem"> <!--fxLayout.lt-sm="column" fxLayoutAlign="space-around center"-->
@@ -36,7 +37,7 @@
             <div fxFlex="30" fxLayoutAlign="center center">
               <img mat-list-avatar class="sic-com-img-avatar" [src]=icc.producto.urlImagen>
             </div>
-            <div fxFlex="70" fxLayoutAlign="center start" fxLayout="column" [routerLink]="['/producto/' + icc.producto.idProducto]">
+            <div class="sic-com-producto-info" fxFlex="70" fxLayoutAlign="center start" fxLayout="column" [routerLink]="['/producto/' + icc.producto.idProducto]">
               <div class="sic-com-codigo-producto">{{icc.producto.codigo}}</div>
               <div class="sic-com-descripcion-producto">{{icc.producto.descripcion}}</div>
               <div>
