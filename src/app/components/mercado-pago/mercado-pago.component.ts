@@ -364,6 +364,10 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
           this.updated.emit(true);
           if (data.opcionPago === MPOpcionPago.EFECTIVO) {
             this.avisoService.openSnackBar('Recibirá un email con los datos para realizar el deposito', 'OK', 0);
+          } else {
+            this.avisoService.openSnackBar(
+              'Su pago ingresó correctamente. Puede tardar unos minutos para verse reflejado en su saldo', 'OK', 0
+            );
           }
         },
         err => {
