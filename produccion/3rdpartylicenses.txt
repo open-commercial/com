@@ -231,6 +231,9 @@ SOFTWARE.
 @ng-select/ng-select
 MIT
 
+angular-gtag
+MIT
+
 core-js
 MIT
 Copyright (c) 2014-2019 Denis Pushkarev
