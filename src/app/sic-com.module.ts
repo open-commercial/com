@@ -55,6 +55,7 @@ import {NgSelectModule} from '@ng-select/ng-select';
 import {DynamicScriptLoaderService} from './services/dynamic-script-loader.service';
 import {MercadoPagoComponent} from './components/mercado-pago/mercado-pago.component';
 import {PagosService} from './services/pagos.service';
+import {GtagModule} from 'angular-gtag';
 
 registerLocaleData(localeEs, 'es-AR', localeEsExtra);
 
@@ -86,6 +87,7 @@ registerLocaleData(localeEs, 'es-AR', localeEsExtra);
     MercadoPagoComponent,
   ],
   imports: [
+    GtagModule.forRoot({ trackingId: 'UA-132433044-1', trackPageviews: true }),
     HttpClientModule,
     BrowserModule,
     FormsModule,
