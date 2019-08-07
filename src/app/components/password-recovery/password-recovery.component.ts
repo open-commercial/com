@@ -23,7 +23,7 @@ export class PasswordRecoveryComponent implements OnInit {
     if (!key || !id) {
       this.router.navigate(['login']);
     }
-    this.authService.cambiarContrasenia(key, id).subscribe(
+    this.authService.cambiarPassword(key, id).subscribe(
       (token: string) => {
         this.authService.setAuthenticationInfo(token);
         this.avisoService.openSnackBar('Debe cambiar su contraseña en la sección "Mi Usuario"', '', 5000);

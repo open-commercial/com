@@ -26,8 +26,8 @@ export class AuthService {
     this.nombreUsuarioLoggedInSubject.next(nombre);
   }
 
-  login(username: string, password: string) {
-    const credential = {username: username, password: password};
+  login(user: string, pass: string) {
+    const credential = {username: user, password: pass};
     return this.http.post(this.urlLogin, credential, {responseType: 'text'})
       .pipe(
         map(data => {
@@ -73,8 +73,8 @@ export class AuthService {
     return this.http.get(this.urlPasswordRecovery + `&email=${email}`);
   }
 
-  cambiarContrasenia(key: string, id: number) {
-    return this.http.post(this.urlPasswordRecovery, {'key': key, 'id': id}, {responseType: 'text'});
+  cambiarPassword(k: string, i: number) {
+    return this.http.post(this.urlPasswordRecovery, {'key': k, 'id': i}, {responseType: 'text'});
   }
 
   setAuthenticationInfo(token: string) {
