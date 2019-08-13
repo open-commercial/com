@@ -46,7 +46,6 @@ import {SlideshowService} from './services/slideshow.service';
 import {UbicacionesService} from './services/ubicaciones.service';
 import {AgmCoreModule} from '@agm/core';
 import {AgmSnazzyInfoWindowModule} from '@agm/snazzy-info-window';
-import {GooglePlaceModule} from 'ngx-google-places-autocomplete';
 import {AgregarAlCarritoDialogComponent} from './components/agregar-al-carrito-dialog/agregar-al-carrito-dialog.component';
 import {registerLocaleData} from '@angular/common';
 import localeEs from '@angular/common/locales/es';
@@ -103,7 +102,6 @@ registerLocaleData(localeEs, 'es-AR', localeEsExtra);
       libraries: ['places']
     }),
     AgmSnazzyInfoWindowModule,
-    GooglePlaceModule,
     NgSelectModule
   ],
   providers: [
