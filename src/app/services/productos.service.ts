@@ -7,7 +7,7 @@ import {Producto} from '../models/producto';
 @Injectable()
 export class ProductosService {
 
-  url = environment.apiUrl + '/api/v1/public/productos/';
+  url = environment.apiUrl + '/api/v1/productos/';
   urlBusqueda = this.url + 'busqueda/criteria?idEmpresa=' + environment.idEmpresa;
   private buscarProductosSubject = new Subject<string>();
   buscarProductos$ = this.buscarProductosSubject.asObservable();
