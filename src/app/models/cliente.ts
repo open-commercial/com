@@ -15,8 +15,6 @@ export interface Cliente {
   ubicacionEnvio: Ubicacion;
   contacto: string;
   fechaAlta: Date;
-  idEmpresa: number;
-  nombreEmpresa: string;
   idViajante: number;
   nombreViajante: string;
   idCredencial: number;

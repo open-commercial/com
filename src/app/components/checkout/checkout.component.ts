@@ -13,8 +13,8 @@ import {debounceTime, finalize} from 'rxjs/operators';
 import { MatStepper } from '@angular/material/stepper';
 import {Router} from '@angular/router';
 import {Ubicacion} from '../../models/ubicacion';
-import {EmpresasService} from '../../services/empresas.service';
-import {Empresa} from '../../models/empresa';
+import {SucursalService} from '../../services/sucursal.service';
+import {Sucursal} from '../../models/sucursal';
 import {UbicacionesService} from '../../services/ubicaciones.service';
 import {TipoDeEnvio} from '../../models/tipo-de-envio';
 import {NuevaOrdenDeCarritoCompra} from '../../models/nuevaOrdenDeCarritoCompra';
@@ -78,8 +78,8 @@ export class CheckoutComponent implements OnInit {
   ];
   // enum OpcionEnvio para el template
   opcionEnvio = OpcionEnvio;
-  sucursales: Empresa[] = [];
-  sucursal: Empresa = null;
+  sucursales: Sucursal[] = [];
+  sucursal: Sucursal = null;
   ubicacionSucursal: Ubicacion = null;
   isUbicacionSucursalLoading = false;
 
@@ -114,7 +114,7 @@ export class CheckoutComponent implements OnInit {
               private avisoService: AvisoService,
               private authService: AuthService,
               private clientesService: ClientesService,
-              private empresasService: EmpresasService,
+              private sucursalService: SucursalService,
               private ubicacionesService: UbicacionesService,
               private fb: FormBuilder,
               private router: Router) {
@@ -210,7 +210,7 @@ export class CheckoutComponent implements OnInit {
       }
     });
 
-    this.opcionEnvioForm.get('sucursal').valueChanges.subscribe((value: Empresa) => {
+    this.opcionEnvioForm.get('sucursal').valueChanges.subscribe((value: Sucursal) => {
       this.asignarSucursal(value);
     });
 
@@ -299,13 +299,13 @@ export class CheckoutComponent implements OnInit {
   }
 
   getSucursales() {
-    this.empresasService.getEmpresas()
-      .subscribe((data: Empresa[]) => {
+    this.sucursalService.getSucursales()
+      .subscribe((data: Sucursal[]) => {
         this.sucursales = data;
       });
   }
 
-  asignarSucursal(sucursal: Empresa) {
+  asignarSucursal(sucursal: Sucursal) {
     this.sucursal = sucursal;
     this.ubicacionSucursal = this.sucursal ? this.sucursal.ubicacion : null;
   }
@@ -420,7 +420,7 @@ export class CheckoutComponent implements OnInit {
 
       if (dataEnvio.opcionEnvio === OpcionEnvio.RETIRO_SUCURSAL) {
         tipoDeEnvio = TipoDeEnvio.RETIRO_EN_SUCURSAL;
-        idSucursal = dataEnvio.sucursal.id_Empresa;
+        idSucursal = dataEnvio.sucursal.idSucursal;
       }
 
       if (dataEnvio.opcionEnvio === OpcionEnvio.DIRECCION_FACTURACION) {
@@ -442,7 +442,6 @@ export class CheckoutComponent implements OnInit {
         idUsuario: this.authService.getLoggedInIdUsuario(),
         tipoDeEnvio: tipoDeEnvio,
         observaciones : this.resumenForm.get('observaciones').value,
-        idEmpresa: null
       };
 
       this.carritoCompraService.enviarOrden(orden)

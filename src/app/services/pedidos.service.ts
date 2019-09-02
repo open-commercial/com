@@ -9,7 +9,7 @@ import {Pedido} from '../models/pedido';
 export class PedidosService {
 
   url = environment.apiUrl + '/api/v1/pedidos';
-  urlBusqueda = this.url + '/busqueda/criteria?idEmpresa=' + environment.idEmpresa;
+  urlBusqueda = this.url + '/busqueda/criteria?idSucursal=' + environment.idSucursal;
 
   constructor(private http: HttpClient) {}
 
