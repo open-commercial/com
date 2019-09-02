@@ -159,10 +159,7 @@ export class CarritoCompraComponent implements OnInit {
         this.carritoCompraService.eliminarItem(itemCarritoCompra.producto.idProducto)
           .pipe(finalize(() => this.deleting = false))
           .subscribe(
-            data => {
-              this.avisoService.openSnackBar('Se eliminó el articulo del listado', '', 3500);
-              this.cargarItemsCarritoCompra();
-            },
+            data => this.cargarItemsCarritoCompra(),
             err => this.avisoService.openSnackBar(err.error, '', 3500)
           );
       }
