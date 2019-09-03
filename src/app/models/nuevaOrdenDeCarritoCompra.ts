@@ -5,6 +5,5 @@ export interface NuevaOrdenDeCarritoCompra {
   idUsuario: string;
   idCliente: number;
   tipoDeEnvio: TipoDeEnvio;
-  // idSucursal: number;
   observaciones: string;
 }
