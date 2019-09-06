@@ -299,7 +299,7 @@ export class CheckoutComponent implements OnInit {
   }
 
   getSucursales() {
-    this.sucursalService.getSucursales()
+    this.sucursalService.getSucursalesConPuntoDeRetiro()
       .subscribe((data: Sucursal[]) => {
         this.sucursales = data;
       });

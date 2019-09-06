@@ -6,12 +6,13 @@ import {Sucursal} from '../models/sucursal';
 
 @Injectable()
 export class SucursalService {
+
   public url = environment.apiUrl + '/api/v1';
 
   constructor(private http: HttpClient) { }
 
-  getSucursales(): Observable<Sucursal[]> {
-    const urlSucursal = this.url + '/sucursales';
+  getSucursalesConPuntoDeRetiro(): Observable<Sucursal[]> {
+    const urlSucursal = this.url + '/sucursales?puntoDeRetiro=true';
     return this.http.get<Sucursal[]>(urlSucursal);
   }
 
