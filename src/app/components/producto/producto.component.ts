@@ -49,7 +49,7 @@ export class ProductoComponent implements OnInit {
 
   getProducto(id: number) {
     this.loadingProducto = true;
-    this.productosService.getProducto(id).subscribe(
+    this.productosService.getProductoSoloPublicos(id).subscribe(
       data => {
         this.producto = data;
         if (this.producto.urlImagen == null || this.producto.urlImagen === '') {
