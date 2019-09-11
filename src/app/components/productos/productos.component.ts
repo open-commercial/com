@@ -59,7 +59,7 @@ export class ProductosComponent implements OnInit, OnDestroy {
   cargarProductos() {
     this.loadingProducts = true;
     this.productos = [];
-    this.productosService.getProductos(this.pagina).subscribe(
+    this.productosService.getProductosSoloPublicos(this.pagina).subscribe(
       data => {
         data['content'].forEach(p => {
           if (p.urlImagen == null || p.urlImagen === '') {

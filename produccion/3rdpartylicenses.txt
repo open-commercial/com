@@ -325,9 +325,6 @@ SOFTWARE.
 ngx-captcha
 MIT
 
-ngx-google-places-autocomplete
-MIT
-
 punycode
 MIT
 Copyright Mathias Bynens <https://mathiasbynens.be/>

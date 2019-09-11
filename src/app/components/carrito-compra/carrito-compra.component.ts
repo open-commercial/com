@@ -47,9 +47,6 @@ export class CarritoCompraComponent implements OnInit {
 
   ngOnInit() {
     this.loadingCarritoCompra = true;
-
-
-
     this.clientesService.getClienteDelUsuario(this.authService.getLoggedInIdUsuario()).subscribe(
       (cliente: Cliente) => {
         if (cliente) {
@@ -85,7 +82,6 @@ export class CarritoCompraComponent implements OnInit {
               this.cargarCarritoCompra();
               this.cargarItemsCarritoCompra();
               this.carritoCompraService.setCantidadItemsEnCarrito(0);
-              this.avisoService.openSnackBar('Se borraron todos los articulos del listado', '', 3500);
             },
             err => this.avisoService.openSnackBar(err.error, '', 3500)
           );
@@ -159,10 +155,7 @@ export class CarritoCompraComponent implements OnInit {
         this.carritoCompraService.eliminarItem(itemCarritoCompra.producto.idProducto)
           .pipe(finalize(() => this.deleting = false))
           .subscribe(
-            data => {
-              this.avisoService.openSnackBar('Se eliminó el articulo del listado', '', 3500);
-              this.cargarItemsCarritoCompra();
-            },
+            data => this.cargarItemsCarritoCompra(),
             err => this.avisoService.openSnackBar(err.error, '', 3500)
           );
       }

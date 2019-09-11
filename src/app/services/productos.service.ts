@@ -7,8 +7,8 @@ import {Producto} from '../models/producto';
 @Injectable()
 export class ProductosService {
 
-  url = environment.apiUrl + '/api/v1/productos/';
-  urlBusqueda = this.url + 'busqueda/criteria?';
+  url = environment.apiUrl + '/api/v1/productos';
+  urlBusqueda = this.url + '/busqueda/criteria?idEmpresa=' + environment.idEmpresa;
   private buscarProductosSubject = new Subject<string>();
   buscarProductos$ = this.buscarProductosSubject.asObservable();
   private criteria = '';
@@ -26,21 +26,20 @@ export class ProductosService {
       'descripcion=' + this.getBusquedaCriteria(),
       'pagina=' + pagina
     ];
-
     return  '&' + arr.join('&');
   }
 
-  getProductos(pagina: number) {
+  getProductosSoloPublicos(pagina: number) {
     const criteria = this.getCriteriaBusqueda(pagina);
-    return this.http.get(this.urlBusqueda + criteria);
+    return this.http.get(`${this.urlBusqueda}${criteria}&publicos=true`);
   }
 
   getProductosDestacados(pagina: number) {
     return this.http.get(this.urlBusqueda + `&destacados=true&pagina=${pagina}`);
   }
 
-  getProducto(idProducto: number): Observable<Producto> {
-    return this.http.get<Producto>(this.url + idProducto);
+  getProductoSoloPublicos(idProducto: number): Observable<Producto> {
+    return this.http.get<Producto>(`${this.url}/${idProducto}?publicos=true`);
   }
 
   getBusquedaCriteria(): string {
