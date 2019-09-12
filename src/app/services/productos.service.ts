@@ -8,7 +8,7 @@ import {Producto} from '../models/producto';
 export class ProductosService {
 
   url = environment.apiUrl + '/api/v1/productos';
-  urlBusqueda = this.url + '/busqueda/criteria?idEmpresa=' + environment.idEmpresa;
+  urlBusqueda = this.url + '/busqueda/criteria?';
   private buscarProductosSubject = new Subject<string>();
   buscarProductos$ = this.buscarProductosSubject.asObservable();
   private criteria = '';
