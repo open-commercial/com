@@ -14,10 +14,8 @@ export class ClientesService {
   constructor(private http: HttpClient) {}
 
   getClientes(nombre, pagina) {
-    const uri = this.uriClientes + '/busqueda/criteria?idEmpresa=' + environment.idEmpresa
-      + '&nombreFiscal=' + nombre + '&nombreFantasia=' + nombre + '&nroCliente=' + nombre
-      + '&pagina=' + pagina;
-    return this.http.get(uri);
+    return this.http.post(this.uriClientes + '/busqueda/criteria?',
+      {idEmpresa: environment.idEmpresa, nombreFiscal: nombre, nombreFantasia: nombre, nroCliente: nombre, pagina: pagina});
   }
 
   setClienteSeleccionado(cliente) {

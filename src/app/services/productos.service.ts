@@ -3,7 +3,7 @@ import {Observable, Subject} from 'rxjs';
 import {environment} from 'environments/environment';
 import {HttpClient} from '@angular/common/http';
 import {Producto} from '../models/producto';
-import {BusquedaProductoCriteria} from '../models/BusquedaProductoCriteria';
+import {BusquedaProductoCriteria} from '../models/criterias/BusquedaProductoCriteria';
 
 @Injectable()
 export class ProductosService {

@@ -9,12 +9,12 @@ import {Pedido} from '../models/pedido';
 export class PedidosService {
 
   url = environment.apiUrl + '/api/v1/pedidos';
-  urlBusqueda = this.url + '/busqueda/criteria?idEmpresa=' + environment.idEmpresa;
+  urlBusqueda = this.url + '/busqueda/criteria?';
 
   constructor(private http: HttpClient) {}
 
   getPedidosCliente(cliente: Cliente, pagina: number) {
-    return this.http.get(this.urlBusqueda + '&idCliente=' + cliente.id_Cliente + '&pagina=' + pagina);
+    return this.http.post(this.urlBusqueda, {idCliente: cliente.id_Cliente, pagina: pagina, idEmpresa: environment.idEmpresa});
   }
 
   getPedidoPdf(pedido: Pedido): Observable<Blob> {
