@@ -1,7 +1,7 @@
-<h3 class="label" *ngIf="destacados.length">¡Productos destacados!</h3>
-<div class="sic-com-productos-destacados" *ngIf="destacados.length">
+<h3 class="label" *ngIf="enOferta.length">¡Productos en Oferta!</h3>
+<div class="sic-com-productos-en-oferta" *ngIf="enOferta.length">
   <div class="scroll-container">
-    <div class="destacado" *ngFor="let p of destacados">
+    <div class="oferta" *ngFor="let p of enOferta">
       <button class="add-to-cart" mat-icon-button color="warn" (click)="showDialogCantidad($event, p)" *ngIf="authService.isAuthenticated() && cliente">
         <mat-icon>add_shopping_cart</mat-icon>
       </button>
@@ -29,7 +29,7 @@
       </mat-card>
       </a>
     </div>
-    <div class="destacado" [class.first-loading]="!destacados.length">
+    <div class="oferta" [class.first-loading]="!enOferta.length">
       <button mat-raised-button fxLayoutAlign="center center" *ngIf="!loading && pagina + 1< totalPaginas" (click)="paginaSiguiente()">
         <span></span><mat-icon aria-label="Página siguiente">more_horiz</mat-icon>
       </button>

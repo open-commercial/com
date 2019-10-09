@@ -10,13 +10,13 @@ import {AgregarAlCarritoDialogComponent} from '../agregar-al-carrito-dialog/agre
 import { MatDialog } from '@angular/material/dialog';
 
 @Component({
-  selector: 'sic-com-productos-destacados',
-  templateUrl: 'productos-destacados.component.html',
-  styleUrls: ['./productos-destacados.component.scss']
+  selector: 'sic-com-productos-en-oferta',
+  templateUrl: 'productos-en-oferta.component.html',
+  styleUrls: ['./productos-en-oferta.component.scss']
 })
-export class ProductosDestacadosComponent implements OnInit {
+export class ProductosEnOfertaComponent implements OnInit {
   cliente: Cliente;
-  destacados: Producto[] = [];
+  enOferta: Producto[] = [];
 
   loading = false;
   totalPaginas = 0;
@@ -42,12 +42,12 @@ export class ProductosDestacadosComponent implements OnInit {
 
   cargarProductos() {
     this.loading = true;
-    this.productosService.getProductosDestacados(this.pagina)
+    this.productosService.getProductosEnOferta(this.pagina)
       .pipe(finalize(() => this.loading = false))
       .subscribe(
         (data) => {
           data['content'] = this.shuffle(data['content']);
-          data['content'].forEach(p => this.destacados.push(p));
+          data['content'].forEach(p => this.enOferta.push(p));
           this.totalPaginas = data['totalPages'];
         },
         err => this.avisoService.openSnackBar(err.error, '', 3500)

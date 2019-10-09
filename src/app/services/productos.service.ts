@@ -3,6 +3,7 @@ import {Observable, Subject} from 'rxjs';
 import {environment} from 'environments/environment';
 import {HttpClient} from '@angular/common/http';
 import {Producto} from '../models/producto';
+import {BusquedaProductoCriteria} from '../models/criterias/BusquedaProductoCriteria';
 
 @Injectable()
 export class ProductosService {
@@ -11,38 +12,37 @@ export class ProductosService {
   urlBusqueda = this.url + '/busqueda/criteria?';
   private buscarProductosSubject = new Subject<string>();
   buscarProductos$ = this.buscarProductosSubject.asObservable();
-  private criteria = '';
+  private inputCriteria = '';
 
   constructor(private http: HttpClient) {}
 
   buscarProductos(criteria: string) {
-    this.criteria = criteria === null ? '' : criteria;
-    this.buscarProductosSubject.next(this.criteria);
+    this.inputCriteria = criteria === null ? '' : criteria;
+    this.buscarProductosSubject.next(this.inputCriteria);
   }
 
-  getCriteriaBusqueda(pagina: number) {
-    const arr = [
-      'codigo=' + this.getBusquedaCriteria(),
-      'descripcion=' + this.getBusquedaCriteria(),
-      'pagina=' + pagina
-    ];
-    return  '&' + arr.join('&');
+  getBusquedaCriteria(pagina: number): BusquedaProductoCriteria {
+    return {codigo: this.getInputCriteria(), descripcion: this.getInputCriteria(), pagina: pagina};
   }
 
   getProductosSoloPublicos(pagina: number) {
-    const criteria = this.getCriteriaBusqueda(pagina);
-    return this.http.get(`${this.urlBusqueda}${criteria}&publicos=true`);
+    const criteria = this.getBusquedaCriteria(pagina);
+    criteria.publico = true;
+    return this.http.post(this.urlBusqueda, criteria);
   }
 
-  getProductosDestacados(pagina: number) {
-    return this.http.get(this.urlBusqueda + `&destacados=true&pagina=${pagina}`);
+  getProductosEnOferta(pagina: number) {
+    return this.http.post(this.urlBusqueda, {
+      oferta: true,
+      pagina: pagina
+    });
   }
 
-  getProductoSoloPublicos(idProducto: number): Observable<Producto> {
+  getProductoSoloPublico(idProducto: number): Observable<Producto> {
     return this.http.get<Producto>(`${this.url}/${idProducto}?publicos=true`);
   }
 
-  getBusquedaCriteria(): string {
-    return this.criteria;
+  getInputCriteria(): string {
+    return this.inputCriteria;
   }
 }

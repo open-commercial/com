@@ -22,7 +22,7 @@
 
   .sic-com-contenido-central-container {
     background: whitesmoke;
-    height: 100%;
+    min-height: 100%;
     margin: 0 auto;
     @media all and (min-width: 960px){
       width: 80%;

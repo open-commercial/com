@@ -38,7 +38,7 @@ import {RegistracionService} from './services/registracion.service';
 import {CheckoutComponent} from './components/checkout/checkout.component';
 import {SlideshowModule} from 'ng-simple-slideshow';
 import {HomeComponent} from './components/home/home.component';
-import {ProductosDestacadosComponent} from './components/productos-destacados/productos-destacados.component';
+import {ProductosEnOfertaComponent} from './components/productos-en-oferta/productos-en-oferta.component';
 import {UbicacionFormComponent} from './components/ubicacion-form/ubicacion-form.component';
 import {UbicacionComponent} from './components/ubicacion-component/ubicacion.component';
 import {ClienteUbicacionesComponent} from './components/cliente-ubicaciones/cliente-ubicaciones.component';
@@ -78,7 +78,7 @@ registerLocaleData(localeEs, 'es-AR', localeEsExtra);
     CuentaCorrienteComponent,
     CheckoutComponent,
     HomeComponent,
-    ProductosDestacadosComponent,
+    ProductosEnOfertaComponent,
     UbicacionFormComponent,
     UbicacionComponent,
     ClienteUbicacionesComponent,
