@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ProductosService} from '../../services/productos.service';
 import {Producto} from '../../models/producto';
 import {AuthService} from '../../services/auth.service';
@@ -7,7 +7,7 @@ import {AvisoService} from '../../services/aviso.service';
 import {Cliente} from '../../models/cliente';
 import {ClientesService} from '../../services/clientes.service';
 import {AgregarAlCarritoDialogComponent} from '../agregar-al-carrito-dialog/agregar-al-carrito-dialog.component';
-import { MatDialog } from '@angular/material/dialog';
+import {MatDialog} from '@angular/material/dialog';
 
 @Component({
   selector: 'sic-com-productos-en-oferta',
@@ -15,9 +15,9 @@ import { MatDialog } from '@angular/material/dialog';
   styleUrls: ['./productos-en-oferta.component.scss']
 })
 export class ProductosEnOfertaComponent implements OnInit {
+
   cliente: Cliente;
   enOferta: Producto[] = [];
-
   loading = false;
   totalPaginas = 0;
   pagina = 0;

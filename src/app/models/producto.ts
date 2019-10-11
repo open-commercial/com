@@ -5,8 +5,11 @@ export interface Producto {
   descripcion: string;
   nombreMedida: string;
   nombreRubro: string;
+  bulto: number;
   precioLista: number;
-  precioBonificado: number;
+  oferta: boolean;
+  porcentajeBonificacionOferta: number;
+  precioListaBonificado: number;
   ventaMinima: number;
   urlImagen: string;
 }
