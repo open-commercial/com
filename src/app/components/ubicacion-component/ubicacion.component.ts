@@ -76,6 +76,7 @@ export class UbicacionComponent implements OnInit, OnChanges {
       numero: '',
       piso: '',
       departamento: '',
+      descripcion: '',
     });
 
     this.ubicacionForm.get('idProvincia').valueChanges
@@ -116,6 +117,7 @@ export class UbicacionComponent implements OnInit, OnChanges {
         numero: this.ubicacion.numero,
         piso: this.ubicacion.piso,
         departamento: this.ubicacion.departamento,
+        descripcion: this.ubicacion.descripcion,
       });
     }
   }
@@ -127,6 +129,7 @@ export class UbicacionComponent implements OnInit, OnChanges {
     arr.push(this.ubicacion.numero ? this.ubicacion.numero : '');
     arr.push(this.ubicacion.piso ? this.ubicacion.piso : '');
     arr.push(this.ubicacion.departamento ? this.ubicacion.departamento : '');
+    // arr.push(this.ubicacion.descripcion ? this.ubicacion.descripcion : '');
     arr.push(this.ubicacion.nombreLocalidad ? this.ubicacion.nombreLocalidad : '');
     arr.push(this.ubicacion.nombreProvincia ? this.ubicacion.nombreProvincia : '');
     return arr.join(' ');
@@ -144,7 +147,8 @@ export class UbicacionComponent implements OnInit, OnChanges {
       calle: this.ubicacionForm.get('calle').value,
       codigoPostal: this.ubicacion ? this.ubicacion.codigoPostal : null,
       departamento: this.ubicacionForm.get('departamento').value,
-      descripcion: this.ubicacion ? this.ubicacion.descripcion : null,
+      // descripcion: this.ubicacion ? this.ubicacion.descripcion : null,
+      descripcion: this.ubicacionForm.get('descripcion').value,
       idLocalidad: this.ubicacionForm.get('idLocalidad').value,
       idProvincia: this.ubicacionForm.get('idProvincia').value,
       idUbicacion: this.ubicacion ? this.ubicacion.idUbicacion : null,
