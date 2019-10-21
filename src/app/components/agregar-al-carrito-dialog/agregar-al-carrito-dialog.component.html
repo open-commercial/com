@@ -1,13 +1,12 @@
 <mat-dialog-content class="sic-com-agregar-al-carrito-dialog">
   <span class="codigo">{{producto.codigo}}</span>
-  <p class="descripcion">
-    {{producto.descripcion}}
-    <mat-chip-list>
-      <mat-chip class="sic-com-stock" [style.background-color]="(producto.cantidad ? 'limegreen' : 'red')">
-        {{ producto.cantidad ? "Hay Stock: " + producto.cantidad + " " + producto.nombreMedida : "Sin Stock" }}
-      </mat-chip>
-    </mat-chip-list>
-  </p>
+  <p class="descripcion">{{producto.descripcion}}</p>
+  <mat-chip-list fxLayoutAlign="center center">
+    <mat-chip class="sic-com-stock" [style.background-color]="(producto.cantidad ? 'limegreen' : 'red')">
+      {{ producto.cantidad ? "Hay Stock: " + producto.cantidad + " " + producto.nombreMedida : "Sin Stock" }}
+    </mat-chip>
+  </mat-chip-list>
+  <br>
   <div fxLayoutAlign="center center">
     <button mat-mini-fab color="accent" (click)="menosUno(cantidad)" [disabled]="loading">
       <mat-icon>remove</mat-icon>

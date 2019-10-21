@@ -129,7 +129,7 @@ export class UbicacionComponent implements OnInit, OnChanges {
     arr.push(this.ubicacion.numero ? this.ubicacion.numero : '');
     arr.push(this.ubicacion.piso ? this.ubicacion.piso : '');
     arr.push(this.ubicacion.departamento ? this.ubicacion.departamento : '');
-    // arr.push(this.ubicacion.descripcion ? this.ubicacion.descripcion : '');
+    arr.push(this.ubicacion.descripcion ? `(${this.ubicacion.descripcion})` : '');
     arr.push(this.ubicacion.nombreLocalidad ? this.ubicacion.nombreLocalidad : '');
     arr.push(this.ubicacion.nombreProvincia ? this.ubicacion.nombreProvincia : '');
     return arr.join(' ');
