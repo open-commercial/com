@@ -78,8 +78,4 @@ export class AgregarAlCarritoDialogComponent implements OnInit {
         }
       );
   }
-
-  formatearNumero(n: number, digitsInfo = '1.0-2') {
-    return formatNumber(n, 'es_AR', digitsInfo);
-  }
 }

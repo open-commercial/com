@@ -3,7 +3,7 @@
   <p class="descripcion">{{producto.descripcion}}</p>
   <mat-chip-list fxLayoutAlign="center center">
     <mat-chip class="sic-com-stock" [style.background-color]="(producto.cantidad ? 'limegreen' : 'red')">
-      {{ producto.cantidad ? "Hay Stock: " + formatearNumero(producto.cantidad) + " " + producto.nombreMedida : "Sin Stock" }}
+      {{ producto.cantidad ? "Hay Stock: " + (producto.cantidad | number:'1.0-2':'es-AR') + " " + producto.nombreMedida : "Sin Stock" }}
     </mat-chip>
   </mat-chip-list>
   <br>
@@ -15,7 +15,7 @@
       <input matInput autofocus type="number" [(ngModel)]='cantidad' placeholder="Cantidad"
              min="0" [disabled]="loading">
       <mat-hint *ngIf="cantidadEnCarrito" fxLayoutAlign="center center">
-          <mat-icon>shopping_cart</mat-icon>: {{ formatearNumero(cantidadEnCarrito) }}
+          <mat-icon>shopping_cart</mat-icon>: {{ cantidadEnCarrito | number:'1.0-2':'es-AR' }}
       </mat-hint>
       <br>
     </mat-form-field>
