@@ -8,7 +8,7 @@ import {Producto} from '../../models/producto';
 import {ClientesService} from '../../services/clientes.service';
 import {Cliente} from '../../models/cliente';
 import {CarritoCompra} from '../../models/carrito-compra';
-import {Location} from '@angular/common';
+import {formatNumber, Location} from '@angular/common';
 import {finalize} from 'rxjs/operators';
 import {ItemCarritoCompra} from '../../models/item-carrito-compra';
 
@@ -126,5 +126,9 @@ export class ProductoComponent implements OnInit {
 
   toggleImgViewer() {
     this.imgViewerVisible = !this.imgViewerVisible;
+  }
+
+  formatearNumero(n: number, digitsInfo = '1.0-2') {
+    return formatNumber(n, 'es_AR', digitsInfo);
   }
 }

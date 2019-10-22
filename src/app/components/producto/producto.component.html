@@ -27,10 +27,10 @@
           <br>
           <div fxLayout="row" fxLayoutAlign="left center" fxLayoutGap=".5rem">
             <span class="sic-com-precio-producto" [class.bonificado]="esProductoBonificado()">
-            $ {{producto.precioLista | number:'1.2-2':'es-AR'}}
+            $ {{producto.precioLista | number:'1.0-2':'es-AR'}}
             </span>
             <span class="sic-com-precio-bonificado" *ngIf="esProductoBonificado()">
-              $ {{producto.precioBonificado | number:'1.2-2':'es-AR'}}
+              $ {{producto.precioBonificado | number:'1.0-2':'es-AR'}}
             </span>
           </div>
           <span class="bonificado-label" *ngIf="cliente && esProductoBonificado()">
@@ -39,7 +39,7 @@
           <br>
           <mat-chip-list>
             <mat-chip class="sic-com-stock" [style.background-color]="(producto.hayStock ? 'limegreen' : 'red')">
-              {{ producto.hayStock ? "Hay Stock" + (producto.cantidad ? ": " + producto.cantidad + " " + producto.nombreMedida : "") : "Sin Stock" }}
+              {{ producto.hayStock ? "Hay Stock" + (producto.cantidad ? ": " + formatearNumero(producto.cantidad) + " " + producto.nombreMedida : "") : "Sin Stock" }}
             </mat-chip>
           </mat-chip-list>
         </div>
@@ -51,7 +51,7 @@
             <input matInput autofocus type="number" [(ngModel)]='cantidad' placeholder="Cantidad"
                    min="0" [disabled]="cargandoAlCarrito">
             <mat-hint *ngIf="cantidadEnCarrito" fxLayoutAlign="center center">
-              <mat-icon>shopping_cart</mat-icon>: {{ cantidadEnCarrito }}
+              <mat-icon>shopping_cart</mat-icon>: {{ formatearNumero(cantidadEnCarrito) }}
             </mat-hint>
           </mat-form-field>
           <button mat-mini-fab color="primary" (click)="cambiarCantidad(cantidad, 1)" [disabled]="cargandoAlCarrito">

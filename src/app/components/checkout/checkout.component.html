@@ -145,7 +145,7 @@
         <div fxLayoutAlign="space-between center" fxLayout.lt-sm="column" *ngIf="!loadingTotales && cliente" class="resumen"
              fxLayoutGap=".8rem">
           <div>Cant. de Artículos: {{ cantidadArticulos| number:'1.0-2':'es-AR' }}</div>
-          <div>Subtotal: <span class="valor">$ {{ subTotal| number:'1.2-2':'es-AR' }}</span></div>
+          <div>Subtotal: <span class="valor">$ {{ subTotal| number:'1.0-2':'es-AR' }}</span></div>
           <div>
             <mat-chip-list>
               <mat-chip class="sic-com-bonificacion valor" color="primary">
@@ -153,7 +153,7 @@
               </mat-chip>
             </mat-chip-list>
           </div>
-          <div>Total: <span class="valor">$ {{ total| number:'1.2-2':'es-AR' }}</span></div>
+          <div>Total: <span class="valor">$ {{ total| number:'1.0-2':'es-AR' }}</span></div>
         </div>
         <div fxLayout="row" fxLayoutAlign="center center" *ngIf="loadingTotales" class="sic-com-spinner-container">
           <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>

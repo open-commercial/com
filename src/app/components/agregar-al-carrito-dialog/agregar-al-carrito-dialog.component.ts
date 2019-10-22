@@ -8,6 +8,7 @@ import {AvisoService} from '../../services/aviso.service';
 import {finalize} from 'rxjs/operators';
 import {ItemCarritoCompra} from '../../models/item-carrito-compra';
 import {Router} from '@angular/router';
+import {formatNumber} from '@angular/common';
 
 @Component({
   selector: 'sic-com-agregar-al-carrito-dialog',
@@ -76,5 +77,9 @@ export class AgregarAlCarritoDialogComponent implements OnInit {
           this.avisoService.openSnackBar(err.error, '', 3500);
         }
       );
+  }
+
+  formatearNumero(n: number, digitsInfo = '1.0-2') {
+    return formatNumber(n, 'es_AR', digitsInfo);
   }
 }

@@ -19,10 +19,10 @@
         <mat-card-header fxLayoutAlign="end center">
           <mat-card-title fxLayoutAlign="center center">
             <span class="precio" [class.no-bonificado]="estaBonificado(p)">
-            $ {{p.precioLista | number:'1.2-2':'es-AR'}}
+            $ {{p.precioLista | number:'1.0-2':'es-AR'}}
             </span>
             <span class="precio bonificado" *ngIf="estaBonificado(p)">
-              &nbsp;$ {{p.precioBonificado | number:'1.2-2':'es-AR'}}
+              &nbsp;$ {{p.precioBonificado | number:'1.0-2':'es-AR'}}
             </span>
           </mat-card-title>
         </mat-card-header>
