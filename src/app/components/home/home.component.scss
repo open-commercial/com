@@ -1,6 +1,6 @@
 @import "../../../_colors.scss";
 .sic-com-home {
-  //text-align: center;
+
   .bannerMP {
     display: inline-block;
     img {
@@ -11,7 +11,6 @@
   }
 
   .map {
-    margin: .5rem 0;
     border: none;
     height: 400px;
     width: 100%;
@@ -22,7 +21,6 @@
     margin-bottom: 0;
     margin-top: 0;
     padding: .2rem .5rem;
-
   }
 
   .info {
