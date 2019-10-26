@@ -1,6 +1,7 @@
 export interface Producto {
   idProducto: number;
   hayStock: boolean;
+  cantidad: number;
   codigo: string;
   descripcion: string;
   nombreMedida: string;
@@ -13,3 +14,4 @@ export interface Producto {
   ventaMinima: number;
   urlImagen: string;
 }
+

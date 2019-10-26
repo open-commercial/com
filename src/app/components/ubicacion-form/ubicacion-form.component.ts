@@ -51,6 +51,7 @@ export class UbicacionFormComponent implements OnInit {
       numero: '',
       piso: '',
       departamento: '',
+      descripcion: '',
       nombreLocalidad: '',
       nombreProvincia: '',
     });

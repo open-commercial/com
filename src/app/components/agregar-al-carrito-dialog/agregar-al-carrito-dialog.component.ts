@@ -8,6 +8,7 @@ import {AvisoService} from '../../services/aviso.service';
 import {finalize} from 'rxjs/operators';
 import {ItemCarritoCompra} from '../../models/item-carrito-compra';
 import {Router} from '@angular/router';
+import {formatNumber} from '@angular/common';
 
 @Component({
   selector: 'sic-com-agregar-al-carrito-dialog',
