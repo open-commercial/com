@@ -48,7 +48,7 @@ export class RegistracionComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       categoriaIVA: ['CONSUMIDOR_FINAL', Validators.required],
       nombreFiscal: '',
-      password: ['', Validators.required],
+      password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(250)]],
       recaptcha: ['', Validators.required],
     });
     this.registracionForm.setValidators(nombreFiscalValidator);

@@ -9,6 +9,9 @@
         <mat-error *ngIf="!usuarioForm.get('username').hasError('required') && usuarioForm.get('username').hasError('pattern')">
           Sólo letras minúsculas, números y guiones
         </mat-error>
+        <mat-error *ngIf="usuarioForm.get('username').hasError('maxlength')">
+          Máximo {{ usuarioForm.get('username').getError('maxlength').requiredLength }} caracteres
+        </mat-error>
       </mat-form-field>
       <mat-form-field fxFlex="50">
         <input matInput placeholder="Email" type="email" formControlName="email">
@@ -29,6 +32,9 @@
         <mat-error *ngIf="usuarioForm.get('nombre').hasError('pattern')">
           Solo se permiten letras
         </mat-error>
+        <mat-error *ngIf="usuarioForm.get('nombre').hasError('maxlength')">
+          Máximo {{ usuarioForm.get('nombre').getError('maxlength').requiredLength }} caracteres
+        </mat-error>
       </mat-form-field>
       <mat-form-field fxFlex="50">
         <input matInput placeholder="Apellido" formControlName="apellido">
@@ -38,12 +44,21 @@
         <mat-error *ngIf="usuarioForm.get('apellido').hasError('pattern')">
           Solo se permiten letras
         </mat-error>
+        <mat-error *ngIf="usuarioForm.get('apellido').hasError('maxlength')">
+          Máximo {{ usuarioForm.get('apellido').getError('maxlength').requiredLength }} caracteres
+        </mat-error>
       </mat-form-field>
     </div>
     <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.7rem">
       <mat-form-field fxFlex="50">
         <input matInput placeholder="Contraseña" type="password" formControlName="password">
         <mat-hint>Dejar en blanco para mantener la actual</mat-hint>
+        <mat-error *ngIf="usuarioForm.get('password').hasError('minlength')">
+          Mínimo {{ usuarioForm.get('password').getError('minlength').requiredLength }} caracteres.
+        </mat-error>
+        <mat-error *ngIf="usuarioForm.get('password').hasError('maxlength')">
+          Máximo {{ usuarioForm.get('password').getError('maxlength').requiredLength }} caracteres
+        </mat-error>
       </mat-form-field>
     </div>
     <br>
