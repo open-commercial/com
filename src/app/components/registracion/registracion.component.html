@@ -13,11 +13,17 @@
           <mat-error *ngIf="registracionForm.get('nombre').hasError('required')">
             Requerido
           </mat-error>
+          <mat-error *ngIf="registracionForm.get('nombre').hasError('pattern')">
+            Solo se permiten letras.
+          </mat-error>
         </mat-form-field>
         <mat-form-field fxFlex>
           <input matInput placeholder="Apellido" formControlName="apellido" required>
           <mat-error *ngIf="registracionForm.get('apellido').hasError('required')">
             Requerido
+          </mat-error>
+          <mat-error *ngIf="registracionForm.get('apellido').hasError('pattern')">
+            Solo se permiten letras.
           </mat-error>
         </mat-form-field>
         <mat-form-field fxFlex>

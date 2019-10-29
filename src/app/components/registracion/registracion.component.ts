@@ -42,8 +42,8 @@ export class RegistracionComponent implements OnInit {
 
   createForm() {
     this.registracionForm = this.fb.group({
-      nombre: ['', Validators.required],
-      apellido: ['', Validators.required],
+      nombre: ['', [Validators.required, Validators.maxLength(250), Validators.pattern('^[a-zA-ZáéíóúÁÉÍÓÚ ]*$')]],
+      apellido: ['', [Validators.required, Validators.maxLength(250), Validators.pattern('^[a-zA-ZáéíóúÁÉÍÓÚ ]*$')]],
       telefono: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       categoriaIVA: ['CONSUMIDOR_FINAL', Validators.required],
