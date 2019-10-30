@@ -38,7 +38,10 @@
           </span>
           <br>
           <mat-chip-list>
-            <mat-chip class="sic-com-stock" [style.background-color]="(producto.hayStock ? 'limegreen' : 'red')">
+            <mat-chip class="sic-com-stock" [style.background-color]="(producto.hayStock ? 'limegreen' : 'red')" *ngIf="!authService.isAuthenticated()">
+              {{ producto.hayStock ? "Hay Stock" : "Sin Stock" }}
+            </mat-chip>
+            <mat-chip class="sic-com-stock" [style.background-color]="(producto.hayStock ? 'limegreen' : 'red')" *ngIf="authService.isAuthenticated()">
               {{ producto.hayStock ? "Hay Stock" + (producto.cantidad ? ": " + (producto.cantidad | number:'1.0-2':'es-AR') + " " + producto.nombreMedida : "") : "Sin Stock" }}
             </mat-chip>
           </mat-chip-list>

@@ -13,11 +13,23 @@
           <mat-error *ngIf="registracionForm.get('nombre').hasError('required')">
             Requerido
           </mat-error>
+          <mat-error *ngIf="registracionForm.get('nombre').hasError('pattern')">
+            Solo se permiten letras
+          </mat-error>
+          <mat-error *ngIf="registracionForm.get('nombre').hasError('maxlength')">
+            Máximo {{ registracionForm.get('nombre').getError('maxlength').requiredLength }} caracteres
+          </mat-error>
         </mat-form-field>
         <mat-form-field fxFlex>
           <input matInput placeholder="Apellido" formControlName="apellido" required>
           <mat-error *ngIf="registracionForm.get('apellido').hasError('required')">
             Requerido
+          </mat-error>
+          <mat-error *ngIf="registracionForm.get('apellido').hasError('pattern')">
+            Solo se permiten letras
+          </mat-error>
+          <mat-error *ngIf="registracionForm.get('apellido').hasError('maxlength')">
+            Máximo {{ registracionForm.get('apellido').getError('maxlength').requiredLength }} caracteres
           </mat-error>
         </mat-form-field>
         <mat-form-field fxFlex>
@@ -55,6 +67,12 @@
           <input matInput placeholder="Contraseña" type="password" formControlName="password" required>
           <mat-error *ngIf="registracionForm.get('password').hasError('required')">
             Requerido
+          </mat-error>
+          <mat-error *ngIf="registracionForm.get('password').hasError('minlength')">
+            Mínimo {{ registracionForm.get('password').getError('minlength').requiredLength }} caracteres.
+          </mat-error>
+          <mat-error *ngIf="registracionForm.get('password').hasError('maxlength')">
+            Máximo {{ registracionForm.get('password').getError('maxlength').requiredLength }} caracteres
           </mat-error>
         </mat-form-field>
       </div>
