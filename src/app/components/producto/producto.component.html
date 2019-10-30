@@ -30,7 +30,7 @@
             $ {{producto.precioLista | number:'1.0-2':'es-AR'}}
             </span>
             <span class="sic-com-precio-bonificado" *ngIf="esProductoBonificado()">
-              $ {{producto.precioBonificado | number:'1.0-2':'es-AR'}}
+              $ {{ producto.precioListaBonificado | number:'1.0-2':'es-AR' }}
             </span>
           </div>
           <span class="bonificado-label" *ngIf="cliente && esProductoBonificado()">

@@ -36,10 +36,6 @@ export class ProductosEnOfertaComponent implements OnInit {
     }
   }
 
-  estaBonificado(p) {
-    return this.authService.isAuthenticated() && p.precioBonificado !== p.precioLista;
-  }
-
   cargarProductos() {
     this.loading = true;
     this.productosService.getProductosEnOferta(this.pagina)

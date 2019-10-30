@@ -17,13 +17,16 @@
           </p>
         </mat-card-content>
         <mat-card-header fxLayoutAlign="end center">
-          <mat-card-title fxLayoutAlign="center center">
-            <span class="precio" [class.no-bonificado]="estaBonificado(p)">
-            $ {{p.precioLista | number:'1.0-2':'es-AR'}}
-            </span>
-            <span class="precio bonificado" *ngIf="estaBonificado(p)">
-              &nbsp;$ {{p.precioBonificado | number:'1.0-2':'es-AR'}}
-            </span>
+          <mat-card-title fxLayout="column" fxLayoutAlign="center end">
+            <mat-chip-list>
+              <mat-chip class="sic-com-stock">
+                Llevando {{ p.bulto }} {{ p.nombreMedida }} {{ p.porcentajeBonificacionOferta }}% OFF!
+              </mat-chip>
+            </mat-chip-list>
+            <div>
+              <span class="precio no-bonificado">$ {{p.precioLista | number:'1.0-2':'es-AR'}}</span>&nbsp;&nbsp;&nbsp;
+              <span class="precio bonificado">$ {{ p.precioListaBonificado | number:'1.0-2':'es-AR' }}</span>
+            </div>
           </mat-card-title>
         </mat-card-header>
       </mat-card>
