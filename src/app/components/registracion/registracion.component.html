@@ -33,15 +33,18 @@
           </mat-error>
         </mat-form-field>
         <mat-form-field fxFlex>
-          <input matInput placeholder="Teléfono" type="number" formControlName="telefono" required>
+          <input matInput placeholder="Teléfono" type="tel" formControlName="telefono" required>
           <mat-error *ngIf="registracionForm.get('telefono').hasError('required')">
             Requerido
+          </mat-error>
+          <mat-error *ngIf="registracionForm.get('telefono').hasError('pattern')">
+            Ingrese un teléfono válido
           </mat-error>
         </mat-form-field>
         <mat-form-field fxFlex>
           <input matInput placeholder="Email" type="email" formControlName="email" required>
           <mat-error *ngIf="registracionForm.get('email').hasError('email') && !registracionForm.get('email').hasError('required')">
-            Por favor, ingrese un email válido
+            Ingrese un email válido
           </mat-error>
           <mat-error *ngIf="registracionForm.get('email').hasError('required')">
             Requerido
@@ -69,7 +72,7 @@
             Requerido
           </mat-error>
           <mat-error *ngIf="registracionForm.get('password').hasError('minlength')">
-            Mínimo {{ registracionForm.get('password').getError('minlength').requiredLength }} caracteres.
+            Mínimo {{ registracionForm.get('password').getError('minlength').requiredLength }} caracteres
           </mat-error>
           <mat-error *ngIf="registracionForm.get('password').hasError('maxlength')">
             Máximo {{ registracionForm.get('password').getError('maxlength').requiredLength }} caracteres
@@ -86,8 +89,8 @@
         </ngx-recaptcha2>
         <span><br></span>
       </mat-action-row>
-      <div fxLayout="column" fxLayoutGap=".7em">
-        <button fxFill mat-raised-button color="primary" *ngIf="!loading" >Registrarme</button>
+      <div fxLayout="column" fxLayoutGap=".7em" *ngIf="!loading">
+        <button fxFill mat-raised-button color="primary">Registrarme</button>
         <a fxFill mat-raised-button routerLink="/login">Volver al Ingreso</a>
       </div>
     </form>
