@@ -121,7 +121,8 @@ export class ProductoComponent implements OnInit {
   }
 
   esProductoBonificado() {
-    return this.authService.isAuthenticated() && this.producto.precioListaBonificado !== this.producto.precioLista;
+    return this.authService.isAuthenticated()
+      && this.producto.precioListaBonificado && this.producto.precioListaBonificado !== this.producto.precioLista;
   }
 
   toggleImgViewer() {

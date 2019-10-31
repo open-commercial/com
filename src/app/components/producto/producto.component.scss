@@ -66,6 +66,20 @@
     font-weight: 500;
   }
 
+  .sic-com-oferta {
+    display: inline-block;
+    mat-chip {
+      min-height: 22px;
+      font-size: 0.85rem;
+      background: limegreen;
+      color: white;
+    }
+  }
+  .oferta-cantidad {
+    color: limegreen;
+    font-weight: bold;
+  }
+
   .img-viewer {
     position: absolute;
     top: 0;

@@ -7,19 +7,7 @@
       </div>
       <div fxLayoutAlign="space-around center" class="sic-com-totalizadores" fxLayout.lt-sm="column" *ngIf="!(loadingCarritoCompra || loadingTotales)">
         <div>Cant. de Artículos: {{cantidadArticulos | number:'1.0-2':'es-AR' }}</div>
-        <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="0.5rem">
-          <span>
-            Subtotal: <span class="subtotal" [class.bonificado]="subTotal != total">$ {{subTotal | number:'1.0-2':'es-AR' }}</span>
-          </span>
-          <mat-chip-list>
-            <mat-chip class="sic-com-bonificacion valor" color="primary">
-              {{ cliente.bonificacion | number:'1.0-2':'es-AR' }} %
-            </mat-chip>
-          </mat-chip-list>
-        </div>
-        <div>
-          Total: <span>$ {{total | number:'1.0-2':'es-AR' }}</span>
-        </div>
+        <div>Total: <span>$ {{total | number:'1.0-2':'es-AR' }}</span></div>
       </div>
       <div class="sic-com-botonera" fxLayout.lt-sm="column-reverse" fxLayout="row" fxLayoutAlign.lt-sm="none none" fxLayoutAlign="space-around center" fxLayoutGap=".7rem"> <!--fxLayout.lt-sm="column" fxLayoutAlign="space-around center"-->
         <button mat-raised-button (click)="vaciarCarritoCompra()" [disabled]="!itemsCarritoCompra.length || disabledButtons()">
@@ -45,7 +33,7 @@
                   $ {{icc.producto.precioLista | number:'1.0-2':'es-AR'}}
                 </strong>&nbsp;
                 <strong *ngIf="cliente && cliente.bonificacion > 0">
-                  $ {{icc.producto.precioBonificado | number:'1.0-2':'es-AR'}}
+                  $ {{icc.producto.precioListaBonificado | number:'1.0-2':'es-AR'}}
                 </strong>
               </div>
             </div>

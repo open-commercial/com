@@ -26,13 +26,21 @@
 
     .oferta {
       position: relative;
-       button.add-to-cart {
-        position: absolute;
-        right: 0;
-        top: 0;
-        z-index: 2;
-        background: rgba(255,255,255, 0.7);
-      }
+       .encabezado {
+         padding: .3rem;
+          position: absolute;
+          right: 0;
+          top: 0;
+          left: 0;
+          z-index: 2;
+          background: transparent;//rgba(255,255,255, 0.7);
+         .off {
+           background: green;
+           color: white;
+           padding: 0.3rem 0.5rem;
+           border-radius: 1.5rem;
+         }
+       }
       &.first-loading {
         display: block;
         height: 100%;
@@ -63,12 +71,16 @@
         }
       }
 
+      mat-chip-list {
+        display: inline-block;
+      }
       .sic-com-stock {
         color: white;
         font-weight: 500;
         background: limegreen;
-        min-height: 25px;
+        min-height: 20px;
         margin-bottom: 7px;
+        font-size: 0.8em;
       }
 
       .precio {

@@ -2,9 +2,16 @@
 <div class="sic-com-productos-en-oferta" *ngIf="enOferta.length">
   <div class="scroll-container">
     <div class="oferta" *ngFor="let p of enOferta">
-      <button class="add-to-cart" mat-icon-button color="warn" (click)="showDialogCantidad($event, p)" *ngIf="authService.isAuthenticated() && cliente">
-        <mat-icon>add_shopping_cart</mat-icon>
-      </button>
+      <div class="encabezado">
+        <div fxLayout="row" fxLayoutAlign="space-between center">
+          <span class="off">{{ p.porcentajeBonificacionOferta }}% OFF!</span>
+          <span>
+            <button class="add-to-cart" mat-icon-button color="warn" (click)="showDialogCantidad($event, p)" *ngIf="authService.isAuthenticated() && cliente">
+              <mat-icon>add_shopping_cart</mat-icon>
+            </button>
+          </span>
+        </div>
+      </div>
       <a [routerLink]="['/producto/' + p.idProducto]">
       <mat-card>
         <div class="img-container">
@@ -18,14 +25,18 @@
         </mat-card-content>
         <mat-card-header fxLayoutAlign="end center">
           <mat-card-title fxLayout="column" fxLayoutAlign="center end">
-            <mat-chip-list>
-              <mat-chip class="sic-com-stock">
-                Llevando {{ p.bulto }} {{ p.nombreMedida }} {{ p.porcentajeBonificacionOferta }}% OFF!
-              </mat-chip>
-            </mat-chip-list>
+            <span>$ {{p.precioLista | number:'1.0-2':'es-AR'}}</span>
             <div>
-              <span class="precio no-bonificado">$ {{p.precioLista | number:'1.0-2':'es-AR'}}</span>&nbsp;&nbsp;&nbsp;
-              <span class="precio bonificado">$ {{ p.precioListaBonificado | number:'1.0-2':'es-AR' }}</span>
+              <!--x{{ p.bulto }} {{ p.nombreMedida }}
+              <mat-chip-list>
+                <mat-chip class="sic-com-stock">
+                  {{ p.porcentajeBonificacionOferta }}% OFF!
+                </mat-chip>
+              </mat-chip-list>-->
+              <span class="precio bonificado">
+                <span>{{ p.bulto }}+ {{ p.nombreMedida }}</span>
+                $ {{ p.precioListaBonificado | number:'1.0-2':'es-AR' }}
+              </span>
             </div>
           </mat-card-title>
         </mat-card-header>
