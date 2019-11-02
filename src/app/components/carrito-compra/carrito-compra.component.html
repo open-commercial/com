@@ -26,15 +26,32 @@
               <img mat-list-avatar class="sic-com-img-avatar" [src]=icc.producto.urlImagen>
             </div>
             <div class="sic-com-producto-info" fxFlex="70" fxLayoutAlign="center start" fxLayout="column" [routerLink]="['/producto/' + icc.producto.idProducto]">
-              <div class="sic-com-codigo-producto">{{icc.producto.codigo}}</div>
-              <div class="sic-com-descripcion-producto">{{icc.producto.descripcion}}</div>
               <div>
-                <strong class="precio-item" [class.bonificado]="cliente && cliente.bonificacion > 0">
-                  $ {{icc.producto.precioLista | number:'1.0-2':'es-AR'}}
-                </strong>&nbsp;
-                <strong *ngIf="cliente && cliente.bonificacion > 0">
-                  $ {{icc.producto.precioListaBonificado | number:'1.0-2':'es-AR'}}
-                </strong>
+                <span class="sic-com-codigo-producto">{{icc.producto.codigo}}</span>
+                <mat-chip-list *ngIf="icc.producto.oferta" class="sic-com-oferta">
+                  <mat-chip class="sic-com-stock">OFERTA</mat-chip>
+                </mat-chip-list>
+              </div>
+              <div class="oferta-cantidad" *ngIf="icc.producto.oferta">
+                Llevando {{icc.producto.bulto | number:'1.0-2':'es-AR'}}
+                {{icc.producto.nombreMedida}} {{icc.producto.porcentajeBonificacionOferta | number:'1.0-2':'es-AR'}}% OFF!
+              </div>
+              <div class="sic-com-descripcion-producto">{{icc.producto.descripcion}}</div>
+              <div *ngIf="icc.producto.oferta">
+                <span [class.seleccionado]="!estaBonificado(icc)">P. U. $ {{ icc.producto.precioLista | number:'1.0-2':'es-AR'}}</span><br>
+                <span [class.seleccionado]="estaBonificado(icc)">P. U. oferta $ {{ icc.producto.precioListaBonificado | number:'1.0-2':'es-AR'}}</span>
+              </div>
+              <div *ngIf="!icc.producto.oferta">
+                <span [class.seleccionado]="!estaBonificado(icc)">P. U. $ {{ icc.producto.precioLista | number:'1.0-2':'es-AR'}}</span><br>
+                <span [class.seleccionado]="estaBonificado(icc)" *ngIf="icc.producto.precioListaBonificado">
+                  P. U. bonificado&nbsp;<span *ngIf="icc.producto.bulto > 1">x bulto&nbsp;</span>
+                  $ {{ icc.producto.precioListaBonificado | number:'1.0-2':'es-AR'}}
+                </span>
+                <!--$ {{ estaBonificado(icc) ? icc.producto.precioListaBonificado : icc.producto.precioLista | number:'1.0-2':'es-AR'}}-->
+                <!--<span *ngIf="estaBonificado(icc)">(bonif.)</span>-->
+              </div>
+              <div *ngIf="!icc.producto.oferta && icc.producto.precioListaBonificado && icc.producto.bulto > 1">
+                <span [class.seleccionado]="estaBonificado(icc)">Cant. x bulto {{icc.producto.bulto | number:'1.0-2':'es-AR'}} {{icc.producto.nombreMedida}}</span>
               </div>
             </div>
           </div>
@@ -43,8 +60,7 @@
               <button mat-raised-button (click)="showDialogCantidad($event, icc.producto)" color="primary" [disabled]="disabledButtons()">Cantidad {{icc.cantidad | number:'1.0-2':'es-AR' }}</button>
             </div>
             <div fxFlex="40" fxLayoutAlign="center center">
-              <strong *ngIf="!(cliente && cliente.bonificacion > 0)">$ {{icc.importe | number:'1.0-2':'es-AR'}}</strong>
-              <strong *ngIf="cliente && cliente.bonificacion > 0">$ {{icc.importeBonificado | number:'1.0-2':'es-AR'}}</strong>
+              <strong>$ {{(icc.importeBonificado > 0 ? icc.importeBonificado : icc.importe) | number:'1.0-2':'es-AR'}}</strong>
             </div>
             <div fxFlex="20" fxLayoutAlign="center center">
               <button mat-icon-button (click)="eliminarItemDelCarrito(icc)" matTooltip="Quitar del listado" [disabled]="disabledButtons()">

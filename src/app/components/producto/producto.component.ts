@@ -82,6 +82,7 @@ export class ProductoComponent implements OnInit {
   }
 
   cargarAlCarrito() {
+    if (!this.esCantidadValida()) { return; }
     this.cargandoAlCarrito = true;
     this.carritoCompraService.actualizarAlPedido(this.producto, this.cantidad)
       .subscribe(
@@ -127,5 +128,9 @@ export class ProductoComponent implements OnInit {
 
   toggleImgViewer() {
     this.imgViewerVisible = !this.imgViewerVisible;
+  }
+
+  esCantidadValida() {
+    return this.cantidad && this.cantidad > 0 && Number(this.cantidad) === parseInt(this.cantidad.toString(), 10);
   }
 }

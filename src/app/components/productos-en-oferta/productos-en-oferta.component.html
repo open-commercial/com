@@ -25,7 +25,6 @@
         </mat-card-content>
         <mat-card-header fxLayoutAlign="end center">
           <mat-card-title fxLayout="column" fxLayoutAlign="center end">
-            <span>$ {{p.precioLista | number:'1.0-2':'es-AR'}}</span>
             <div>
               <!--x{{ p.bulto }} {{ p.nombreMedida }}
               <mat-chip-list>
@@ -38,6 +37,7 @@
                 $ {{ p.precioListaBonificado | number:'1.0-2':'es-AR' }}
               </span>
             </div>
+            <span>$ {{p.precioLista | number:'1.0-2':'es-AR'}}</span>
           </mat-card-title>
         </mat-card-header>
       </mat-card>
