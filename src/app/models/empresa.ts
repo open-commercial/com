@@ -5,7 +5,7 @@ export interface Empresa {
   email: string;
   fechaInicioActividad: Date;
   idFiscal: number;
-  id_Empresa: number;
+  idEmpresa: number;
   ingresosBrutos: number;
   lema: string;
   logo: string;

@@ -420,7 +420,7 @@ export class CheckoutComponent implements OnInit {
 
       if (dataEnvio.opcionEnvio === OpcionEnvio.RETIRO_SUCURSAL) {
         tipoDeEnvio = TipoDeEnvio.RETIRO_EN_SUCURSAL;
-        idSucursal = dataEnvio.sucursal.id_Empresa;
+        idSucursal = dataEnvio.sucursal.idEmpresa;
       }
 
       if (dataEnvio.opcionEnvio === OpcionEnvio.DIRECCION_FACTURACION) {
