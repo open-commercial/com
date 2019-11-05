@@ -13,12 +13,21 @@
           <mat-error *ngIf="loginForm.get('username').hasError('required')">
             Requerido
           </mat-error>
+          <mat-error *ngIf="loginForm.get('username').hasError('maxlength')">
+            Máximo {{ loginForm.get('username').getError('maxlength').requiredLength }} caracteres
+          </mat-error>
         </mat-form-field>
         <mat-form-field fxFlex fxFill>
           <input matInput name="password" required type="password" formControlName="password"
                  placeholder="Contraseña">
           <mat-error *ngIf="loginForm.get('password').hasError('required')">
             Requerido
+          </mat-error>
+          <mat-error *ngIf="loginForm.get('password').hasError('minlength')">
+            Mínimo {{ loginForm.get('password').getError('minlength').requiredLength }} caracteres
+          </mat-error>
+          <mat-error *ngIf="loginForm.get('password').hasError('maxlength')">
+            Máximo {{ loginForm.get('password').getError('maxlength').requiredLength }} caracteres
           </mat-error>
         </mat-form-field>
         <span>&nbsp;</span>
