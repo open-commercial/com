@@ -67,8 +67,15 @@
     font-size: 0.85em;
   }
 
+  .precios {
+    color: darkgray;
+  }
   .seleccionado {
     font-weight: bold;
+    color: rgba(0, 0, 0, 0.87);
+  }
+  .tachado {
+    text-decoration: line-through;
   }
 
   .sic-com-descripcion-producto {

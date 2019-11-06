@@ -15,25 +15,23 @@
             <mat-chip class="sic-com-stock">OFERTA</mat-chip>
           </mat-chip-list>
         </p>
-        <p mat-line class="oferta-cantidad" *ngIf="p.oferta">Llevando {{p.bulto | number:'1.0-2':'es-AR'}} {{p.nombreMedida}} {{p.porcentajeBonificacionOferta | number:'1.0-2':'es-AR'}}% OFF!</p>
+        <p mat-line class="oferta-cantidad" *ngIf="p.oferta"><span *ngIf="p.bulto > 1">Llevando {{p.bulto | number:'1.0-2':'es-AR'}} {{p.nombreMedida}} </span>{{p.porcentajeBonificacionOferta | number:'1.0-2':'es-AR'}}% OFF!</p>
         <p mat-line class="sic-com-descripcion"><strong>{{p.descripcion}}</strong></p>
-        <p mat-line *ngIf="p.oferta">
-          P. U.
-          <strong>$ {{p.precioLista | number:'1.0-2':'es-AR' }}</strong>
-          <br>
-          P. U. oferta
-          <strong>$ {{ p.precioListaBonificado | number:'1.0-2':'es-AR' }}</strong>
+        <p mat-line *ngIf="p.oferta" class="precio">
+          P. U. $ {{p.precioLista | number:'1.0-2':'es-AR' }}<br>
+          P. U. oferta $ {{ p.precioListaBonificado | number:'1.0-2':'es-AR' }}
         </p>
-        <p mat-line *ngIf="!p.oferta">
-          P. U.
-          <strong>$ {{p.precioLista | number:'1.0-2':'es-AR' }}</strong>
+        <p mat-line *ngIf="!p.oferta" class="precio">
+          P. U. $ {{p.precioLista | number:'1.0-2':'es-AR' }}
           <span *ngIf="estaBonificado(p)">
             <br>P. U. bonificado&nbsp;<span *ngIf="p.bulto > 1">x bulto&nbsp;</span>
             <!--<span *ngIf="p.bulto > 1">(llevando {{p.bulto | number:'1.0-2':'es-AR'}} {{p.nombreMedida}} o más)</span>-->
-            <strong>$ {{ p.precioListaBonificado | number:'1.0-2':'es-AR' }}</strong>
+            $ {{ p.precioListaBonificado | number:'1.0-2':'es-AR' }}
           </span>
         </p>
-        <p mat-line *ngIf="!p.oferta && p.precioListaBonificado && p.bulto > 1">Cant. x bulto <strong>{{p.bulto | number:'1.0-2':'es-AR'}} {{p.nombreMedida}}</strong></p>
+        <p mat-line *ngIf="!p.oferta && p.precioListaBonificado && p.bulto > 1">
+          <strong>Cant. x bulto {{p.bulto | number:'1.0-2':'es-AR'}} {{p.nombreMedida}}</strong>
+        </p>
         <button mat-icon-button color="warn" (click)="showDialogCantidad($event, p)" *ngIf="authService.isAuthenticated() && cliente">
           <mat-icon>add_shopping_cart</mat-icon>
         </button>

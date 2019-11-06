@@ -2,7 +2,7 @@
 
 .sic-com-agregar-al-carrito-dialog {
   span.codigo {
-    font-size: .8em;
+    font-size: 12px;
     font-weight: normal;
     color: black;
   }
@@ -38,6 +38,18 @@
     font-weight: bold;
     font-size: 0.85em;
   }
+
+  .precios {
+    color: darkgray;
+  }
+  .seleccionado {
+    font-weight: bold;
+    color: rgba(0, 0, 0, 0.87);
+  }
+  .tachado {
+    text-decoration: line-through;
+  }
+
   .img-container {
     display: flex;
     justify-content: center;

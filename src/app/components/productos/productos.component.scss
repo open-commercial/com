@@ -10,7 +10,6 @@
   }
 
   .sic-com-sin-resultados {
-
     span {
       height: 100px;
       color: $color-primary;
@@ -34,6 +33,10 @@
       background: limegreen;
       color: white;
     }
+  }
+
+  .precio {
+    font-weight: bold;
   }
 
   .oferta-cantidad {

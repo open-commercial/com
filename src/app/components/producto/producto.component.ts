@@ -121,9 +121,10 @@ export class ProductoComponent implements OnInit {
     }
   }
 
-  esProductoBonificado() {
+  esCantidadBonificada() {
     return this.authService.isAuthenticated()
-      && this.producto.precioListaBonificado && this.producto.precioListaBonificado !== this.producto.precioLista;
+      && this.producto.precioListaBonificado && this.producto.precioListaBonificado !== this.producto.precioLista
+      && this.cantidad >= this.producto.bulto;
   }
 
   toggleImgViewer() {

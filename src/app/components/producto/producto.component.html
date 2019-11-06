@@ -29,28 +29,26 @@
             </mat-chip-list>
           </span>
           <div class="oferta-cantidad" *ngIf="producto.oferta">
-            Llevando {{producto.bulto | number:'1.0-2':'es-AR'}}
-            {{producto.nombreMedida}} {{producto.porcentajeBonificacionOferta | number:'1.0-2':'es-AR'}}% OFF!
+            <span *ngIf="producto.bulto > 1">Llevando {{producto.bulto | number:'1.0-2':'es-AR'}} {{producto.nombreMedida}}</span>
+            {{producto.porcentajeBonificacionOferta | number:'1.0-2':'es-AR'}}% OFF!
           </div>
           <span class="sic-com-descripcion-producto">{{producto.descripcion}}</span>
           <br>
-          <div *ngIf="producto.oferta">
-            P. U.
-            <strong>$ {{producto.precioLista | number:'1.0-2':'es-AR' }}</strong>
-            <br>
-            P. U. oferta
-            <strong>$ {{ producto.precioListaBonificado | number:'1.0-2':'es-AR' }}</strong>
-          </div>
-          <div *ngIf="!producto.oferta">
-            P. U.
-            <strong>$ {{producto.precioLista | number:'1.0-2':'es-AR' }}</strong>
-            <span *ngIf="esProductoBonificado()">
-              <br>P. U. bonificado&nbsp;<span *ngIf="producto.bulto > 1">x bulto&nbsp;</span>
-              <strong>$ {{ producto.precioListaBonificado | number:'1.0-2':'es-AR' }}</strong>
-            </span>
-          </div>
-          <div *ngIf="!producto.oferta && producto.precioListaBonificado && producto.bulto > 1">
-            Cant. x bulto <strong>{{producto.bulto | number:'1.0-2':'es-AR'}} {{producto.nombreMedida}}</strong>
+          <div class="precios">
+            <div *ngIf="producto.oferta">
+              <span [class.seleccionado]="!esCantidadBonificada()">P. U. $ {{producto.precioLista | number:'1.0-2':'es-AR' }}</span><br>
+              <span [class.seleccionado]="esCantidadBonificada()">P. U. oferta $ {{ producto.precioListaBonificado | number:'1.0-2':'es-AR' }}</span>
+            </div>
+            <div *ngIf="!producto.oferta">
+              <span [class.seleccionado]="!esCantidadBonificada()">P. U. $ {{producto.precioLista | number:'1.0-2':'es-AR' }}</span>
+              <div [class.seleccionado]="esCantidadBonificada()">
+                P. U. bonificado&nbsp;<span *ngIf="producto.bulto > 1">x bulto&nbsp;</span>
+                $ {{ producto.precioListaBonificado | number:'1.0-2':'es-AR' }}
+              </div>
+            </div>
+            <div *ngIf="!producto.oferta && producto.precioListaBonificado && producto.bulto > 1" [class.seleccionado]="esCantidadBonificada()">
+              Cant. x bulto {{producto.bulto | number:'1.0-2':'es-AR'}} {{producto.nombreMedida}}
+            </div>
           </div>
           <br>
           <span class="sic-com-stock" [style.color]="(producto.hayStock ? 'limegreen' : 'red')" *ngIf="!authService.isAuthenticated()">
@@ -78,7 +76,6 @@
         <div fxLayoutAlign="center center" *ngIf="authService.isAuthenticated()">
           <button mat-raised-button color="primary" class="sic-com-boton-agregar" (click)="cargarAlCarrito()"
                   [disabled]="!esCantidadValida()" *ngIf="!cargandoAlCarrito">
-                  <!--[disabled]="cantidad <= 0" *ngIf="!cargandoAlCarrito">-->
             <mat-icon>add_shopping_cart</mat-icon> Agregar al Carrito
           </button>
           <mat-spinner [diameter]="50" [strokeWidth]="6" *ngIf="cargandoAlCarrito"></mat-spinner>

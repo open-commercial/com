@@ -33,7 +33,7 @@
                 </mat-chip>
               </mat-chip-list>-->
               <span class="precio bonificado">
-                <span>{{ p.bulto }}+ {{ p.nombreMedida }}</span>
+                <span *ngIf="p.bulto > 1">{{ p.bulto }}+ {{ p.nombreMedida }}</span>
                 $ {{ p.precioListaBonificado | number:'1.0-2':'es-AR' }}
               </span>
             </div>

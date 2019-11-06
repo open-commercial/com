@@ -79,8 +79,9 @@ export class AgregarAlCarritoDialogComponent implements OnInit {
         }
       );
   }
-  esProductoBonificado() {
-    return this.producto.precioListaBonificado && this.producto.precioListaBonificado !== this.producto.precioLista;
+  esCantidadBonificada() {
+    return this.producto.precioListaBonificado && this.producto.precioListaBonificado !== this.producto.precioLista
+      && this.cantidad >= this.producto.bulto;
   }
   esCantidadValida() {
     return this.cantidad && this.cantidad > 0 && Number(this.cantidad) === parseInt((this.cantidad).toString(), 10);
