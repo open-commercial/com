@@ -36,7 +36,7 @@ export class HomeComponent implements OnInit {
     },
     {
       url: 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1544153960/slideshow/Poxipol.png',
-      routeLink: ['/productos', { q: 'poxipol'}],
+      routeLink: ['/productos', { q: 'poxi'}],
       nombre: 'Poxipol'
     },
     {

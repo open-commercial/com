@@ -23,7 +23,7 @@
       </mat-form-field>
       <div fxLayout="row" fxLayoutGap="0.5rem" fxLayoutAlign="start center" *ngIf="!showMontoControl">
         <mat-icon>attach_money</mat-icon>
-        <span>{{ monto| number:'1.2-2':'es-AR' }}</span>
+        <span>{{ monto| number:'1.0-2':'es-AR' }}</span>
       </div>
     </div>
     <div *ngIf="mpForm.get('opcionPago').value == opcionPago.TARJETA_CREDITO || mpForm.get('opcionPago').value == opcionPago.TARJETA_DEBITO" fxLayout="column" fxLayoutGap="0.5rem">

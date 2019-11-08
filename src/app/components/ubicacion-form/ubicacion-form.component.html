@@ -42,4 +42,8 @@
         <input matInput placeholder="Dpto." formControlName="departamento">
       </mat-form-field>
     </div>
+    <mat-form-field>
+      <textarea matInput #descripcion maxlength="256" placeholder="Descripción" formControlName="descripcion"></textarea>
+      <mat-hint align="end">{{descripcion.value.length}} / 256</mat-hint>
+    </mat-form-field>
 </div>

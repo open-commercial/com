@@ -12,8 +12,8 @@
         <p mat-line class="sic-com-codigo">{{p.codigo}}</p>
         <p mat-line class="sic-com-descripcion"><strong>{{p.descripcion}}</strong></p>
         <p mat-line>
-          <span class="sic-com-precio-lista" [class.bonificado]="estaBonificado(p)">$ {{p.precioLista | number:'1.2-2':'es-AR' }}</span>
-          <span class="sic-com-precio-bonificado" *ngIf="estaBonificado(p)">&nbsp;&nbsp;$ {{ p.precioBonificado | number:'1.2-2':'es-AR' }}</span>
+          <span class="sic-com-precio-lista" [class.bonificado]="estaBonificado(p)">$ {{p.precioLista | number:'1.0-2':'es-AR' }}</span>
+          <span class="sic-com-precio-bonificado" *ngIf="estaBonificado(p)">&nbsp;&nbsp;$ {{ p.precioBonificado | number:'1.0-2':'es-AR' }}</span>
         </p>
         <button mat-icon-button color="warn" (click)="showDialogCantidad($event, p)" *ngIf="authService.isAuthenticated() && cliente">
           <mat-icon>add_shopping_cart</mat-icon>

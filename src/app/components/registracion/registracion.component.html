@@ -13,23 +13,38 @@
           <mat-error *ngIf="registracionForm.get('nombre').hasError('required')">
             Requerido
           </mat-error>
+          <mat-error *ngIf="registracionForm.get('nombre').hasError('pattern')">
+            Solo se permiten letras
+          </mat-error>
+          <mat-error *ngIf="registracionForm.get('nombre').hasError('maxlength')">
+            Máximo {{ registracionForm.get('nombre').getError('maxlength').requiredLength }} caracteres
+          </mat-error>
         </mat-form-field>
         <mat-form-field fxFlex>
           <input matInput placeholder="Apellido" formControlName="apellido" required>
           <mat-error *ngIf="registracionForm.get('apellido').hasError('required')">
             Requerido
           </mat-error>
+          <mat-error *ngIf="registracionForm.get('apellido').hasError('pattern')">
+            Solo se permiten letras
+          </mat-error>
+          <mat-error *ngIf="registracionForm.get('apellido').hasError('maxlength')">
+            Máximo {{ registracionForm.get('apellido').getError('maxlength').requiredLength }} caracteres
+          </mat-error>
         </mat-form-field>
         <mat-form-field fxFlex>
-          <input matInput placeholder="Teléfono" type="number" formControlName="telefono" required>
+          <input matInput placeholder="Teléfono" type="tel" formControlName="telefono" required>
           <mat-error *ngIf="registracionForm.get('telefono').hasError('required')">
             Requerido
+          </mat-error>
+          <mat-error *ngIf="registracionForm.get('telefono').hasError('pattern')">
+            Ingrese un teléfono válido
           </mat-error>
         </mat-form-field>
         <mat-form-field fxFlex>
           <input matInput placeholder="Email" type="email" formControlName="email" required>
           <mat-error *ngIf="registracionForm.get('email').hasError('email') && !registracionForm.get('email').hasError('required')">
-            Por favor, ingrese un email válido
+            Ingrese un email válido
           </mat-error>
           <mat-error *ngIf="registracionForm.get('email').hasError('required')">
             Requerido
@@ -56,6 +71,12 @@
           <mat-error *ngIf="registracionForm.get('password').hasError('required')">
             Requerido
           </mat-error>
+          <mat-error *ngIf="registracionForm.get('password').hasError('minlength')">
+            Mínimo {{ registracionForm.get('password').getError('minlength').requiredLength }} caracteres
+          </mat-error>
+          <mat-error *ngIf="registracionForm.get('password').hasError('maxlength')">
+            Máximo {{ registracionForm.get('password').getError('maxlength').requiredLength }} caracteres
+          </mat-error>
         </mat-form-field>
       </div>
       <span><br></span>
@@ -68,7 +89,10 @@
         </ngx-recaptcha2>
         <span><br></span>
       </mat-action-row>
-      <div><button fxFill mat-raised-button color="primary" *ngIf="!loading" >Registrarme</button></div>
+      <div fxLayout="column" fxLayoutGap=".7em" *ngIf="!loading">
+        <button fxFill mat-raised-button color="primary">Registrarme</button>
+        <a fxFill mat-raised-button routerLink="/login">Volver al Ingreso</a>
+      </div>
     </form>
     <div *ngIf="loading" fxLayout="row" fxLayoutAlign="center center">
       <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>

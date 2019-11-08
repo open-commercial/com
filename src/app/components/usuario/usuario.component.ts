@@ -51,11 +51,11 @@ export class UsuarioComponent implements OnInit {
 
   createForm() {
     this.usuarioForm = this.fb.group({
-      username: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9_-]*$')]],
-      apellido: ['', Validators.required],
-      nombre: ['', Validators.required],
+      username: ['', [Validators.required, Validators.maxLength(250), Validators.pattern('^[a-zA-Z0-9_-]*$')]],
+      apellido: ['', [Validators.required, Validators.maxLength(250), Validators.pattern('^[a-zA-ZáéíóúÁÉÍÓÚ ]*$')]],
+      nombre: ['', [Validators.required, Validators.maxLength(250), Validators.pattern('^[a-zA-ZáéíóúÁÉÍÓÚ ]*$')]],
       email: ['', [Validators.required, Validators.email]],
-      password: '',
+      password: ['', [Validators.minLength(6), Validators.maxLength(250)]],
     });
   }
 

@@ -1,6 +1,6 @@
 <div class="sic-com-navbar">
   <mat-toolbar class="tb" ngClass.gt-sm="desktop">
-    <div fxHide.lt-md fxFlex.gt-sm="5"></div>
+    <div fxHide fxShow.gt-sm fxFlex.gt-sm="5"></div>
     <div fxFlex="20" fxLayoutAlign="center center">
       <img src="https://res.cloudinary.com/hf0vu1bg2/image/upload/v1557317339/assets/logo-globodeoro-200x200px.png"
            class="sic-com-logo-chico" ngClass.gt-xs="tablet" ngClass.gt-sm="desktop" routerLink="/">
@@ -11,12 +11,13 @@
         <mat-icon>search</mat-icon>
       </button>
     </form>
-    <div fxFlex.lt-md="15" fxFlex.gt-sm="20">
+    <div fxFlex="15" fxFlex.gt-sm="20">
+    <!--<div fxFlex="20">-->
       <div fxLayoutAlign="center center" *ngIf="authService.isAuthenticated()">
-        <button mat-icon-button fxHide.lt-md [matMenuTriggerFor]="menuReducido" matTooltip="Mi Perfil ({{usuarioConectado}})" color="primary">
+        <button mat-icon-button fxHide fxShow.gt-sm [matMenuTriggerFor]="menuReducido" matTooltip="Mi Perfil ({{usuarioConectado}})" color="primary">
           <mat-icon>account_circle</mat-icon>
         </button>
-        <mat-menu #menuReducido="matMenu" fxHide.lt-md [overlapTrigger]="false">
+        <mat-menu #menuReducido="matMenu" fxHide fxShow.gt-sm [overlapTrigger]="false">
           <button mat-menu-item [routerLink]="['/perfil']">
             <mat-icon>account_circle</mat-icon>
             <span>Mi Perfil</span>
@@ -26,14 +27,14 @@
             <span>Cerrar Sesión</span>
           </button>
         </mat-menu>
-        <button mat-icon-button fxHide.lt-md [routerLink]="['/carrito-compra']" matTooltip="Ir al carrito" color="primary">
+        <button mat-icon-button fxHide fxShow.gt-sm [routerLink]="['/carrito-compra']" matTooltip="Ir al carrito" color="primary">
           <mat-icon>shopping_cart</mat-icon>
           <span class="sic-com-contador-carrito" *ngIf="(cantidadItemsEnCarrito > 0)">{{cantidadItemsEnCarrito}}</span>
         </button>
-        <button mat-icon-button fxHide.gt-sm [matMenuTriggerFor]="menuCompleto" color="primary">
+        <button mat-icon-button fxShow fxHide.gt-sm [matMenuTriggerFor]="menuCompleto" color="primary">
           <mat-icon>more_vert</mat-icon>
         </button>
-        <mat-menu #menuCompleto="matMenu" fxHide.gt-sm [overlapTrigger]="false">
+        <mat-menu #menuCompleto="matMenu" fxShow fxHide.gt-sm [overlapTrigger]="false">
           <button mat-menu-item [routerLink]="['/perfil']">
             <mat-icon>account_circle</mat-icon>
             <span>Mi Perfil ({{usuarioConectado}})</span>
@@ -49,10 +50,10 @@
         </mat-menu>
       </div>
       <div fxLayoutAlign="center center" *ngIf="!authService.isAuthenticated()">
-        <button mat-icon-button fxHide.lt-md [matMenuTriggerFor]="menuReducido" color="primary">
+        <button mat-icon-button fxHide fxShow.gt-sm [matMenuTriggerFor]="menuReducido" color="primary">
           <mat-icon>account_circle</mat-icon>
         </button>
-        <mat-menu #menuReducido="matMenu" fxHide.lt-md [overlapTrigger]="false">
+        <mat-menu #menuReducido="matMenu" fxHide fxShow.gt-sm [overlapTrigger]="false">
           <button mat-menu-item (click)="goToLogin()">
             <mat-icon>account_circle</mat-icon>
             <span>Ingresar</span>
@@ -62,10 +63,10 @@
             <span>Registrarme</span>
           </button>
         </mat-menu>
-        <button mat-icon-button fxHide.gt-sm [matMenuTriggerFor]="menuCompleto" color="primary">
+        <button mat-icon-button fxShow fxHide.gt-sm [matMenuTriggerFor]="menuCompleto" color="primary">
           <mat-icon>more_vert</mat-icon>
         </button>
-        <mat-menu #menuCompleto="matMenu" fxHide.gt-sm [overlapTrigger]="false">
+        <mat-menu #menuCompleto="matMenu" fxShow fxHide.gt-sm [overlapTrigger]="false">
           <button mat-menu-item (click)="goToLogin()">
             <mat-icon>account_circle</mat-icon>
             <span>Ingresar</span>
@@ -77,6 +78,6 @@
         </mat-menu>
       </div>
     </div>
-    <div fxHide.lt-md fxFlex.gt-sm="5"></div>
+    <div fxHide fxShow.gt-sm fxFlex.gt-sm="5"></div>
   </mat-toolbar>
 </div>

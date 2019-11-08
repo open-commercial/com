@@ -59,6 +59,10 @@
       <input matInput placeholder="Dpto." formControlName="departamento">
     </mat-form-field>
   </div>
+  <mat-form-field class="example-full-width">
+    <textarea matInput #descripcion maxlength="256" placeholder="Descripción" formControlName="descripcion"></textarea>
+    <mat-hint align="end">{{descripcion.value.length}} / 256</mat-hint>
+  </mat-form-field>
   <div fxLayoutGap="0.5rem">
     <button mat-raised-button type="submit" color="primary" [disabled]="isProvinciasLoading || isLocalidadesLoading">Guardar</button>
     <button *ngIf="ubicacion" mat-raised-button type="button" (click)="toggleEdit()">Cancelar</button>
