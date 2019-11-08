@@ -1,8 +1,8 @@
 import {TipoDeEnvio} from './tipo-de-envio';
 
 export interface NuevaOrdenDeCarritoCompra {
-  idSucursal: string;
-  idUsuario: string;
+  idSucursal: number;
+  idUsuario: number;
   idCliente: number;
   tipoDeEnvio: TipoDeEnvio;
   observaciones: string;

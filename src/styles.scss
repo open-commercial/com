@@ -114,3 +114,8 @@ html, body {
     }
   }
 }
+
+.mat-button-toggle-checked {
+  background-color: $color-primary;
+  color: $color-accent;
+}

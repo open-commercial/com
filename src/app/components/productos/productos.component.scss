@@ -10,7 +10,6 @@
   }
 
   .sic-com-sin-resultados {
-
     span {
       height: 100px;
       color: $color-primary;
@@ -24,6 +23,26 @@
 
   .sic-com-listado {
     padding-top: 0;
+  }
+
+  .sic-com-oferta {
+    display: inline-block;
+    mat-chip {
+      min-height: 22px;
+      font-size: 0.85rem;
+      background: limegreen;
+      color: white;
+    }
+  }
+
+  .precio {
+    font-weight: bold;
+  }
+
+  .oferta-cantidad {
+    color: limegreen;
+    font-weight: bold;
+    font-size: 0.85em;
   }
 
   .sic-com-avatar {
@@ -62,9 +81,9 @@
 
   .sic-com-precio-lista {
     font-weight: bold;
-    &.bonificado {
+    &.no-bonificado {
       font-weight: normal;
-      text-decoration: line-through;
+      //text-decoration: line-through;
     }
   }
   .sic-com-precio-bonificado {

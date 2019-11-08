@@ -2,14 +2,15 @@
 
 .sic-com-agregar-al-carrito-dialog {
   span.codigo {
-    font-size: .8em;
+    font-size: 12px;
     font-weight: normal;
     color: black;
   }
-  p.descripcion {
+  .descripcion {
     color: $color-primary;
     font-weight: bold;
     margin-top: 0;
+    margin-bottom: 0.5rem;
   }
   .input-cantidad {
     width: 100px;
@@ -22,5 +23,45 @@
   .sic-com-stock {
     color: white;
     font-weight: 500;
+  }
+  .sic-com-oferta {
+    display: inline-block;
+    mat-chip {
+      min-height: 22px;
+      font-size: 0.85rem;
+      background: limegreen;
+      color: white;
+    }
+  }
+  .oferta-cantidad {
+    color: limegreen;
+    font-weight: bold;
+    font-size: 0.85em;
+  }
+
+  .precios {
+    color: darkgray;
+  }
+  .seleccionado {
+    font-weight: bold;
+    color: rgba(0, 0, 0, 0.87);
+  }
+  .tachado {
+    text-decoration: line-through;
+  }
+
+  .img-container {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    width: 4rem;
+    height: 4rem;
+    margin-right: 0.5rem;
+    img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
   }
 }

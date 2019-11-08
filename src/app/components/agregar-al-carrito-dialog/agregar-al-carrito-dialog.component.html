@@ -1,11 +1,42 @@
 <mat-dialog-content class="sic-com-agregar-al-carrito-dialog">
-  <span class="codigo">{{producto.codigo}}</span>
-  <p class="descripcion">{{producto.descripcion}}</p>
-  <mat-chip-list fxLayoutAlign="center center">
-    <mat-chip class="sic-com-stock" [style.background-color]="(producto.cantidad ? 'limegreen' : 'red')">
-      {{ producto.cantidad ? "Hay Stock: " + (producto.cantidad | number:'1.0-2':'es-AR') + " " + producto.nombreMedida : "Sin Stock" }}
-    </mat-chip>
-  </mat-chip-list>
+  <div fxLayout="row" fxLayoutAlign="center center">
+    <!--<div class="img-container" fxFlex="noshrink">
+      <img [src]="producto.urlImagen ? producto.urlImagen : 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1545616229/assets/sin_imagen.png'" alt="">
+    </div>-->
+    <div class="producto-info">
+      <span class="codigo">
+        {{producto.codigo}}
+        <mat-chip-list *ngIf="producto.oferta" class="sic-com-oferta">
+          <mat-chip class="sic-com-stock">OFERTA</mat-chip>
+        </mat-chip-list>
+      </span>
+      <div class="oferta-cantidad" *ngIf="producto.oferta">
+        <span *ngIf="producto.bulto > 1">Llevando {{producto.bulto | number:'1.0-2':'es-AR'}} {{producto.nombreMedida}}</span>
+        {{producto.porcentajeBonificacionOferta | number:'1.0-2':'es-AR'}}% OFF!
+      </div>
+      <div class="descripcion">{{producto.descripcion}}</div>
+      <div class="precios">
+        <div *ngIf="producto.oferta">
+          <span [class.tachado]="!(producto.bulto > 1)" [class.seleccionado]="!esCantidadBonificada()">P. U. $ {{producto.precioLista | number:'1.0-2':'es-AR' }}</span><br>
+          <span [class.seleccionado]="esCantidadBonificada()">P. U. oferta $ {{ producto.precioListaBonificado | number:'1.0-2':'es-AR' }}</span>
+        </div>
+        <div *ngIf="!producto.oferta">
+          <span [class.seleccionado]="!esCantidadBonificada()">P. U. $ {{producto.precioLista | number:'1.0-2':'es-AR' }}</span>
+          <div [class.seleccionado]="esCantidadBonificada()">
+            P. U. bonificado&nbsp;<span *ngIf="producto.bulto > 1">x bulto&nbsp;</span>
+            $ {{ producto.precioListaBonificado | number:'1.0-2':'es-AR' }}
+          </div>
+        </div>
+        <div *ngIf="!producto.oferta && producto.bulto > 1" [class.seleccionado]="esCantidadBonificada()">
+          Cant. x bulto {{producto.bulto | number:'1.0-2':'es-AR'}} {{producto.nombreMedida}}
+        </div>
+      </div>
+      <br>
+      <span class="sic-com-stock" [style.color]="(producto.cantidadTotalEnSucursales ? 'green' : 'red')">
+        <strong>{{ producto.cantidadTotalEnSucursales ? "Stock Disponible: " + (producto.cantidadTotalEnSucursales | number:'1.0-2':'es-AR') + " " + producto.nombreMedida : "Sin Stock" }}</strong>
+      </span>
+    </div>
+  </div>
   <br>
   <div fxLayoutAlign="center center">
     <button mat-mini-fab color="accent" (click)="menosUno(cantidad)" [disabled]="loading">
@@ -26,7 +57,7 @@
   <br>
 </mat-dialog-content>
 <div fxLayoutAlign="center center" fxLayoutGap="0.5rem">
-  <button mat-raised-button color="primary" *ngIf="!loading"  (click)="aceptar()" [disabled]="cantidad <= 0" cdkFocusInitial>Aceptar</button>
+  <button mat-raised-button color="primary" *ngIf="!loading"  (click)="aceptar()" [disabled]="!esCantidadValida()" cdkFocusInitial>Aceptar</button>
   <button mat-raised-button mat-dialog-close *ngIf="!loading">Cancelar</button>
   <mat-spinner [diameter]="50" [strokeWidth]="6" *ngIf="loading"></mat-spinner>
 </div>
