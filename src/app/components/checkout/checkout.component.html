@@ -93,63 +93,6 @@
                                  [inEdition]="ubicacionEnvioInEdition" (editionStateChange)="ueEditionStateChange($event)"></sic-com-ubicacion>
             </div>
           </div>
-          <!--<mat-radio-group formControlName="opcionEnvio" fxLayout="column" fxLayoutGap="1rem">
-            <mat-radio-button color="primary" *ngFor="let oe of opcionesEnvio" [value]="oe.value">
-              {{ oe.text }}
-            </mat-radio-button>
-          </mat-radio-group>
-          <br>
-          <div *ngIf="opcionEnvioForm.get('opcionEnvio').value === opcionEnvio.RETIRO_SUCURSAL">
-            <div>
-              <mat-form-field fxFlexFill>
-                <mat-select placeholder="Sucursal" formControlName="sucursal">
-                  <mat-option></mat-option>
-                  <mat-option *ngFor="let s of sucursales" [value]="s">
-                    {{ s.nombre + (s.detalleUbicacion ? ' (' + s.detalleUbicacion  + ')' : '') }}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
-              <div *ngIf="opcionEnvioForm.get('sucursal').touched && opcionEnvioForm.errors?.requiredSucursal" class="sucursal-error">
-                Requerido
-              </div>
-            </div>
-            <div fxLayout="row" fxLayoutAlign="center center" *ngIf="isUbicacionSucursalLoading" class="sic-com-spinner-container">
-              <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
-            </div>
-            <div *ngIf="!isUbicacionSucursalLoading && ubicacionSucursal && ubicacionSucursal.latitud && ubicacionSucursal.longitud">
-              <agm-map [latitude]="ubicacionSucursal.latitud" [longitude]="ubicacionSucursal.longitud" [zoom]="15" [streetViewControl]="false">
-                <agm-marker [latitude]="ubicacionSucursal.latitud"
-                            [longitude]="ubicacionSucursal.longitud"
-                            [title]="getUbicacionStr(ubicacionSucursal)"
-                            >
-                  <agm-snazzy-info-window [maxWidth]="200" [closeWhenOthersOpen]="true" [isOpen]="true">
-                    <ng-template>
-                      {{ getUbicacionStr(ubicacionSucursal) }}
-                    </ng-template>
-                  </agm-snazzy-info-window>
-                </agm-marker>
-              </agm-map>
-            </div>
-          </div>
-          <br>
-          <div *ngIf="opcionEnvioForm.get('opcionEnvio').value === opcionEnvio.DIRECCION_FACTURACION">
-            <strong>UBICACIÓN DE FACTURACIÓN</strong>
-            <div fxLayout="row" fxLayoutAlign="center center" *ngIf="ubicacionFacturacionUpdating" class="sic-com-spinner-container">
-              <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
-            </div>
-            <sic-com-ubicacion *ngIf="!ubicacionFacturacionUpdating"
-                               [ubicacion]="ubicacionFacturacion" (updated)="ubicacionFacturacionUpdated($event)"
-                               [inEdition]="ubicacionFacturacionInEdition" (editionStateChange)="ufEditionStateChange($event)"></sic-com-ubicacion>
-          </div>
-          <div *ngIf="opcionEnvioForm.get('opcionEnvio').value === opcionEnvio.DIRECCION_ENVIO">
-            <strong>UBICACIÓN DE ENVIO</strong>
-            <div fxLayout="row" fxLayoutAlign="center center" *ngIf="ubicacionEnvioUpdating" class="sic-com-spinner-container">
-              <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
-            </div>
-            <sic-com-ubicacion *ngIf="!ubicacionEnvioUpdating"
-                               [ubicacion]="ubicacionEnvio" (updated)="ubicacionEnvioUpdated($event)"
-                               [inEdition]="ubicacionEnvioInEdition" (editionStateChange)="ueEditionStateChange($event)"></sic-com-ubicacion>
-          </div>-->
         </div>
         <br>
         <div class="botonera">
@@ -157,20 +100,12 @@
         </div>
       </form>
     </mat-step>
-    <mat-step [stepControl]="resumenForm" *ngIf="resumenForm">
-      <form [formGroup]="resumenForm">
-        <ng-template matStepLabel>Resumen</ng-template>
+    <mat-step [stepControl]="pagoForm" *ngIf="pagoForm">
+      <form [formGroup]="pagoForm">
+        <ng-template matStepLabel>Pago</ng-template>
         <div fxLayoutAlign="space-between center" fxLayout.lt-sm="column" *ngIf="!loadingTotales && cliente" class="resumen"
              fxLayoutGap=".8rem">
           <div>Cant. de Artículos: {{ cantidadArticulos| number:'1.0-2':'es-AR' }}</div>
-          <div>Subtotal: <span class="valor">$ {{ subTotal| number:'1.0-2':'es-AR' }}</span></div>
-          <div>
-            <mat-chip-list>
-              <mat-chip class="sic-com-bonificacion valor" color="primary">
-                Bonificación: {{ cliente.bonificacion | number:'1.0-2':'es-AR' }} %
-              </mat-chip>
-            </mat-chip-list>
-          </div>
           <div>Total: <span class="valor">$ {{ total| number:'1.0-2':'es-AR' }}</span></div>
         </div>
         <div fxLayout="row" fxLayoutAlign="center center" *ngIf="loadingTotales" class="sic-com-spinner-container">
@@ -181,21 +116,27 @@
           <mat-form-field fxFlexFill class="observaciones">
             <textarea matInput placeholder="Observaciones" formControlName="observaciones" rows="3"
                       #observacionesTextArea></textarea>
-            <mat-error *ngIf="resumenForm.get('observaciones').hasError('maxlength')">
+            <mat-error *ngIf="pagoForm.get('observaciones').hasError('maxlength')">
               Máximo 200 caracteres
             </mat-error>
             <mat-hint align="end">
-              {{resumenForm.get('observaciones').value.length}} / {{ observacionesMaxLength}}
+              {{pagoForm.get('observaciones').value.length}} / {{ observacionesMaxLength}}
             </mat-hint>
           </mat-form-field>
         </div>
+        <label id="opcion-pago">Seleccione una opción:</label>
+        <mat-radio-group aria-labelledby="opcion-pago" formControlName="opcionPago" fxLayout="column" fxLayout.gt-sm="row" fxLayoutGap="0.5rem">
+          <mat-radio-button color="primary" [value]="opcionPago.REALIZAR_PAGO_MAS_TARDE">Realizar el pago mas tarde</mat-radio-button>
+          <mat-radio-button color="primary" [value]="opcionPago.COMPONENTE_DE_PAGO">Componente de Pago</mat-radio-button>
+        </mat-radio-group>
+        <div *ngIf="pagoForm.get('opcionPago').value === opcionPago.COMPONENTE_DE_PAGO && total">
+          <br>
+          <sic-com-mercado-pago [cliente]="cliente" [monto]="total" (canceled)="cancelarComponentePago()"></sic-com-mercado-pago> <!-- (updated)="" -->
+        </div>
         <br>
-        <!--<div class="botonera">
-          <button mat-raised-button color="primary" matStepperNext [disabled]="!envioValidToContinueNextStep()">Continuar</button>
-        </div>-->
         <div *ngIf="!enviarOrdenLoading" class="acciones">
           <button mat-raised-button color="primary" (click)="cerrarOrden()"
-                  [disabled]="loadingTotales || !cliente || resumenForm.invalid || opcionEnvioForm.invalid">
+                  [disabled]="loadingTotales || !cliente || opcionEnvioForm.invalid  || pagoForm.invalid" *ngIf="pagoForm.get('opcionPago').value !== opcionPago.COMPONENTE_DE_PAGO">
             Confirmar
           </button>
         </div>

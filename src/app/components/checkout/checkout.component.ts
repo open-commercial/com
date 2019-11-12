@@ -27,6 +27,11 @@ enum OpcionEnvioUbicacion {
   USAR_UBICACION_FACTURACION = 'USAR_UBICACION_FACTURACION',
 }
 
+enum OpcionPago {
+  REALIZAR_PAGO_MAS_TARDE = 'REALIZAR_PAGO_MAS_TARDE',
+  COMPONENTE_DE_PAGO = 'COMPONENTE_DE_PAGO',
+}
+
 const sucursalValidator: ValidatorFn = (control: FormGroup): ValidationErrors | null => {
   const oe = control.get('opcionEnvio');
   const sucursal = control.get('sucursal');
@@ -54,7 +59,7 @@ export class CheckoutComponent implements OnInit {
 
   datosDelClienteForm: FormGroup = null;
   opcionEnvioForm: FormGroup = null;
-  resumenForm: FormGroup = null;
+  pagoForm: FormGroup = null;
 
   // Cliente
   cliente: Cliente = null;
@@ -84,6 +89,8 @@ export class CheckoutComponent implements OnInit {
   total: Number = 0;
   loadingTotales = false;
   enviarOrdenLoading = false;
+
+  opcionPago = OpcionPago;
 
   @ViewChild('stepper', { static: false })
   stepper: MatStepper;
@@ -176,8 +183,9 @@ export class CheckoutComponent implements OnInit {
       }
     });
 
-    this.resumenForm = this.fb.group({
-      'observaciones': ['', Validators.maxLength(this.observacionesMaxLength)]
+    this.pagoForm = this.fb.group({
+      observaciones: ['', Validators.maxLength(this.observacionesMaxLength)],
+      opcionPago: ['', Validators.required]
     });
   }
 
@@ -313,7 +321,7 @@ export class CheckoutComponent implements OnInit {
   cerrarOrden() {
     if (
       this.cliente && this.datosDelClienteForm.valid &&
-      this.resumenForm.valid && this.opcionEnvioForm.valid
+      this.pagoForm.valid && this.opcionEnvioForm.valid
     ) {
       const dataEnvio = this.opcionEnvioForm.value;
 
@@ -334,7 +342,7 @@ export class CheckoutComponent implements OnInit {
         }
       }
 
-      this.resumenForm.disable();
+      this.pagoForm.disable();
       this.opcionEnvioForm.disable();
       this.enviarOrdenLoading = true;
 
@@ -343,7 +351,7 @@ export class CheckoutComponent implements OnInit {
         idCliente: this.cliente.id_Cliente,
         idUsuario: Number(this.authService.getLoggedInIdUsuario()),
         tipoDeEnvio: tipoDeEnvio,
-        observaciones : this.resumenForm.get('observaciones').value,
+        observaciones : this.pagoForm.get('observaciones').value,
       };
 
       this.carritoCompraService.enviarOrden(orden)
@@ -356,10 +364,20 @@ export class CheckoutComponent implements OnInit {
         },
         err => {
           this.avisoService.openSnackBar(err.error, '', 3500);
-          this.resumenForm.enable();
+          this.pagoForm.enable();
           this.opcionEnvioForm.enable();
         }
       );
+    }
+  }
+
+  cancelarComponentePago() {
+    this.pagoForm.get('opcionPago').setValue(OpcionPago.REALIZAR_PAGO_MAS_TARDE);
+  }
+
+  updated(result) {
+    if (result) {
+      this.cerrarOrden();
     }
   }
 

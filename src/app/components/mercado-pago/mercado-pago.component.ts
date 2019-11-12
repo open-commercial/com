@@ -57,6 +57,7 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
       this.mp.setPublishableKey(environment.mercadoPagoPublicKey);
       this.mp.getAllPaymentMethods((s, d: [any]) => {
         this.paymentMethods = d.filter(function(v) { return v['status'] === 'active'; });
+        // console.log(this.paymentMethods);
         this.pagosEfectivo = this.paymentMethods.filter(function (v) {
           return ['ticket', 'atm', 'bank_transfer', 'prepaid_card'].indexOf(v['payment_type_id']) >= 0 &&
             ['bapropagos', 'redlink'].indexOf(v['id']) < 0;
@@ -297,7 +298,7 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
   checkPaymentAmount() {
     this.removeError(this.mpForm.get('monto'), 'amount_not_allowed');
     const op: MPOpcionPago = this.mpForm.get('opcionPago').value;
-    const monto = this.mpForm.get('monto').value;
+    const monto = this.mpForm.get('monto') && this.mpForm.get('monto').value;
 
     if (!op || !monto) { return; }
     let pm = this.mpForm.get('paymentMethod').value;
@@ -345,11 +346,13 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
 
     const pago = {
       issuerId: data.installmentsPaymentMethod ? data.installmentsPaymentMethod.issuer.id : null,
+      paymentTypeId: data.installmentsPaymentMethod ? data.installmentsPaymentMethod.payment_type_id : data.paymentMethod.payment_type_id,
       paymentMethodId: data.installmentsPaymentMethod ? data.installmentsPaymentMethod.payment_method_id : data.paymentMethod.id,
       installments: data.opcionPago === MPOpcionPago.TARJETA_CREDITO || data.opcionPago === MPOpcionPago.TARJETA_CREDITO
         ? data.installments.cuotas : null,
       token: data.opcionPago === MPOpcionPago.TARJETA_CREDITO || data.opcionPago === MPOpcionPago.TARJETA_DEBITO ? data.token : null,
       idCliente: this.cliente.id_Cliente,
+      idSucursal: environment.idSucursal,
       monto: this.monto,
     };
 
@@ -370,9 +373,7 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
             );
           }
         },
-        err => {
-          this.avisoService.openSnackBar(err.error, 'OK', 0);
-        }
+        err => this.avisoService.openSnackBar(err.error, 'OK', 0)
       )
     ;
   }
