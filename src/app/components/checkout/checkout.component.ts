@@ -16,6 +16,8 @@ import {Sucursal} from '../../models/sucursal';
 import {UbicacionesService} from '../../services/ubicaciones.service';
 import {TipoDeEnvio} from '../../models/tipo-de-envio';
 import {NuevaOrdenDeCarritoCompra} from '../../models/nuevaOrdenDeCarritoCompra';
+import {MPPago} from '../../models/mercadopago/mp-pago';
+import {PagosService} from '../../services/pagos.service';
 
 enum OpcionEnvio {
   RETIRO_EN_SUCURSAL = 'RETIRO_EN_SUCURSAL',
@@ -107,7 +109,8 @@ export class CheckoutComponent implements OnInit {
               private sucursalService: SucursalService,
               private ubicacionesService: UbicacionesService,
               private fb: FormBuilder,
-              private router: Router) {
+              private router: Router,
+              private pagosService: PagosService) {
   }
 
   ngOnInit() {
@@ -318,7 +321,7 @@ export class CheckoutComponent implements OnInit {
     }
   }
 
-  cerrarOrden() {
+  cerrarOrden(pago: MPPago = null) {
     if (
       this.cliente && this.datosDelClienteForm.valid &&
       this.pagoForm.valid && this.opcionEnvioForm.valid
@@ -352,6 +355,7 @@ export class CheckoutComponent implements OnInit {
         idUsuario: Number(this.authService.getLoggedInIdUsuario()),
         tipoDeEnvio: tipoDeEnvio,
         observaciones : this.pagoForm.get('observaciones').value,
+        NuevoPagoMercadoPagoDTO: pago,
       };
 
       this.carritoCompraService.enviarOrden(orden)
@@ -375,10 +379,8 @@ export class CheckoutComponent implements OnInit {
     this.pagoForm.get('opcionPago').setValue(OpcionPago.REALIZAR_PAGO_MAS_TARDE);
   }
 
-  updated(result) {
-    if (result) {
-      this.cerrarOrden();
-    }
+  updated(pago: MPPago) {
+    if (pago) { this.cerrarOrden(pago); }
   }
 
   getEnvioLabel() {

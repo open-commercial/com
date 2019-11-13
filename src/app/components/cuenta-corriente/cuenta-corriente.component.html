@@ -9,7 +9,7 @@
       No posee Cuenta Corriente
     </span>
   </div>
-  <div *ngIf="!isLoading && cuentaCorriente">
+  <div *ngIf="!isLoading && cuentaCorriente && !isPagoLoading">
     <button mat-raised-button color="primary" *ngIf="!showNuevoPago" (click)="mostrarFormDePago()">Ingresar Dinero</button>
     <div *ngIf="showNuevoPago">
       <sic-com-mercado-pago [cliente]="cliente" [showMontoControl]="true" (updated)="updated($event)" (canceled)="showNuevoPago = false"></sic-com-mercado-pago>
@@ -38,7 +38,7 @@
       </div>
     </div>
   </div>
-  <div *ngIf="isLoading || loading" fxLayout="row" fxLayoutAlign="center center">
+  <div *ngIf="isLoading || loading || isPagoLoading" fxLayout="row" fxLayoutAlign="center center">
     <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
   </div>
 </div>

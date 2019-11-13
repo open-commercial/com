@@ -6,6 +6,8 @@ import {AvisoService} from '../../services/aviso.service';
 import {CuentasCorrienteService} from '../../services/cuentas-corriente.service';
 import {RenglonCuentaCorriente} from '../../models/renglon-cuenta-corriente';
 import {finalize} from 'rxjs/operators';
+import {MPPago} from '../../models/mercadopago/mp-pago';
+import {PagosService} from '../../services/pagos.service';
 
 @Component({
   selector: 'sic-com-cuenta-corriente',
@@ -15,8 +17,9 @@ import {finalize} from 'rxjs/operators';
 export class CuentaCorrienteComponent implements OnInit {
 
   cliente: Cliente = null;
-  isLoading = true;
-  loading = true;
+  isLoading = false;
+  loading = false;
+  isPagoLoading = false;
   cuentaCorriente = null;
   renglones = [];
   pagina = 0;
@@ -26,7 +29,8 @@ export class CuentaCorrienteComponent implements OnInit {
   constructor(private authService: AuthService,
               private avisoService: AvisoService,
               private clientesService: ClientesService,
-              private cuentasCorrienteService: CuentasCorrienteService) {
+              private cuentasCorrienteService: CuentasCorrienteService,
+              private pagosService: PagosService) {
   }
 
   ngOnInit() {
@@ -131,10 +135,29 @@ export class CuentaCorrienteComponent implements OnInit {
     }
   }
 
-  updated(result) {
-    if (result) {
+  updated(pago: MPPago) {
+    if (pago) {
       this.showNuevoPago = false;
-      this.reloadCuentaCorriente();
+      this.isPagoLoading = true;
+      this.pagosService.generarMPPago(pago)
+        .pipe(finalize(() => {
+          this.isPagoLoading = false;
+        }))
+        .subscribe(
+          v => {
+            this.showNuevoPago = false;
+            this.reloadCuentaCorriente();
+            if (['credit_card', 'debit_card'].indexOf(pago.paymentTypeId) >= 0) {
+              this.avisoService.openSnackBar(
+                'Su pago ingresó correctamente. Puede tardar unos minutos para verse reflejado en su saldo', 'OK', 0
+              );
+            } else {
+              this.avisoService.openSnackBar('Recibirá un email con los datos para realizar el deposito', 'OK', 0);
+            }
+          },
+          err => this.avisoService.openSnackBar(err.error, 'OK', 0)
+        )
+      ;
     }
   }
 }

@@ -20,7 +20,8 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
   @Input() cliente: Cliente = null;
   @Input() monto = 1;
   @Input() showMontoControl = false;
-  @Output() updated  = new EventEmitter<boolean>(true);
+  // @Output() updated  = new EventEmitter<boolean>(true);
+  @Output() updated  = new EventEmitter<MPPago>(true);
   @Output() canceled = new EventEmitter<void>(true);
 
   loading = false;
@@ -356,7 +357,10 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
       monto: this.monto,
     };
 
-    this.loading = true;
+    this.updated.emit(pago);
+    this.mp.clearSession();
+
+    /*this.loading = true;
     this.pagosService.generarMPPago(pago)
       .pipe(finalize(() => {
         this.loading = false;
@@ -375,7 +379,7 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
         },
         err => this.avisoService.openSnackBar(err.error, 'OK', 0)
       )
-    ;
+    ;*/
   }
 
   cancel() {

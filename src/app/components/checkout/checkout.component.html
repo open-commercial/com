@@ -129,9 +129,9 @@
           <mat-radio-button color="primary" [value]="opcionPago.REALIZAR_PAGO_MAS_TARDE">Realizar el pago mas tarde</mat-radio-button>
           <mat-radio-button color="primary" [value]="opcionPago.COMPONENTE_DE_PAGO">Componente de Pago</mat-radio-button>
         </mat-radio-group>
-        <div *ngIf="pagoForm.get('opcionPago').value === opcionPago.COMPONENTE_DE_PAGO && total">
+        <div *ngIf="pagoForm.get('opcionPago').value === opcionPago.COMPONENTE_DE_PAGO && total && !enviarOrdenLoading">
           <br>
-          <sic-com-mercado-pago [cliente]="cliente" [monto]="total" (canceled)="cancelarComponentePago()"></sic-com-mercado-pago> <!-- (updated)="" -->
+          <sic-com-mercado-pago [cliente]="cliente" [monto]="total" (updated)="updated($event)" (canceled)="cancelarComponentePago()"></sic-com-mercado-pago> <!--  -->
         </div>
         <br>
         <div *ngIf="!enviarOrdenLoading" class="acciones">
