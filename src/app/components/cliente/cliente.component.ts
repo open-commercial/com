@@ -96,7 +96,7 @@ export class ClienteComponent implements OnInit, OnChanges {
       this.isLoading = true;
       this.clientesService.saveCliente(clienteFormValues)
         .subscribe((data) => {
-          this.clientesService.getCliente(this.cliente.id_Cliente)
+          this.clientesService.getCliente(this.cliente.idCliente)
             .pipe(finalize(() => this.isLoading = false))
             .subscribe(cliente => {
                 this.cliente = cliente;
@@ -114,7 +114,7 @@ export class ClienteComponent implements OnInit, OnChanges {
 
   getFormValues(): any {
     return {
-      id_Cliente: this.cliente ? this.cliente.id_Cliente : null,
+      idCliente: this.cliente ? this.cliente.idCliente : null,
       nombreFiscal: this.clienteForm.get('nombreFiscal').value,
       nombreFantasia: this.clienteForm.get('nombreFantasia').value,
       idFiscal: this.clienteForm.get('idFiscal').value,

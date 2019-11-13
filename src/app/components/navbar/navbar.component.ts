@@ -53,7 +53,7 @@ export class NavbarComponent implements OnInit {
       this.clientesService.getClienteDelUsuario(this.authService.getLoggedInIdUsuario()).subscribe(
         (cliente: Cliente) => {
           this.cliente = cliente;
-          this.carritoCompraService.getCarritoCompra(cliente.id_Cliente).subscribe(
+          this.carritoCompraService.getCarritoCompra(cliente.idCliente).subscribe(
             (carrito: CarritoCompra) => this.carritoCompraService.setCantidadItemsEnCarrito(carrito.cantRenglones),
             err => this.avisoService.openSnackBar(err.error, '', 3500)
           );

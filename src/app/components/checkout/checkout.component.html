@@ -14,7 +14,7 @@
             Cliente: <strong>{{ cliente ? cliente.nombreFiscal: '' }}</strong>
           </div>
         </ng-template>
-        <input type="hidden" formControlName="id_Cliente" required>
+        <input type="hidden" formControlName="idCliente" required>
         <div *ngIf="puedeVenderAOtroCliente()">
           <mat-radio-group [value]="opcionCliente.CLIENTE_USUARIO" fxLayout="column" fxLayoutGap="1rem" (change)="opcionClienteChange($event)">
             <mat-radio-button color="primary" *ngFor="let oc of opcionesCliente" [value]="oc.value">{{ oc.text }}</mat-radio-button>
@@ -25,7 +25,7 @@
               <input matInput placeholder="Nombre o Nro de Cliente" (keyup)="onBusqKeyUp($event)" #busquedaInput>
             </mat-form-field>
             <mat-nav-list>
-              <mat-list-item *ngFor="let c of clientes" (click)="seleccionarCliente(c)" [class.seleccionado]="cliente && cliente.id_Cliente === c.id_Cliente">
+              <mat-list-item *ngFor="let c of clientes" (click)="seleccionarCliente(c)" [class.seleccionado]="cliente && cliente.idCliente === c.idCliente">
                 <h3 matLine class="nro-cliente">#{{ c.nroCliente }}</h3>
                 <p matLine class="razon-social">{{ c.nombreFiscal }}</p>
                 <p matLine class="nombre-fantasia" *ngIf="c.nombreFantasia">{{ c.nombreFantasia }}</p>

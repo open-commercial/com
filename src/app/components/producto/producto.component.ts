@@ -87,7 +87,7 @@ export class ProductoComponent implements OnInit {
       .subscribe(
         data => {
           if (this.cliente) {
-            this.carritoCompraService.getCarritoCompra(this.cliente.id_Cliente)
+            this.carritoCompraService.getCarritoCompra(this.cliente.idCliente)
               .subscribe(
                 (carrito: CarritoCompra) => {
                   this.carritoCompraService.setCantidadItemsEnCarrito(carrito.cantRenglones);
