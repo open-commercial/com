@@ -4,7 +4,7 @@ export enum MPOpcionPago {
   EFECTIVO = '3',
 }
 
-export interface MPPago {
+export interface NuevoPagoMercadoPago {
   token: string;
   paymentMethodId: string;
   paymentTypeId: string;
@@ -14,14 +14,3 @@ export interface MPPago {
   idSucursal: number;
   monto: number;
 }
-
-/**
- private String token;
- private String paymentMethodId;
- private String paymentTypeId;
- private String issuerId;
- private Integer installments;
- private long idCliente;
- private long idSucursal;
- private Float monto;
- */

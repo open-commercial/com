@@ -5,7 +5,7 @@ import {HttpClient} from '@angular/common/http';
 import {CarritoCompra} from '../models/carrito-compra';
 import {ItemCarritoCompra} from '../models/item-carrito-compra';
 import {TipoDeEnvio} from '../models/tipo-de-envio';
-import {NuevaOrdenDeCarritoCompra} from '../models/nuevaOrdenDeCarritoCompra';
+import {NuevaOrdenDeCarritoCompra} from '../models/nueva-orden-de-carrito-compra';
 
 @Injectable()
 export class CarritoCompraService {

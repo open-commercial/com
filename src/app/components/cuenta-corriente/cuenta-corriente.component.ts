@@ -6,7 +6,7 @@ import {AvisoService} from '../../services/aviso.service';
 import {CuentasCorrienteService} from '../../services/cuentas-corriente.service';
 import {RenglonCuentaCorriente} from '../../models/renglon-cuenta-corriente';
 import {finalize} from 'rxjs/operators';
-import {MPPago} from '../../models/mercadopago/mp-pago';
+import {NuevoPagoMercadoPago} from '../../models/mercadopago/nuevo-pago-mercado-pago';
 import {PagosService} from '../../services/pagos.service';
 
 @Component({
@@ -135,7 +135,7 @@ export class CuentaCorrienteComponent implements OnInit {
     }
   }
 
-  updated(pago: MPPago) {
+  updated(pago: NuevoPagoMercadoPago) {
     if (pago) {
       this.showNuevoPago = false;
       this.isPagoLoading = true;

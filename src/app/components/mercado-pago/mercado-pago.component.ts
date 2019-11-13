@@ -4,7 +4,7 @@ import {DynamicScriptLoaderService} from '../../services/dynamic-script-loader.s
 import {AbstractControl, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Cliente} from '../../models/cliente';
 import {AvisoService} from '../../services/aviso.service';
-import {MPOpcionPago, MPPago} from '../../models/mercadopago/mp-pago';
+import {MPOpcionPago, NuevoPagoMercadoPago} from '../../models/mercadopago/nuevo-pago-mercado-pago';
 import {errorsInfo} from '../../models/mercadopago/errors';
 import {PagosService} from '../../services/pagos.service';
 import {debounceTime, finalize} from 'rxjs/operators';
@@ -21,7 +21,7 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
   @Input() monto = 1;
   @Input() showMontoControl = false;
   // @Output() updated  = new EventEmitter<boolean>(true);
-  @Output() updated  = new EventEmitter<MPPago>(true);
+  @Output() updated  = new EventEmitter<NuevoPagoMercadoPago>(true);
   @Output() canceled = new EventEmitter<void>(true);
 
   loading = false;
@@ -37,7 +37,7 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
   ];
   opcionPago = MPOpcionPago;
   pmSecureThumbnail = '';
-  pago: MPPago = null;
+  pago: NuevoPagoMercadoPago = null;
   cft = '';
   tea = '';
   mpErrors = [];

@@ -15,8 +15,8 @@ import {SucursalService} from '../../services/sucursal.service';
 import {Sucursal} from '../../models/sucursal';
 import {UbicacionesService} from '../../services/ubicaciones.service';
 import {TipoDeEnvio} from '../../models/tipo-de-envio';
-import {NuevaOrdenDeCarritoCompra} from '../../models/nuevaOrdenDeCarritoCompra';
-import {MPPago} from '../../models/mercadopago/mp-pago';
+import {NuevaOrdenDeCarritoCompra} from '../../models/nueva-orden-de-carrito-compra';
+import {NuevoPagoMercadoPago} from '../../models/mercadopago/nuevo-pago-mercado-pago';
 import {PagosService} from '../../services/pagos.service';
 
 enum OpcionEnvio {
@@ -321,7 +321,7 @@ export class CheckoutComponent implements OnInit {
     }
   }
 
-  cerrarOrden(pago: MPPago = null) {
+  cerrarOrden(pago: NuevoPagoMercadoPago = null) {
     if (
       this.cliente && this.datosDelClienteForm.valid &&
       this.pagoForm.valid && this.opcionEnvioForm.valid
@@ -355,7 +355,7 @@ export class CheckoutComponent implements OnInit {
         idUsuario: Number(this.authService.getLoggedInIdUsuario()),
         tipoDeEnvio: tipoDeEnvio,
         observaciones : this.pagoForm.get('observaciones').value,
-        NuevoPagoMercadoPagoDTO: pago,
+        nuevoPagoMercadoPago: pago,
       };
 
       this.carritoCompraService.enviarOrden(orden)
@@ -379,7 +379,7 @@ export class CheckoutComponent implements OnInit {
     this.pagoForm.get('opcionPago').setValue(OpcionPago.REALIZAR_PAGO_MAS_TARDE);
   }
 
-  updated(pago: MPPago) {
+  updated(pago: NuevoPagoMercadoPago) {
     if (pago) { this.cerrarOrden(pago); }
   }
 
