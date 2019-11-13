@@ -7,45 +7,6 @@
     <strong>Ir al carrito</strong>
   </div>
   <mat-vertical-stepper *ngIf="!isLoading" linear #stepper (selectionChange)="changeStep($event)">
-    <mat-step [stepControl]="opcionClienteForm" *ngIf="opcionClienteForm">
-      <form [formGroup]="opcionClienteForm" autocomplete="off">
-        <ng-template matStepLabel>
-          <div class="cliente-label">
-            Cliente: <strong>{{ cliente ? cliente.nombreFiscal: '' }}</strong>
-          </div>
-        </ng-template>
-        <input type="hidden" formControlName="idCliente" required>
-        <div *ngIf="puedeVenderAOtroCliente()">
-          <mat-radio-group [value]="opcionCliente.CLIENTE_USUARIO" fxLayout="column" fxLayoutGap="1rem" (change)="opcionClienteChange($event)">
-            <mat-radio-button color="primary" *ngFor="let oc of opcionesCliente" [value]="oc.value">{{ oc.text }}</mat-radio-button>
-          </mat-radio-group>
-          <br>
-          <div *ngIf="opcionClienteSeleccionada == opcionCliente.OTRO_CLIENTE">
-            <mat-form-field fxFill="100">
-              <input matInput placeholder="Nombre o Nro de Cliente" (keyup)="onBusqKeyUp($event)" #busquedaInput>
-            </mat-form-field>
-            <mat-nav-list>
-              <mat-list-item *ngFor="let c of clientes" (click)="seleccionarCliente(c)" [class.seleccionado]="cliente && cliente.idCliente === c.idCliente">
-                <h3 matLine class="nro-cliente">#{{ c.nroCliente }}</h3>
-                <p matLine class="razon-social">{{ c.nombreFiscal }}</p>
-                <p matLine class="nombre-fantasia" *ngIf="c.nombreFantasia">{{ c.nombreFantasia }}</p>
-              </mat-list-item>
-            </mat-nav-list>
-            <div fxLayout="row" fxLayoutAlign="center center" class="sic-com-spinner-container" *ngIf="isClientesLoading">
-              <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
-            </div>
-            <div class="sic-com-mas-resultados" fxLayout="row" fxLayoutAlign="center center"
-                 *ngIf="!isClientesLoading && clientes.length && (clientesTotalPaginas > (clientesPagina + 1))"
-                 (click)="masClientes(busquedaInput.value)">
-              <strong>MAS RESULTADOS</strong>
-            </div>
-          </div>
-          <div class="botonera">
-            <button mat-raised-button color="primary" matStepperNext [disabled]="!cliente">Continuar</button>
-          </div>
-        </div>
-      </form>
-    </mat-step>
     <mat-step [stepControl]="datosDelClienteForm" *ngIf="datosDelClienteForm">
       <form [formGroup]="datosDelClienteForm">
         <ng-template matStepLabel>

@@ -143,9 +143,6 @@ export class CheckoutComponent implements OnInit {
   }
 
   createForms() {
-    this.opcionClienteForm = this.fb.group({
-      idCliente: [null, Validators.required]
-    });
     this.datosDelClienteForm = this.fb.group({
       continueStepValidator: ['whatever', Validators.required],
     });
@@ -355,7 +352,7 @@ export class CheckoutComponent implements OnInit {
       const orden: NuevaOrdenDeCarritoCompra = {
         idSucursal: idSucursal,
         idCliente: this.cliente.idCliente,
-        idUsuario: this.authService.getLoggedInIdUsuario(),
+        idUsuario: Number(this.authService.getLoggedInIdUsuario()),
         tipoDeEnvio: tipoDeEnvio,
         observaciones : this.pagoForm.get('observaciones').value,
         nuevoPagoMercadoPago: pago,

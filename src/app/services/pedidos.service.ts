@@ -14,7 +14,7 @@ export class PedidosService {
   constructor(private http: HttpClient) {}
 
   getPedidosCliente(cliente: Cliente, pagina: number) {
-    return this.http.post(this.urlBusqueda, {idCliente: cliente.id_Cliente, pagina: pagina, idSucursal: environment.idSucursal});
+    return this.http.post(this.urlBusqueda, {idCliente: cliente.idCliente, pagina: pagina, idSucursal: environment.idSucursal});
   }
 
   getPedidoPdf(pedido: Pedido): Observable<Blob> {
