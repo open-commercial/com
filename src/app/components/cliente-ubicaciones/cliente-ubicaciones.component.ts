@@ -50,7 +50,7 @@ export class ClienteUbicacionesComponent implements OnInit {
     this.clientesService.saveCliente(this.cliente)
       .subscribe(
         () => {
-          this.clientesService.getCliente(this.cliente.id_Cliente)
+          this.clientesService.getCliente(this.cliente.idCliente)
             .pipe(finalize(() => this.ubicacionFacturacionUpdating = false))
             .subscribe(
               (c: Cliente) => {
@@ -72,7 +72,7 @@ export class ClienteUbicacionesComponent implements OnInit {
     this.clientesService.saveCliente(this.cliente)
       .subscribe(
         () => {
-          this.clientesService.getCliente(this.cliente.id_Cliente)
+          this.clientesService.getCliente(this.cliente.idCliente)
             .pipe(finalize(() => this.ubicacionEnvioUpdating = false))
             .subscribe((c: Cliente) => {
               this.ubicacionEnvio = c.ubicacionEnvio;

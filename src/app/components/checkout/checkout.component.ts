@@ -177,7 +177,7 @@ export class CheckoutComponent implements OnInit {
 
   createForms() {
     this.opcionClienteForm = this.fb.group({
-      id_Cliente: [null, Validators.required]
+      idCliente: [null, Validators.required]
     });
 
     this.datosDelClienteForm = this.fb.group({
@@ -290,11 +290,11 @@ export class CheckoutComponent implements OnInit {
     this.ubicacionEnvio = newCliente ? newCliente.ubicacionEnvio : null;
 
     if (!this.cliente) {
-      this.opcionClienteForm.get('id_Cliente').setValue(null);
+      this.opcionClienteForm.get('idCliente').setValue(null);
       return;
     }
 
-    this.opcionClienteForm.get('id_Cliente').setValue(this.cliente.id_Cliente);
+    this.opcionClienteForm.get('idCliente').setValue(this.cliente.idCliente);
     this.getTotalesInfo();
   }
 
@@ -333,7 +333,7 @@ export class CheckoutComponent implements OnInit {
     this.clientesService.saveCliente(this.cliente)
       .subscribe(
         () => {
-          this.clientesService.getCliente(this.cliente.id_Cliente)
+          this.clientesService.getCliente(this.cliente.idCliente)
             .pipe(finalize(() => this.ubicacionFacturacionUpdating = false))
             .subscribe(
               (c: Cliente) => {
@@ -356,7 +356,7 @@ export class CheckoutComponent implements OnInit {
     this.clientesService.saveCliente(this.cliente)
       .subscribe(
         () => {
-          this.clientesService.getCliente(this.cliente.id_Cliente)
+          this.clientesService.getCliente(this.cliente.idCliente)
             .pipe(finalize(() => this.ubicacionEnvioUpdating = false))
             .subscribe((c: Cliente) => {
               this.ubicacionEnvio = c.ubicacionEnvio;
@@ -396,7 +396,7 @@ export class CheckoutComponent implements OnInit {
 
   getTotalesInfo() {
     if (this.cliente) {
-      this.carritoCompraService.getCarritoCompra(this.cliente.id_Cliente)
+      this.carritoCompraService.getCarritoCompra(this.cliente.idCliente)
         .subscribe(data => {
           this.cantidadArticulos = data.cantArticulos;
           this.subTotal = data.subtotal;
@@ -438,7 +438,7 @@ export class CheckoutComponent implements OnInit {
 
       const orden: NuevaOrdenDeCarritoCompra = {
         idSucursal: idSucursal,
-        idCliente: this.cliente.id_Cliente,
+        idCliente: this.cliente.idCliente,
         idUsuario: this.authService.getLoggedInIdUsuario(),
         tipoDeEnvio: tipoDeEnvio,
         observaciones : this.resumenForm.get('observaciones').value,

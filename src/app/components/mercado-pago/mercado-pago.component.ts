@@ -349,7 +349,7 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
       installments: data.opcionPago === MPOpcionPago.TARJETA_CREDITO || data.opcionPago === MPOpcionPago.TARJETA_CREDITO
         ? data.installments.cuotas : null,
       token: data.opcionPago === MPOpcionPago.TARJETA_CREDITO || data.opcionPago === MPOpcionPago.TARJETA_DEBITO ? data.token : null,
-      idCliente: this.cliente.id_Cliente,
+      idCliente: this.cliente.idCliente,
       monto: this.monto,
     };
 
