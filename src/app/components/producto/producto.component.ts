@@ -30,7 +30,7 @@ export class ProductoComponent implements OnInit {
   constructor(private productosService: ProductosService,
               private carritoCompraService: CarritoCompraService,
               private avisoService: AvisoService,
-              private authService: AuthService,
+              public authService: AuthService,
               private clientesService: ClientesService,
               private router: Router,
               private route: ActivatedRoute,

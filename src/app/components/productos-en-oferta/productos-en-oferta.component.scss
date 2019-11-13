@@ -87,9 +87,7 @@
       }
 
       .precio {
-
-        &.no-bonificado {
-          font-weight: normal;
+        &.tachado {
           text-decoration: line-through;
         }
         &.bonificado {

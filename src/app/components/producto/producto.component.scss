@@ -83,6 +83,10 @@
 
   .precios {
     color: darkgray;
+    &.sin-session {
+      font-weight: bold;
+      color: rgba(0, 0, 0, 0.87);
+    }
   }
   .seleccionado {
     font-weight: bold;
