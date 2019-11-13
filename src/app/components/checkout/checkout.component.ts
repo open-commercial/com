@@ -143,6 +143,9 @@ export class CheckoutComponent implements OnInit {
   }
 
   createForms() {
+    this.opcionClienteForm = this.fb.group({
+      idCliente: [null, Validators.required]
+    });
     this.datosDelClienteForm = this.fb.group({
       continueStepValidator: ['whatever', Validators.required],
     });
@@ -241,7 +244,7 @@ export class CheckoutComponent implements OnInit {
     this.clientesService.saveCliente(this.cliente)
       .subscribe(
         () => {
-          this.clientesService.getCliente(this.cliente.id_Cliente)
+          this.clientesService.getCliente(this.cliente.idCliente)
             .pipe(finalize(() => this.ubicacionFacturacionUpdating = false))
             .subscribe(
               (c: Cliente) => {
@@ -264,7 +267,7 @@ export class CheckoutComponent implements OnInit {
     this.clientesService.saveCliente(this.cliente)
       .subscribe(
         () => {
-          this.clientesService.getCliente(this.cliente.id_Cliente)
+          this.clientesService.getCliente(this.cliente.idCliente)
             .pipe(finalize(() => this.ubicacionEnvioUpdating = false))
             .subscribe((c: Cliente) => {
               this.ubicacionEnvio = c.ubicacionEnvio;
@@ -309,7 +312,7 @@ export class CheckoutComponent implements OnInit {
 
   getTotalesInfo() {
     if (this.cliente) {
-      this.carritoCompraService.getCarritoCompra(this.cliente.id_Cliente)
+      this.carritoCompraService.getCarritoCompra(this.cliente.idCliente)
         .subscribe(data => {
           this.cantidadArticulos = data.cantArticulos;
           this.subTotal = data.subtotal;
@@ -351,8 +354,8 @@ export class CheckoutComponent implements OnInit {
 
       const orden: NuevaOrdenDeCarritoCompra = {
         idSucursal: idSucursal,
-        idCliente: this.cliente.id_Cliente,
-        idUsuario: Number(this.authService.getLoggedInIdUsuario()),
+        idCliente: this.cliente.idCliente,
+        idUsuario: this.authService.getLoggedInIdUsuario(),
         tipoDeEnvio: tipoDeEnvio,
         observaciones : this.pagoForm.get('observaciones').value,
         nuevoPagoMercadoPago: pago,

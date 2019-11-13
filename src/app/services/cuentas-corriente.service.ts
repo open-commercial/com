@@ -13,7 +13,7 @@ export class CuentasCorrienteService {
   constructor(private http: HttpClient) {}
 
   getCuentaCorriente(cliente: Cliente): Observable<CuentaCorriente> {
-    return this.http.get<CuentaCorriente>(this.url + `/clientes/${cliente.id_Cliente}`);
+    return this.http.get<CuentaCorriente>(this.url + `/clientes/${cliente.idCliente}`);
   }
 
   getCuentaCorrienteRenglones(cuentaCorriente: CuentaCorriente, pagina: number) {

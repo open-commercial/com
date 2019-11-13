@@ -92,7 +92,7 @@ export class CarritoCompraComponent implements OnInit {
 
   cargarCarritoCompra() {
     this.loadingTotales = true;
-    this.carritoCompraService.getCarritoCompra(this.cliente.id_Cliente)
+    this.carritoCompraService.getCarritoCompra(this.cliente.idCliente)
       .pipe(
         finalize(() =>  {
           this.loadingTotales = false;
@@ -113,7 +113,7 @@ export class CarritoCompraComponent implements OnInit {
     this.route.queryParamMap.subscribe(
       queryParams => {
         this.pagina = (Number(queryParams['params'].p) - 1) || 0;
-        this.carritoCompraService.getItems(this.cliente.id_Cliente, this.pagina)
+        this.carritoCompraService.getItems(this.cliente.idCliente, this.pagina)
           .pipe(finalize(() => {
             this.loadingRenglones = false;
             this.loadingCarritoCompra = false;
