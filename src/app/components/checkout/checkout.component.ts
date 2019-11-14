@@ -120,7 +120,7 @@ export class CheckoutComponent implements OnInit {
       (usuario: Usuario) => {
         if (usuario) {
           this.usuario = usuario;
-          this.clientesService.getClienteDelUsuario(this.usuario.id_Usuario)
+          this.clientesService.getClienteDelUsuario(this.usuario.idUsuario)
             .pipe(
               finalize(() => this.isLoading = false)
             )

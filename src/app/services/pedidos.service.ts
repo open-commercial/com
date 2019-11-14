@@ -18,6 +18,6 @@ export class PedidosService {
   }
 
   getPedidoPdf(pedido: Pedido): Observable<Blob> {
-    return this.http.get(`${this.url}/${pedido.id_Pedido}/reporte`, {responseType: 'blob'});
+    return this.http.get(`${this.url}/${pedido.idPedido}/reporte`, {responseType: 'blob'});
   }
 }
