@@ -27,7 +27,7 @@
         <p mat-line *ngIf="!p.oferta" class="precio">
           P. U. $ {{p.precioLista | number:'1.0-2':'es-AR' }}
           <span *ngIf="estaBonificado(p)">
-            <br>P. U. Bonificado&nbsp;<span *ngIf="p.bulto > 1">x Cantidad&nbsp;</span>
+            <br>P. U. Bonif.<span *ngIf="p.bulto > 1"> x Cant. </span>
             $ {{ p.precioListaBonificado | number:'1.0-2':'es-AR' }}
           </span>
         </p>

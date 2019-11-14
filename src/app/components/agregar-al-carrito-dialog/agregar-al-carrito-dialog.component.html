@@ -20,7 +20,7 @@
         <div *ngIf="!producto.oferta">
           <span [class.seleccionado]="!esCantidadBonificada()">P. U. $ {{producto.precioLista | number:'1.0-2':'es-AR' }}</span>
           <div [class.seleccionado]="esCantidadBonificada()">
-            P. U. Bonificado&nbsp;<span *ngIf="producto.bulto > 1">x Cantidad&nbsp;</span>
+            P. U. Bonif.<span *ngIf="producto.bulto > 1"> x Cant. </span>
             $ {{ producto.precioListaBonificado | number:'1.0-2':'es-AR' }}
           </div>
         </div>

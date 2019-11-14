@@ -47,7 +47,7 @@
                 <div *ngIf="!icc.producto.oferta">
                   <span [class.seleccionado]="!estaBonificado(icc)">P. U. $ {{ icc.producto.precioLista | number:'1.0-2':'es-AR'}}</span><br>
                   <span [class.seleccionado]="estaBonificado(icc)" *ngIf="icc.producto.precioListaBonificado">
-                  P. U. Bonificado&nbsp;<span *ngIf="icc.producto.bulto > 1">x Cantidad&nbsp;</span>
+                  P. U. Bonif.<span *ngIf="icc.producto.bulto > 1"> x Cant. </span>
                   $ {{ icc.producto.precioListaBonificado | number:'1.0-2':'es-AR'}}
                 </span>
                 </div>
