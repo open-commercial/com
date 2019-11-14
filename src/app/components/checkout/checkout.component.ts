@@ -30,8 +30,8 @@ enum OpcionEnvioUbicacion {
 }
 
 enum OpcionPago {
-  REALIZAR_PAGO_MAS_TARDE = 'REALIZAR_PAGO_MAS_TARDE',
-  COMPONENTE_DE_PAGO = 'COMPONENTE_DE_PAGO',
+  PAGAR_AHORA = 'PAGAR_AHORA',
+  PAGAR_LUEGO = 'PAGAR_LUEGO',
 }
 
 const sucursalValidator: ValidatorFn = (control: FormGroup): ValidationErrors | null => {
@@ -376,7 +376,7 @@ export class CheckoutComponent implements OnInit {
   }
 
   cancelarComponentePago() {
-    this.pagoForm.get('opcionPago').setValue(OpcionPago.REALIZAR_PAGO_MAS_TARDE);
+    this.pagoForm.get('opcionPago').setValue(OpcionPago.PAGAR_LUEGO);
   }
 
   updated(pago: NuevoPagoMercadoPago) {
