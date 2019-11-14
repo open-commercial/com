@@ -358,6 +358,8 @@ export class CheckoutComponent implements OnInit {
         nuevoPagoMercadoPago: pago,
       };
 
+      // console.log(orden); return;
+
       this.carritoCompraService.enviarOrden(orden)
         .pipe(finalize(() => this.enviarOrdenLoading = false))
         .subscribe(

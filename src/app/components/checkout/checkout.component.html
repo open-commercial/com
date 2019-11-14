@@ -124,8 +124,8 @@
         <br>
         <label id="opcion-pago">Seleccione una opción:</label><br><br>
         <mat-button-toggle-group formControlName="opcionPago" aria-label="Opción de Pago">
-          <mat-button-toggle [value]="opcionPago.PAGAR_AHORA">PAGAR AHORA</mat-button-toggle>
-          <mat-button-toggle [value]="opcionPago.PAGAR_LUEGO">PAGAR LUEGO</mat-button-toggle>
+          <mat-button-toggle [value]="opcionPago.PAGAR_AHORA">Pagar Ahora</mat-button-toggle>
+          <mat-button-toggle [value]="opcionPago.PAGAR_LUEGO">Pagar Luego</mat-button-toggle>
         </mat-button-toggle-group>
         <br><br>
         <div *ngIf="pagoForm.get('opcionPago').value === opcionPago.PAGAR_AHORA && total && !enviarOrdenLoading">
