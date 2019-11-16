@@ -1,4 +1,4 @@
-<div *ngIf="ubicacion && !inEdition">
+<div *ngIf="!inEdition">
   <span fxLayout="row" fxLayoutGap=".7rem" fxLayoutAlign="start center">
     <mat-icon>location_on</mat-icon>
     <span>{{ getUbicacionLabel() }}</span>
@@ -6,7 +6,7 @@
   <br>
   <button mat-raised-button type="button" color="primary" (click)="toggleEdit()">Modificar</button>
 </div>
-<form [formGroup]="ubicacionForm" (ngSubmit)="submit()" *ngIf="!ubicacion || (ubicacion && inEdition)" fxLayout="column" fxLayoutGap="0.5rem">
+<form [formGroup]="ubicacionForm" (ngSubmit)="submit()" *ngIf="inEdition" fxLayout="column" fxLayoutGap="0.5rem">
   <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.5rem">
     <div class="ng-select-wrapper" fxFlex="50" fxLayout="row">
       <ng-select [items]="provincias"
@@ -65,6 +65,6 @@
   </mat-form-field>
   <div fxLayoutGap="0.5rem">
     <button mat-raised-button type="submit" color="primary" [disabled]="isProvinciasLoading || isLocalidadesLoading">Guardar</button>
-    <button *ngIf="ubicacion" mat-raised-button type="button" (click)="toggleEdit()">Cancelar</button>
+    <button mat-raised-button type="button" (click)="toggleEdit()">Cancelar</button>
   </div>
 </form>

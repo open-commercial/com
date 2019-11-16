@@ -97,10 +97,6 @@ export class CheckoutComponent implements OnInit {
   @ViewChild('stepper', { static: false })
   stepper: MatStepper;
 
-  @ViewChild('observacionesTextArea', { static: false })
-  observacionesTextAreaRef: ElementRef;
-  observacionesMaxLength = 200;
-
   constructor(private productosService: ProductosService,
               private carritoCompraService: CarritoCompraService,
               private avisoService: AvisoService,
@@ -187,7 +183,6 @@ export class CheckoutComponent implements OnInit {
     });
 
     this.pagoForm = this.fb.group({
-      observaciones: ['', Validators.maxLength(this.observacionesMaxLength)],
       opcionPago: ['', Validators.required]
     });
   }
@@ -354,7 +349,7 @@ export class CheckoutComponent implements OnInit {
         idCliente: this.cliente.idCliente,
         idUsuario: Number(this.authService.getLoggedInIdUsuario()),
         tipoDeEnvio: tipoDeEnvio,
-        observaciones : this.pagoForm.get('observaciones').value,
+        observaciones: null,
         nuevoPagoMercadoPago: pago,
       };
 
@@ -407,12 +402,6 @@ export class CheckoutComponent implements OnInit {
       }
     }
     return ret;
-  }
-
-  changeStep($event) {
-    if ($event.selectedIndex === 2) {
-      setTimeout(() => this.observacionesTextAreaRef.nativeElement.focus(), 300);
-    }
   }
 
   irAlCarrito() {

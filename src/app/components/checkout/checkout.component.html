@@ -6,7 +6,7 @@
     <mat-icon>keyboard_arrow_left</mat-icon>
     <strong>Ir al carrito</strong>
   </div>
-  <mat-vertical-stepper *ngIf="!isLoading" linear #stepper (selectionChange)="changeStep($event)">
+  <mat-vertical-stepper *ngIf="!isLoading" linear #stepper>
     <mat-step [stepControl]="datosDelClienteForm" *ngIf="datosDelClienteForm">
       <form [formGroup]="datosDelClienteForm">
         <ng-template matStepLabel>
@@ -68,7 +68,7 @@
           </div>
           <div *ngIf="opcionEnvioForm.get('opcionEnvio').value === opcionEnvio.ENVIO_A_DOMICILIO" fxLayout="column">
             <mat-form-field>
-              <mat-select formControlName="opcionEnvioUbicacion" placeholder="Seleccione una ubicación">
+              <mat-select formControlName="opcionEnvioUbicacion" placeholder="Seleccione una ubicación" [disabled]="ubicacionFacturacionInEdition || ubicacionEnvioInEdition">
                 <mat-option [value]="opcionEnvioUbicacion.USAR_UBICACION_FACTURACION">Usar ubicación de facturación</mat-option>
                 <mat-option [value]="opcionEnvioUbicacion.USAR_UBICACION_ENVIO">Usar ubicación de envío</mat-option>
               </mat-select>
@@ -103,18 +103,8 @@
     <mat-step [stepControl]="pagoForm" *ngIf="pagoForm">
       <form [formGroup]="pagoForm">
         <ng-template matStepLabel>Pago</ng-template>
-        <mat-form-field fxFlexFill class="observaciones">
-          <textarea matInput placeholder="Observaciones" formControlName="observaciones" rows="3"
-                    #observacionesTextArea></textarea>
-          <mat-error *ngIf="pagoForm.get('observaciones').hasError('maxlength')">
-            Máximo 200 caracteres
-          </mat-error>
-          <mat-hint align="end">
-            {{pagoForm.get('observaciones').value.length}} / {{ observacionesMaxLength}}
-          </mat-hint>
-        </mat-form-field>
         <div fxLayoutAlign="space-between center" fxLayout="column" *ngIf="!loadingTotales && cliente" class="resumen"
-             fxLayoutGap=".8rem">
+             fxLayoutGap="0.3rem">
           <div>Cant. de Artículos: {{ cantidadArticulos| number:'1.0-2':'es-AR' }}</div>
           <div>Total: <span class="valor">$ {{ total| number:'1.0-2':'es-AR' }}</span></div>
         </div>
@@ -122,7 +112,6 @@
           <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
         </div>
         <br>
-        <label id="opcion-pago">Seleccione una opción:</label><br><br>
         <mat-button-toggle-group formControlName="opcionPago" aria-label="Opción de Pago">
           <mat-button-toggle [value]="opcionPago.PAGAR_AHORA">Pagar Ahora</mat-button-toggle>
           <mat-button-toggle [value]="opcionPago.PAGAR_LUEGO">Pagar Luego</mat-button-toggle>
