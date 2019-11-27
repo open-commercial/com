@@ -8,13 +8,13 @@
       <strong>Volver</strong>
     </div>
     <div fxLayout="column" fxLayoutAlign="start center">
-      <img class="sic-com-img-producto" [src]="producto.urlImagen" (click)="toggleImgViewer()">
+      <img class="sic-com-img-producto" [src]="producto.urlImagen" (click)="toggleImgViewer()" [alt]="'Imágen del producto ' + producto.descripcion">
       <button mat-icon-button color="primary" (click)="toggleImgViewer()">
         <mat-icon aria-label="Pantalla completa">zoom_in</mat-icon>
       </button>
       <div class="img-viewer" *ngIf="imgViewerVisible">
         <div fxLayout="column" fxLayoutAlign="center center" fxFill>
-          <img [src]="producto.urlImagen" (click)="toggleImgViewer()">
+          <img [src]="producto.urlImagen" (click)="toggleImgViewer()" [alt]="'Imágen del producto ' + producto.descripcion">
           <button mat-button color="primary" (click)="toggleImgViewer()">
             <mat-icon aria-label="Cerrar imagen">close</mat-icon> CERRAR
           </button>
@@ -81,7 +81,6 @@
           <mat-spinner [diameter]="50" [strokeWidth]="6" *ngIf="cargandoAlCarrito"></mat-spinner>
         </div>
         <div fxLayoutAlign="center center" class="sic-com-controles-cantidad" *ngIf="!authService.isAuthenticated()">
-          <!--<button mat-raised-button fxFill routerLink="/login" color="primary">-->
           <button mat-raised-button fxFill [routerLink]="['/login', {'pid': producto.idProducto}]" color="primary">
             <mat-icon>shopping_cart</mat-icon>
             Comprar

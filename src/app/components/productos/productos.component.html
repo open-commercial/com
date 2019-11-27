@@ -8,7 +8,7 @@
   <mat-nav-list class="sic-com-listado" disableRipple="true">
     <div *ngFor="let p of productos">
       <mat-list-item [routerLink]="['/producto/' + p.idProducto]">
-        <img mat-list-avatar class="sic-com-avatar" [src]=p.urlImagen>
+        <img mat-list-avatar class="sic-com-avatar" [src]="p.urlImagen" alt="">
         <p mat-line class="sic-com-codigo">
           {{p.codigo}}
           <mat-chip-list *ngIf="p.oferta" class="sic-com-oferta">

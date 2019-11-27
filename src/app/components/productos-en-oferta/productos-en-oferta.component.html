@@ -26,12 +26,6 @@
         <mat-card-header fxLayoutAlign="end center">
           <mat-card-title fxLayout="column" fxLayoutAlign="center end">
             <div>
-              <!--x{{ p.bulto }} {{ p.nombreMedida }}
-              <mat-chip-list>
-                <mat-chip class="sic-com-stock">
-                  {{ p.porcentajeBonificacionOferta }}% OFF!
-                </mat-chip>
-              </mat-chip-list>-->
               <span class="precio bonificado">
                 <span *ngIf="p.bulto > 1">Llevando {{ p.bulto }}+ {{ p.nombreMedida }}</span>
                 $ {{ p.precioListaBonificado | number:'1.0-2':'es-AR' }}

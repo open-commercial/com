@@ -105,8 +105,7 @@ export class CheckoutComponent implements OnInit {
               private sucursalService: SucursalService,
               private ubicacionesService: UbicacionesService,
               private fb: FormBuilder,
-              private router: Router,
-              private pagosService: PagosService) {
+              private router: Router) {
   }
 
   ngOnInit() {
@@ -201,6 +200,11 @@ export class CheckoutComponent implements OnInit {
     this.ubicacionFacturacion = c ? c.ubicacionFacturacion : null;
     this.ubicacionEnvio = c ? c.ubicacionEnvio : null;
     this.getTotalesInfo();
+    if (this.cliente.bonificacion <= 0) {
+      this.pagoForm.get('opcionPago').setValue(OpcionPago.PAGAR_AHORA);
+    } else {
+      this.pagoForm.get('opcionPago').setValue(null);
+    }
   }
 
   getSucursales() {
@@ -353,8 +357,6 @@ export class CheckoutComponent implements OnInit {
         nuevoPagoMercadoPago: pago,
       };
 
-      // console.log(orden); return;
-
       this.carritoCompraService.enviarOrden(orden)
         .pipe(finalize(() => this.enviarOrdenLoading = false))
         .subscribe(
@@ -373,7 +375,11 @@ export class CheckoutComponent implements OnInit {
   }
 
   cancelarComponentePago() {
-    this.pagoForm.get('opcionPago').setValue(OpcionPago.PAGAR_LUEGO);
+    if (this.cliente.bonificacion > 0) {
+      this.pagoForm.get('opcionPago').setValue(OpcionPago.PAGAR_LUEGO);
+    } else {
+      this.router.navigateByUrl('/');
+    }
   }
 
   updated(pago: NuevoPagoMercadoPago) {

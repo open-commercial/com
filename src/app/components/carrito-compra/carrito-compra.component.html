@@ -9,7 +9,7 @@
         <div>Cant. de Artículos: {{cantidadArticulos | number:'1.0-2':'es-AR' }}</div>
         <div>Total: <span>$ {{total | number:'1.0-2':'es-AR' }}</span></div>
       </div>
-      <div class="sic-com-botonera" fxLayout.lt-sm="column-reverse" fxLayout="row" fxLayoutAlign.lt-sm="none none" fxLayoutAlign="space-around center" fxLayoutGap=".7rem"> <!--fxLayout.lt-sm="column" fxLayoutAlign="space-around center"-->
+      <div class="sic-com-botonera" fxLayout.lt-sm="column-reverse" fxLayout="row" fxLayoutAlign.lt-sm="none none" fxLayoutAlign="space-around center" fxLayoutGap=".7rem">
         <button mat-raised-button (click)="vaciarCarritoCompra()" [disabled]="!itemsCarritoCompra.length || disabledButtons()">
           <mat-icon>remove_shopping_cart</mat-icon> Limpiar Listado
         </button>
@@ -23,7 +23,7 @@
         <div matLine fxLayout="row" fxLayout.lt-sm="column">
           <div fxLayout fxFlex="60">
             <div fxFlex="30" fxLayoutAlign="center center">
-              <img mat-list-avatar class="sic-com-img-avatar" [src]=icc.producto.urlImagen>
+              <img mat-list-avatar class="sic-com-img-avatar" [src]="icc.producto.urlImagen" alt="">
             </div>
             <div class="sic-com-producto-info" fxFlex="70" fxLayoutAlign="center start" fxLayout="column" [routerLink]="['/producto/' + icc.producto.idProducto]">
               <div>

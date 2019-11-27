@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange} from '@angular/core';
+import {Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange, ViewChild} from '@angular/core';
 import {environment} from '../../../environments/environment';
 import {DynamicScriptLoaderService} from '../../services/dynamic-script-loader.service';
 import {AbstractControl, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
@@ -18,11 +18,13 @@ import {formatNumber} from '@angular/common';
 export class MercadoPagoComponent implements OnInit, OnChanges {
 
   @Input() cliente: Cliente = null;
-  @Input() monto = 1;
+  @Input() monto;
   @Input() showMontoControl = false;
   // @Output() updated  = new EventEmitter<boolean>(true);
   @Output() updated  = new EventEmitter<NuevoPagoMercadoPago>(true);
   @Output() canceled = new EventEmitter<void>(true);
+
+  @ViewChild('montoInput', { static: false }) montoInput: ElementRef;
 
   loading = false;
   mp = null;
@@ -58,7 +60,6 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
       this.mp.setPublishableKey(environment.mercadoPagoPublicKey);
       this.mp.getAllPaymentMethods((s, d: [any]) => {
         this.paymentMethods = d.filter(function(v) { return v['status'] === 'active'; });
-        // console.log(this.paymentMethods);
         this.pagosEfectivo = this.paymentMethods.filter(function (v) {
           return ['ticket', 'atm', 'bank_transfer', 'prepaid_card'].indexOf(v['payment_type_id']) >= 0 &&
             ['bapropagos', 'redlink'].indexOf(v['id']) < 0;

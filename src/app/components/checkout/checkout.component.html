@@ -112,7 +112,7 @@
           <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
         </div>
         <br>
-        <mat-button-toggle-group formControlName="opcionPago" aria-label="Opción de Pago">
+        <mat-button-toggle-group formControlName="opcionPago" aria-label="Opción de Pago" *ngIf="cliente.bonificacion">
           <mat-button-toggle [value]="opcionPago.PAGAR_AHORA">Pagar Ahora</mat-button-toggle>
           <mat-button-toggle [value]="opcionPago.PAGAR_LUEGO">Pagar Luego</mat-button-toggle>
         </mat-button-toggle-group>
