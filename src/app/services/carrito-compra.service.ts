@@ -17,7 +17,7 @@ export class CarritoCompraService {
   constructor(private http: HttpClient) {}
 
   getCarritoCompra(idCliente: number): Observable<CarritoCompra> {
-    const idUsuario = localStorage.getItem('id_Usuario');
+    const idUsuario = localStorage.getItem('idUsuario');
     return this.http.get<CarritoCompra>(`${this.uri}/usuarios/${idUsuario}/clientes/${idCliente}`);
   }
 
@@ -26,25 +26,25 @@ export class CarritoCompraService {
   }
 
   actualizarAlPedido(producto, cantidad) {
-    const idUsuario = localStorage.getItem('id_Usuario');
+    const idUsuario = localStorage.getItem('idUsuario');
     const uriPost = `${this.uri}/usuarios/${idUsuario}/productos/${producto['idProducto']}?cantidad=${cantidad}`;
     return this.http.post(uriPost, {});
   }
 
   getItems(idCliente: number, pagina: number) {
-    const idUsuario = localStorage.getItem('id_Usuario');
+    const idUsuario = localStorage.getItem('idUsuario');
     const uriGet = `${this.uri}/usuarios/${idUsuario}/clientes/${idCliente}/items?pagina=${pagina}`;
     return this.http.get(uriGet);
   }
 
   eliminarTodosLosItems() {
-    const idUsuario = localStorage.getItem('id_Usuario');
+    const idUsuario = localStorage.getItem('idUsuario');
     const urlDelete = `${this.uri}/usuarios/${idUsuario}`;
     return this.http.delete(urlDelete);
   }
 
   eliminarItem(id: number) {
-    const idUsuario = localStorage.getItem('id_Usuario');
+    const idUsuario = localStorage.getItem('idUsuario');
     const uriDelete = `${this.uri}/usuarios/${idUsuario}/productos/${id}`;
     return this.http.delete(uriDelete);
   }
@@ -54,7 +54,7 @@ export class CarritoCompraService {
   }
 
   getCantidadEnCarrito(idProducto): Observable<ItemCarritoCompra> {
-    const idUsuario = localStorage.getItem('id_Usuario');
+    const idUsuario = localStorage.getItem('idUsuario');
     return this.http.get<ItemCarritoCompra>(`${this.uri}/usuarios/${idUsuario}/productos/${idProducto}`);
   }
 }
