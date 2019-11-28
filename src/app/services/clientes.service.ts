@@ -15,7 +15,7 @@ export class ClientesService {
 
   getClientes(nombre, pagina) {
     return this.http.post(this.uriClientes + '/busqueda/criteria?',
-      {idEmpresa: environment.idEmpresa, nombreFiscal: nombre, nombreFantasia: nombre, nroCliente: nombre, pagina: pagina});
+      {nombreFiscal: nombre, nombreFantasia: nombre, nroCliente: nombre, pagina: pagina});
   }
 
   setClienteSeleccionado(cliente) {
@@ -38,7 +38,7 @@ export class ClientesService {
   }
 
   getClienteDelUsuario(idUsuario): Observable<Cliente> {
-    return this.http.get<Cliente>(this.uriClientes + '/usuarios/' + idUsuario + '/empresas/' + environment.idEmpresa);
+    return this.http.get<Cliente>(this.uriClientes + '/usuarios/' + idUsuario);
   }
 
   getCliente(idCliente): Observable<Cliente> {
@@ -46,7 +46,6 @@ export class ClientesService {
   }
 
   saveCliente(cliente) {
-    cliente.idEmpresa = environment.idEmpresa;
     return this.http.put(this.uriClientes, cliente);
   }
 }

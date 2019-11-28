@@ -3,11 +3,10 @@
     <mat-radio-group fxLayout="column" fxLayoutGap="1rem" formControlName="opcionPago">
       <mat-radio-button color="primary" *ngFor="let op of opcionesPago" [value]="op.value">{{ op.text }}</mat-radio-button>
     </mat-radio-group>
-    <br>
-    <div fxLayout="row" fxLayoutGap="0.7rem" fxLayoutAlign="start center" style="margin-bottom: 0.7rem;">
+    <div fxLayout="row" fxLayoutGap="0.7rem" fxLayoutAlign="start center" style="margin-top: 1rem">
       <mat-form-field *ngIf="showMontoControl && mpForm.get('monto')" fxFlex="50" fxFlex.xs="100">
         <mat-icon matPrefix>attach_money</mat-icon>
-        <input type="number" min="1" matInput formControlName="monto" placeholder="Monto" required>
+        <input type="number" min="1" matInput formControlName="monto" placeholder="Monto" required #montoInput>
         <mat-error *ngIf="mpForm.get('monto').hasError('required')">
           Requerido
         </mat-error>
@@ -21,10 +20,6 @@
           {{ amountNotAllowedErrorMsg }}
         </mat-error>
       </mat-form-field>
-      <div fxLayout="row" fxLayoutGap="0.5rem" fxLayoutAlign="start center" *ngIf="!showMontoControl">
-        <mat-icon>attach_money</mat-icon>
-        <span>{{ monto| number:'1.0-2':'es-AR' }}</span>
-      </div>
     </div>
     <div *ngIf="mpForm.get('opcionPago').value == opcionPago.TARJETA_CREDITO || mpForm.get('opcionPago').value == opcionPago.TARJETA_DEBITO" fxLayout="column" fxLayoutGap="0.5rem">
       <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.7rem">
@@ -78,6 +73,7 @@
         <mat-form-field fxFlex>
           <mat-label>Mes de Vencimiento</mat-label>
           <select required matNativeControl id="cardExpirationMonth" data-checkout="cardExpirationMonth" formControlName="cardExpirationMonth">
+            <option value=""></option>
             <option *ngFor="let m of meses" [value]="m">{{ m }}</option>
           </select>
           <mat-error *ngIf="mpForm.get('cardExpirationMonth').hasError('required')">
@@ -90,6 +86,7 @@
         <mat-form-field fxFlex>
           <mat-label>Año de Vencimiento</mat-label>
           <select required matNativeControl id="cardExpirationYear" data-checkout="cardExpirationYear" formControlName="cardExpirationYear">
+            <option value=""></option>
             <option *ngFor="let a of anios" [value]="a">{{ a }}</option>
           </select>
           <mat-error *ngIf="mpForm.get('cardExpirationYear').hasError('required')">

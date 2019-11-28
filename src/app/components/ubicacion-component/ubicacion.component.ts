@@ -123,7 +123,7 @@ export class UbicacionComponent implements OnInit, OnChanges {
   }
 
   getUbicacionLabel() {
-    if (!this.ubicacion) { return ''; }
+    if (!this.ubicacion) { return '(Sin ubicación)'; }
     const arr = [];
     arr.push(this.ubicacion.calle ? this.ubicacion.calle : '');
     arr.push(this.ubicacion.numero ? this.ubicacion.numero : '');

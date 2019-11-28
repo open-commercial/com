@@ -10,7 +10,7 @@ export class RegistracionService {
   constructor(private http: HttpClient) {}
 
   registrar(reg) {
-    reg.idEmpresa = environment.idEmpresa;
+    reg.idSucursal = environment.idSucursal;
     return this.http.post(this.url, reg);
   }
 }

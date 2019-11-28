@@ -1,10 +1,10 @@
-import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange} from '@angular/core';
+import {Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange, ViewChild} from '@angular/core';
 import {environment} from '../../../environments/environment';
 import {DynamicScriptLoaderService} from '../../services/dynamic-script-loader.service';
 import {AbstractControl, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Cliente} from '../../models/cliente';
 import {AvisoService} from '../../services/aviso.service';
-import {MPOpcionPago, MPPago} from '../../models/mercadopago/mp-pago';
+import {MPOpcionPago, NuevoPagoMercadoPago} from '../../models/mercadopago/nuevo-pago-mercado-pago';
 import {errorsInfo} from '../../models/mercadopago/errors';
 import {PagosService} from '../../services/pagos.service';
 import {debounceTime, finalize} from 'rxjs/operators';
@@ -18,10 +18,13 @@ import {formatNumber} from '@angular/common';
 export class MercadoPagoComponent implements OnInit, OnChanges {
 
   @Input() cliente: Cliente = null;
-  @Input() monto = 1;
+  @Input() monto;
   @Input() showMontoControl = false;
-  @Output() updated  = new EventEmitter<boolean>(true);
+  // @Output() updated  = new EventEmitter<boolean>(true);
+  @Output() updated  = new EventEmitter<NuevoPagoMercadoPago>(true);
   @Output() canceled = new EventEmitter<void>(true);
+
+  @ViewChild('montoInput', { static: false }) montoInput: ElementRef;
 
   loading = false;
   mp = null;
@@ -36,7 +39,7 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
   ];
   opcionPago = MPOpcionPago;
   pmSecureThumbnail = '';
-  pago: MPPago = null;
+  pago: NuevoPagoMercadoPago = null;
   cft = '';
   tea = '';
   mpErrors = [];
@@ -297,7 +300,7 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
   checkPaymentAmount() {
     this.removeError(this.mpForm.get('monto'), 'amount_not_allowed');
     const op: MPOpcionPago = this.mpForm.get('opcionPago').value;
-    const monto = this.mpForm.get('monto').value;
+    const monto = this.mpForm.get('monto') && this.mpForm.get('monto').value;
 
     if (!op || !monto) { return; }
     let pm = this.mpForm.get('paymentMethod').value;
@@ -345,15 +348,20 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
 
     const pago = {
       issuerId: data.installmentsPaymentMethod ? data.installmentsPaymentMethod.issuer.id : null,
+      paymentTypeId: data.installmentsPaymentMethod ? data.installmentsPaymentMethod.payment_type_id : data.paymentMethod.payment_type_id,
       paymentMethodId: data.installmentsPaymentMethod ? data.installmentsPaymentMethod.payment_method_id : data.paymentMethod.id,
       installments: data.opcionPago === MPOpcionPago.TARJETA_CREDITO || data.opcionPago === MPOpcionPago.TARJETA_CREDITO
         ? data.installments.cuotas : null,
       token: data.opcionPago === MPOpcionPago.TARJETA_CREDITO || data.opcionPago === MPOpcionPago.TARJETA_DEBITO ? data.token : null,
       idCliente: this.cliente.idCliente,
+      idSucursal: environment.idSucursal,
       monto: this.monto,
     };
 
-    this.loading = true;
+    this.updated.emit(pago);
+    this.mp.clearSession();
+
+    /*this.loading = true;
     this.pagosService.generarMPPago(pago)
       .pipe(finalize(() => {
         this.loading = false;
@@ -370,11 +378,9 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
             );
           }
         },
-        err => {
-          this.avisoService.openSnackBar(err.error, 'OK', 0);
-        }
+        err => this.avisoService.openSnackBar(err.error, 'OK', 0)
       )
-    ;
+    ;*/
   }
 
   cancel() {

@@ -12,6 +12,7 @@ import {finalize} from 'rxjs/operators';
 import {Producto} from '../../models/producto';
 import {AgregarAlCarritoDialogComponent} from '../agregar-al-carrito-dialog/agregar-al-carrito-dialog.component';
 import {Location} from '@angular/common';
+import {ItemCarritoCompra} from '../../models/item-carrito-compra';
 
 @Component({
   selector: 'sic-com-carrito-compra',
@@ -203,5 +204,9 @@ export class CarritoCompraComponent implements OnInit {
   paginaSiguiente() {
     if (this.pagina + 1 >= this.totalPaginas) { return; }
     this.router.navigate(['/carrito-compra'], { queryParams: { p: this.pagina + 2 } });
+  }
+
+  estaBonificado(icc: ItemCarritoCompra) {
+    return  icc.importeBonificado;
   }
 }

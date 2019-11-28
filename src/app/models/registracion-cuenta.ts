@@ -8,6 +8,5 @@ export interface RegistracionCuenta {
   categoriaIVA: CategoriaIVA;
   nombreFiscal: string;
   password: string;
-  idEmpresa: number;
   recaptcha: string;
 }

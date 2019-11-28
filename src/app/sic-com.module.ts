@@ -19,7 +19,7 @@ import {ClientesService} from './services/clientes.service';
 import {AuthGuard} from './guards/auth.guard';
 import {JwtInterceptor} from './interceptors/jwt.interceptor';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
-import {EmpresasService} from './services/empresas.service';
+import {SucursalService} from './services/sucursal.service';
 import {AvisoService} from './services/aviso.service';
 import {ContainerComponent} from './components/container/container.component';
 import {ConfirmationDialogComponent} from './components/confirmation-dialog/confirmation-dialog.component';
@@ -38,7 +38,7 @@ import {RegistracionService} from './services/registracion.service';
 import {CheckoutComponent} from './components/checkout/checkout.component';
 import {SlideshowModule} from 'ng-simple-slideshow';
 import {HomeComponent} from './components/home/home.component';
-import {ProductosDestacadosComponent} from './components/productos-destacados/productos-destacados.component';
+import {ProductosEnOfertaComponent} from './components/productos-en-oferta/productos-en-oferta.component';
 import {UbicacionFormComponent} from './components/ubicacion-form/ubicacion-form.component';
 import {UbicacionComponent} from './components/ubicacion-component/ubicacion.component';
 import {ClienteUbicacionesComponent} from './components/cliente-ubicaciones/cliente-ubicaciones.component';
@@ -78,7 +78,7 @@ registerLocaleData(localeEs, 'es-AR', localeEsExtra);
     CuentaCorrienteComponent,
     CheckoutComponent,
     HomeComponent,
-    ProductosDestacadosComponent,
+    ProductosEnOfertaComponent,
     UbicacionFormComponent,
     UbicacionComponent,
     ClienteUbicacionesComponent,
@@ -111,7 +111,7 @@ registerLocaleData(localeEs, 'es-AR', localeEsExtra);
     ProductosService,
     CarritoCompraService,
     ClientesService,
-    EmpresasService,
+    SucursalService,
     AvisoService,
     UsuariosService,
     PedidosService,

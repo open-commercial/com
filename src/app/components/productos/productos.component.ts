@@ -78,8 +78,8 @@ export class ProductosComponent implements OnInit, OnDestroy {
     );
   }
 
-  estaBonificado(p) {
-    return this.authService.isAuthenticated() && p.precioBonificado !== p.precioLista;
+  estaBonificado(p: Producto) {
+    return this.authService.isAuthenticated() && p.precioListaBonificado && p.precioListaBonificado !== p.precioLista;
   }
 
   paginaAnterior() {

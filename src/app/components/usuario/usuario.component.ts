@@ -87,7 +87,7 @@ export class UsuarioComponent implements OnInit {
   getFormValues(): Usuario {
     return {
       idUsuario: this.usuario.idUsuario,
-      idEmpresaPredeterminada: this.usuario.idEmpresaPredeterminada,
+      idSucursalPredeterminada: this.usuario.idSucursalPredeterminada,
       username: this.usuarioForm.get('username').value,
       apellido: this.usuarioForm.get('apellido').value,
       nombre: this.usuarioForm.get('nombre').value,

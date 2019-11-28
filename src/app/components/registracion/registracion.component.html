@@ -4,7 +4,7 @@
     <strong>Ir a la Portada</strong>
   </a>
   <div fxLayout="column" fxLayoutAlign="center center">
-    <img src="https://res.cloudinary.com/hf0vu1bg2/image/upload/v1557317348/assets/logo-globodeoro-500x500px.png">
+    <img src="https://res.cloudinary.com/hf0vu1bg2/image/upload/v1557317348/assets/logo-globodeoro-500x500px.png" alt="logo">
     <h1>Registración</h1>
     <form [formGroup]="registracionForm" (ngSubmit)="registrar()" fxLayout="column">
       <div fxLayout="column" fxLayoutGap=".5rem">
@@ -90,8 +90,8 @@
         <span><br></span>
       </mat-action-row>
       <div fxLayout="column" fxLayoutGap=".7em" *ngIf="!loading">
-        <button fxFill mat-raised-button color="primary">Registrarme</button>
-        <a fxFill mat-raised-button routerLink="/login">Volver al Ingreso</a>
+          <button mat-raised-button color="primary">Registrarme</button>
+          <a mat-raised-button routerLink="/login">Volver al Ingreso</a>
       </div>
     </form>
     <div *ngIf="loading" fxLayout="row" fxLayoutAlign="center center">

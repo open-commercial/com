@@ -50,6 +50,34 @@
     font-size: 12px;
   }
 
+  .sic-com-oferta {
+    display: inline-block;
+    margin-left: 0.2rem;
+    mat-chip {
+      min-height: 22px;
+      font-size: 0.85rem;
+      background: limegreen;
+      color: white;
+    }
+  }
+
+  .oferta-cantidad {
+    color: limegreen;
+    font-weight: bold;
+    font-size: 0.85em;
+  }
+
+  .precios {
+    color: darkgray;
+  }
+  .seleccionado {
+    font-weight: bold;
+    color: rgba(0, 0, 0, 0.87);
+  }
+  .tachado {
+    text-decoration: line-through;
+  }
+
   .sic-com-descripcion-producto {
     color: $color-primary;
     font-weight: bold;

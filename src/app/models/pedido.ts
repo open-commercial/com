@@ -6,7 +6,7 @@ export interface Pedido {
   fecha: Date;
   fechaVencimiento: Date;
   observaciones: string;
-  nombreEmpresa: string;
+  nombreSucursal: string;
   eliminado: boolean;
   nombreFiscalCliente: string;
   nombreUsuario: string;

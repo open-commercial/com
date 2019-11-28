@@ -22,7 +22,7 @@ export class ProductosService {
   }
 
   getBusquedaCriteria(pagina: number): BusquedaProductoCriteria {
-    return {codigo: this.getInputCriteria(), descripcion: this.getInputCriteria(), pagina: pagina, idEmpresa: environment.idEmpresa};
+    return {codigo: this.getInputCriteria(), descripcion: this.getInputCriteria(), pagina: pagina};
   }
 
   getProductosSoloPublicos(pagina: number) {
@@ -31,10 +31,9 @@ export class ProductosService {
     return this.http.post(this.urlBusqueda, criteria);
   }
 
-  getProductosDestacados(pagina: number) {
+  getProductosEnOferta(pagina: number) {
     return this.http.post(this.urlBusqueda, {
-      idEmpresa: environment.idEmpresa,
-      destacado: true,
+      oferta: true,
       pagina: pagina
     });
   }

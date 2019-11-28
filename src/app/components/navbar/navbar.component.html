@@ -3,7 +3,7 @@
     <div fxHide fxShow.gt-sm fxFlex.gt-sm="5"></div>
     <div fxFlex="20" fxLayoutAlign="center center">
       <img src="https://res.cloudinary.com/hf0vu1bg2/image/upload/v1557317339/assets/logo-globodeoro-200x200px.png"
-           class="sic-com-logo-chico" ngClass.gt-xs="tablet" ngClass.gt-sm="desktop" routerLink="/">
+           class="sic-com-logo-chico" ngClass.gt-xs="tablet" ngClass.gt-sm="desktop" routerLink="/" alt="logo">
     </div>
     <form id="buscador-form" fxFlex fxLayoutAlign="center center" [formGroup]="busquedaForm" (ngSubmit)="submit()">
       <input class="sic-com-buscador-input" type="search" placeholder="¿Qué busca?" formControlName="criteriaControl">
@@ -12,7 +12,6 @@
       </button>
     </form>
     <div fxFlex="15" fxFlex.gt-sm="20">
-    <!--<div fxFlex="20">-->
       <div fxLayoutAlign="center center" *ngIf="authService.isAuthenticated()">
         <button mat-icon-button fxHide fxShow.gt-sm [matMenuTriggerFor]="menuReducido" matTooltip="Mi Perfil ({{usuarioConectado}})" color="primary">
           <mat-icon>account_circle</mat-icon>

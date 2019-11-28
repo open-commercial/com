@@ -7,7 +7,7 @@ export interface Usuario {
     nombre: string;
     apellido: string;
     email: string;
-    idEmpresaPredeterminada: number;
+    idSucursalPredeterminada: number;
     roles: Array<Rol>;
     habilitado: boolean;
 }

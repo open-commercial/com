@@ -53,6 +53,7 @@ export class AgregarAlCarritoDialogComponent implements OnInit {
   }
 
   aceptar() {
+    if (!this.esCantidadValida()) { return; }
     this.loading = true;
     this.carritoCompraService.actualizarAlPedido(this.producto, this.cantidad)
       .subscribe(
@@ -77,5 +78,12 @@ export class AgregarAlCarritoDialogComponent implements OnInit {
           this.avisoService.openSnackBar(err.error, '', 3500);
         }
       );
+  }
+  esCantidadBonificada() {
+    return this.producto.precioListaBonificado && this.producto.precioListaBonificado !== this.producto.precioLista
+      && this.cantidad >= this.producto.bulto;
+  }
+  esCantidadValida() {
+    return this.cantidad && this.cantidad > 0 && Number(this.cantidad) === parseInt((this.cantidad).toString(), 10);
   }
 }
