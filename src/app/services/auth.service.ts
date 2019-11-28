@@ -62,11 +62,11 @@ export class AuthService {
   }
 
   getLoggedInUsuario(): Observable<Usuario> {
-    return this.usuariosService.getUsuario(localStorage.getItem('id_Usuario'));
+    return this.usuariosService.getUsuario(localStorage.getItem('idUsuario'));
   }
 
   getLoggedInIdUsuario(): string {
-    return localStorage.getItem('id_Usuario');
+    return localStorage.getItem('idUsuario');
   }
 
   solicitarCambioContrasenia(email: string) {
@@ -80,6 +80,6 @@ export class AuthService {
   setAuthenticationInfo(token: string) {
     localStorage.setItem('token', token);
     const decodedToken = this.jwtHelper.decodeToken(token);
-    localStorage.setItem('id_Usuario', decodedToken.idUsuario);
+    localStorage.setItem('idUsuario', decodedToken.idUsuario);
   }
 }
