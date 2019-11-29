@@ -17,7 +17,6 @@ import {UbicacionesService} from '../../services/ubicaciones.service';
 import {TipoDeEnvio} from '../../models/tipo-de-envio';
 import {NuevaOrdenDeCarritoCompra} from '../../models/nueva-orden-de-carrito-compra';
 import {NuevoPagoMercadoPago} from '../../models/mercadopago/nuevo-pago-mercado-pago';
-import {PagosService} from '../../services/pagos.service';
 
 enum OpcionEnvio {
   RETIRO_EN_SUCURSAL = 'RETIRO_EN_SUCURSAL',
@@ -86,16 +85,15 @@ export class CheckoutComponent implements OnInit {
 
   isUbicacionesLoading = false;
 
-  cantidadArticulos: Number = 0;
-  subTotal: Number = 0;
-  total: Number = 0;
+  cantidadArticulos = 0;
+  subTotal = 0;
+  total = 0;
   loadingTotales = false;
   enviarOrdenLoading = false;
 
   opcionPago = OpcionPago;
 
-  @ViewChild('stepper', { static: false })
-  stepper: MatStepper;
+  @ViewChild('stepper', { static: false }) stepper: MatStepper;
 
   constructor(private productosService: ProductosService,
               private carritoCompraService: CarritoCompraService,
@@ -378,7 +376,7 @@ export class CheckoutComponent implements OnInit {
     if (this.cliente.bonificacion > 0) {
       this.pagoForm.get('opcionPago').setValue(OpcionPago.PAGAR_LUEGO);
     } else {
-      this.router.navigateByUrl('/');
+      this.stepper.previous();
     }
   }
 

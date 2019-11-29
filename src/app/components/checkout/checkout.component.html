@@ -32,6 +32,7 @@
           <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
         </div>
         <div *ngIf="!isUbicacionesLoading">
+          <br>
           <mat-button-toggle-group formControlName="opcionEnvio" aria-label="Opción de Envío">
             <mat-button-toggle [value]="opcionEnvio.RETIRO_EN_SUCURSAL" [disabled]="!sucursales.length" color="primary">Retiro en Sucursal</mat-button-toggle>
             <mat-button-toggle [value]="opcionEnvio.ENVIO_A_DOMICILIO" color="primary">Envío a Domicilio</mat-button-toggle>
@@ -52,7 +53,7 @@
               <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
             </div>
             <div *ngIf="!isUbicacionSucursalLoading && ubicacionSucursal && ubicacionSucursal.latitud && ubicacionSucursal.longitud">
-              <agm-map [latitude]="ubicacionSucursal.latitud" [longitude]="ubicacionSucursal.longitud" [zoom]="15" [streetViewControl]="false">
+              <agm-map class="mapa" [latitude]="ubicacionSucursal.latitud" [longitude]="ubicacionSucursal.longitud" [zoom]="15" [streetViewControl]="false">
                 <agm-marker [latitude]="ubicacionSucursal.latitud"
                             [longitude]="ubicacionSucursal.longitud"
                             [title]="getUbicacionStr(ubicacionSucursal)"
@@ -112,11 +113,13 @@
           <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
         </div>
         <br>
-        <mat-button-toggle-group formControlName="opcionPago" aria-label="Opción de Pago" *ngIf="cliente.bonificacion">
-          <mat-button-toggle [value]="opcionPago.PAGAR_AHORA">Pagar Ahora</mat-button-toggle>
-          <mat-button-toggle [value]="opcionPago.PAGAR_LUEGO">Pagar Luego</mat-button-toggle>
-        </mat-button-toggle-group>
-        <br><br>
+        <div *ngIf="cliente.bonificacion">
+          <mat-button-toggle-group formControlName="opcionPago" aria-label="Opción de Pago">
+            <mat-button-toggle [value]="opcionPago.PAGAR_AHORA">Pagar Ahora</mat-button-toggle>
+            <mat-button-toggle [value]="opcionPago.PAGAR_LUEGO">Pagar Luego</mat-button-toggle>
+          </mat-button-toggle-group>
+          <br><br>
+        </div>
         <div *ngIf="pagoForm.get('opcionPago').value === opcionPago.PAGAR_AHORA && total && !enviarOrdenLoading">
           <sic-com-mercado-pago [cliente]="cliente" [monto]="total" (updated)="updated($event)" (canceled)="cancelarComponentePago()"></sic-com-mercado-pago>
           <br>

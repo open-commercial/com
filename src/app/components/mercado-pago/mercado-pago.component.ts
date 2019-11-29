@@ -350,8 +350,7 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
       issuerId: data.installmentsPaymentMethod ? data.installmentsPaymentMethod.issuer.id : null,
       paymentTypeId: data.installmentsPaymentMethod ? data.installmentsPaymentMethod.payment_type_id : data.paymentMethod.payment_type_id,
       paymentMethodId: data.installmentsPaymentMethod ? data.installmentsPaymentMethod.payment_method_id : data.paymentMethod.id,
-      installments: data.opcionPago === MPOpcionPago.TARJETA_CREDITO || data.opcionPago === MPOpcionPago.TARJETA_CREDITO
-        ? data.installments.cuotas : null,
+      installments: data.opcionPago === MPOpcionPago.TARJETA_CREDITO ? data.installments.cuotas : null,
       token: data.opcionPago === MPOpcionPago.TARJETA_CREDITO || data.opcionPago === MPOpcionPago.TARJETA_DEBITO ? data.token : null,
       idCliente: this.cliente.idCliente,
       idSucursal: environment.idSucursal,
@@ -360,27 +359,6 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
 
     this.updated.emit(pago);
     this.mp.clearSession();
-
-    /*this.loading = true;
-    this.pagosService.generarMPPago(pago)
-      .pipe(finalize(() => {
-        this.loading = false;
-        this.mp.clearSession();
-      }))
-      .subscribe(
-        v => {
-          this.updated.emit(true);
-          if (data.opcionPago === MPOpcionPago.EFECTIVO) {
-            this.avisoService.openSnackBar('Recibirá un email con los datos para realizar el deposito', 'OK', 0);
-          } else {
-            this.avisoService.openSnackBar(
-              'Su pago ingresó correctamente. Puede tardar unos minutos para verse reflejado en su saldo', 'OK', 0
-            );
-          }
-        },
-        err => this.avisoService.openSnackBar(err.error, 'OK', 0)
-      )
-    ;*/
   }
 
   cancel() {
