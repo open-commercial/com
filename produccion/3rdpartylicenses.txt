@@ -164,6 +164,8 @@ THE SOFTWARE.
 
 @angular/material/button
 
+@angular/material/button-toggle
+
 @angular/material/card
 
 @angular/material/chips
