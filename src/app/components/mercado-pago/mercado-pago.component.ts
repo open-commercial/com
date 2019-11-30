@@ -20,6 +20,7 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
   @Input() cliente: Cliente = null;
   @Input() monto;
   @Input() showMontoControl = false;
+  @Input() hideCancelarButton = false;
   // @Output() updated  = new EventEmitter<boolean>(true);
   @Output() updated  = new EventEmitter<NuevoPagoMercadoPago>(true);
   @Output() canceled = new EventEmitter<void>(true);

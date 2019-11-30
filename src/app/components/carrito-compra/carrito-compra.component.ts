@@ -31,7 +31,6 @@ export class CarritoCompraComponent implements OnInit {
   deleting = false;
   mostrarBotonAsignarCliente = true;
   cantidadArticulos = 0;
-  subTotal = 0;
   total = 0;
   cliente: Cliente = null;
 
@@ -102,7 +101,6 @@ export class CarritoCompraComponent implements OnInit {
       )
       .subscribe(data => {
           this.cantidadArticulos = data.cantArticulos;
-          this.subTotal = data.subtotal;
           this.total = data.total;
       },
       err => this.avisoService.openSnackBar(err.error, '', 3500));

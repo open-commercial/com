@@ -86,7 +86,6 @@ export class CheckoutComponent implements OnInit {
   isUbicacionesLoading = false;
 
   cantidadArticulos = 0;
-  subTotal = 0;
   total = 0;
   loadingTotales = false;
   enviarOrdenLoading = false;
@@ -309,7 +308,6 @@ export class CheckoutComponent implements OnInit {
       this.carritoCompraService.getCarritoCompra(this.cliente.idCliente)
         .subscribe(data => {
           this.cantidadArticulos = data.cantArticulos;
-          this.subTotal = data.subtotal;
           this.total = data.total;
           if (this.cantidadArticulos <= 0) {
             this.router.navigate(['carrito-compra']);

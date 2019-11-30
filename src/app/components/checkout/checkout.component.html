@@ -34,8 +34,8 @@
         <div *ngIf="!isUbicacionesLoading">
           <br>
           <mat-button-toggle-group formControlName="opcionEnvio" aria-label="Opción de Envío">
-            <mat-button-toggle [value]="opcionEnvio.RETIRO_EN_SUCURSAL" [disabled]="!sucursales.length" color="primary">Retiro en Sucursal</mat-button-toggle>
-            <mat-button-toggle [value]="opcionEnvio.ENVIO_A_DOMICILIO" color="primary">Envío a Domicilio</mat-button-toggle>
+            <mat-button-toggle class="btn-small" [value]="opcionEnvio.RETIRO_EN_SUCURSAL" [disabled]="!sucursales.length" color="primary">Retiro en Sucursal</mat-button-toggle>
+            <mat-button-toggle class="btn-small" [value]="opcionEnvio.ENVIO_A_DOMICILIO" color="primary">Envío a Domicilio</mat-button-toggle>
           </mat-button-toggle-group>
           <br><br>
           <div *ngIf="opcionEnvioForm.get('opcionEnvio').value === opcionEnvio.RETIRO_EN_SUCURSAL && sucursales.length" fxLayout="column">
@@ -121,7 +121,8 @@
           <br><br>
         </div>
         <div *ngIf="pagoForm.get('opcionPago').value === opcionPago.PAGAR_AHORA && total && !enviarOrdenLoading">
-          <sic-com-mercado-pago [cliente]="cliente" [monto]="total" (updated)="updated($event)" (canceled)="cancelarComponentePago()"></sic-com-mercado-pago>
+          <sic-com-mercado-pago [cliente]="cliente" [monto]="total" [hideCancelarButton]="true"
+                                (updated)="updated($event)" (canceled)="cancelarComponentePago()"></sic-com-mercado-pago>
           <br>
         </div>
         <div *ngIf="!enviarOrdenLoading" class="acciones">
