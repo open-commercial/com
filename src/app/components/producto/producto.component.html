@@ -51,11 +51,8 @@
             </div>
           </div>
           <br>
-          <span class="sic-com-stock" [style.color]="(producto.hayStock ? 'limegreen' : 'red')" *ngIf="!authService.isAuthenticated()">
+          <span class="sic-com-stock" [style.color]="(producto.hayStock ? 'limegreen' : 'red')">
             <strong>{{ producto.hayStock ? "Stock Disponible" : "Sin Stock" }}</strong>
-          </span>
-          <span class="sic-com-stock" [style.color]="(producto.hayStock ? 'limegreen' : 'red')" *ngIf="authService.isAuthenticated()">
-            <strong>{{ producto.hayStock ? "Stock Disponible" + (producto.cantidadTotalEnSucursales ? ": " + (producto.cantidadTotalEnSucursales | number:'1.0-2':'es-AR') + " " + producto.nombreMedida : "") : "Sin Stock" }}</strong>
           </span>
         </div>
         <div fxLayoutAlign="center center" class="sic-com-controles-cantidad" *ngIf="authService.isAuthenticated()">
