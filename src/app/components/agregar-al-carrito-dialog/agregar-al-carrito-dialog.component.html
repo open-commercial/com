@@ -30,7 +30,7 @@
       </div>
       <br>
       <span class="sic-com-stock" [style.color]="(producto.cantidadTotalEnSucursales ? 'green' : 'red')">
-        <strong>{{ producto.cantidadTotalEnSucursales ? "Stock Disponible: " + (producto.cantidadTotalEnSucursales | number:'1.0-2':'es-AR') + " " + producto.nombreMedida : "Sin Stock" }}</strong>
+        <strong>{{ producto.cantidadTotalEnSucursales ? "Stock Disponible" : "Sin Stock" }}</strong>
       </span>
     </div>
   </div>
