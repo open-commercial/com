@@ -7,5 +7,6 @@ export const environment = {
   production: false,
   apiUrl: 'http://localhost:8080',
   idSucursal: 1,
-  mercadoPagoPublicKey: 'TEST-9f6ef991-ca69-4960-988c-5152623013a1'
+  mercadoPagoPublicKey: 'TEST-9f6ef991-ca69-4960-988c-5152623013a1',
+  version: 1
 };
