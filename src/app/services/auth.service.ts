@@ -29,8 +29,8 @@ export class AuthService {
   }
 
   login(user: string, pass: string) {
-    const credential = {username: user, password: pass};
-    return this.http.post(this.urlLogin, credential, {responseType: 'text'})
+    const credential = { username: user, password: pass, aplicacion: environment.appName };
+    return this.http.post(this.urlLogin, credential, { responseType: 'text' })
       .pipe(
         map(data => {
           this.setAuthenticationInfo(data);
@@ -76,7 +76,7 @@ export class AuthService {
   }
 
   cambiarPassword(k: string, i: number) {
-    return this.http.post(this.urlPasswordRecovery, {'key': k, 'id': i}, {responseType: 'text'});
+    return this.http.post(this.urlPasswordRecovery, { 'key': k, 'id': i, aplicacion: environment.appName }, { responseType: 'text' });
   }
 
   setAuthenticationInfo(token: string) {
