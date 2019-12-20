@@ -3,6 +3,7 @@ import {environment} from 'environments/environment';
 import {Subject, Observable} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {Cliente} from '../models/cliente';
+import {StorageService} from './storage.service';
 
 @Injectable()
 export class ClientesService {
@@ -11,7 +12,8 @@ export class ClientesService {
   private clienteSeleccionadoSubject = new Subject<any>();
   clienteSeleccionado$ = this.clienteSeleccionadoSubject.asObservable();
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient,
+              private storageService: StorageService) {}
 
   getClientes(nombre, pagina) {
     return this.http.post(this.uriClientes + '/busqueda/criteria?',
@@ -19,21 +21,16 @@ export class ClientesService {
   }
 
   setClienteSeleccionado(cliente) {
-    localStorage.setItem('clientePedido', JSON.stringify(cliente));
+    this.storageService.setItem('clientePedido', cliente);
     this.clienteSeleccionadoSubject.next(cliente);
   }
 
   getClienteSeleccionado(): Cliente {
-    const cliente = localStorage.getItem('clientePedido');
-    if (cliente) {
-      return JSON.parse(cliente);
-    } else {
-      return null;
-    }
+    return this.storageService.getItem('clientePedido');
   }
 
   deleteClienteSeleccionado() {
-    localStorage.setItem('clientePedido', '');
+    this.storageService.removeItem('clientePedido');
     this.clienteSeleccionadoSubject.next('');
   }
 

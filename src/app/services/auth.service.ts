@@ -7,6 +7,7 @@ import {JwtHelperService} from '@auth0/angular-jwt';
 import {Router} from '@angular/router';
 import {Usuario} from '../models/usuario';
 import {UsuariosService} from './usuarios.service';
+import {StorageService} from './storage.service';
 
 @Injectable()
 export class AuthService {
@@ -20,15 +21,17 @@ export class AuthService {
 
   constructor(private http: HttpClient,
               private router: Router,
-              private usuariosService: UsuariosService) {}
+              private usuariosService: UsuariosService,
+              private storageService: StorageService) {
+  }
 
   setNombreUsuarioLoggedIn(nombre: string) {
     this.nombreUsuarioLoggedInSubject.next(nombre);
   }
 
   login(user: string, pass: string) {
-    const credential = { username: user, password: pass, aplicacion: environment.appName };
-    return this.http.post(this.urlLogin, credential, { responseType: 'text' })
+    const credential = {username: user, password: pass, aplicacion: environment.appName};
+    return this.http.post(this.urlLogin, credential, {responseType: 'text'})
       .pipe(
         map(data => {
           this.setAuthenticationInfo(data);
@@ -48,25 +51,25 @@ export class AuthService {
   logout() {
     this.http.put(this.urlLogout, null)
       .subscribe(data => {
-        localStorage.clear();
+        ['token', 'idUsuario'].forEach(v => this.storageService.removeItem(v));
         this.router.navigate(['']);
       });
   }
 
   getToken(): string {
-    return localStorage.getItem('token');
+    return this.storageService.getItem('token');
   }
 
   isAuthenticated(): boolean {
-    return !this.jwtHelper.isTokenExpired(localStorage.getItem('token'));
+    return !this.jwtHelper.isTokenExpired(this.storageService.getItem('token'));
   }
 
   getLoggedInUsuario(): Observable<Usuario> {
-    return this.usuariosService.getUsuario(localStorage.getItem('idUsuario'));
+    return this.usuariosService.getUsuario(this.storageService.getItem('idUsuario'));
   }
 
   getLoggedInIdUsuario(): string {
-    return localStorage.getItem('idUsuario');
+    return this.storageService.getItem('idUsuario');
   }
 
   solicitarCambioContrasenia(email: string) {
@@ -74,12 +77,12 @@ export class AuthService {
   }
 
   cambiarPassword(k: string, i: number) {
-    return this.http.post(this.urlPasswordRecovery, { 'key': k, 'id': i, aplicacion: environment.appName }, { responseType: 'text' });
+    return this.http.post(this.urlPasswordRecovery, {'key': k, 'id': i, aplicacion: environment.appName}, {responseType: 'text'});
   }
 
   setAuthenticationInfo(token: string) {
-    localStorage.setItem('token', token);
+    this.storageService.setItem('token', token);
     const decodedToken = this.jwtHelper.decodeToken(token);
-    localStorage.setItem('idUsuario', decodedToken.idUsuario);
+    this.storageService.setItem('idUsuario', decodedToken.idUsuario);
   }
 }
