@@ -10,14 +10,14 @@ import {environment} from '../environments/environment';
 })
 export class SicComComponent {
   // gtag es para google analitys: se usa la lib https://github.com/codediodeio/angular-gtag
-  constructor(gtag: Gtag,
-              private storageService: StorageService) {
+  constructor(gtag: Gtag, private storageService: StorageService) {
     this.checkAppVersion();
   }
 
   checkAppVersion() {
-    if (environment.appVersion !== this.storageService.getItem('app-version')) {
+    if (environment.appVersion !== this.storageService.getItem('appVersion')) {
       this.storageService.clear();
+      this.storageService.setItem('appVersion', environment.appVersion);
     }
   }
 }

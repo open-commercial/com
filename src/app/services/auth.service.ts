@@ -22,15 +22,16 @@ export class AuthService {
   constructor(private http: HttpClient,
               private router: Router,
               private usuariosService: UsuariosService,
-              private storageService: StorageService) {}
+              private storageService: StorageService) {
+  }
 
   setNombreUsuarioLoggedIn(nombre: string) {
     this.nombreUsuarioLoggedInSubject.next(nombre);
   }
 
   login(user: string, pass: string) {
-    const credential = { username: user, password: pass, aplicacion: environment.appName };
-    return this.http.post(this.urlLogin, credential, { responseType: 'text' })
+    const credential = {username: user, password: pass, aplicacion: environment.appName};
+    return this.http.post(this.urlLogin, credential, {responseType: 'text'})
       .pipe(
         map(data => {
           this.setAuthenticationInfo(data);
@@ -50,7 +51,7 @@ export class AuthService {
   logout() {
     this.http.put(this.urlLogout, null)
       .subscribe(data => {
-        this.storageService.clear();
+        ['token', 'idUsuario'].forEach(v => this.storageService.removeItem(v));
         this.router.navigate(['']);
       });
   }
@@ -76,13 +77,12 @@ export class AuthService {
   }
 
   cambiarPassword(k: string, i: number) {
-    return this.http.post(this.urlPasswordRecovery, { 'key': k, 'id': i, aplicacion: environment.appName }, { responseType: 'text' });
+    return this.http.post(this.urlPasswordRecovery, {'key': k, 'id': i, aplicacion: environment.appName}, {responseType: 'text'});
   }
 
   setAuthenticationInfo(token: string) {
     this.storageService.setItem('token', token);
     const decodedToken = this.jwtHelper.decodeToken(token);
     this.storageService.setItem('idUsuario', decodedToken.idUsuario);
-    this.storageService.setItem('app-version', environment.version);
   }
 }
