@@ -27,8 +27,8 @@
           <mat-card-title fxLayout="column" fxLayoutAlign="center end">
             <div>
               <span class="precio bonificado">
-                <span *ngIf="p.bulto > 1">Llevando {{ p.bulto }}+ {{ p.nombreMedida }}</span>
-                $ {{ p.precioListaBonificado | number:'1.0-2':'es-AR' }}
+                <span *ngIf="p.bulto > 1">Llevando {{ p.bulto }} o más</span>
+                $ {{ p.precioBonificado | number:'1.0-2':'es-AR' }}
               </span>
             </div>
             <span class="precio" [class.tachado]="!(p.bulto > 1)">$ {{p.precioLista | number:'1.0-2':'es-AR'}}</span>

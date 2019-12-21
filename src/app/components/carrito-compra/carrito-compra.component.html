@@ -7,13 +7,14 @@
       </div>
       <div fxLayoutAlign="space-around center" class="sic-com-totalizadores" fxLayout.lt-sm="column" *ngIf="!(loadingCarritoCompra || loadingTotales)">
         <div>Cant. de Artículos: {{cantidadArticulos | number:'1.0-2':'es-AR' }}</div>
-        <div>Total: <span>$ {{total | number:'1.0-2':'es-AR' }}</span></div>
+        <div class="sic-com-compra-minima">Compra mínima: $ {{ cliente.montoCompraMinima | number:'1.0-2':'es-AR' }}</div>
+        <div class="total" [class.cumple-compra-minima]="total >= cliente.montoCompraMinima">Total: $ {{total | number:'1.0-2':'es-AR' }}</div>
       </div>
       <div class="sic-com-botonera" fxLayout.lt-sm="column-reverse" fxLayout="row" fxLayoutAlign.lt-sm="none none" fxLayoutAlign="space-around center" fxLayoutGap=".7rem">
         <button mat-raised-button (click)="vaciarCarritoCompra()" [disabled]="!itemsCarritoCompra.length || disabledButtons()">
           <mat-icon>remove_shopping_cart</mat-icon> Limpiar Listado
         </button>
-        <button mat-raised-button (click)="goToCheckout()" [disabled]="!itemsCarritoCompra.length || disabledButtons()" color="primary">
+        <button mat-raised-button (click)="goToCheckout()" [disabled]="!itemsCarritoCompra.length || disabledButtons() || total < cliente.montoCompraMinima" color="primary">
           <mat-icon>local_shipping</mat-icon> Cerrar Orden
         </button>
       </div>
@@ -33,7 +34,7 @@
                 </mat-chip-list>
               </div>
               <div class="oferta-cantidad" *ngIf="icc.producto.oferta">
-                <span *ngIf="icc.producto.bulto > 1">Llevando {{icc.producto.bulto | number:'1.0-2':'es-AR'}}+ {{icc.producto.nombreMedida}}</span>
+                <span *ngIf="icc.producto.bulto > 1">Llevando {{icc.producto.bulto | number:'1.0-2':'es-AR'}} o más</span>
                 {{icc.producto.porcentajeBonificacionOferta | number:'1.0-2':'es-AR'}}% OFF!
               </div>
               <div class="sic-com-descripcion-producto">{{icc.producto.descripcion}}</div>
@@ -42,17 +43,16 @@
                   <span [class.seleccionado]="!estaBonificado(icc)" [class.tachado]="!(icc.producto.bulto > 1)">
                     P. U. $ {{ icc.producto.precioLista | number:'1.0-2':'es-AR'}}
                   </span><br>
-                  <span [class.seleccionado]="estaBonificado(icc)">P. U. Oferta $ {{ icc.producto.precioListaBonificado | number:'1.0-2':'es-AR'}}</span>
+                  <span [class.seleccionado]="estaBonificado(icc)">P. U. Oferta $ {{ icc.producto.precioBonificado | number:'1.0-2':'es-AR'}}</span>
                 </div>
                 <div *ngIf="!icc.producto.oferta">
                   <span [class.seleccionado]="!estaBonificado(icc)">P. U. $ {{ icc.producto.precioLista | number:'1.0-2':'es-AR'}}</span><br>
-                  <span [class.seleccionado]="estaBonificado(icc)" *ngIf="icc.producto.precioListaBonificado">
-                  P. U. Bonif.<span *ngIf="icc.producto.bulto > 1"> x Cant. </span>
-                  $ {{ icc.producto.precioListaBonificado | number:'1.0-2':'es-AR'}}
-                </span>
+                  <span [class.seleccionado]="estaBonificado(icc)" *ngIf="icc.producto.precioBonificado && icc.producto.bulto > 1">
+                    P. U. Bonif. x Cant. $ {{ icc.producto.precioBonificado | number:'1.0-2':'es-AR'}}
+                  </span>
                 </div>
-                <div *ngIf="!icc.producto.oferta && icc.producto.precioListaBonificado && icc.producto.bulto > 1">
-                  <span [class.seleccionado]="estaBonificado(icc)">Llevando {{icc.producto.bulto | number:'1.0-2':'es-AR'}}+ {{icc.producto.nombreMedida}}</span>
+                <div *ngIf="!icc.producto.oferta && icc.producto.precioBonificado && icc.producto.bulto > 1">
+                  <span [class.seleccionado]="estaBonificado(icc)">Llevando {{icc.producto.bulto | number:'1.0-2':'es-AR'}} o más</span>
                 </div>
               </div>
             </div>

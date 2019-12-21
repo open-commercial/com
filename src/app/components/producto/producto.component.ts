@@ -123,7 +123,7 @@ export class ProductoComponent implements OnInit {
 
   esCantidadBonificada() {
     return this.authService.isAuthenticated()
-      && this.producto.precioListaBonificado && this.producto.precioListaBonificado !== this.producto.precioLista
+      && this.producto.precioBonificado && this.producto.precioBonificado < this.producto.precioLista
       && this.cantidad >= this.producto.bulto;
   }
 

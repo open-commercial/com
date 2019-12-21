@@ -16,22 +16,22 @@
           </mat-chip-list>
         </p>
         <p mat-line class="oferta-cantidad" *ngIf="p.oferta">
-          <span *ngIf="p.bulto > 1">Llevando {{p.bulto | number:'1.0-2':'es-AR'}}+ {{p.nombreMedida}} </span>
+          <span *ngIf="p.bulto > 1">Llevando {{p.bulto | number:'1.0-2':'es-AR'}} o más</span>
           {{p.porcentajeBonificacionOferta | number:'1.0-2':'es-AR'}}% OFF!
         </p>
         <p mat-line class="sic-com-descripcion"><strong>{{p.descripcion}}</strong></p>
         <p mat-line *ngIf="p.oferta" class="precio">
           P. U. $ {{p.precioLista | number:'1.0-2':'es-AR' }}<br>
-          P. U. Oferta $ {{ p.precioListaBonificado | number:'1.0-2':'es-AR' }}
+          P. U. Oferta $ {{ p.precioBonificado | number:'1.0-2':'es-AR' }}
         </p>
         <p mat-line *ngIf="!p.oferta" class="precio">
           P. U. $ {{p.precioLista | number:'1.0-2':'es-AR' }}
           <span *ngIf="estaBonificado(p)">
             <br>P. U. Bonif.<span *ngIf="p.bulto > 1"> x Cant. </span>
-            $ {{ p.precioListaBonificado | number:'1.0-2':'es-AR' }}
+            $ {{ p.precioBonificado | number:'1.0-2':'es-AR' }}
           </span>
         </p>
-        <p mat-line *ngIf="!p.oferta && p.precioListaBonificado && p.bulto > 1">
+        <p mat-line *ngIf="!p.oferta && estaBonificado(p)">
           <strong>Llevando {{p.bulto | number:'1.0-2':'es-AR'}}+ {{p.nombreMedida}}</strong>
         </p>
         <button mat-icon-button color="warn" (click)="showDialogCantidad($event, p)" *ngIf="authService.isAuthenticated() && cliente">
