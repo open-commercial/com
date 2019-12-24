@@ -40,8 +40,8 @@
               <span [class.seleccionado]="esCantidadBonificada()">P. U. Oferta $ {{ producto.precioBonificado | number:'1.0-2':'es-AR' }}</span>
             </div>
             <div *ngIf="!producto.oferta">
-              <span [class.seleccionado]="!esCantidadBonificada()">P. U. $ {{producto.precioLista | number:'1.0-2':'es-AR' }}</span>
-              <div [class.seleccionado]="esCantidadBonificada()" *ngIf="authService.isAuthenticated() && this.producto.precioBonificado">
+              <span *ngIf="!esCantidadBonificada() || producto.bulto > 1" [class.seleccionado]="!esCantidadBonificada()">P. U. $ {{producto.precioLista | number:'1.0-2':'es-AR' }}</span>
+              <div [class.seleccionado]="esCantidadBonificada()" *ngIf="this.producto.precioBonificado">
                 P. U. Bonif.<span *ngIf="producto.bulto > 1"> x Cant. </span>
                 $ {{ producto.precioBonificado | number:'1.0-2':'es-AR' }}
               </div>
