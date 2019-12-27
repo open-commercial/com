@@ -197,11 +197,6 @@ export class CheckoutComponent implements OnInit {
     this.ubicacionFacturacion = c ? c.ubicacionFacturacion : null;
     this.ubicacionEnvio = c ? c.ubicacionEnvio : null;
     this.getTotalesInfo();
-    if (this.cliente.bonificacion <= 0) {
-      this.pagoForm.get('opcionPago').setValue(OpcionPago.PAGAR_AHORA);
-    } else {
-      this.pagoForm.get('opcionPago').setValue(null);
-    }
   }
 
   getSucursales() {
@@ -307,12 +302,16 @@ export class CheckoutComponent implements OnInit {
     if (this.cliente) {
       this.carritoCompraService.getCarritoCompra(this.cliente.idCliente)
         .subscribe(data => {
+          if (data.total < this.cliente.montoCompraMinima) {
+            this.router.navigate(['carrito-compra']);
+          }
           this.cantidadArticulos = data.cantArticulos;
           this.total = data.total;
           if (this.cantidadArticulos <= 0) {
             this.router.navigate(['carrito-compra']);
           }
-        });
+        })
+      ;
     }
   }
 
@@ -367,14 +366,6 @@ export class CheckoutComponent implements OnInit {
           this.opcionEnvioForm.enable();
         }
       );
-    }
-  }
-
-  cancelarComponentePago() {
-    if (this.cliente.bonificacion > 0) {
-      this.pagoForm.get('opcionPago').setValue(OpcionPago.PAGAR_LUEGO);
-    } else {
-      this.stepper.previous();
     }
   }
 

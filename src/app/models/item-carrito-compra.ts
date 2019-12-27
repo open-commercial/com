@@ -5,5 +5,4 @@ export interface ItemCarritoCompra {
   cantidad: number;
   producto: Producto;
   importe: number;
-  importeBonificado: number;
 }

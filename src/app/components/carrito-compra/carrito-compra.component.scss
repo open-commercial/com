@@ -50,6 +50,10 @@
     font-size: 12px;
   }
 
+  .sic-com-compra-minima {
+    color: $color-primary;
+  }
+
   .sic-com-oferta {
     display: inline-block;
     margin-left: 0.2rem;
@@ -124,6 +128,12 @@
       -webkit-border-radius: 3px;
       -moz-border-radius: 3px;
       border-radius: 3px;
+    }
+  }
+  .total {
+    color: red;
+    &.cumple-compra-minima {
+      color: green;
     }
   }
 }

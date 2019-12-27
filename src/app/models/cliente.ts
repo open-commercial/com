@@ -6,13 +6,12 @@ export interface Cliente {
   nroCliente: string;
   nombreFiscal: string;
   nombreFantasia: string;
-  bonificacion: number;
   categoriaIVA: CategoriaIVA;
   idFiscal: string;
-  email: string;
-  telefono: string;
   ubicacionFacturacion: Ubicacion;
   ubicacionEnvio: Ubicacion;
+  email: string;
+  telefono: string;
   contacto: string;
   fechaAlta: Date;
   idViajante: number;
@@ -20,4 +19,9 @@ export interface Cliente {
   idCredencial: number;
   nombreCredencial: string;
   predeterminado: boolean;
+  saldoCuentaCorriente: number;
+  montoCompraMinima: number;
+  fechaUltimoMovimiento: Date;
+  detalleUbicacionDeFacturacion: string;
+  detalleUbicacionDeEnvio: string;
 }

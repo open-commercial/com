@@ -113,7 +113,7 @@
           <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
         </div>
         <br>
-        <div *ngIf="cliente.bonificacion">
+        <div>
           <mat-button-toggle-group formControlName="opcionPago" aria-label="Opción de Pago">
             <mat-button-toggle [value]="opcionPago.PAGAR_AHORA">Pagar Ahora</mat-button-toggle>
             <mat-button-toggle [value]="opcionPago.PAGAR_LUEGO">Pagar Luego</mat-button-toggle>
@@ -122,7 +122,7 @@
         </div>
         <div *ngIf="pagoForm.get('opcionPago').value === opcionPago.PAGAR_AHORA && total && !enviarOrdenLoading">
           <sic-com-mercado-pago [cliente]="cliente" [monto]="total" [hideCancelarButton]="true"
-                                (updated)="updated($event)" (canceled)="cancelarComponentePago()"></sic-com-mercado-pago>
+                                (updated)="updated($event)"></sic-com-mercado-pago>
           <br>
         </div>
         <div *ngIf="!enviarOrdenLoading" class="acciones">

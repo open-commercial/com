@@ -135,14 +135,6 @@ export class CarritoCompraComponent implements OnInit {
     );
   }
 
-  precioListaBonificado(item) {
-    return item.producto.precioLista - (item.producto.precioLista * this.cliente.bonificacion / 100);
-  }
-
-  precioImporteBonificado(item) {
-    return item.importe - (item.importe * this.cliente.bonificacion / 100);
-  }
-
   eliminarItemDelCarrito(itemCarritoCompra) {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent);
     dialogRef.componentInstance.titulo = '¿Está seguro de quitar el producto?';
@@ -205,6 +197,6 @@ export class CarritoCompraComponent implements OnInit {
   }
 
   estaBonificado(icc: ItemCarritoCompra) {
-    return  icc.importeBonificado;
+    return  icc.producto.precioLista > icc.producto.precioBonificado && icc.cantidad >= icc.producto.bulto;
   }
 }

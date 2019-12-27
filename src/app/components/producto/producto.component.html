@@ -29,25 +29,24 @@
             </mat-chip-list>
           </span>
           <div class="oferta-cantidad" *ngIf="producto.oferta">
-            <span *ngIf="producto.bulto > 1">Llevando {{producto.bulto | number:'1.0-2':'es-AR'}}+ {{producto.nombreMedida}}</span>
+            <span *ngIf="producto.bulto > 1">Llevando {{producto.bulto | number:'1.0-2':'es-AR'}} o más</span>
             {{producto.porcentajeBonificacionOferta | number:'1.0-2':'es-AR'}}% OFF!
           </div>
           <span class="sic-com-descripcion-producto">{{producto.descripcion}}</span>
           <br>
           <div class="precios" [class.sin-session]="!authService.isAuthenticated()">
             <div *ngIf="producto.oferta">
-              <span [class.seleccionado]="!esCantidadBonificada()">P. U. $ {{producto.precioLista | number:'1.0-2':'es-AR' }}</span><br>
-              <span [class.seleccionado]="esCantidadBonificada()">P. U. Oferta $ {{ producto.precioListaBonificado | number:'1.0-2':'es-AR' }}</span>
+              <span [class.tachado]="producto.bulto == 1" [class.seleccionado]="!esCantidadBonificada()">P. U. $ {{producto.precioLista | number:'1.0-2':'es-AR' }}</span><br>
+              <span [class.seleccionado]="esCantidadBonificada()">P. U. Oferta $ {{ producto.precioBonificado | number:'1.0-2':'es-AR' }}</span>
             </div>
             <div *ngIf="!producto.oferta">
-              <span [class.seleccionado]="!esCantidadBonificada()">P. U. $ {{producto.precioLista | number:'1.0-2':'es-AR' }}</span>
-              <div [class.seleccionado]="esCantidadBonificada()" *ngIf="authService.isAuthenticated() && this.producto.precioListaBonificado">
-                P. U. Bonif.<span *ngIf="producto.bulto > 1"> x Cant. </span>
-                $ {{ producto.precioListaBonificado | number:'1.0-2':'es-AR' }}
+              <span *ngIf="!esCantidadBonificada() || producto.bulto > 1" [class.seleccionado]="!esCantidadBonificada()">P. U. $ {{producto.precioLista | number:'1.0-2':'es-AR' }}</span>
+              <div [class.seleccionado]="esCantidadBonificada()" *ngIf="this.producto.precioLista > this.producto.precioBonificado">
+                P. U. Bonif.<span *ngIf="producto.bulto > 1"> x Cant. </span> $ {{ producto.precioBonificado | number:'1.0-2':'es-AR' }}
               </div>
             </div>
-            <div *ngIf="!producto.oferta && producto.precioListaBonificado && producto.bulto > 1" [class.seleccionado]="esCantidadBonificada()">
-              Llevando {{producto.bulto | number:'1.0-2':'es-AR'}}+ {{producto.nombreMedida}}
+            <div *ngIf="!producto.oferta && producto.precioBonificado && producto.bulto > 1" [class.seleccionado]="esCantidadBonificada()">
+              Llevando {{producto.bulto | number:'1.0-2':'es-AR'}} o más
             </div>
           </div>
           <br>
