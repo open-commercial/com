@@ -14,12 +14,18 @@
       <div class="descripcion">{{producto.descripcion}}</div>
       <div class="precios">
         <div *ngIf="producto.oferta">
-          <span [class.tachado]="!(producto.bulto > 1)" [class.seleccionado]="!esCantidadBonificada()">P. U. $ {{producto.precioLista | number:'1.0-2':'es-AR' }}</span><br>
-          <span [class.seleccionado]="esCantidadBonificada()">P. U. Oferta $ {{ producto.precioBonificado | number:'1.0-2':'es-AR' }}</span>
+          <span [class.tachado]="!(producto.bulto > 1)" [class.seleccionado]="!esCantidadBonificada()">
+            P. U. $ {{producto.precioLista | number:'1.0-2':'es-AR' }}
+          </span><br>
+          <span [class.seleccionado]="esCantidadBonificada()">
+            P. U. Oferta $ {{ producto.precioBonificado | number:'1.0-2':'es-AR' }}
+          </span>
         </div>
         <div *ngIf="!producto.oferta">
-          <span *ngIf="!esCantidadBonificada() || producto.bulto > 1" [class.seleccionado]="!esCantidadBonificada() || producto.bulto > 1">P. U. $ {{producto.precioLista | number:'1.0-2':'es-AR' }}</span>
-          <div [class.seleccionado]="esCantidadBonificada()" *ngIf="esCantidadBonificada()">
+          <span *ngIf="!esCantidadBonificada() || producto.bulto > 1" [class.seleccionado]="!esCantidadBonificada()">
+            P. U. $ {{producto.precioLista | number:'1.0-2':'es-AR' }}
+          </span>
+          <div [class.seleccionado]="esCantidadBonificada()" *ngIf="producto.precioLista > producto.precioBonificado">
             P. U. Bonif.<span *ngIf="producto.bulto > 1"> x Cant. </span>
             $ {{ producto.precioBonificado | number:'1.0-2':'es-AR' }}
           </div>

@@ -21,7 +21,7 @@
         </p>
         <p mat-line class="sic-com-descripcion"><strong>{{p.descripcion}}</strong></p>
         <p mat-line *ngIf="p.oferta" class="precio">
-          P. U. $ {{p.precioLista | number:'1.0-2':'es-AR' }}<br>
+          <span [class.tachado]="p.bulto == 1">P. U. $ {{p.precioLista | number:'1.0-2':'es-AR' }}</span><br>
           P. U. Oferta $ {{ p.precioBonificado | number:'1.0-2':'es-AR' }}
         </p>
         <p mat-line *ngIf="!p.oferta" class="precio">

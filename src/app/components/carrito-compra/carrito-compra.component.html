@@ -43,14 +43,16 @@
                   <span [class.seleccionado]="!estaBonificado(icc)" [class.tachado]="!(icc.producto.bulto > 1)">
                     P. U. $ {{ icc.producto.precioLista | number:'1.0-2':'es-AR'}}
                   </span><br>
-                  <span [class.seleccionado]="estaBonificado(icc)">P. U. Oferta $ {{ icc.producto.precioBonificado | number:'1.0-2':'es-AR'}}</span>
+                  <span [class.seleccionado]="estaBonificado(icc)">
+                    P. U. Oferta $ {{ icc.producto.precioBonificado | number:'1.0-2':'es-AR'}}
+                  </span>
                 </div>
                 <div *ngIf="!icc.producto.oferta">
-                  <span *ngIf="!estaBonificado(icc) || icc.producto.bulto > 1" [class.seleccionado]="!estaBonificado(icc) || icc.producto.bulto > 1">
+                  <span *ngIf="!estaBonificado(icc) || icc.producto.bulto > 1" [class.seleccionado]="!estaBonificado(icc)">
                     P. U. $ {{ icc.producto.precioLista | number:'1.0-2':'es-AR'}}<br>
                   </span>
-                  <span [class.seleccionado]="estaBonificado(icc)" *ngIf="estaBonificado(icc)">
-                    P. U. Bonif. x Cant. $ {{ icc.producto.precioBonificado | number:'1.0-2':'es-AR'}}
+                  <span [class.seleccionado]="estaBonificado(icc)" *ngIf="icc.producto.precioLista > icc.producto.precioBonificado">
+                    P. U. Bonif. <span *ngIf="icc.producto.bulto > 1"> x Cant.</span>$ {{ icc.producto.precioBonificado | number:'1.0-2':'es-AR'}}
                   </span>
                 </div>
                 <div *ngIf="!icc.producto.oferta && icc.producto.precioBonificado && icc.producto.bulto > 1">
