@@ -18,6 +18,7 @@ export class ProductosEnOfertaComponent implements OnInit {
 
   cliente: Cliente;
   enOferta: Producto[] = [];
+  firstLoading = false;
   loading = false;
   totalPaginas = 0;
   pagina = 0;
@@ -29,6 +30,7 @@ export class ProductosEnOfertaComponent implements OnInit {
               private dialog: MatDialog) {}
 
   ngOnInit(): void {
+    this.firstLoading = true;
     this.cargarProductos();
     if (this.authService.isAuthenticated()) {
       this.clienteService.getClienteDelUsuario(this.authService.getLoggedInIdUsuario())
@@ -39,7 +41,7 @@ export class ProductosEnOfertaComponent implements OnInit {
   cargarProductos() {
     this.loading = true;
     this.productosService.getProductosEnOferta(this.pagina)
-      .pipe(finalize(() => this.loading = false))
+      .pipe(finalize(() => { this.loading = false; this.firstLoading = false; }))
       .subscribe(
         (data) => {
           data['content'] = this.shuffle(data['content']);

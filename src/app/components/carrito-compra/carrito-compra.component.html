@@ -7,7 +7,9 @@
       </div>
       <div fxLayoutAlign="space-around center" class="sic-com-totalizadores" fxLayout.lt-sm="column" *ngIf="!(loadingCarritoCompra || loadingTotales)">
         <div>Cant. de Artículos: {{cantidadArticulos | number:'1.0-2':'es-AR' }}</div>
-        <div class="sic-com-compra-minima">Compra mínima: $ {{ cliente.montoCompraMinima | number:'1.0-2':'es-AR' }}</div>
+        <div class="sic-com-compra-minima" *ngIf="cliente.montoCompraMinima > 0">
+          Compra mínima: $ {{ cliente.montoCompraMinima | number:'1.0-2':'es-AR' }}
+        </div>
         <div class="total" [class.cumple-compra-minima]="total >= cliente.montoCompraMinima">Total: $ {{total | number:'1.0-2':'es-AR' }}</div>
       </div>
       <div class="sic-com-botonera" fxLayout.lt-sm="column-reverse" fxLayout="row" fxLayoutAlign.lt-sm="none none" fxLayoutAlign="space-around center" fxLayoutGap=".7rem">
