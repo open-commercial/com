@@ -16,42 +16,50 @@ export class HomeComponent implements OnInit {
   marcas = [
     {
       url: 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1543814304/slideshow/gladiator-pro.png',
-      routeLink: ['/productos', { q: 'gladiator' }],
+      routeLink: ['/productos'],
+      queryParams: { q: 'gladiator' },
       nombre: 'Gladiator'
     },
     {
       url: 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1543814304/slideshow/suprabond.jpg',
-      routeLink: ['/productos', { q: 'suprabond' }],
+      routeLink: ['/productos'],
+      queryParams: { q: 'suprabond' },
       nombre: 'Suprabond'
     },
     {
       url: 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1543814304/slideshow/tacsa.jpg',
-      routeLink: ['/productos', { q: 'tacsa'}],
+      routeLink: ['/productos'],
+      queryParams: { q: 'tacsa'},
       nombre: 'Tacsa'
     },
     {
       url: 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1544154497/slideshow/interelec.jpg',
-      routeLink: ['/productos', { q: 'interelec'}],
+      routeLink: ['/productos'],
+      queryParams: { q: 'interelec'},
       nombre: 'Interelec'
     },
     {
       url: 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1544153960/slideshow/Poxipol.png',
-      routeLink: ['/productos', { q: 'poxi'}],
+      routeLink: ['/productos'],
+      queryParams: { q: 'poxi'},
       nombre: 'Poxipol'
     },
     {
       url: 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1544153960/slideshow/tramontina.png',
-      routeLink: ['/productos', { q: 'tramontina'}],
+      routeLink: ['/productos'],
+      queryParams: { q: 'tramontina'},
       nombre: 'Tramontina'
     },
     {
       url: 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1544153960/slideshow/brogas.jpg',
-      routeLink: ['/productos', { q: 'brogas'}],
+      routeLink: ['/productos'],
+      queryParams:  { q: 'brogas'},
       nombre: 'Brogas'
     },
     {
       url: 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1544153960/slideshow/bulit.jpg',
-      routeLink: ['/productos', { q: 'bulit'}],
+      routeLink: ['/productos'],
+      queryParams: { q: 'bulit'},
       nombre: 'Bulit'
     },
   ];

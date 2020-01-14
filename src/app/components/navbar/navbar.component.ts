@@ -68,7 +68,7 @@ export class NavbarComponent implements OnInit {
 
   buscarProductos(criteria: string) {
     criteria = criteria === null ? '' : criteria;
-    this.router.navigate(['/productos', { q: criteria }]);
+    this.router.navigate(['/productos'], { queryParams: { q: criteria }});
   }
 
   goToLogin() {
