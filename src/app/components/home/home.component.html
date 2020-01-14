@@ -55,7 +55,7 @@
   <h3 class="label">Algunas de nuestras marcas</h3>
   <ul class="marcas">
     <li class="marca" *ngFor="let m of marcas">
-      <a [routerLink]="m.routeLink">
+      <a [routerLink]="m.routeLink" [queryParams]="m.queryParams">
         <img [src]="m.url" [alt]="m.nombre">
       </a>
     </li>

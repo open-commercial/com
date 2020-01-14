@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ProductosService} from '../../services/productos.service';
-import {ActivatedRoute, Router} from '@angular/router';
+import {ActivatedRoute, ParamMap, Router} from '@angular/router';
 import {AvisoService} from 'app/services/aviso.service';
 import {combineLatest, Subscription} from 'rxjs';
 import {AuthService} from '../../services/auth.service';
@@ -9,6 +9,7 @@ import {Cliente} from '../../models/cliente';
 import {ClientesService} from '../../services/clientes.service';
 import { MatDialog } from '@angular/material/dialog';
 import {AgregarAlCarritoDialogComponent} from '../agregar-al-carrito-dialog/agregar-al-carrito-dialog.component';
+import {switchMap} from 'rxjs/operators';
 
 @Component({
   selector: 'sic-com-productos',
@@ -40,11 +41,11 @@ export class ProductosComponent implements OnInit, OnDestroy {
       this.cargarProductos();
     });
 
-    combineLatest(this.route.paramMap, this.route.queryParamMap)
-      .subscribe(([params, queryParams]) => {
-        this.pagina = (Number(queryParams['params'].p) - 1) || 0;
-        this.productosService.buscarProductos(params['params'].q || '');
-      });
+    this.route.queryParamMap.subscribe((queryParams) => {
+      const params = queryParams['params'];
+      this.pagina = (Number(params.p) - 1) || 0;
+      this.productosService.buscarProductos(params.q || '');
+    });
 
     if (this.authService.isAuthenticated()) {
       this.clienteService.getClienteDelUsuario(this.authService.getLoggedInIdUsuario())
@@ -84,12 +85,12 @@ export class ProductosComponent implements OnInit, OnDestroy {
 
   paginaAnterior() {
     if (this.pagina <= 0) { return; }
-    this.router.navigate(['/productos', { q: this.busquedaCriteria || '' }], { queryParams: { p: this.pagina } });
+    this.router.navigate(['/productos'], { queryParams: { q: this.busquedaCriteria || '', p: this.pagina } });
   }
 
   paginaSiguiente() {
     if (this.pagina + 1 >= this.totalPaginas) { return; }
-    this.router.navigate(['/productos', { q: this.busquedaCriteria || '' }], { queryParams: { p: this.pagina + 2 } });
+    this.router.navigate(['/productos'], { queryParams: { q: this.busquedaCriteria || '', p: this.pagina + 2 } });
   }
 
   showDialogCantidad($event, producto: Producto) {
