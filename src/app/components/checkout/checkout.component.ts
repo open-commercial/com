@@ -356,8 +356,8 @@ export class CheckoutComponent implements OnInit {
         .pipe(finalize(() => this.enviarOrdenLoading = false))
         .subscribe(
         data => {
-          const mensaje = 'El pedido Nro ' + data['nroPedido'] + ' fué generado correctamente';
-          this.avisoService.openSnackBar(mensaje, '', 3500);
+          /*const mensaje = 'El pedido Nro ' + data['nroPedido'] + ' fué generado correctamente';
+          this.avisoService.openSnackBar(mensaje, '', 3500);*/
           this.router.navigateByUrl('/');
         },
         err => {
