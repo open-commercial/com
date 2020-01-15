@@ -110,7 +110,7 @@ export class CarritoCompraComponent implements OnInit {
     this.loadingRenglones = true;
     this.route.queryParamMap.subscribe(
       queryParams => {
-        this.pagina = (Number(queryParams['params'].p) - 1) || 0;
+        this.pagina = (Number(queryParams.get('p')) - 1) || 0;
         this.carritoCompraService.getItems(this.cliente.idCliente, this.pagina)
           .pipe(finalize(() => {
             this.loadingRenglones = false;

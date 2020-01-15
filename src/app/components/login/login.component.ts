@@ -34,7 +34,10 @@ export class LoginComponent implements OnInit {
     if (this.authService.isAuthenticated()) {
       this.router.navigate(['']);
     } else {
-      this.route.paramMap.subscribe(params => this.redirectProductId = (Number(params['params'].pid)) || 0);
+      this.route.queryParamMap.subscribe(params => {
+        if (params.has('pid')) { this.redirectProductId = Number(params.get('pid')) || null; }
+        if (params.has('return')) { this.returnUrl = params.get('return'); }
+      });
     }
   }
 
@@ -64,6 +67,8 @@ export class LoginComponent implements OnInit {
                 if (cliente) {
                   if (this.redirectProductId) {
                     this.router.navigate(['/producto', this.redirectProductId]);
+                  } else if (this.returnUrl) {
+                    this.router.navigateByUrl(this.returnUrl);
                   } else {
                     this.router.navigate(['']);
                   }
@@ -85,7 +90,8 @@ export class LoginComponent implements OnInit {
           this.loading = false;
           this.loginForm.enable();
           this.avisoService.openSnackBar(err, '', 3500);
-        });
+        })
+      ;
     }
   }
 }
