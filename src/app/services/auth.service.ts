@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {environment} from 'environments/environment';
 import {HttpClient} from '@angular/common/http';
 import {throwError, Observable, Subject} from 'rxjs';
-import {map, catchError} from 'rxjs/operators';
+import {map, catchError, finalize} from 'rxjs/operators';
 import {JwtHelperService} from '@auth0/angular-jwt';
 import {Router} from '@angular/router';
 import {Usuario} from '../models/usuario';
@@ -50,10 +50,14 @@ export class AuthService {
 
   logout() {
     this.http.put(this.urlLogout, null)
-      .subscribe(data => {
-        ['token', 'idUsuario'].forEach(v => this.storageService.removeItem(v));
-        this.router.navigate(['']);
-      });
+      .pipe(
+        finalize(() => {
+          ['token', 'idUsuario'].forEach(v => this.storageService.removeItem(v));
+          this.router.navigate(['']);
+        })
+      )
+      .subscribe()
+    ;
   }
 
   getToken(): string {
