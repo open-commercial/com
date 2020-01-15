@@ -355,11 +355,7 @@ export class CheckoutComponent implements OnInit {
       this.carritoCompraService.enviarOrden(orden)
         .pipe(finalize(() => this.enviarOrdenLoading = false))
         .subscribe(
-        data => {
-          /*const mensaje = 'El pedido Nro ' + data['nroPedido'] + ' fué generado correctamente';
-          this.avisoService.openSnackBar(mensaje, '', 3500);*/
-          this.router.navigateByUrl('/');
-        },
+        () => this.router.navigateByUrl('/compra-realizada'),
         err => {
           this.avisoService.openSnackBar(err.error, '', 3500);
           this.pagoForm.enable();

@@ -1,8 +1,0 @@
-<div *ngIf="loading" fxLayout="row" fxLayoutAlign="center center">
-  <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
-</div>
-<p class="info" *ngIf="!loading && usuario">
-  Gracias {{ usuario.nombre }} {{ usuario.apellido}} por su compra!<br>
-
-  En breve le enviaremos un correo electronico a la direccion {{ usuario.email }} con los datos de su pedido.
-</p>

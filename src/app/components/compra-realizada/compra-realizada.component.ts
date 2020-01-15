@@ -5,11 +5,11 @@ import {finalize} from 'rxjs/operators';
 import {AvisoService} from '../../services/aviso.service';
 
 @Component({
-  selector: 'sic-com-exito-compra',
-  templateUrl: './exito-compra.component.html',
-  styleUrls: ['./exito-compra.component.scss']
+  selector: 'sic-com-compra-realizada',
+  templateUrl: './compra-realizada.component.html',
+  styleUrls: ['./compra-realizada.component.scss']
 })
-export class ExitoCompraComponent implements OnInit {
+export class CompraRealizadaComponent implements OnInit {
   usuario: Usuario;
   loading = false;
 

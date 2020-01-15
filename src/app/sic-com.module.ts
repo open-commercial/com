@@ -55,7 +55,7 @@ import {DynamicScriptLoaderService} from './services/dynamic-script-loader.servi
 import {MercadoPagoComponent} from './components/mercado-pago/mercado-pago.component';
 import {PagosService} from './services/pagos.service';
 import {GtagModule} from 'angular-gtag';
-import { ExitoCompraComponent } from './components/exito-compra/exito-compra.component';
+import { CompraRealizadaComponent } from './components/compra-realizada/compra-realizada.component';
 
 registerLocaleData(localeEs, 'es-AR', localeEsExtra);
 
@@ -85,7 +85,7 @@ registerLocaleData(localeEs, 'es-AR', localeEsExtra);
     ClienteUbicacionesComponent,
     AgregarAlCarritoDialogComponent,
     MercadoPagoComponent,
-    ExitoCompraComponent,
+    CompraRealizadaComponent,
   ],
   imports: [
     GtagModule.forRoot({ trackingId: 'UA-132433044-1', trackPageviews: true }),
