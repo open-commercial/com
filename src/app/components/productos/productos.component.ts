@@ -41,10 +41,9 @@ export class ProductosComponent implements OnInit, OnDestroy {
       this.cargarProductos();
     });
 
-    this.route.queryParamMap.subscribe((queryParams) => {
-      const params = queryParams['params'];
-      this.pagina = (Number(params.p) - 1) || 0;
-      this.productosService.buscarProductos(params.q || '');
+    this.route.queryParamMap.subscribe((params) => {
+      this.pagina = (Number(params.get('p')) - 1) || 0;
+      this.productosService.buscarProductos(params.get('q') || '');
     });
 
     if (this.authService.isAuthenticated()) {
