@@ -77,7 +77,7 @@
           <mat-spinner [diameter]="50" [strokeWidth]="6" *ngIf="cargandoAlCarrito"></mat-spinner>
         </div>
         <div fxLayoutAlign="center center" class="sic-com-controles-cantidad" *ngIf="!authService.isAuthenticated()">
-          <button mat-raised-button fxFill [routerLink]="['/login', {'pid': producto.idProducto}]" color="primary">
+          <button mat-raised-button fxFill [routerLink]="['/login']" [queryParams]="{'pid': producto.idProducto}" color="primary">
             <mat-icon>shopping_cart</mat-icon>
             Comprar
           </button>
