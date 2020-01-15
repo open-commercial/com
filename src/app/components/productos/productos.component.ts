@@ -42,7 +42,9 @@ export class ProductosComponent implements OnInit, OnDestroy {
     });
 
     this.route.queryParamMap.subscribe((params) => {
-      this.pagina = (Number(params.get('p')) - 1) || 0;
+      let auxp = Number(params.get('p'));
+      auxp = isNaN(auxp) ? 1 : (auxp < 1 ? 1 : auxp);
+      this.pagina = auxp - 1;
       this.productosService.buscarProductos(params.get('q') || '');
     });
 
