@@ -1,0 +1,22 @@
+@import "../../../_colors.scss";
+
+.sic-com-registracion-realizada {
+  padding: 1.5rem;
+  //height: 100%;
+  .icono {
+    font-size: 5rem;
+    color: $color-primary;
+    width: auto;
+    height: auto;
+  }
+  .info {
+    padding: 0.7rem 0.5rem;
+    text-align: center;
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+    .nombre {
+      font-style: italic;
+      font-weight: bold;
+    }
+  }
+}
