@@ -1,0 +1,13 @@
+<div class="sic-com-registracion-realizada">
+  <div *ngIf="registracion" fxLayout="column" fxLayoutAlign="center center">
+    <mat-icon class="icono" aria-hidden="false" aria-label="Registración realizada">check_circle_outline</mat-icon>
+    <div class="info">
+      Gracias <span class="nombre">{{ registracion.nombre }} {{ registracion.apellido}}</span> por registrarse en globodeoro.com!<br>
+      Recibirá un correo electrónico en la dirección {{ registracion.email }} para confirmar su registración.
+    </div>
+    <button mat-raised-button color="primary" [routerLink]="''">
+      <mat-icon>home</mat-icon> Ir a la Portada
+    </button>
+  </div>
+</div>
+

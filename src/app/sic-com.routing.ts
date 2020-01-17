@@ -12,10 +12,12 @@ import {CheckoutComponent} from './components/checkout/checkout.component';
 import {PasswordRecoveryRequestComponent} from './components/password-recovery-request/password-recovery-request.component';
 import {HomeComponent} from './components/home/home.component';
 import {CompraRealizadaComponent} from './components/compra-realizada/compra-realizada.component';
+import {RegistracionRealizadaComponent} from './components/registracion-realizada/registracion-realizada.component';
 
 const sicComRoutes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'registracion', component: RegistracionComponent},
+  {path: 'registracion-realizada', component: RegistracionRealizadaComponent},
   {path: 'password-recovery-request', component: PasswordRecoveryRequestComponent},
   {path: 'password-recovery', component: PasswordRecoveryComponent},
   {path: '', component: ContainerComponent,
