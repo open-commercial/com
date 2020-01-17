@@ -7,6 +7,7 @@ import {ItemCarritoCompra} from '../models/item-carrito-compra';
 import {TipoDeEnvio} from '../models/tipo-de-envio';
 import {NuevaOrdenDeCarritoCompra} from '../models/nueva-orden-de-carrito-compra';
 import {StorageService} from './storage.service';
+import {AuthService} from './auth.service';
 
 @Injectable()
 export class CarritoCompraService {
@@ -16,10 +17,11 @@ export class CarritoCompraService {
   cantidadItemsEnCarrito$ = this.cantidadItemsEnCarritoSubject.asObservable();
 
   constructor(private http: HttpClient,
-              private storageService: StorageService) {}
+              private storageService: StorageService,
+              private authService: AuthService) {}
 
   getCarritoCompra(idCliente: number): Observable<CarritoCompra> {
-    const idUsuario = this.storageService.getItem('idUsuario');
+    const idUsuario = this.authService.getLoggedInIdUsuario();
     return this.http.get<CarritoCompra>(`${this.uri}/usuarios/${idUsuario}/clientes/${idCliente}`);
   }
 
@@ -28,25 +30,25 @@ export class CarritoCompraService {
   }
 
   actualizarAlPedido(producto, cantidad) {
-    const idUsuario = this.storageService.getItem('idUsuario');
+    const idUsuario = this.authService.getLoggedInIdUsuario();
     const uriPost = `${this.uri}/usuarios/${idUsuario}/productos/${producto['idProducto']}?cantidad=${cantidad}`;
     return this.http.post(uriPost, {});
   }
 
   getItems(idCliente: number, pagina: number) {
-    const idUsuario = this.storageService.getItem('idUsuario');
+    const idUsuario = this.authService.getLoggedInIdUsuario();
     const uriGet = `${this.uri}/usuarios/${idUsuario}/clientes/${idCliente}/items?pagina=${pagina}`;
     return this.http.get(uriGet);
   }
 
   eliminarTodosLosItems() {
-    const idUsuario = this.storageService.getItem('idUsuario');
+    const idUsuario = this.authService.getLoggedInIdUsuario();
     const urlDelete = `${this.uri}/usuarios/${idUsuario}`;
     return this.http.delete(urlDelete);
   }
 
   eliminarItem(id: number) {
-    const idUsuario = this.storageService.getItem('idUsuario');
+    const idUsuario = this.authService.getLoggedInIdUsuario();
     const uriDelete = `${this.uri}/usuarios/${idUsuario}/productos/${id}`;
     return this.http.delete(uriDelete);
   }
@@ -56,7 +58,7 @@ export class CarritoCompraService {
   }
 
   getCantidadEnCarrito(idProducto): Observable<ItemCarritoCompra> {
-    const idUsuario = this.storageService.getItem('idUsuario');
+    const idUsuario = this.authService.getLoggedInIdUsuario();
     return this.http.get<ItemCarritoCompra>(`${this.uri}/usuarios/${idUsuario}/productos/${idProducto}`);
   }
 }

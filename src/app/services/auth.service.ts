@@ -69,11 +69,15 @@ export class AuthService {
   }
 
   getLoggedInUsuario(): Observable<Usuario> {
-    return this.usuariosService.getUsuario(this.storageService.getItem('idUsuario'));
+    return this.usuariosService.getUsuario(this.getLoggedInIdUsuario());
   }
 
   getLoggedInIdUsuario(): string {
-    return this.storageService.getItem('idUsuario');
+    const token = this.storageService.getItem('token');
+    if (!token) { return null; }
+
+    const decodedToken = this.jwtHelper.decodeToken(token);
+    return decodedToken.idUsuario;
   }
 
   solicitarCambioContrasenia(email: string) {
@@ -86,7 +90,5 @@ export class AuthService {
 
   setAuthenticationInfo(token: string) {
     this.storageService.setItem('token', token);
-    const decodedToken = this.jwtHelper.decodeToken(token);
-    this.storageService.setItem('idUsuario', decodedToken.idUsuario);
   }
 }
