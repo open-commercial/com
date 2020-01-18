@@ -30,7 +30,7 @@
             $ {{ producto.precioBonificado | number:'1.0-2':'es-AR' }}
           </div>
         </div>
-        <div *ngIf="!producto.oferta && producto.bulto > 1" [class.seleccionado]="esCantidadBonificada()">
+        <div *ngIf="!producto.oferta && (producto.precioLista > producto.precioBonificado) && producto.bulto > 1" [class.seleccionado]="esCantidadBonificada()">
           Llevando {{producto.bulto | number:'1.0-2':'es-AR'}} o más
         </div>
       </div>
