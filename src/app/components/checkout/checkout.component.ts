@@ -339,8 +339,6 @@ export class CheckoutComponent implements OnInit {
         }
       }
 
-      this.pagoForm.disable();
-      this.opcionEnvioForm.disable();
       this.enviarOrdenLoading = true;
 
       const orden: NuevaOrdenDeCarritoCompra = {
@@ -353,13 +351,13 @@ export class CheckoutComponent implements OnInit {
       };
 
       this.carritoCompraService.enviarOrden(orden)
-        .pipe(finalize(() => this.enviarOrdenLoading = false))
+        .pipe(finalize(() => {
+          this.enviarOrdenLoading = false;
+        }))
         .subscribe(
         () => this.router.navigateByUrl('/compra-realizada'),
         err => {
           this.avisoService.openSnackBar(err.error, '', 3500);
-          this.pagoForm.enable();
-          this.opcionEnvioForm.enable();
         }
       );
     }

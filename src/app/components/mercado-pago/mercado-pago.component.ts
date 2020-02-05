@@ -358,8 +358,8 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
       monto: this.monto,
     };
 
-    this.updated.emit(pago);
     this.mp.clearSession();
+    this.updated.emit(pago);
   }
 
   cancel() {

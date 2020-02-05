@@ -101,7 +101,7 @@
         </div>
       </form>
     </mat-step>
-    <mat-step [stepControl]="pagoForm" *ngIf="pagoForm">
+    <mat-step [stepControl]="pagoForm" *ngIf="pagoForm && !enviarOrdenLoading">
       <form [formGroup]="pagoForm">
         <ng-template matStepLabel>Pago</ng-template>
         <div fxLayoutAlign="space-between center" fxLayout="column" *ngIf="!loadingTotales && cliente" class="resumen"
@@ -131,10 +131,10 @@
             Confirmar
           </button>
         </div>
-        <div fxLayout="row" fxLayoutAlign="center center" *ngIf="enviarOrdenLoading" class="sic-com-spinner-container">
-          <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
-        </div>
       </form>
     </mat-step>
   </mat-vertical-stepper>
+  <div fxLayout="row" fxLayoutAlign="center center" *ngIf="enviarOrdenLoading" class="sic-com-spinner-container">
+    <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
+  </div>
 </div>
