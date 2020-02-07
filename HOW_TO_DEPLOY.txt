@@ -1,5 +1,2 @@
-- Eliminar todo el contenido de /dist
-- Generar el bundle nuevo ejecutando: ng build --prod
-- Commitear todo con el mensaje "New release"
-- Mergear al branch del environment que se quiera deployar: prod o qa
-- Al hacer merge al branch elegido, la app va ser deployada con el hook de Heroku automaticamente
+TO DO!
+- Como compilar con diferentes environments?
