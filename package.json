@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "license": "MIT",
   "scripts": {
-    "build": "ng build --prod"
+    "build": "ng build --configuration ${ENV_NAME}"
   },
   "private": true,
   "dependencies": {
