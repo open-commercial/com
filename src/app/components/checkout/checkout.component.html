@@ -113,22 +113,12 @@
           <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
         </div>
         <br>
-        <div>
-          <mat-button-toggle-group formControlName="opcionPago" aria-label="Opción de Pago">
-            <mat-button-toggle [value]="opcionPago.PAGAR_AHORA">Pagar Ahora</mat-button-toggle>
-            <mat-button-toggle [value]="opcionPago.PAGAR_LUEGO">Pagar Luego</mat-button-toggle>
-          </mat-button-toggle-group>
-          <br><br>
-        </div>
-        <div *ngIf="pagoForm.get('opcionPago').value === opcionPago.PAGAR_AHORA && total && !enviarOrdenLoading">
-          <sic-com-mercado-pago [cliente]="cliente" [monto]="total" [hideCancelarButton]="true"
-                                (updated)="updated($event)"></sic-com-mercado-pago>
-          <br>
-        </div>
-        <div *ngIf="!enviarOrdenLoading" class="acciones">
-          <button mat-raised-button color="primary" (click)="cerrarOrden()"
-                  [disabled]="loadingTotales || !cliente || opcionEnvioForm.invalid  || pagoForm.invalid" *ngIf="pagoForm.get('opcionPago').value !== opcionPago.PAGAR_AHORA">
-            Confirmar
+
+        <div fxLayout="column" fxLayout.gt-sm="row" fxLayoutAlign="center center" fxLayoutGap="1rem">
+          <sic-com-boton-mercado-pago></sic-com-boton-mercado-pago>
+          <button mat-flat-button color="primary" (click)="cerrarOrden()"
+                  [disabled]="loadingTotales || !cliente || opcionEnvioForm.invalid">
+            Acordar con el vendedor
           </button>
         </div>
       </form>

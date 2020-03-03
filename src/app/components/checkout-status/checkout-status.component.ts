@@ -1,22 +1,34 @@
 import { Component, OnInit } from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
 import {Usuario} from '../../models/usuario';
 import {AuthService} from '../../services/auth.service';
-import {finalize} from 'rxjs/operators';
 import {AvisoService} from '../../services/aviso.service';
+import {finalize} from 'rxjs/operators';
 
 @Component({
-  selector: 'sic-com-compra-realizada',
-  templateUrl: './compra-realizada.component.html',
-  styleUrls: ['./compra-realizada.component.scss']
+  selector: 'sic-com-checkout-status',
+  templateUrl: './checkout-status.component.html',
+  styleUrls: ['./checkout-status.component.scss']
 })
-export class CompraRealizadaComponent implements OnInit {
+export class CheckoutStatusComponent implements OnInit {
+  status = '';
+  statusOptions = ['aprobado', 'pendiente'];
   usuario: Usuario;
   loading = false;
 
-  constructor(private authService: AuthService,
+  constructor(private route: ActivatedRoute,
+              private router: Router,
+              private authService: AuthService,
               private avisoService: AvisoService) { }
 
   ngOnInit() {
+    const status = this.route.snapshot.paramMap.get('status');
+    if (this.statusOptions.indexOf(status) < 0) {
+      this.router.navigate(['']);
+    }
+
+    this.status = status;
+
     this.loading = true;
     this.authService.getLoggedInUsuario()
       .pipe(

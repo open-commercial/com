@@ -1,0 +1,20 @@
+<div class="sic-com-checkout-status">
+  <div *ngIf="loading" fxLayout="column" fxLayoutAlign="center center">
+    <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
+  </div>
+  <div *ngIf="!loading && usuario" fxLayout="column" fxLayoutAlign="center center">
+    <mat-icon *ngIf="status === 'aprobado'" class="icono" aria-hidden="false" aria-label="Compra realizada">check_circle_outline</mat-icon>
+    <mat-icon *ngIf="status === 'pendiente'" class="icono" aria-hidden="false" aria-label="Compra pendiente">hourglass_empty</mat-icon>
+    <div class="info">
+        Gracias <span class="nombre">{{ usuario.nombre }} {{ usuario.apellido}}</span> por su compra!<br>
+        En breve le enviaremos un correo electrónico a la dirección {{ usuario.email }} con los datos de su pedido.
+      <div *ngIf="status === 'pendiente'">
+        Su pedido no será enviado hasta que abone con el medio de pago que eligió.<br>
+        Comuniquese con nosotros ante cualquier duda.
+      </div>
+    </div>
+    <button mat-raised-button color="primary" [routerLink]="''">
+      <mat-icon>home</mat-icon> Ir a la Portada
+    </button>
+  </div>
+</div>

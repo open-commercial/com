@@ -1,13 +1,14 @@
 import {Injectable} from '@angular/core';
 import {Observable, Subject} from 'rxjs';
 import {environment} from 'environments/environment';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {CarritoCompra} from '../models/carrito-compra';
 import {ItemCarritoCompra} from '../models/item-carrito-compra';
 import {TipoDeEnvio} from '../models/tipo-de-envio';
 import {NuevaOrdenDeCarritoCompra} from '../models/nueva-orden-de-carrito-compra';
 import {StorageService} from './storage.service';
 import {AuthService} from './auth.service';
+import {MercadoPagoPreference} from '../models/mercadopago/mercado-pago-preference';
 
 @Injectable()
 export class CarritoCompraService {
@@ -35,9 +36,9 @@ export class CarritoCompraService {
     return this.http.post(uriPost, {});
   }
 
-  getItems(idCliente: number, pagina: number) {
+  getItems(pagina: number) {
     const idUsuario = this.authService.getLoggedInIdUsuario();
-    const uriGet = `${this.uri}/usuarios/${idUsuario}/clientes/${idCliente}/items?pagina=${pagina}`;
+    const uriGet = `${this.uri}/usuarios/${idUsuario}/items?pagina=${pagina}`;
     return this.http.get(uriGet);
   }
 
@@ -60,5 +61,10 @@ export class CarritoCompraService {
   getCantidadEnCarrito(idProducto): Observable<ItemCarritoCompra> {
     const idUsuario = this.authService.getLoggedInIdUsuario();
     return this.http.get<ItemCarritoCompra>(`${this.uri}/usuarios/${idUsuario}/productos/${idProducto}`);
+  }
+
+  getMercadoPagoPreference(): Observable<MercadoPagoPreference> {
+    const idUsuario = this.authService.getLoggedInIdUsuario();
+    return this.http.get<MercadoPagoPreference>(this.uri + `/usuarios/${idUsuario}/preference`);
   }
 }

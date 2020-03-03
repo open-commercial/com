@@ -316,6 +316,7 @@ export class CheckoutComponent implements OnInit {
   }
 
   cerrarOrden(pago: NuevoPagoMercadoPago = null) {
+    this.pagoForm.get('opcionPago').setValue(OpcionPago.PAGAR_LUEGO);
     if (
       this.cliente && this.datosDelClienteForm.valid &&
       this.pagoForm.valid && this.opcionEnvioForm.valid
@@ -355,7 +356,7 @@ export class CheckoutComponent implements OnInit {
           this.enviarOrdenLoading = false;
         }))
         .subscribe(
-        () => this.router.navigateByUrl('/compra-realizada'),
+        () => this.router.navigateByUrl('/checkout/aprobado'),
         err => {
           this.avisoService.openSnackBar(err.error, '', 3500);
         }
