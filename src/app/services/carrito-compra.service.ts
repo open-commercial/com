@@ -1,10 +1,9 @@
 import {Injectable} from '@angular/core';
 import {Observable, Subject} from 'rxjs';
 import {environment} from 'environments/environment';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {CarritoCompra} from '../models/carrito-compra';
 import {ItemCarritoCompra} from '../models/item-carrito-compra';
-import {TipoDeEnvio} from '../models/tipo-de-envio';
 import {NuevaOrdenDeCarritoCompra} from '../models/nueva-orden-de-carrito-compra';
 import {StorageService} from './storage.service';
 import {AuthService} from './auth.service';
