@@ -116,7 +116,7 @@
 
         <div fxLayout="column" fxLayout.gt-sm="row" fxLayoutAlign="center center" fxLayoutGap="1rem">
           <sic-com-boton-mercado-pago></sic-com-boton-mercado-pago>
-          <button mat-flat-button color="primary" (click)="cerrarOrden()"
+          <button mat-raised-button color="accent" (click)="cerrarOrden()"
                   [disabled]="loadingTotales || !cliente || opcionEnvioForm.invalid">
             Acordar con el vendedor
           </button>
