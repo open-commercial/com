@@ -4,10 +4,9 @@ import {environment} from 'environments/environment';
 import {HttpClient} from '@angular/common/http';
 import {CarritoCompra} from '../models/carrito-compra';
 import {ItemCarritoCompra} from '../models/item-carrito-compra';
-import {NuevaOrdenDeCarritoCompra} from '../models/nueva-orden-de-carrito-compra';
+import {NuevaOrdenDeCompra} from '../models/nueva-orden-de-compra';
 import {StorageService} from './storage.service';
 import {AuthService} from './auth.service';
-import {MercadoPagoPreference} from '../models/mercadopago/mercado-pago-preference';
 
 @Injectable()
 export class CarritoCompraService {
@@ -53,17 +52,12 @@ export class CarritoCompraService {
     return this.http.delete(uriDelete);
   }
 
-  enviarOrden(nuevaOrdenDeCarritoCompra: NuevaOrdenDeCarritoCompra) {
-    return this.http.post(this.uri, nuevaOrdenDeCarritoCompra);
+  enviarOrden(nuevaOrdenDeCompra: NuevaOrdenDeCompra) {
+    return this.http.post(this.uri, nuevaOrdenDeCompra);
   }
 
   getCantidadEnCarrito(idProducto): Observable<ItemCarritoCompra> {
     const idUsuario = this.authService.getLoggedInIdUsuario();
     return this.http.get<ItemCarritoCompra>(`${this.uri}/usuarios/${idUsuario}/productos/${idProducto}`);
-  }
-
-  getMercadoPagoPreference(): Observable<MercadoPagoPreference> {
-    const idUsuario = this.authService.getLoggedInIdUsuario();
-    return this.http.get<MercadoPagoPreference>(this.uri + `/usuarios/${idUsuario}/preference`);
   }
 }

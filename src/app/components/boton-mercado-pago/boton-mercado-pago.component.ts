@@ -1,7 +1,10 @@
-import {Component, ElementRef, OnInit, Renderer2, ViewChild} from '@angular/core';
-import {CarritoCompraService} from '../../services/carrito-compra.service';
+import {Component, Input, OnInit} from '@angular/core';
 import {finalize} from 'rxjs/operators';
 import {MercadoPagoPreference} from '../../models/mercadopago/mercado-pago-preference';
+import {PagosService} from '../../services/pagos.service';
+import {NuevaOrdenDeCompra} from '../../models/nueva-orden-de-compra';
+import {TipoDeEnvio} from '../../models/tipo-de-envio';
+import {environment} from '../../../environments/environment';
 
 @Component({
   selector: 'sic-com-boton-mercado-pago',
@@ -13,29 +16,35 @@ export class BotonMercadoPagoComponent implements OnInit {
   initPoint = '';
   loading = false;
 
-  @ViewChild('mpForm', { static: false }) mpForm: ElementRef;
+  private pTipoDeEnvio: TipoDeEnvio;
 
-  constructor(private carritoCompraService: CarritoCompraService,
-              private renderer2: Renderer2) { }
+  @Input()
+  set tipoDeEnvio(value: TipoDeEnvio) {
+    this.pTipoDeEnvio = value;
+    this.getPreference();
+  }
 
-  ngOnInit() {
+  get tipoDeEnvio(): TipoDeEnvio {
+    return this.pTipoDeEnvio;
+  }
+
+  constructor(private pagosService: PagosService) { }
+
+  ngOnInit() {}
+
+  getPreference() {
+    const npmp: NuevaOrdenDeCompra = {
+      idSucursal: environment.idSucursal,
+      tipoDeEnvio: this.pTipoDeEnvio
+    };
+
     this.loading = true;
-    this.carritoCompraService.getMercadoPagoPreference()
+    this.pagosService.getMercadoPagoPreference(npmp)
       .pipe(finalize(() => this.loading = false))
       .subscribe((mpp: MercadoPagoPreference) => {
         this.idPreference = mpp.id;
         this.initPoint = mpp.initPoint;
-        // setTimeout(() => this.addButtonScript(), 2000);
-        // this.addButtonScript();
       })
     ;
   }
-
-  /*addButtonScript() {
-    const s = this.renderer2.createElement('script');
-    s.type = 'text/javascript';
-    s.src = 'https://www.mercadopago.com.ar/integrations/v1/web-payment-checkout.js';
-    s.setAttribute('data-preference-id', this.idPreference);
-    this.renderer2.appendChild(this.mpForm.nativeElement, s);
-  }*/
 }

@@ -19,7 +19,7 @@ import {ClientesService} from './services/clientes.service';
 import {AuthGuard} from './guards/auth.guard';
 import {JwtInterceptor} from './interceptors/jwt.interceptor';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
-import {SucursalService} from './services/sucursal.service';
+import {SucursalesService} from './services/sucursales.service';
 import {AvisoService} from './services/aviso.service';
 import {ContainerComponent} from './components/container/container.component';
 import {ConfirmationDialogComponent} from './components/confirmation-dialog/confirmation-dialog.component';
@@ -119,7 +119,7 @@ registerLocaleData(localeEs, 'es-AR', localeEsExtra);
     ProductosService,
     CarritoCompraService,
     ClientesService,
-    SucursalService,
+    SucursalesService,
     AvisoService,
     UsuariosService,
     PedidosService,

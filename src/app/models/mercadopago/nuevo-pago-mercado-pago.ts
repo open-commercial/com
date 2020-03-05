@@ -10,7 +10,6 @@ export interface NuevoPagoMercadoPago {
   paymentTypeId: string;
   issuerId: number;
   installments: number;
-  idCliente: number;
   idSucursal: number;
   monto: number;
 }

@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {FormGroup, FormBuilder, Validators, ValidatorFn, ValidationErrors} from '@angular/forms';
 import {ProductosService} from '../../services/productos.service';
 import {CarritoCompraService} from '../../services/carrito-compra.service';
@@ -11,11 +11,11 @@ import {finalize} from 'rxjs/operators';
 import { MatStepper } from '@angular/material/stepper';
 import {Router} from '@angular/router';
 import {Ubicacion} from '../../models/ubicacion';
-import {SucursalService} from '../../services/sucursal.service';
+import {SucursalesService} from '../../services/sucursales.service';
 import {Sucursal} from '../../models/sucursal';
 import {UbicacionesService} from '../../services/ubicaciones.service';
 import {TipoDeEnvio} from '../../models/tipo-de-envio';
-import {NuevaOrdenDeCarritoCompra} from '../../models/nueva-orden-de-carrito-compra';
+import {NuevaOrdenDeCompra} from '../../models/nueva-orden-de-compra';
 import {NuevoPagoMercadoPago} from '../../models/mercadopago/nuevo-pago-mercado-pago';
 
 enum OpcionEnvio {
@@ -99,7 +99,7 @@ export class CheckoutComponent implements OnInit {
               private avisoService: AvisoService,
               private authService: AuthService,
               private clientesService: ClientesService,
-              private sucursalService: SucursalService,
+              private sucursalService: SucursalesService,
               private ubicacionesService: UbicacionesService,
               private fb: FormBuilder,
               private router: Router) {
@@ -315,7 +315,7 @@ export class CheckoutComponent implements OnInit {
     }
   }
 
-  cerrarOrden(pago: NuevoPagoMercadoPago = null) {
+  cerrarOrden() {
     this.pagoForm.get('opcionPago').setValue(OpcionPago.PAGAR_LUEGO);
     if (
       this.cliente && this.datosDelClienteForm.valid &&
@@ -342,13 +342,9 @@ export class CheckoutComponent implements OnInit {
 
       this.enviarOrdenLoading = true;
 
-      const orden: NuevaOrdenDeCarritoCompra = {
+      const orden: NuevaOrdenDeCompra = {
         idSucursal: idSucursal,
-        idCliente: this.cliente.idCliente,
-        idUsuario: Number(this.authService.getLoggedInIdUsuario()),
-        tipoDeEnvio: tipoDeEnvio,
-        observaciones: null,
-        nuevoPagoMercadoPago: pago,
+        tipoDeEnvio: tipoDeEnvio
       };
 
       this.carritoCompraService.enviarOrden(orden)
@@ -362,6 +358,26 @@ export class CheckoutComponent implements OnInit {
         }
       );
     }
+  }
+
+  getTipoEnvio(): TipoDeEnvio {
+    const dataEnvio = this.opcionEnvioForm.value;
+    let tipoDeEnvio = null;
+
+    if (dataEnvio.opcionEnvio === OpcionEnvio.RETIRO_EN_SUCURSAL) {
+      tipoDeEnvio = TipoDeEnvio.RETIRO_EN_SUCURSAL;
+    }
+
+    if (dataEnvio.opcionEnvio === OpcionEnvio.ENVIO_A_DOMICILIO) {
+      if (dataEnvio.opcionEnvioUbicacion === OpcionEnvioUbicacion.USAR_UBICACION_FACTURACION) {
+        tipoDeEnvio = TipoDeEnvio.USAR_UBICACION_FACTURACION;
+      }
+      if (dataEnvio.opcionEnvioUbicacion === OpcionEnvioUbicacion.USAR_UBICACION_ENVIO) {
+        tipoDeEnvio = TipoDeEnvio.USAR_UBICACION_ENVIO;
+      }
+    }
+
+    return tipoDeEnvio;
   }
 
   updated(pago: NuevoPagoMercadoPago) {

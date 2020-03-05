@@ -7,7 +7,7 @@ import {AvisoService} from '../../services/aviso.service';
 import {MPOpcionPago, NuevoPagoMercadoPago} from '../../models/mercadopago/nuevo-pago-mercado-pago';
 import {errorsInfo} from '../../models/mercadopago/errors';
 import {PagosService} from '../../services/pagos.service';
-import {debounceTime, finalize} from 'rxjs/operators';
+import {debounceTime} from 'rxjs/operators';
 import {formatNumber} from '@angular/common';
 
 @Component({
@@ -56,7 +56,7 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    this.dynamicScriptLoader.load('mercadopago').then(data => {
+    this.dynamicScriptLoader.load('mercadopago').then(() => {
       this.mp = window['Mercadopago'];
       this.mp.setPublishableKey(environment.mercadoPagoPublicKey);
       this.mp.getAllPaymentMethods((s, d: [any]) => {
@@ -347,13 +347,12 @@ export class MercadoPagoComponent implements OnInit, OnChanges {
   generarPago() {
     const data = this.mpForm.value;
 
-    const pago = {
+    const pago: NuevoPagoMercadoPago = {
       issuerId: data.installmentsPaymentMethod ? data.installmentsPaymentMethod.issuer.id : null,
       paymentTypeId: data.installmentsPaymentMethod ? data.installmentsPaymentMethod.payment_type_id : data.paymentMethod.payment_type_id,
       paymentMethodId: data.installmentsPaymentMethod ? data.installmentsPaymentMethod.payment_method_id : data.paymentMethod.id,
       installments: data.opcionPago === MPOpcionPago.TARJETA_CREDITO ? data.installments.cuotas : null,
       token: data.opcionPago === MPOpcionPago.TARJETA_CREDITO || data.opcionPago === MPOpcionPago.TARJETA_DEBITO ? data.token : null,
-      idCliente: this.cliente.idCliente,
       idSucursal: environment.idSucursal,
       monto: this.monto,
     };

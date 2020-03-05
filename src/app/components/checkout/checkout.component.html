@@ -101,30 +101,32 @@
         </div>
       </form>
     </mat-step>
-    <mat-step [stepControl]="pagoForm" *ngIf="pagoForm && !enviarOrdenLoading">
+    <mat-step [stepControl]="pagoForm" *ngIf="pagoForm">
       <form [formGroup]="pagoForm">
         <ng-template matStepLabel>Pago</ng-template>
-        <div fxLayoutAlign="space-between center" fxLayout="column" *ngIf="!loadingTotales && cliente" class="resumen"
-             fxLayoutGap="0.3rem">
-          <div>Cant. de Artículos: {{ cantidadArticulos| number:'1.0-2':'es-AR' }}</div>
-          <div>Total: <span class="valor">$ {{ total| number:'1.0-2':'es-AR' }}</span></div>
+        <div *ngIf="!enviarOrdenLoading">
+          <div fxLayoutAlign="space-between center" fxLayout="column" *ngIf="!loadingTotales && cliente" class="resumen"
+               fxLayoutGap="0.3rem">
+            <div>Cant. de Artículos: {{ cantidadArticulos| number:'1.0-2':'es-AR' }}</div>
+            <div>Total: <span class="valor">$ {{ total| number:'1.0-2':'es-AR' }}</span></div>
+          </div>
+          <div fxLayout="row" fxLayoutAlign="center center" *ngIf="loadingTotales" class="sic-com-spinner-container">
+            <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
+          </div>
+          <br>
+          <div fxLayout="column" fxLayout.gt-sm="row" fxLayoutAlign="center center" fxLayoutGap="1rem" *ngIf="getTipoEnvio()">
+            <sic-com-boton-mercado-pago [tipoDeEnvio]="getTipoEnvio()"></sic-com-boton-mercado-pago>
+            <button mat-raised-button color="accent" (click)="cerrarOrden()"
+                    [disabled]="loadingTotales || !cliente || opcionEnvioForm.invalid">
+              Acordar con el vendedor
+            </button>
+          </div>
         </div>
-        <div fxLayout="row" fxLayoutAlign="center center" *ngIf="loadingTotales" class="sic-com-spinner-container">
+        <div fxLayout="row" fxLayoutAlign="center center" *ngIf="enviarOrdenLoading" class="sic-com-spinner-container">
           <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
-        </div>
-        <br>
-
-        <div fxLayout="column" fxLayout.gt-sm="row" fxLayoutAlign="center center" fxLayoutGap="1rem">
-          <sic-com-boton-mercado-pago></sic-com-boton-mercado-pago>
-          <button mat-raised-button color="accent" (click)="cerrarOrden()"
-                  [disabled]="loadingTotales || !cliente || opcionEnvioForm.invalid">
-            Acordar con el vendedor
-          </button>
         </div>
       </form>
     </mat-step>
   </mat-vertical-stepper>
-  <div fxLayout="row" fxLayoutAlign="center center" *ngIf="enviarOrdenLoading" class="sic-com-spinner-container">
-    <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
-  </div>
+
 </div>

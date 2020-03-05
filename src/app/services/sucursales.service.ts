@@ -5,7 +5,7 @@ import {Observable} from 'rxjs';
 import {Sucursal} from '../models/sucursal';
 
 @Injectable()
-export class SucursalService {
+export class SucursalesService {
 
   public url = environment.apiUrl + '/api/v1';
 
