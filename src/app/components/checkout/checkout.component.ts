@@ -209,10 +209,6 @@ export class CheckoutComponent implements OnInit {
     this.ubicacionSucursal = this.sucursal ? this.sucursal.ubicacion : null;
   }
 
-  getUbicacionSucursalStr(): string {
-    return this.sucursal ? this.sucursal.detalleUbicacion : '(no seleccionada)';
-  }
-
   getUbicacionStr(u: Ubicacion) {
     const str = [];
     if (u) {
@@ -378,10 +374,6 @@ export class CheckoutComponent implements OnInit {
     }
 
     return tipoDeEnvio;
-  }
-
-  updated(pago: NuevoPagoMercadoPago) {
-    if (pago) { this.cerrarOrden(pago); }
   }
 
   getEnvioLabel() {
