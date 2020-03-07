@@ -10,9 +10,17 @@
     </span>
   </div>
   <div *ngIf="!isLoading && cuentaCorriente && !isPagoLoading">
-    <button mat-raised-button color="primary" *ngIf="!showNuevoPago" (click)="mostrarFormDePago()">Ingresar Dinero</button>
+    <button mat-raised-button color="primary" *ngIf="!showNuevoPago" (click)="abrirPanelDeposito()">Ingresar Dinero</button>
     <div *ngIf="showNuevoPago">
-      <sic-com-mercado-pago [cliente]="cliente" [showMontoControl]="true" (updated)="updated($event)" (canceled)="showNuevoPago = false"></sic-com-mercado-pago>
+      <div fxLayout="column" fxLayout.gt-sm="row" fxLayoutAlign="center center" fxLayoutGap="0.7rem">
+        <mat-form-field class="example-full-width">
+          <mat-label>Ingrese el monto a depositar ($)</mat-label>
+          <input matInput type="number" [(ngModel)]="monto" (keyup)="montoChange($event)" #montoElem>
+        </mat-form-field>
+        <sic-com-boton-mercado-pago [nuevaOrdenDePago]="nuevaOrdenDePago"></sic-com-boton-mercado-pago>
+        <button mat-raised-button (click)="cerrarPanelDeposito()">Cerrar</button>
+      </div>
+
     </div>
     <div *ngIf="!showNuevoPago">
       <div fxLayout="row" fxLayoutAlign="start center">

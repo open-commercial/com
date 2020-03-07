@@ -4,9 +4,7 @@ import {environment} from 'environments/environment';
 import {HttpClient} from '@angular/common/http';
 import {CarritoCompra} from '../models/carrito-compra';
 import {ItemCarritoCompra} from '../models/item-carrito-compra';
-import {NuevaOrdenDeCompra} from '../models/nueva-orden-de-compra';
-import {StorageService} from './storage.service';
-import {AuthService} from './auth.service';
+import {NuevaOrdenDePago} from '../models/nueva-orden-de-pago';
 
 @Injectable()
 export class CarritoCompraService {
@@ -15,13 +13,10 @@ export class CarritoCompraService {
   private cantidadItemsEnCarritoSubject = new Subject<number>();
   cantidadItemsEnCarrito$ = this.cantidadItemsEnCarritoSubject.asObservable();
 
-  constructor(private http: HttpClient,
-              private storageService: StorageService,
-              private authService: AuthService) {}
+  constructor(private http: HttpClient) {}
 
   getCarritoCompra(idCliente: number): Observable<CarritoCompra> {
-    const idUsuario = this.authService.getLoggedInIdUsuario();
-    return this.http.get<CarritoCompra>(`${this.uri}/usuarios/${idUsuario}/clientes/${idCliente}`);
+    return this.http.get<CarritoCompra>(`${this.uri}/clientes/${idCliente}`);
   }
 
   setCantidadItemsEnCarrito(cantidad: number) {
@@ -29,35 +24,30 @@ export class CarritoCompraService {
   }
 
   actualizarAlPedido(producto, cantidad) {
-    const idUsuario = this.authService.getLoggedInIdUsuario();
-    const uriPost = `${this.uri}/usuarios/${idUsuario}/productos/${producto['idProducto']}?cantidad=${cantidad}`;
+    const uriPost = `${this.uri}/productos/${producto['idProducto']}?cantidad=${cantidad}`;
     return this.http.post(uriPost, {});
   }
 
   getItems(pagina: number) {
-    const idUsuario = this.authService.getLoggedInIdUsuario();
-    const uriGet = `${this.uri}/usuarios/${idUsuario}/items?pagina=${pagina}`;
+    const uriGet = `${this.uri}/items?pagina=${pagina}`;
     return this.http.get(uriGet);
   }
 
   eliminarTodosLosItems() {
-    const idUsuario = this.authService.getLoggedInIdUsuario();
-    const urlDelete = `${this.uri}/usuarios/${idUsuario}`;
+    const urlDelete = `${this.uri}`;
     return this.http.delete(urlDelete);
   }
 
   eliminarItem(id: number) {
-    const idUsuario = this.authService.getLoggedInIdUsuario();
-    const uriDelete = `${this.uri}/usuarios/${idUsuario}/productos/${id}`;
+    const uriDelete = `${this.uri}/productos/${id}`;
     return this.http.delete(uriDelete);
   }
 
-  enviarOrden(nuevaOrdenDeCompra: NuevaOrdenDeCompra) {
-    return this.http.post(this.uri, nuevaOrdenDeCompra);
+  enviarOrden(nuevaOrdenDePago: NuevaOrdenDePago) {
+    return this.http.post(this.uri, nuevaOrdenDePago);
   }
 
   getCantidadEnCarrito(idProducto): Observable<ItemCarritoCompra> {
-    const idUsuario = this.authService.getLoggedInIdUsuario();
-    return this.http.get<ItemCarritoCompra>(`${this.uri}/usuarios/${idUsuario}/productos/${idProducto}`);
+    return this.http.get<ItemCarritoCompra>(`${this.uri}/productos/${idProducto}`);
   }
 }

@@ -2,9 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {finalize} from 'rxjs/operators';
 import {MercadoPagoPreference} from '../../models/mercadopago/mercado-pago-preference';
 import {PagosService} from '../../services/pagos.service';
-import {NuevaOrdenDeCompra} from '../../models/nueva-orden-de-compra';
-import {TipoDeEnvio} from '../../models/tipo-de-envio';
-import {environment} from '../../../environments/environment';
+import {NuevaOrdenDePago} from '../../models/nueva-orden-de-pago';
 
 @Component({
   selector: 'sic-com-boton-mercado-pago',
@@ -12,38 +10,45 @@ import {environment} from '../../../environments/environment';
   styleUrls: ['./boton-mercado-pago.component.scss']
 })
 export class BotonMercadoPagoComponent implements OnInit {
-  idPreference = '';
-  initPoint = '';
   loading = false;
 
-  private pTipoDeEnvio: TipoDeEnvio;
+  private _montoMinimo = 1;
 
   @Input()
-  set tipoDeEnvio(value: TipoDeEnvio) {
-    this.pTipoDeEnvio = value;
-    this.getPreference();
+  set montoMinimo(value: number) {
+    this._montoMinimo = value;
   }
 
-  get tipoDeEnvio(): TipoDeEnvio {
-    return this.pTipoDeEnvio;
+  get montoMinimo() {
+    return this._montoMinimo;
+  }
+
+  private pNuevaOrdenDePago: NuevaOrdenDePago;
+
+  @Input()
+  set nuevaOrdenDePago(value: NuevaOrdenDePago) {
+    this.pNuevaOrdenDePago = value;
+  }
+
+  get nuevaOrdenDePago() {
+    return this.pNuevaOrdenDePago;
   }
 
   constructor(private pagosService: PagosService) { }
 
   ngOnInit() {}
 
-  getPreference() {
-    const npmp: NuevaOrdenDeCompra = {
-      idSucursal: environment.idSucursal,
-      tipoDeEnvio: this.pTipoDeEnvio
-    };
+  goToInitPoint() {
+    this.getPreference();
+  }
 
+  getPreference() {
+    if (!this.pNuevaOrdenDePago) { return; }
     this.loading = true;
-    this.pagosService.getMercadoPagoPreference(npmp)
-      .pipe(finalize(() => this.loading = false))
+    this.pagosService.getMercadoPagoPreference(this.pNuevaOrdenDePago)
+      .pipe(finalize(() => setTimeout(() => this.loading = false, 250)))
       .subscribe((mpp: MercadoPagoPreference) => {
-        this.idPreference = mpp.id;
-        this.initPoint = mpp.initPoint;
+        window.location.replace(mpp.initPoint);
       })
     ;
   }

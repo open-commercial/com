@@ -1,5 +1,5 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {FormGroup, FormBuilder, Validators, ValidatorFn, ValidationErrors} from '@angular/forms';
+import {FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators} from '@angular/forms';
 import {ProductosService} from '../../services/productos.service';
 import {CarritoCompraService} from '../../services/carrito-compra.service';
 import {AvisoService} from '../../services/aviso.service';
@@ -8,15 +8,14 @@ import {ClientesService} from '../../services/clientes.service';
 import {Usuario} from '../../models/usuario';
 import {Cliente} from '../../models/cliente';
 import {finalize} from 'rxjs/operators';
-import { MatStepper } from '@angular/material/stepper';
+import {MatStepper} from '@angular/material/stepper';
 import {Router} from '@angular/router';
 import {Ubicacion} from '../../models/ubicacion';
 import {SucursalesService} from '../../services/sucursales.service';
 import {Sucursal} from '../../models/sucursal';
 import {UbicacionesService} from '../../services/ubicaciones.service';
 import {TipoDeEnvio} from '../../models/tipo-de-envio';
-import {NuevaOrdenDeCompra} from '../../models/nueva-orden-de-compra';
-import {NuevoPagoMercadoPago} from '../../models/mercadopago/nuevo-pago-mercado-pago';
+import {NuevaOrdenDePago} from '../../models/nueva-orden-de-pago';
 
 enum OpcionEnvio {
   RETIRO_EN_SUCURSAL = 'RETIRO_EN_SUCURSAL',
@@ -317,32 +316,9 @@ export class CheckoutComponent implements OnInit {
       this.cliente && this.datosDelClienteForm.valid &&
       this.pagoForm.valid && this.opcionEnvioForm.valid
     ) {
-      const dataEnvio = this.opcionEnvioForm.value;
-
-      let tipoDeEnvio = null;
-      let idSucursal = null;
-
-      if (dataEnvio.opcionEnvio === OpcionEnvio.RETIRO_EN_SUCURSAL) {
-        tipoDeEnvio = TipoDeEnvio.RETIRO_EN_SUCURSAL;
-        idSucursal = dataEnvio.sucursal.idSucursal;
-      }
-
-      if (dataEnvio.opcionEnvio === OpcionEnvio.ENVIO_A_DOMICILIO) {
-        if (dataEnvio.opcionEnvioUbicacion === OpcionEnvioUbicacion.USAR_UBICACION_FACTURACION) {
-          tipoDeEnvio = TipoDeEnvio.USAR_UBICACION_FACTURACION;
-        }
-        if (dataEnvio.opcionEnvioUbicacion === OpcionEnvioUbicacion.USAR_UBICACION_ENVIO) {
-          tipoDeEnvio = TipoDeEnvio.USAR_UBICACION_ENVIO;
-        }
-      }
+      const orden = this.getNuevaOrdeDeCompra();
 
       this.enviarOrdenLoading = true;
-
-      const orden: NuevaOrdenDeCompra = {
-        idSucursal: idSucursal,
-        tipoDeEnvio: tipoDeEnvio
-      };
-
       this.carritoCompraService.enviarOrden(orden)
         .pipe(finalize(() => {
           this.enviarOrdenLoading = false;
@@ -356,12 +332,16 @@ export class CheckoutComponent implements OnInit {
     }
   }
 
-  getTipoEnvio(): TipoDeEnvio {
+  getNuevaOrdeDeCompra(): NuevaOrdenDePago {
     const dataEnvio = this.opcionEnvioForm.value;
+    if (!dataEnvio) { return null; }
+
     let tipoDeEnvio = null;
+    let idSucursal = null;
 
     if (dataEnvio.opcionEnvio === OpcionEnvio.RETIRO_EN_SUCURSAL) {
       tipoDeEnvio = TipoDeEnvio.RETIRO_EN_SUCURSAL;
+      idSucursal = dataEnvio.sucursal.idSucursal;
     }
 
     if (dataEnvio.opcionEnvio === OpcionEnvio.ENVIO_A_DOMICILIO) {
@@ -373,7 +353,12 @@ export class CheckoutComponent implements OnInit {
       }
     }
 
-    return tipoDeEnvio;
+    return {
+      movimiento: Movimiento.PEDIDO,
+      idSucursal: idSucursal,
+      tipoDeEnvio: tipoDeEnvio,
+      monto: this.total
+    };
   }
 
   getEnvioLabel() {

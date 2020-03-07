@@ -114,9 +114,9 @@
             <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
           </div>
           <br>
-          <div fxLayout="column" fxLayout.gt-sm="row" fxLayoutAlign="center center" fxLayoutGap="1rem" *ngIf="getTipoEnvio()">
-            <sic-com-boton-mercado-pago [tipoDeEnvio]="getTipoEnvio()"></sic-com-boton-mercado-pago>
-            <button mat-raised-button color="accent" (click)="cerrarOrden()"
+          <div fxLayout="column" fxLayout.gt-sm="row" fxLayoutAlign="center center" fxLayoutGap="1rem" *ngIf="getNuevaOrdeDeCompra()">
+            <sic-com-boton-mercado-pago [nuevaOrdenDePago]="getNuevaOrdeDeCompra()"></sic-com-boton-mercado-pago>
+            <button mat-raised-button color="primary" class="boton-pago" (click)="cerrarOrden()" *ngIf="cliente && cliente.puedeComprarAPlazo"
                     [disabled]="loadingTotales || !cliente || opcionEnvioForm.invalid">
               Acordar con el vendedor
             </button>

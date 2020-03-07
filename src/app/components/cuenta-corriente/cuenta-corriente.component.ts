@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {AuthService} from '../../services/auth.service';
 import {Cliente} from '../../models/cliente';
 import {ClientesService} from '../../services/clientes.service';
@@ -6,8 +6,9 @@ import {AvisoService} from '../../services/aviso.service';
 import {CuentasCorrienteService} from '../../services/cuentas-corriente.service';
 import {RenglonCuentaCorriente} from '../../models/renglon-cuenta-corriente';
 import {finalize} from 'rxjs/operators';
-import {NuevoPagoMercadoPago} from '../../models/mercadopago/nuevo-pago-mercado-pago';
-import {PagosService} from '../../services/pagos.service';
+import {NuevaOrdenDePago} from '../../models/nueva-orden-de-pago';
+import {Movimiento} from '../../models/movimiento';
+import {environment} from '../../../environments/environment';
 
 @Component({
   selector: 'sic-com-cuenta-corriente',
@@ -26,11 +27,21 @@ export class CuentaCorrienteComponent implements OnInit {
   totalPaginas = 0;
   showNuevoPago = false;
 
+  monto = 0;
+
+  nuevaOrdenDePago: NuevaOrdenDePago = {
+    movimiento: Movimiento.DEPOSITO,
+    idSucursal: environment.idSucursal,
+    tipoDeEnvio: null,
+    monto: null,
+  };
+
+  @ViewChild('montoElem', { static: false }) montoElem: ElementRef;
+
   constructor(private authService: AuthService,
               private avisoService: AvisoService,
               private clientesService: ClientesService,
-              private cuentasCorrienteService: CuentasCorrienteService,
-              private pagosService: PagosService) {
+              private cuentasCorrienteService: CuentasCorrienteService) {
   }
 
   ngOnInit() {
@@ -127,37 +138,26 @@ export class CuentaCorrienteComponent implements OnInit {
     return '';
   }
 
-  mostrarFormDePago() {
+  abrirPanelDeposito() {
     if (!this.cliente.email) {
       this.avisoService.openSnackBar('Debe tener email cargado en su Cuenta de Cliente para ingresar un pago');
     } else {
       this.showNuevoPago = true;
+      setTimeout(() => {
+        const e = this.montoElem.nativeElement;
+        e.focus();
+        e.select();
+      }, 200);
     }
   }
 
-  updated(pago: NuevoPagoMercadoPago) {
-    if (pago) {
-      this.showNuevoPago = false;
-      this.isPagoLoading = true;
-      this.pagosService.generarMPPago(pago)
-        .pipe(finalize(() => {
-          this.isPagoLoading = false;
-        }))
-        .subscribe(
-          v => {
-            this.showNuevoPago = false;
-            this.reloadCuentaCorriente();
-            if (['credit_card', 'debit_card'].indexOf(pago.paymentTypeId) >= 0) {
-              this.avisoService.openSnackBar(
-                'Su pago ingresó correctamente. Puede tardar unos minutos para verse reflejado en su saldo', 'OK', 0
-              );
-            } else {
-              this.avisoService.openSnackBar('Recibirá un email con los datos para realizar el deposito', 'OK', 0);
-            }
-          },
-          err => this.avisoService.openSnackBar(err.error, 'OK', 0)
-        )
-      ;
-    }
+  montoChange($event) {
+    const value = parseFloat($event.target.value);
+    this.nuevaOrdenDePago.monto = !isNaN(value) ? value : 0;
+  }
+
+  cerrarPanelDeposito() {
+    this.monto = 0;
+    this.showNuevoPago = false;
   }
 }

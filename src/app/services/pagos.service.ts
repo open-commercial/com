@@ -3,7 +3,7 @@ import {Observable} from 'rxjs';
 import {environment} from 'environments/environment';
 import {HttpClient} from '@angular/common/http';
 import {NuevoPagoMercadoPago} from '../models/mercadopago/nuevo-pago-mercado-pago';
-import {NuevaOrdenDeCompra} from '../models/nueva-orden-de-compra';
+import {NuevaOrdenDePago} from '../models/nueva-orden-de-pago';
 import {MercadoPagoPreference} from '../models/mercadopago/mercado-pago-preference';
 
 
@@ -18,7 +18,7 @@ export class PagosService {
     return this.http.post<boolean>(this.url + '/mercado-pago', pago);
   }
 
-  getMercadoPagoPreference(npmp: NuevaOrdenDeCompra): Observable<MercadoPagoPreference> {
-    return this.http.post<MercadoPagoPreference>(this.url + '/mercado-pago/preference', npmp);
+  getMercadoPagoPreference(nuevaOrdenDePago: NuevaOrdenDePago): Observable<MercadoPagoPreference> {
+    return this.http.post<MercadoPagoPreference>(this.url + '/mercado-pago/preference', nuevaOrdenDePago);
   }
 }
