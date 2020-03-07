@@ -46,10 +46,10 @@ export class BotonMercadoPagoComponent implements OnInit {
     if (!this.pNuevaOrdenDePago) { return; }
     this.loading = true;
     this.pagosService.getMercadoPagoPreference(this.pNuevaOrdenDePago)
-      .pipe(finalize(() => setTimeout(() => this.loading = false, 250)))
-      .subscribe((mpp: MercadoPagoPreference) => {
-        window.location.replace(mpp.initPoint);
-      })
+      .subscribe(
+        (mpp: MercadoPagoPreference) => window.location.replace(mpp.initPoint),
+        error => this.loading = false
+      )
     ;
   }
 }

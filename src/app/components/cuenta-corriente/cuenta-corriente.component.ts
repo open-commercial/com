@@ -62,6 +62,11 @@ export class CuentaCorrienteComponent implements OnInit {
         }
       )
     ;
+    setTimeout(() => {
+      const e = this.montoElem.nativeElement;
+      e.focus();
+      e.select();
+    }, 200);
   }
 
   reloadCuentaCorriente() {
@@ -138,26 +143,8 @@ export class CuentaCorrienteComponent implements OnInit {
     return '';
   }
 
-  abrirPanelDeposito() {
-    if (!this.cliente.email) {
-      this.avisoService.openSnackBar('Debe tener email cargado en su Cuenta de Cliente para ingresar un pago');
-    } else {
-      this.showNuevoPago = true;
-      setTimeout(() => {
-        const e = this.montoElem.nativeElement;
-        e.focus();
-        e.select();
-      }, 200);
-    }
-  }
-
   montoChange($event) {
     const value = parseFloat($event.target.value);
     this.nuevaOrdenDePago.monto = !isNaN(value) ? value : 0;
-  }
-
-  cerrarPanelDeposito() {
-    this.monto = 0;
-    this.showNuevoPago = false;
   }
 }
