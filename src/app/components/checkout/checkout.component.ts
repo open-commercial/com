@@ -16,6 +16,7 @@ import {Sucursal} from '../../models/sucursal';
 import {UbicacionesService} from '../../services/ubicaciones.service';
 import {TipoDeEnvio} from '../../models/tipo-de-envio';
 import {NuevaOrdenDePago} from '../../models/nueva-orden-de-pago';
+import {Movimiento} from '../../models/movimiento';
 
 enum OpcionEnvio {
   RETIRO_EN_SUCURSAL = 'RETIRO_EN_SUCURSAL',
