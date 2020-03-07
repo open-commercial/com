@@ -1,5 +1,4 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {finalize} from 'rxjs/operators';
 import {MercadoPagoPreference} from '../../models/mercadopago/mercado-pago-preference';
 import {PagosService} from '../../services/pagos.service';
 import {NuevaOrdenDePago} from '../../models/nueva-orden-de-pago';
