@@ -4,10 +4,10 @@
     <input matInput type="number" [(ngModel)]="monto" (keyup)="montoChange($event)">
   </mat-form-field>
 </mat-dialog-content>
-<mat-dialog-actions fxLayout="column" fxLayout.gt-sm="row" fxLayoutGap="0.7rem" fxLayoutAlign="center center" class="actions">
-  <sic-com-boton-mercado-pago [nuevaOrdenDePago]="nuevaOrdenDePago" (preCheckout)="loading = true" [montoMinimo]="10" *ngIf="!loading"></sic-com-boton-mercado-pago>
+<div fxLayout="column" fxLayoutGap="0.7rem" fxLayoutAlign="center center">
+  <button class="boton-pago" mat-raised-button color="primary" (click)="aceptar()" *ngIf="!loading" [disabled]="!monto || monto < montoMinimo">Aceptar</button>
   <button class="boton-pago" mat-raised-button mat-dialog-close *ngIf="!loading">Cancelar</button>
   <div *ngIf="loading" fxLayout="row" fxLayoutAlign="center center">
     <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
   </div>
-</mat-dialog-actions>
+</div>

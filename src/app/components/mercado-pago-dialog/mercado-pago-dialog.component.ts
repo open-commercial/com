@@ -1,7 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {NuevaOrdenDePago} from '../../models/nueva-orden-de-pago';
-import {Movimiento} from '../../models/movimiento';
-import {environment} from '../../../environments/environment';
 import {MatDialogRef} from '@angular/material/dialog';
 
 @Component({
@@ -11,14 +8,8 @@ import {MatDialogRef} from '@angular/material/dialog';
 })
 export class MercadoPagoDialogComponent implements OnInit {
   monto = 0.00;
+  montoMinimo = 10.00;
   loading = false;
-
-  nuevaOrdenDePago: NuevaOrdenDePago = {
-    movimiento: Movimiento.DEPOSITO,
-    idSucursal: environment.idSucursal,
-    tipoDeEnvio: null,
-    monto: null,
-  };
 
   constructor(private dialogRef: MatDialogRef<MercadoPagoDialogComponent>) {
     this.dialogRef.disableClose = true;
@@ -28,6 +19,10 @@ export class MercadoPagoDialogComponent implements OnInit {
 
   montoChange($event) {
     const value = parseFloat($event.target.value);
-    this.nuevaOrdenDePago.monto = !isNaN(value) ? value : 0;
+    this.monto = !isNaN(value) ? value : 0;
+  }
+
+  aceptar() {
+    this.dialogRef.close(this.monto);
   }
 }

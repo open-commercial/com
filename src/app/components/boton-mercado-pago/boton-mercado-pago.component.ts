@@ -3,6 +3,8 @@ import {MercadoPagoPreference} from '../../models/mercadopago/mercado-pago-prefe
 import {PagosService} from '../../services/pagos.service';
 import {NuevaOrdenDePago} from '../../models/nueva-orden-de-pago';
 import {AvisoService} from '../../services/aviso.service';
+import {MercadoPagoDialogComponent} from '../mercado-pago-dialog/mercado-pago-dialog.component';
+import {MatDialog} from '@angular/material/dialog';
 
 @Component({
   selector: 'sic-com-boton-mercado-pago',
@@ -32,11 +34,22 @@ export class BotonMercadoPagoComponent implements OnInit {
     return this.pNuevaOrdenDePago;
   }
 
+  private pShowMontoDialog = false;
+  @Input()
+  set showMontoInput(value: boolean) {
+    this.pShowMontoDialog = value;
+  }
+
+  get showMontoDialog() {
+    return this.pShowMontoDialog;
+  }
+
   @Output()
   preCheckout = new EventEmitter<void>();
 
   constructor(private pagosService: PagosService,
-              private avisoService: AvisoService) { }
+              private avisoService: AvisoService,
+              private dialog: MatDialog) { }
 
   ngOnInit() {}
 
@@ -47,6 +60,23 @@ export class BotonMercadoPagoComponent implements OnInit {
   getPreference() {
     if (!this.pNuevaOrdenDePago) { return; }
     this.preCheckout.emit();
+
+    if (this.showMontoDialog) {
+      const dialogRef = this.dialog.open(MercadoPagoDialogComponent);
+      dialogRef.componentInstance.monto = this.nuevaOrdenDePago.monto;
+      dialogRef.componentInstance.montoMinimo = this.montoMinimo;
+      dialogRef.afterClosed().subscribe(monto => {
+        if (monto) {
+          this.pNuevaOrdenDePago.monto = monto;
+          this.doGetPreference();
+        }
+      });
+    } else {
+      this.doGetPreference();
+    }
+  }
+
+  doGetPreference() {
     this.loading = true;
     this.pagosService.getMercadoPagoPreference(this.pNuevaOrdenDePago)
       .subscribe(
@@ -57,5 +87,12 @@ export class BotonMercadoPagoComponent implements OnInit {
         }
       )
     ;
+  }
+
+  isDisabled() {
+    if (!this.showMontoDialog) {
+      return !this.nuevaOrdenDePago || this.nuevaOrdenDePago.monto < this.montoMinimo || this.loading;
+    }
+    return false;
   }
 }

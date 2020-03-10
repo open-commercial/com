@@ -11,7 +11,7 @@
   </div>
   <div *ngIf="!isLoading && cuentaCorriente && !isPagoLoading">
     <div fxLayout="column" fxLayout.gt-sm="row" fxLayoutAlign="start center" fxLayoutGap="0.7rem" *ngIf="this.cliente && this.cliente.email">
-      <button mat-raised-button color="primary" (click)="ingresarDinero()">Ingresar Dinero</button>
+      <sic-com-boton-mercado-pago [nuevaOrdenDePago]="nuevaOrdenDePago" [showMontoInput]="true" [montoMinimo]="10"></sic-com-boton-mercado-pago>
     </div>
     <div *ngIf="!this.cliente || !this.cliente.email">Debe tener email cargado en su Cuenta de Cliente para ingresar un pago.</div>
     <br>

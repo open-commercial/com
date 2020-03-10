@@ -6,8 +6,9 @@ import {AvisoService} from '../../services/aviso.service';
 import {CuentasCorrienteService} from '../../services/cuentas-corriente.service';
 import {RenglonCuentaCorriente} from '../../models/renglon-cuenta-corriente';
 import {finalize} from 'rxjs/operators';
-import {MatDialog} from '@angular/material/dialog';
-import {MercadoPagoDialogComponent} from '../mercado-pago-dialog/mercado-pago-dialog.component';
+import {NuevaOrdenDePago} from '../../models/nueva-orden-de-pago';
+import {Movimiento} from '../../models/movimiento';
+import {environment} from '../../../environments/environment';
 
 @Component({
   selector: 'sic-com-cuenta-corriente',
@@ -25,11 +26,17 @@ export class CuentaCorrienteComponent implements OnInit {
   pagina = 0;
   totalPaginas = 0;
 
+  nuevaOrdenDePago: NuevaOrdenDePago = {
+    movimiento: Movimiento.DEPOSITO,
+    idSucursal: environment.idSucursal,
+    tipoDeEnvio: null,
+    monto: 0.00,
+  };
+
   constructor(private authService: AuthService,
               private avisoService: AvisoService,
               private clientesService: ClientesService,
-              private cuentasCorrienteService: CuentasCorrienteService,
-              private dialog: MatDialog) {
+              private cuentasCorrienteService: CuentasCorrienteService) {
   }
 
   ngOnInit() {
@@ -124,9 +131,5 @@ export class CuentaCorrienteComponent implements OnInit {
     }
 
     return '';
-  }
-
-  ingresarDinero() {
-    this.dialog.open(MercadoPagoDialogComponent);
   }
 }
