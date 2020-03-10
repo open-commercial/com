@@ -10,12 +10,8 @@
     </span>
   </div>
   <div *ngIf="!isLoading && cuentaCorriente && !isPagoLoading">
-    <div fxLayout="column" fxLayout.gt-sm="row" fxLayoutAlign="center center" fxLayoutGap="0.7rem" *ngIf="this.cliente && this.cliente.email">
-      <mat-form-field>
-        <mat-label>Ingrese el monto a depositar ($)</mat-label>
-        <input matInput type="number" [(ngModel)]="monto" (keyup)="montoChange($event)" #montoElem>
-      </mat-form-field>
-      <sic-com-boton-mercado-pago [nuevaOrdenDePago]="nuevaOrdenDePago"></sic-com-boton-mercado-pago>
+    <div fxLayout="column" fxLayout.gt-sm="row" fxLayoutAlign="start center" fxLayoutGap="0.7rem" *ngIf="this.cliente && this.cliente.email">
+      <button mat-raised-button color="primary" (click)="ingresarDinero()">Ingresar Dinero</button>
     </div>
     <div *ngIf="!this.cliente || !this.cliente.email">Debe tener email cargado en su Cuenta de Cliente para ingresar un pago.</div>
     <br>

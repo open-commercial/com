@@ -8,6 +8,7 @@
   </div>
   <mat-vertical-stepper *ngIf="!isLoading" linear #stepper>
     <mat-step [stepControl]="datosDelClienteForm" *ngIf="datosDelClienteForm">
+      <div *ngIf="cliente && !cliente.email" class="error">El cliente no posee correo electrónico.</div>
       <form [formGroup]="datosDelClienteForm">
         <ng-template matStepLabel>
           <div class="cliente-label">Datos de cuenta</div>
@@ -19,7 +20,7 @@
           <sic-com-cliente [c]="cliente" [editionMode]="clienteEditionMode" (updated)="clienteUpdated($event)" (modeStatusChanged)="modeStatusChanged($event)" ></sic-com-cliente>
         </div>
         <div class="botonera">
-          <button mat-raised-button color="primary" matStepperNext [disabled]="!cliente || !datosDelClienteForm.valid">Continuar</button>
+          <button mat-raised-button color="primary" matStepperNext [disabled]="!cliente || !cliente.email || !datosDelClienteForm.valid">Continuar</button>
         </div>
       </form>
     </mat-step>
@@ -69,7 +70,7 @@
           </div>
           <div *ngIf="opcionEnvioForm.get('opcionEnvio').value === opcionEnvio.ENVIO_A_DOMICILIO" fxLayout="column">
             <mat-form-field>
-              <mat-select formControlName="opcionEnvioUbicacion" placeholder="Seleccione una ubicación" [disabled]="ubicacionFacturacionInEdition || ubicacionEnvioInEdition">
+              <mat-select formControlName="opcionEnvioUbicacion" placeholder="Seleccione una ubicación">
                 <mat-option [value]="opcionEnvioUbicacion.USAR_UBICACION_FACTURACION">Usar ubicación de facturación</mat-option>
                 <mat-option [value]="opcionEnvioUbicacion.USAR_UBICACION_ENVIO">Usar ubicación de envío</mat-option>
               </mat-select>
@@ -115,7 +116,7 @@
           </div>
           <br>
           <div fxLayout="column" fxLayout.gt-sm="row" fxLayoutAlign="center center" fxLayoutGap="1rem" *ngIf="getNuevaOrdeDeCompra()">
-            <sic-com-boton-mercado-pago [nuevaOrdenDePago]="getNuevaOrdeDeCompra()"></sic-com-boton-mercado-pago>
+            <sic-com-boton-mercado-pago [nuevaOrdenDePago]="getNuevaOrdeDeCompra()" (preCheckout)="this.enviarOrdenLoading = true"></sic-com-boton-mercado-pago>
             <button mat-raised-button color="primary" class="boton-pago" (click)="cerrarOrden()" *ngIf="cliente && cliente.puedeComprarAPlazo"
                     [disabled]="loadingTotales || !cliente || opcionEnvioForm.invalid">
               Acordar con el vendedor

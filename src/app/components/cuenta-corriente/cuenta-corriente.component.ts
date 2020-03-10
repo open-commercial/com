@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {AuthService} from '../../services/auth.service';
 import {Cliente} from '../../models/cliente';
 import {ClientesService} from '../../services/clientes.service';
@@ -6,9 +6,8 @@ import {AvisoService} from '../../services/aviso.service';
 import {CuentasCorrienteService} from '../../services/cuentas-corriente.service';
 import {RenglonCuentaCorriente} from '../../models/renglon-cuenta-corriente';
 import {finalize} from 'rxjs/operators';
-import {NuevaOrdenDePago} from '../../models/nueva-orden-de-pago';
-import {Movimiento} from '../../models/movimiento';
-import {environment} from '../../../environments/environment';
+import {MatDialog} from '@angular/material/dialog';
+import {MercadoPagoDialogComponent} from '../mercado-pago-dialog/mercado-pago-dialog.component';
 
 @Component({
   selector: 'sic-com-cuenta-corriente',
@@ -25,23 +24,12 @@ export class CuentaCorrienteComponent implements OnInit {
   renglones = [];
   pagina = 0;
   totalPaginas = 0;
-  showNuevoPago = false;
-
-  monto = 0;
-
-  nuevaOrdenDePago: NuevaOrdenDePago = {
-    movimiento: Movimiento.DEPOSITO,
-    idSucursal: environment.idSucursal,
-    tipoDeEnvio: null,
-    monto: null,
-  };
-
-  @ViewChild('montoElem', { static: false }) montoElem: ElementRef;
 
   constructor(private authService: AuthService,
               private avisoService: AvisoService,
               private clientesService: ClientesService,
-              private cuentasCorrienteService: CuentasCorrienteService) {
+              private cuentasCorrienteService: CuentasCorrienteService,
+              private dialog: MatDialog) {
   }
 
   ngOnInit() {
@@ -62,11 +50,6 @@ export class CuentaCorrienteComponent implements OnInit {
         }
       )
     ;
-    setTimeout(() => {
-      const e = this.montoElem.nativeElement;
-      e.focus();
-      e.select();
-    }, 200);
   }
 
   reloadCuentaCorriente() {
@@ -143,8 +126,7 @@ export class CuentaCorrienteComponent implements OnInit {
     return '';
   }
 
-  montoChange($event) {
-    const value = parseFloat($event.target.value);
-    this.nuevaOrdenDePago.monto = !isNaN(value) ? value : 0;
+  ingresarDinero() {
+    this.dialog.open(MercadoPagoDialogComponent);
   }
 }

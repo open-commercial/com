@@ -177,7 +177,8 @@ export class CarritoCompraComponent implements OnInit {
   }
 
   volver() {
-    this.location.back();
+    // this.location.back();
+    this.router.navigate(['']);
   }
 
   goToCheckout() {

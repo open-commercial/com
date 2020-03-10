@@ -58,6 +58,7 @@ import {FooterComponent} from './components/footer/footer.component';
 import {RegistracionRealizadaComponent} from './components/registracion-realizada/registracion-realizada.component';
 import { BotonMercadoPagoComponent } from './components/boton-mercado-pago/boton-mercado-pago.component';
 import { CheckoutStatusComponent } from './components/checkout-status/checkout-status.component';
+import { MercadoPagoDialogComponent } from './components/mercado-pago-dialog/mercado-pago-dialog.component';
 
 registerLocaleData(localeEs, 'es-AR', localeEsExtra);
 
@@ -89,7 +90,8 @@ registerLocaleData(localeEs, 'es-AR', localeEsExtra);
     FooterComponent,
     RegistracionRealizadaComponent,
     BotonMercadoPagoComponent,
-    CheckoutStatusComponent
+    CheckoutStatusComponent,
+    MercadoPagoDialogComponent,
   ],
   imports: [
     GtagModule.forRoot({ trackingId: 'UA-132433044-1', trackPageviews: true }),
@@ -131,6 +133,7 @@ registerLocaleData(localeEs, 'es-AR', localeEsExtra);
   entryComponents: [
     ConfirmationDialogComponent,
     AgregarAlCarritoDialogComponent,
+    MercadoPagoDialogComponent,
   ],
   bootstrap: [
     SicComComponent
