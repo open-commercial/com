@@ -7,7 +7,7 @@ import {MatDialogRef} from '@angular/material/dialog';
   styleUrls: ['./mercado-pago-dialog.component.scss']
 })
 export class MercadoPagoDialogComponent implements OnInit {
-  monto = 0.00;
+  monto;
   montoMinimo = 10.00;
   loading = false;
 
@@ -19,7 +19,7 @@ export class MercadoPagoDialogComponent implements OnInit {
 
   montoChange($event) {
     const value = parseFloat($event.target.value);
-    this.monto = !isNaN(value) ? value : 0;
+    this.monto = !isNaN(value) ? value : null;
   }
 
   aceptar() {

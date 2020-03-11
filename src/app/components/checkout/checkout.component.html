@@ -8,7 +8,7 @@
   </div>
   <mat-vertical-stepper *ngIf="!isLoading" linear #stepper>
     <mat-step [stepControl]="datosDelClienteForm" *ngIf="datosDelClienteForm">
-      <div *ngIf="cliente && !cliente.email" class="error">Debe ingresar un correo electronico para poder continuar.</div>
+      <div *ngIf="cliente && !cliente.email" class="error">Debe completar el email para poder continuar</div>
       <form [formGroup]="datosDelClienteForm">
         <ng-template matStepLabel>
           <div class="cliente-label">Datos de cuenta</div>

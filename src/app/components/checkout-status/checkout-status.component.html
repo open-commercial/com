@@ -9,7 +9,7 @@
         Gracias <span class="nombre">{{ usuario.nombre }} {{ usuario.apellido}}</span> por su compra!<br>
         En breve le enviaremos un correo electrónico a la dirección {{ usuario.email }} con los datos de su pedido.
       <div *ngIf="status === 'pendiente'">
-        Su pedido no será enviado hasta que abone con el medio de pago que eligió.<br>
+        Su pedido se encuentra pendiente hasta que sea abonado.<br>
         Comuniquese con nosotros ante cualquier duda.
       </div>
     </div>

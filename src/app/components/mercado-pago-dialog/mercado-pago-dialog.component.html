@@ -4,9 +4,9 @@
     <input matInput type="number" [(ngModel)]="monto" (keyup)="montoChange($event)">
   </mat-form-field>
 </mat-dialog-content>
-<div fxLayout="column" fxLayoutGap="0.7rem" fxLayoutAlign="center center">
-  <button class="boton-pago" mat-raised-button color="primary" (click)="aceptar()" *ngIf="!loading" [disabled]="!monto || monto < montoMinimo">Aceptar</button>
-  <button class="boton-pago" mat-raised-button mat-dialog-close *ngIf="!loading">Cancelar</button>
+<div fxLayout="row" fxLayoutGap="0.7rem" fxLayoutAlign="center center">
+  <button mat-raised-button color="primary" (click)="aceptar()" *ngIf="!loading" [disabled]="!monto || monto < montoMinimo">Aceptar</button>
+  <button mat-raised-button mat-dialog-close *ngIf="!loading">Cancelar</button>
   <div *ngIf="loading" fxLayout="row" fxLayoutAlign="center center">
     <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
   </div>

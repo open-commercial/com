@@ -59,11 +59,12 @@ export class BotonMercadoPagoComponent implements OnInit {
 
   getPreference() {
     if (!this.pNuevaOrdenDePago) { return; }
-    this.preCheckout.emit();
 
     if (this.showMontoDialog) {
       const dialogRef = this.dialog.open(MercadoPagoDialogComponent);
-      dialogRef.componentInstance.monto = this.nuevaOrdenDePago.monto;
+      if (this.nuevaOrdenDePago.monto > 0) {
+        dialogRef.componentInstance.monto = this.nuevaOrdenDePago.monto;
+      }
       dialogRef.componentInstance.montoMinimo = this.montoMinimo;
       dialogRef.afterClosed().subscribe(monto => {
         if (monto) {
@@ -78,6 +79,7 @@ export class BotonMercadoPagoComponent implements OnInit {
 
   doGetPreference() {
     this.loading = true;
+    this.preCheckout.emit();
     this.pagosService.getMercadoPagoPreference(this.pNuevaOrdenDePago)
       .subscribe(
         (mpp: MercadoPagoPreference) => window.location.replace(mpp.initPoint),

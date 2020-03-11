@@ -325,7 +325,7 @@ export class CheckoutComponent implements OnInit {
           this.enviarOrdenLoading = false;
         }))
         .subscribe(
-        () => this.router.navigateByUrl('/checkout/aprobado'),
+        () => this.router.navigateByUrl('/checkout/pendiente'),
         err => {
           this.avisoService.openSnackBar(err.error, '', 3500);
         }
