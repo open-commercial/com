@@ -19,7 +19,7 @@ import {ClientesService} from './services/clientes.service';
 import {AuthGuard} from './guards/auth.guard';
 import {JwtInterceptor} from './interceptors/jwt.interceptor';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
-import {SucursalService} from './services/sucursal.service';
+import {SucursalesService} from './services/sucursales.service';
 import {AvisoService} from './services/aviso.service';
 import {ContainerComponent} from './components/container/container.component';
 import {ConfirmationDialogComponent} from './components/confirmation-dialog/confirmation-dialog.component';
@@ -52,12 +52,13 @@ import localeEs from '@angular/common/locales/es';
 import localeEsExtra from '@angular/common/locales/extra/es-AR';
 import {NgSelectModule} from '@ng-select/ng-select';
 import {DynamicScriptLoaderService} from './services/dynamic-script-loader.service';
-import {MercadoPagoComponent} from './components/mercado-pago/mercado-pago.component';
 import {PagosService} from './services/pagos.service';
 import {GtagModule} from 'angular-gtag';
-import {CompraRealizadaComponent} from './components/compra-realizada/compra-realizada.component';
 import {FooterComponent} from './components/footer/footer.component';
 import {RegistracionRealizadaComponent} from './components/registracion-realizada/registracion-realizada.component';
+import { BotonMercadoPagoComponent } from './components/boton-mercado-pago/boton-mercado-pago.component';
+import { CheckoutStatusComponent } from './components/checkout-status/checkout-status.component';
+import { MercadoPagoDialogComponent } from './components/mercado-pago-dialog/mercado-pago-dialog.component';
 
 registerLocaleData(localeEs, 'es-AR', localeEsExtra);
 
@@ -86,10 +87,11 @@ registerLocaleData(localeEs, 'es-AR', localeEsExtra);
     UbicacionComponent,
     ClienteUbicacionesComponent,
     AgregarAlCarritoDialogComponent,
-    MercadoPagoComponent,
-    CompraRealizadaComponent,
     FooterComponent,
-    RegistracionRealizadaComponent
+    RegistracionRealizadaComponent,
+    BotonMercadoPagoComponent,
+    CheckoutStatusComponent,
+    MercadoPagoDialogComponent,
   ],
   imports: [
     GtagModule.forRoot({ trackingId: 'UA-132433044-1', trackPageviews: true }),
@@ -117,7 +119,7 @@ registerLocaleData(localeEs, 'es-AR', localeEsExtra);
     ProductosService,
     CarritoCompraService,
     ClientesService,
-    SucursalService,
+    SucursalesService,
     AvisoService,
     UsuariosService,
     PedidosService,
@@ -131,6 +133,7 @@ registerLocaleData(localeEs, 'es-AR', localeEsExtra);
   entryComponents: [
     ConfirmationDialogComponent,
     AgregarAlCarritoDialogComponent,
+    MercadoPagoDialogComponent,
   ],
   bootstrap: [
     SicComComponent

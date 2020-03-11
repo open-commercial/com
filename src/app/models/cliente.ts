@@ -24,4 +24,5 @@ export interface Cliente {
   fechaUltimoMovimiento: Date;
   detalleUbicacionDeFacturacion: string;
   detalleUbicacionDeEnvio: string;
+  puedeComprarAPlazo: boolean;
 }

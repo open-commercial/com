@@ -113,7 +113,7 @@ export class CarritoCompraComponent implements OnInit {
         let auxp = Number(queryParams.get('p'));
         auxp = isNaN(auxp) ? 1 : (auxp < 1 ? 1 : auxp);
         this.pagina = auxp - 1;
-        this.carritoCompraService.getItems(this.cliente.idCliente, this.pagina)
+        this.carritoCompraService.getItems(this.pagina)
           .pipe(finalize(() => {
             this.loadingRenglones = false;
             this.loadingCarritoCompra = false;
@@ -177,7 +177,8 @@ export class CarritoCompraComponent implements OnInit {
   }
 
   volver() {
-    this.location.back();
+    // this.location.back();
+    this.router.navigate(['']);
   }
 
   goToCheckout() {
