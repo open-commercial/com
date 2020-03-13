@@ -40,13 +40,16 @@
           </mat-button-toggle-group>
           <br><br>
           <div *ngIf="opcionEnvioForm.get('opcionEnvio').value === opcionEnvio.RETIRO_EN_SUCURSAL && sucursales.length" fxLayout="column">
-            <mat-form-field>
-              <mat-select formControlName="sucursal" placeholder="Sucursal">
-                <mat-option *ngFor="let s of sucursales" [value]="s">
-                  {{ s.nombre + (s.detalleUbicacion ? ' (' + s.detalleUbicacion  + ')' : '') }}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
+            <div fxLayout="row">
+              <mat-form-field fxFlex="100" fxFlex.gt-sm="50">
+                <mat-select formControlName="sucursal" placeholder="Sucursal">
+                  <mat-option *ngFor="let s of sucursales" [value]="s">
+                    {{ s.detalleUbicacion }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+
             <div *ngIf="opcionEnvioForm.get('sucursal').touched && opcionEnvioForm.errors?.requiredSucursal" class="sucursal-error">
               Requerido
             </div>
