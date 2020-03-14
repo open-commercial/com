@@ -1,0 +1,108 @@
+@import "../../../_colors.scss";
+
+.producto {
+  position: relative;
+  .encabezado {
+    position: absolute;
+    right: 0;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    background: transparent;
+    .off {
+      display: inline-block;
+      background: limegreen;
+      color: white;
+      padding: 0.3rem 0.5rem;
+      margin: 0.5rem;
+      border-radius: 1.5rem;
+      font-weight: bold;
+      font-size: 0.95em;
+    }
+    .add-to-cart {
+      padding: 0;
+    }
+  }
+
+  vertical-align: middle;
+  display: inline-block;
+  margin: .3rem;
+  white-space: normal;
+  padding: 0;
+  a {
+    text-decoration: none;
+    display: inline-block;
+  }
+  .img-container {
+    height: 150px;
+    &.desktop {
+      height: 250px;
+    }
+    display: block;
+    margin-bottom: 5px;
+    img {
+      height: 100%;
+      width: 100%;
+      -o-object-fit: contain;
+      object-fit: contain;
+      object-position: center center;
+      margin: 0;
+    }
+  }
+
+  mat-chip-list {
+    display: inline-block;
+  }
+
+  .precio {
+    font-size: 0.93rem;
+    &.tachado {
+      text-decoration: line-through;
+    }
+    &.bonificado {
+      font-weight: bold;
+      color: limegreen;
+    }
+  }
+
+  mat-card {
+    background: white;
+    padding: .5rem;
+    height: 280px;
+    //width: 90%;
+    // @media all and (min-width: 450px) {
+      width: 220px;
+    //}
+
+    &.desktop {
+      height: 360px;
+      width: 250px;
+    }
+    mat-card-content {
+      min-height: 80px;
+      margin: 0;
+      font-weight: bold;
+      color: $color-primary;
+      p {
+        margin: 0;
+      }
+      .codigo {
+        font-weight: normal;
+        font-size: 12px;
+        color: black;
+        display: inline-block;
+        margin-bottom: 0.3em;
+      }
+    }
+
+    mat-card-header mat-card-title {
+      font-size: 1rem;
+      margin: 0 -16px;
+    }
+  }
+
+  .spinner {
+    height: 100%;
+    padding: 0 7px;
+  }
+}

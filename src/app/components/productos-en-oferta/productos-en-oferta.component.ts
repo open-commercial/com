@@ -26,8 +26,7 @@ export class ProductosEnOfertaComponent implements OnInit {
   constructor(private productosService: ProductosService,
               private authService: AuthService,
               private clienteService: ClientesService,
-              private avisoService: AvisoService,
-              private dialog: MatDialog) {}
+              private avisoService: AvisoService) {}
 
   ngOnInit(): void {
     this.firstLoading = true;
@@ -63,12 +62,5 @@ export class ProductosEnOfertaComponent implements OnInit {
       [a[i], a[j]] = [a[j], a[i]];
     }
     return a;
-  }
-
-  showDialogCantidad($event, producto: Producto) {
-    const dialogRef = this.dialog.open(AgregarAlCarritoDialogComponent);
-    $event.stopPropagation();
-    dialogRef.componentInstance.producto = producto;
-    dialogRef.componentInstance.cliente = this.cliente;
   }
 }

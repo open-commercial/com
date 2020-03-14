@@ -7,7 +7,7 @@
 }
 .sic-com-productos-en-oferta {
   position: relative;
-  height: 318px;
+  height: 324px;
   &.desktop {
     height: 400px;
   }
@@ -26,106 +26,16 @@
 
     .oferta {
       position: relative;
-       .encabezado {
-         padding: .3rem;
-          position: absolute;
-          right: 0;
-          top: 0;
-          left: 0;
-          z-index: 2;
-          background: transparent;//rgba(255,255,255, 0.7);
-         .off {
-           background: limegreen;
-           color: white;
-           padding: 0.3rem 0.5rem;
-           border-radius: 1.5rem;
-           font-weight: bold;
-           font-size: 0.95em;
-         }
-       }
       &.first-loading {
         display: block;
         height: 100%;
       }
       vertical-align: middle;
+      vertical-align: middle;
       display: inline-block;
-      margin-right: .3rem;
+      margin-right: .5rem;
       white-space: normal;
       padding: 0;
-      a {
-        text-decoration: none;
-        display: inline-block;
-      }
-      .img-container {
-        height: 150px;
-        &.desktop {
-          height: 250px;
-        }
-        display: block;
-        margin-bottom: 5px;
-        img {
-          height: 100%;
-          width: 100%;
-          -o-object-fit: contain;
-          object-fit: contain;
-          object-position: center center;
-          margin: 0;
-        }
-      }
-
-      mat-chip-list {
-        display: inline-block;
-      }
-      .sic-com-stock {
-        color: white;
-        font-weight: 500;
-        background: limegreen;
-        min-height: 20px;
-        margin-bottom: 7px;
-        font-size: 0.8em;
-      }
-
-      .precio {
-        &.tachado {
-          text-decoration: line-through;
-        }
-        &.bonificado {
-          font-weight: bold;
-          color: limegreen;
-        }
-      }
-
-      mat-card {
-        background: white;
-        padding: .5rem;
-        height: 280px;
-        width: 200px;
-        &.desktop {
-          height: 360px;
-          width: 250px;
-        }
-        mat-card-content {
-          min-height: 80px;
-          margin: 0;
-          font-weight: bold;
-          color: $color-primary;
-          p {
-            margin: 0;
-          }
-          .codigo {
-            font-weight: normal;
-            font-size: 12px;
-            color: black;
-            display: inline-block;
-            margin-bottom: 0.3em;
-          }
-        }
-
-        mat-card-header mat-card-title {
-          font-size: 1rem;
-          margin: 0 -16px;
-        }
-      }
 
       .spinner {
         height: 100%;
