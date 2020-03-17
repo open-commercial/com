@@ -55,6 +55,7 @@
   }
 
   .precio {
+    color: #323232;
     font-size: 0.93rem;
     &.tachado {
       text-decoration: line-through;
@@ -69,10 +70,15 @@
     background: white;
     padding: .5rem;
     height: 280px;
-    //width: 90%;
-    // @media all and (min-width: 450px) {
-      width: 220px;
-    //}
+    width: 220px;
+    &.stretch-on-mobile {
+      height: 146px;
+      width: unset;
+      @media screen and (min-width: 600px) {
+        width: 220px;
+        height: 280px;
+      }
+    }
 
     &.desktop {
       height: 360px;

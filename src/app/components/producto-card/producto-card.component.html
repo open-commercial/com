@@ -12,27 +12,31 @@
     </div>
   </div>
   <a [routerLink]="['/producto/' + producto.idProducto]">
-    <mat-card>
-      <div class="img-container">
-        <img mat-card-image [src]="producto.urlImagen ? producto.urlImagen : 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1545616229/assets/sin_imagen.png'" alt="Imagen del producto">
-      </div>
-      <mat-card-content>
-        <span class="codigo">{{ producto.codigo }}</span>
-        <p>{{ producto.descripcion }}</p>
-      </mat-card-content>
-      <mat-card-header fxLayoutAlign="end center">
-        <mat-card-title fxLayout="column" fxLayoutAlign="center end">
-          <div *ngIf="producto.porcentajeBonificacionOferta || producto.porcentajeBonificacionPrecio">
-            <span class="precio bonificado">
-              <span *ngIf="producto.bulto > 1">Llevando {{ producto.bulto }} o más</span>
-              $ {{ producto.precioBonificado | number:'1.0-2':'es-AR' }}
-            </span>
+    <mat-card [class.stretch-on-mobile]="stretchOnMobile">
+      <div [fxLayout]="stretchOnMobile ? 'row' : 'column'" fxLayout.gt-xs="column" fxLayoutAlign="center center" fxLayoutAlign.gt-xs="center stretch">
+        <div class="img-container" fxFlex>
+          <img mat-card-image [src]="producto.urlImagen ? producto.urlImagen : 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1545616229/assets/sin_imagen.png'" alt="Imagen del producto">
+        </div>
+        <mat-card-content fxFlex="65" fxLayout="column">
+          <div>
+            <span class="codigo">{{ producto.codigo }}</span>
+            <p>{{ producto.descripcion }}</p>
           </div>
-          <span class="precio" [class.tachado]="!(producto.bulto > 1) && (producto.porcentajeBonificacionOferta || producto.porcentajeBonificacionPrecio)">
-            $ {{producto.precioLista | number:'1.0-2':'es-AR'}}
-          </span>
-        </mat-card-title>
-      </mat-card-header>
+          <div>
+            <mat-card-title fxLayout="column" fxLayoutAlign="center start">
+              <div *ngIf="producto.porcentajeBonificacionOferta || producto.porcentajeBonificacionPrecio">
+                <span class="precio bonificado">
+                  <span *ngIf="producto.bulto > 1">Llevando {{ producto.bulto }} o más</span>
+                  $ {{ producto.precioBonificado | number:'1.0-2':'es-AR' }}
+                </span>
+              </div>
+              <span class="precio" [class.tachado]="!(producto.bulto > 1) && (producto.porcentajeBonificacionOferta || producto.porcentajeBonificacionPrecio)">
+              $ {{producto.precioLista | number:'1.0-2':'es-AR'}}
+              </span>
+            </mat-card-title>
+          </div>
+        </mat-card-content>
+      </div>
     </mat-card>
   </a>
 </div>
