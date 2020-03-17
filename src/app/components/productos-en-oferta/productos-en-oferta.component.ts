@@ -6,8 +6,6 @@ import {finalize} from 'rxjs/operators';
 import {AvisoService} from '../../services/aviso.service';
 import {Cliente} from '../../models/cliente';
 import {ClientesService} from '../../services/clientes.service';
-import {AgregarAlCarritoDialogComponent} from '../agregar-al-carrito-dialog/agregar-al-carrito-dialog.component';
-import {MatDialog} from '@angular/material/dialog';
 
 @Component({
   selector: 'sic-com-productos-en-oferta',
