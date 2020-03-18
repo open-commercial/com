@@ -23,7 +23,7 @@ export class ProductoCardComponent implements OnInit {
   @Input() set stretchOnMobile(value: boolean) { this.pStretchOnMobile = value; }
   get stretchOnMobile() { return this.pStretchOnMobile; }
 
-  constructor(private authService: AuthService, private dialog: MatDialog) { }
+  constructor(public authService: AuthService, private dialog: MatDialog) { }
 
   ngOnInit() {
   }
