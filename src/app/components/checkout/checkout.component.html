@@ -8,6 +8,7 @@
   </div>
   <mat-vertical-stepper *ngIf="!isLoading" linear #stepper>
     <mat-step [stepControl]="datosDelClienteForm" *ngIf="datosDelClienteForm">
+      <div *ngIf="cliente && !cliente.email" class="error">Debe completar el email para poder continuar</div>
       <form [formGroup]="datosDelClienteForm">
         <ng-template matStepLabel>
           <div class="cliente-label">Datos de cuenta</div>
@@ -19,7 +20,7 @@
           <sic-com-cliente [c]="cliente" [editionMode]="clienteEditionMode" (updated)="clienteUpdated($event)" (modeStatusChanged)="modeStatusChanged($event)" ></sic-com-cliente>
         </div>
         <div class="botonera">
-          <button mat-raised-button color="primary" matStepperNext [disabled]="!cliente || !datosDelClienteForm.valid">Continuar</button>
+          <button mat-raised-button color="primary" matStepperNext [disabled]="!cliente || !cliente.email || !datosDelClienteForm.valid">Continuar</button>
         </div>
       </form>
     </mat-step>
@@ -39,13 +40,16 @@
           </mat-button-toggle-group>
           <br><br>
           <div *ngIf="opcionEnvioForm.get('opcionEnvio').value === opcionEnvio.RETIRO_EN_SUCURSAL && sucursales.length" fxLayout="column">
-            <mat-form-field>
-              <mat-select formControlName="sucursal" placeholder="Sucursal">
-                <mat-option *ngFor="let s of sucursales" [value]="s">
-                  {{ s.nombre + (s.detalleUbicacion ? ' (' + s.detalleUbicacion  + ')' : '') }}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
+            <div fxLayout="row">
+              <mat-form-field fxFlex="100" fxFlex.gt-sm="50">
+                <mat-select formControlName="sucursal" placeholder="Sucursal">
+                  <mat-option *ngFor="let s of sucursales" [value]="s">
+                    {{ s.detalleUbicacion }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+
             <div *ngIf="opcionEnvioForm.get('sucursal').touched && opcionEnvioForm.errors?.requiredSucursal" class="sucursal-error">
               Requerido
             </div>
@@ -69,7 +73,7 @@
           </div>
           <div *ngIf="opcionEnvioForm.get('opcionEnvio').value === opcionEnvio.ENVIO_A_DOMICILIO" fxLayout="column">
             <mat-form-field>
-              <mat-select formControlName="opcionEnvioUbicacion" placeholder="Seleccione una ubicación" [disabled]="ubicacionFacturacionInEdition || ubicacionEnvioInEdition">
+              <mat-select formControlName="opcionEnvioUbicacion" placeholder="Seleccione una ubicación">
                 <mat-option [value]="opcionEnvioUbicacion.USAR_UBICACION_FACTURACION">Usar ubicación de facturación</mat-option>
                 <mat-option [value]="opcionEnvioUbicacion.USAR_UBICACION_ENVIO">Usar ubicación de envío</mat-option>
               </mat-select>
@@ -101,40 +105,32 @@
         </div>
       </form>
     </mat-step>
-    <mat-step [stepControl]="pagoForm" *ngIf="pagoForm && !enviarOrdenLoading">
+    <mat-step [stepControl]="pagoForm" *ngIf="pagoForm">
       <form [formGroup]="pagoForm">
         <ng-template matStepLabel>Pago</ng-template>
-        <div fxLayoutAlign="space-between center" fxLayout="column" *ngIf="!loadingTotales && cliente" class="resumen"
-             fxLayoutGap="0.3rem">
-          <div>Cant. de Artículos: {{ cantidadArticulos| number:'1.0-2':'es-AR' }}</div>
-          <div>Total: <span class="valor">$ {{ total| number:'1.0-2':'es-AR' }}</span></div>
-        </div>
-        <div fxLayout="row" fxLayoutAlign="center center" *ngIf="loadingTotales" class="sic-com-spinner-container">
-          <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
-        </div>
-        <br>
-        <div>
-          <mat-button-toggle-group formControlName="opcionPago" aria-label="Opción de Pago">
-            <mat-button-toggle [value]="opcionPago.PAGAR_AHORA">Pagar Ahora</mat-button-toggle>
-            <mat-button-toggle [value]="opcionPago.PAGAR_LUEGO">Pagar Luego</mat-button-toggle>
-          </mat-button-toggle-group>
-          <br><br>
-        </div>
-        <div *ngIf="pagoForm.get('opcionPago').value === opcionPago.PAGAR_AHORA && total && !enviarOrdenLoading">
-          <sic-com-mercado-pago [cliente]="cliente" [monto]="total" [hideCancelarButton]="true"
-                                (updated)="updated($event)"></sic-com-mercado-pago>
+        <div *ngIf="!enviarOrdenLoading">
+          <div fxLayoutAlign="space-between center" fxLayout="column" *ngIf="!loadingTotales && cliente" class="resumen"
+               fxLayoutGap="0.3rem">
+            <div>Cant. de Artículos: {{ cantidadArticulos| number:'1.0-2':'es-AR' }}</div>
+            <div>Total: <span class="valor">$ {{ total| number:'1.0-2':'es-AR' }}</span></div>
+          </div>
+          <div fxLayout="row" fxLayoutAlign="center center" *ngIf="loadingTotales" class="sic-com-spinner-container">
+            <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
+          </div>
           <br>
+          <div fxLayout="column" fxLayout.gt-sm="row" fxLayoutAlign="center center" fxLayoutGap="1rem" *ngIf="getNuevaOrdeDeCompra()">
+            <sic-com-boton-mercado-pago [nuevaOrdenDePago]="getNuevaOrdeDeCompra()" (preCheckout)="this.enviarOrdenLoading = true"></sic-com-boton-mercado-pago>
+            <button mat-raised-button color="primary" class="boton-pago" (click)="cerrarOrden()" *ngIf="cliente && cliente.puedeComprarAPlazo"
+                    [disabled]="loadingTotales || !cliente || opcionEnvioForm.invalid">
+              Acordar con el vendedor
+            </button>
+          </div>
         </div>
-        <div *ngIf="!enviarOrdenLoading" class="acciones">
-          <button mat-raised-button color="primary" (click)="cerrarOrden()"
-                  [disabled]="loadingTotales || !cliente || opcionEnvioForm.invalid  || pagoForm.invalid" *ngIf="pagoForm.get('opcionPago').value !== opcionPago.PAGAR_AHORA">
-            Confirmar
-          </button>
+        <div fxLayout="row" fxLayoutAlign="center center" *ngIf="enviarOrdenLoading" class="sic-com-spinner-container">
+          <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
         </div>
       </form>
     </mat-step>
   </mat-vertical-stepper>
-  <div fxLayout="row" fxLayoutAlign="center center" *ngIf="enviarOrdenLoading" class="sic-com-spinner-container">
-    <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
-  </div>
+
 </div>

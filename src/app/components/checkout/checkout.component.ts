@@ -1,5 +1,5 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {FormGroup, FormBuilder, Validators, ValidatorFn, ValidationErrors} from '@angular/forms';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators} from '@angular/forms';
 import {ProductosService} from '../../services/productos.service';
 import {CarritoCompraService} from '../../services/carrito-compra.service';
 import {AvisoService} from '../../services/aviso.service';
@@ -8,15 +8,15 @@ import {ClientesService} from '../../services/clientes.service';
 import {Usuario} from '../../models/usuario';
 import {Cliente} from '../../models/cliente';
 import {finalize} from 'rxjs/operators';
-import { MatStepper } from '@angular/material/stepper';
+import {MatStepper} from '@angular/material/stepper';
 import {Router} from '@angular/router';
 import {Ubicacion} from '../../models/ubicacion';
-import {SucursalService} from '../../services/sucursal.service';
+import {SucursalesService} from '../../services/sucursales.service';
 import {Sucursal} from '../../models/sucursal';
 import {UbicacionesService} from '../../services/ubicaciones.service';
 import {TipoDeEnvio} from '../../models/tipo-de-envio';
-import {NuevaOrdenDeCarritoCompra} from '../../models/nueva-orden-de-carrito-compra';
-import {NuevoPagoMercadoPago} from '../../models/mercadopago/nuevo-pago-mercado-pago';
+import {NuevaOrdenDePago} from '../../models/nueva-orden-de-pago';
+import {Movimiento} from '../../models/movimiento';
 
 enum OpcionEnvio {
   RETIRO_EN_SUCURSAL = 'RETIRO_EN_SUCURSAL',
@@ -99,7 +99,7 @@ export class CheckoutComponent implements OnInit {
               private avisoService: AvisoService,
               private authService: AuthService,
               private clientesService: ClientesService,
-              private sucursalService: SucursalService,
+              private sucursalService: SucursalesService,
               private ubicacionesService: UbicacionesService,
               private fb: FormBuilder,
               private router: Router) {
@@ -209,10 +209,6 @@ export class CheckoutComponent implements OnInit {
     this.ubicacionSucursal = this.sucursal ? this.sucursal.ubicacion : null;
   }
 
-  getUbicacionSucursalStr(): string {
-    return this.sucursal ? this.sucursal.detalleUbicacion : '(no seleccionada)';
-  }
-
   getUbicacionStr(u: Ubicacion) {
     const str = [];
     if (u) {
@@ -315,47 +311,21 @@ export class CheckoutComponent implements OnInit {
     }
   }
 
-  cerrarOrden(pago: NuevoPagoMercadoPago = null) {
+  cerrarOrden() {
+    this.pagoForm.get('opcionPago').setValue(OpcionPago.PAGAR_LUEGO);
     if (
       this.cliente && this.datosDelClienteForm.valid &&
       this.pagoForm.valid && this.opcionEnvioForm.valid
     ) {
-      const dataEnvio = this.opcionEnvioForm.value;
-
-      let tipoDeEnvio = null;
-      let idSucursal = null;
-
-      if (dataEnvio.opcionEnvio === OpcionEnvio.RETIRO_EN_SUCURSAL) {
-        tipoDeEnvio = TipoDeEnvio.RETIRO_EN_SUCURSAL;
-        idSucursal = dataEnvio.sucursal.idSucursal;
-      }
-
-      if (dataEnvio.opcionEnvio === OpcionEnvio.ENVIO_A_DOMICILIO) {
-        if (dataEnvio.opcionEnvioUbicacion === OpcionEnvioUbicacion.USAR_UBICACION_FACTURACION) {
-          tipoDeEnvio = TipoDeEnvio.USAR_UBICACION_FACTURACION;
-        }
-        if (dataEnvio.opcionEnvioUbicacion === OpcionEnvioUbicacion.USAR_UBICACION_ENVIO) {
-          tipoDeEnvio = TipoDeEnvio.USAR_UBICACION_ENVIO;
-        }
-      }
+      const orden = this.getNuevaOrdeDeCompra();
 
       this.enviarOrdenLoading = true;
-
-      const orden: NuevaOrdenDeCarritoCompra = {
-        idSucursal: idSucursal,
-        idCliente: this.cliente.idCliente,
-        idUsuario: Number(this.authService.getLoggedInIdUsuario()),
-        tipoDeEnvio: tipoDeEnvio,
-        observaciones: null,
-        nuevoPagoMercadoPago: pago,
-      };
-
       this.carritoCompraService.enviarOrden(orden)
         .pipe(finalize(() => {
           this.enviarOrdenLoading = false;
         }))
         .subscribe(
-        () => this.router.navigateByUrl('/compra-realizada'),
+        () => this.router.navigateByUrl('/checkout/pendiente'),
         err => {
           this.avisoService.openSnackBar(err.error, '', 3500);
         }
@@ -363,8 +333,33 @@ export class CheckoutComponent implements OnInit {
     }
   }
 
-  updated(pago: NuevoPagoMercadoPago) {
-    if (pago) { this.cerrarOrden(pago); }
+  getNuevaOrdeDeCompra(): NuevaOrdenDePago {
+    const dataEnvio = this.opcionEnvioForm.value;
+    if (!dataEnvio) { return null; }
+
+    let tipoDeEnvio = null;
+    let idSucursal = null;
+
+    if (dataEnvio.opcionEnvio === OpcionEnvio.RETIRO_EN_SUCURSAL) {
+      tipoDeEnvio = TipoDeEnvio.RETIRO_EN_SUCURSAL;
+      idSucursal = dataEnvio.sucursal.idSucursal;
+    }
+
+    if (dataEnvio.opcionEnvio === OpcionEnvio.ENVIO_A_DOMICILIO) {
+      if (dataEnvio.opcionEnvioUbicacion === OpcionEnvioUbicacion.USAR_UBICACION_FACTURACION) {
+        tipoDeEnvio = TipoDeEnvio.USAR_UBICACION_FACTURACION;
+      }
+      if (dataEnvio.opcionEnvioUbicacion === OpcionEnvioUbicacion.USAR_UBICACION_ENVIO) {
+        tipoDeEnvio = TipoDeEnvio.USAR_UBICACION_ENVIO;
+      }
+    }
+
+    return {
+      movimiento: Movimiento.PEDIDO,
+      idSucursal: idSucursal,
+      tipoDeEnvio: tipoDeEnvio,
+      monto: this.total
+    };
   }
 
   getEnvioLabel() {

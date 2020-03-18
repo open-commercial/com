@@ -11,8 +11,8 @@ import {RegistracionComponent} from './components/registracion/registracion.comp
 import {CheckoutComponent} from './components/checkout/checkout.component';
 import {PasswordRecoveryRequestComponent} from './components/password-recovery-request/password-recovery-request.component';
 import {HomeComponent} from './components/home/home.component';
-import {CompraRealizadaComponent} from './components/compra-realizada/compra-realizada.component';
 import {RegistracionRealizadaComponent} from './components/registracion-realizada/registracion-realizada.component';
+import {CheckoutStatusComponent} from './components/checkout-status/checkout-status.component';
 
 const sicComRoutes: Routes = [
   {path: 'login', component: LoginComponent},
@@ -32,7 +32,7 @@ const sicComRoutes: Routes = [
       {path: 'carrito-compra', component: CarritoCompraComponent},
       {path: 'perfil', component: PerfilComponent},
       {path: 'checkout', component: CheckoutComponent},
-      {path: 'compra-realizada', component: CompraRealizadaComponent},
+      {path: 'checkout/:status', component: CheckoutStatusComponent},
     ]
   },
   {path: '**', redirectTo: ''}

@@ -10,32 +10,34 @@
     </span>
   </div>
   <div *ngIf="!isLoading && cuentaCorriente && !isPagoLoading">
-    <button mat-raised-button color="primary" *ngIf="!showNuevoPago" (click)="mostrarFormDePago()">Ingresar Dinero</button>
-    <div *ngIf="showNuevoPago">
-      <sic-com-mercado-pago [cliente]="cliente" [showMontoControl]="true" (updated)="updated($event)" (canceled)="showNuevoPago = false"></sic-com-mercado-pago>
+    <div fxLayout.gt-sm="row" fxLayoutAlign="start center" fxLayoutGap="0.7rem" *ngIf="this.cliente && this.cliente.email">
+      <sic-com-boton-mercado-pago [nuevaOrdenDePago]="nuevaOrdenDePago" [showMontoInput]="true" [montoMinimo]="10"
+                                  (preCheckout)="isPagoLoading = true"></sic-com-boton-mercado-pago>
     </div>
-    <div *ngIf="!showNuevoPago">
-      <div fxLayout="row" fxLayoutAlign="start center">
-        <span fxFlex></span>
-        <span>SALDO: <span class="monto" [class.negativo]="cuentaCorriente.saldo < 0">$ {{ cuentaCorriente.saldo | number:'1.0-2':'es-AR' }}</span></span>
-      </div>
-      <mat-list>
-        <mat-list-item *ngFor="let renglon of renglones" class="renglon-row">
-          <div matLine fxLayout="row" fxLayoutAlign="space-around center" fxFill class="renglon-row-content" fxLayoutGap="0.3rem">
-            <span fxFlex fxFlex.gt-xs="50" fxLayout="row" fxLayout.xs="column">
-              <span fxFlex class="pedido-column-content">{{ renglon.fecha | date: 'dd/MM/yyyy' }}</span>
-              <span fxFlex class="pedido-column-content">{{ getMovimiento(renglon) }}</span>
-            </span>
-            <span fxFlex class="pedido-column-content monto" [class.negativo]="renglon.monto < 0">$ {{ renglon.monto | number:'1.0-2':'es-AR' }}</span>
-            <span fxFlex class="pedido-column-content monto" [class.negativo]="renglon.saldo < 0">$ {{ renglon.saldo | number:'1.0-2':'es-AR' }}</span>
-          </div>
-          <mat-divider></mat-divider>
-        </mat-list-item>
-      </mat-list>
-      <div class="mas-resultados" fxLayoutAlign="center center" (click)="masRenglones()"
-           *ngIf="!loading && (renglones.length > 0) && (totalPaginas > (pagina + 1))">
-        <strong>MAS RESULTADOS</strong>
-      </div>
+    <div *ngIf="!this.cliente || !this.cliente.email" class="error">
+      Debe completar su email en Cuenta de Cliente para poder ingresar un deposito
+    </div>
+    <br>
+    <div fxLayout="row" fxLayoutAlign="start center">
+      <span fxFlex></span>
+      <span>SALDO: <span class="monto" [class.negativo]="cuentaCorriente.saldo < 0">$ {{ cuentaCorriente.saldo | number:'1.0-2':'es-AR' }}</span></span>
+    </div>
+    <mat-list *ngIf="!isPagoLoading">
+      <mat-list-item *ngFor="let renglon of renglones" class="renglon-row">
+        <div matLine fxLayout="row" fxLayoutAlign="space-around center" fxFill class="renglon-row-content" fxLayoutGap="0.3rem">
+          <span fxFlex fxFlex.gt-xs="50" fxLayout="row" fxLayout.xs="column">
+            <span fxFlex class="pedido-column-content">{{ renglon.fecha | date: 'dd/MM/yyyy' }}</span>
+            <span fxFlex class="pedido-column-content">{{ getMovimiento(renglon) }}</span>
+          </span>
+          <span fxFlex class="pedido-column-content monto" [class.negativo]="renglon.monto < 0">$ {{ renglon.monto | number:'1.0-2':'es-AR' }}</span>
+          <span fxFlex class="pedido-column-content monto" [class.negativo]="renglon.saldo < 0">$ {{ renglon.saldo | number:'1.0-2':'es-AR' }}</span>
+        </div>
+        <mat-divider></mat-divider>
+      </mat-list-item>
+    </mat-list>
+    <div class="mas-resultados" fxLayoutAlign="center center" (click)="masRenglones()"
+         *ngIf="!loading && (renglones.length > 0) && (totalPaginas > (pagina + 1))">
+      <strong>MAS RESULTADOS</strong>
     </div>
   </div>
   <div *ngIf="isLoading || loading || isPagoLoading" fxLayout="row" fxLayoutAlign="center center">

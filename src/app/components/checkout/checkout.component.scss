@@ -79,7 +79,7 @@
     height: 400px;
   }
 
-  .ubicacion-error {
+  .ubicacion-error, .error {
     color: red;
     padding: 0.7rem 0;
   }
@@ -90,5 +90,9 @@
 
   .btn-small {
     font-size: 0.9em;
+  }
+
+  .boton-pago {
+    min-width: 13rem;
   }
 }
