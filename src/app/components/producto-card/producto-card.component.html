@@ -12,7 +12,7 @@
     </div>
   </div>
   <a [routerLink]="['/producto/' + producto.idProducto]">
-    <mat-card [class.stretch-on-mobile]="stretchOnMobile">
+    <mat-card [class.stretch-on-mobile]="stretchOnMobile" [ngClass.gt-xs]="stretchOnMobile ? 'off' : ''">
       <div [fxLayout]="stretchOnMobile ? 'row' : 'column'" fxLayout.gt-xs="column" [fxLayoutAlign]="stretchOnMobile ? 'center center' : 'center stretch'" fxLayoutAlign.gt-xs="center stretch">
         <div class="img-container" fxFlex>
           <img mat-card-image [src]="producto.urlImagen ? producto.urlImagen : 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1545616229/assets/sin_imagen.png'" alt="Imagen del producto">

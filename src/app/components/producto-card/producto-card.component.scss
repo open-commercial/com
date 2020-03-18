@@ -66,6 +66,8 @@
     }
   }
 
+
+
   mat-card {
     background: white;
     padding: .5rem;
@@ -74,7 +76,7 @@
     &.stretch-on-mobile {
       height: 146px;
       width: unset;
-      @media screen and (min-width: 600px) {
+      &.off {
         width: 220px;
         height: 280px;
       }
