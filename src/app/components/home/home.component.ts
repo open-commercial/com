@@ -68,7 +68,6 @@ export class HomeComponent implements OnInit {
               private breakpointObserver: BreakpointObserver) {}
 
   ngOnInit(): void {
-    // this.urlBannerMP = 'https://imgmp.mlstatic.com/org-img/banners/ar/medios/online/468X60.jpg';
     this.breakpointObserver.observe([
       Breakpoints.XSmall, Breakpoints.Small
     ]).subscribe(result => {
@@ -80,7 +79,6 @@ export class HomeComponent implements OnInit {
         this.height = '30vw';
         this.imageUrls = this.slideshowService.getSlideshowDataForDesktop();
         this.isMobile = false;
-        // this.urlBannerMP = 'https://imgmp.mlstatic.com/org-img/banners/ar/medios/online/785X40.jpg"/>';
       }
     });
   }

@@ -56,6 +56,7 @@ import {PagosService} from './services/pagos.service';
 import {GtagModule} from 'angular-gtag';
 import {FooterComponent} from './components/footer/footer.component';
 import {RegistracionRealizadaComponent} from './components/registracion-realizada/registracion-realizada.component';
+import { ProductoCardComponent } from './components/producto-card/producto-card.component';
 import { BotonMercadoPagoComponent } from './components/boton-mercado-pago/boton-mercado-pago.component';
 import { CheckoutStatusComponent } from './components/checkout-status/checkout-status.component';
 import { MercadoPagoDialogComponent } from './components/mercado-pago-dialog/mercado-pago-dialog.component';
@@ -89,6 +90,7 @@ registerLocaleData(localeEs, 'es-AR', localeEsExtra);
     AgregarAlCarritoDialogComponent,
     FooterComponent,
     RegistracionRealizadaComponent,
+    ProductoCardComponent,
     BotonMercadoPagoComponent,
     CheckoutStatusComponent,
     MercadoPagoDialogComponent,

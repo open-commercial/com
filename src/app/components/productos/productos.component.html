@@ -5,42 +5,9 @@
       &nbsp;Sin Resultados
     </span>
   </div>
-  <mat-nav-list class="sic-com-listado" disableRipple="true">
-    <div *ngFor="let p of productos">
-      <mat-list-item [routerLink]="['/producto/' + p.idProducto]">
-        <img mat-list-avatar class="sic-com-avatar" [src]="p.urlImagen" alt="">
-        <p mat-line class="sic-com-codigo">
-          {{p.codigo}}
-          <mat-chip-list *ngIf="p.oferta" class="sic-com-oferta">
-            <mat-chip class="sic-com-stock">OFERTA</mat-chip>
-          </mat-chip-list>
-        </p>
-        <p mat-line class="oferta-cantidad" *ngIf="p.oferta">
-          <span *ngIf="p.bulto > 1">Llevando {{p.bulto | number:'1.0-2':'es-AR'}} o más</span>
-          {{p.porcentajeBonificacionOferta | number:'1.0-2':'es-AR'}}% OFF!
-        </p>
-        <p mat-line class="sic-com-descripcion"><strong>{{p.descripcion}}</strong></p>
-        <p mat-line *ngIf="p.oferta" class="precio">
-          <span [class.tachado]="p.bulto == 1">P. U. $ {{p.precioLista | number:'1.0-2':'es-AR' }}</span><br>
-          P. U. Oferta $ {{ p.precioBonificado | number:'1.0-2':'es-AR' }}
-        </p>
-        <p mat-line *ngIf="!p.oferta" class="precio">
-          <span *ngIf="!estaBonificado(p) || p.bulto > 1">P. U. $ {{p.precioLista | number:'1.0-2':'es-AR' }}<br></span>
-          <span *ngIf="estaBonificado(p)">
-            P. U. Bonif.<span *ngIf="p.bulto > 1"> x Cant. </span>
-            $ {{ p.precioBonificado | number:'1.0-2':'es-AR' }}
-          </span>
-        </p>
-        <p mat-line *ngIf="!p.oferta && estaBonificado(p) && p.bulto > 1">
-          <strong>Llevando {{p.bulto | number:'1.0-2':'es-AR'}} o más</strong>
-        </p>
-        <button mat-icon-button color="warn" (click)="showDialogCantidad($event, p)" *ngIf="authService.isAuthenticated() && cliente">
-          <mat-icon>add_shopping_cart</mat-icon>
-        </button>
-      </mat-list-item>
-      <mat-divider></mat-divider>
-    </div>
-  </mat-nav-list>
+  <div fxLayout="row wrap" fxLayoutAlign="center center" class="sic-com-listado">
+    <sic-com-producto-card [producto]="p" [cliente]="cliente" [stretchOnMobile]="true" *ngFor="let p of productos"></sic-com-producto-card>
+  </div>
   <div class="sic-com-paginator" *ngIf="!loadingProducts && (productos.length > 0)" fxLayout="row" fxLayoutAlign="center center">
     <button mat-button color="primary" [disabled]="pagina <= 0" (click)="paginaAnterior()">
       <mat-icon aria-label="Página anterior">navigate_before</mat-icon><span>Anterior</span>

@@ -147,7 +147,6 @@ export class UbicacionComponent implements OnInit, OnChanges {
       calle: this.ubicacionForm.get('calle').value,
       codigoPostal: this.ubicacion ? this.ubicacion.codigoPostal : null,
       departamento: this.ubicacionForm.get('departamento').value,
-      // descripcion: this.ubicacion ? this.ubicacion.descripcion : null,
       descripcion: this.ubicacionForm.get('descripcion').value,
       idLocalidad: this.ubicacionForm.get('idLocalidad').value,
       idProvincia: this.ubicacionForm.get('idProvincia').value,

@@ -1,0 +1,42 @@
+<div class="producto">
+  <div class="encabezado">
+    <div fxLayout="row" fxLayoutAlign="space-between start">
+      <span>
+        <span class="off" *ngIf="producto.porcentajeBonificacionOferta">{{ producto.porcentajeBonificacionOferta }}% OFF!</span>
+      </span>
+      <span>
+        <button class="add-to-cart" mat-icon-button color="warn" (click)="showDialogCantidad($event, producto)" *ngIf="authService.isAuthenticated() && cliente">
+          <mat-icon>add_shopping_cart</mat-icon>
+        </button>
+      </span>
+    </div>
+  </div>
+  <a [routerLink]="['/producto/' + producto.idProducto]">
+    <mat-card [class.stretch-on-mobile]="stretchOnMobile" [ngClass.gt-xs]="stretchOnMobile ? 'off' : ''">
+      <div [fxLayout]="stretchOnMobile ? 'row' : 'column'" fxLayout.gt-xs="column" [fxLayoutAlign]="stretchOnMobile ? 'center center' : 'center stretch'" fxLayoutAlign.gt-xs="center stretch">
+        <div class="img-container" fxFlex>
+          <img mat-card-image [src]="producto.urlImagen ? producto.urlImagen : 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1545616229/assets/sin_imagen.png'" alt="Imagen del producto">
+        </div>
+        <mat-card-content fxFlex="65" fxLayout="column">
+          <div>
+            <span class="codigo">{{ producto.codigo }}</span>
+            <p>{{ producto.descripcion }}</p>
+          </div>
+          <div>
+            <mat-card-title fxLayout="column" fxLayoutAlign="center start">
+              <div *ngIf="producto.porcentajeBonificacionOferta || producto.porcentajeBonificacionPrecio">
+                <span class="precio bonificado">
+                  <span *ngIf="producto.bulto > 1">Llevando {{ producto.bulto }} o más</span>
+                  $ {{ producto.precioBonificado | number:'1.0-2':'es-AR' }}
+                </span>
+              </div>
+              <span class="precio" [class.tachado]="!(producto.bulto > 1) && (producto.porcentajeBonificacionOferta || producto.porcentajeBonificacionPrecio)">
+              $ {{producto.precioLista | number:'1.0-2':'es-AR'}}
+              </span>
+            </mat-card-title>
+          </div>
+        </mat-card-content>
+      </div>
+    </mat-card>
+  </a>
+</div>

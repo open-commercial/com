@@ -73,7 +73,6 @@ export class RegistracionComponent implements OnInit {
         )
         .subscribe(
           () => {
-            // this.avisoService.openSnackBar('Recibirá un email para confirmar su registración', 'OK', 0);
             this.router.navigate(['registracion-realizada'], { state: { reg: reg }});
           },
           err => {

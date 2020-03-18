@@ -13,51 +13,54 @@
   <div class="bannerMP" fxLayoutAlign="center center">
   </div>
   <sic-com-productos-en-oferta></sic-com-productos-en-oferta>
-  <h3 class="label">Globo Envíos</h3>
-  <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap=".5rem" class="info">
-    <div>
-      <img src="https://res.cloudinary.com/hf0vu1bg2/image/upload/v1545110884/assets/truck_envio.png" alt="Envio gratis">
+  <div class="bg-gray">
+    <h3 class="label">Globo Envíos</h3>
+    <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap=".5rem" class="info">
+      <div>
+        <img src="https://res.cloudinary.com/hf0vu1bg2/image/upload/v1545110884/assets/truck_envio.png" alt="Envio gratis">
+      </div>
+      <div>
+        Aprovecha nuestro <strong>envio gratis</strong> a estas localidades:
+      </div>
     </div>
-    <div>
-      Aprovecha nuestro <strong>envio gratis</strong> a estas localidades:
-    </div>
-  </div>
-  <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="2rem">
-    <span><mat-icon class="listado-icon">map</mat-icon></span>
-    <ul class="listado">
-      <li>Corrientes (Corrientes)</li>
-      <li>Laguna Brava (Corrientes)</li>
-      <li>Riachuelo (Corrientes)</li>
-      <li>San Luis del Palmar (Corrientes)</li>
-      <li>Resistencia (Chaco)</li>
-      <li>Barranqueras (Chaco)</li>
-      <li>Puerto Vilelas (Chaco)</li>
-    </ul>
-  </div>
-  <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap=".5rem" class="info">
-    <div>
-      <img src="https://res.cloudinary.com/hf0vu1bg2/image/upload/v1545358178/assets/shopping_cart.png" alt="Retiro en sucursal">
-    </div>
-    <div>
-      Retira sin cargo tu pedido en nuestras direcciones!
-    </div>
-  </div>
-  <div fxLayout="column" fxLayoutAlign="center center">
     <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="2rem">
-      <span><mat-icon class="listado-icon">room</mat-icon></span>
+      <span><mat-icon class="listado-icon">map</mat-icon></span>
       <ul class="listado">
-        <li>Local comercial: 9 de Julio 1021 (Corrientes)</li>
-        <li>Deposito principal: Napoles 5600 (Corrientes)</li>
+        <li>Corrientes (Corrientes)</li>
+        <li>Laguna Brava (Corrientes)</li>
+        <li>Riachuelo (Corrientes)</li>
+        <li>San Luis del Palmar (Corrientes)</li>
+        <li>Resistencia (Chaco)</li>
+        <li>Barranqueras (Chaco)</li>
+        <li>Puerto Vilelas (Chaco)</li>
       </ul>
     </div>
+    <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap=".5rem" class="info">
+      <div>
+        <img src="https://res.cloudinary.com/hf0vu1bg2/image/upload/v1545358178/assets/shopping_cart.png" alt="Retiro en sucursal">
+      </div>
+      <div>
+        Retira sin cargo tu pedido en nuestras direcciones!
+      </div>
+    </div>
+    <div fxLayout="column" fxLayoutAlign="center center">
+      <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="2rem">
+        <span><mat-icon class="listado-icon">room</mat-icon></span>
+        <ul class="listado">
+          <li>Local comercial: 9 de Julio 1021 (Corrientes)</li>
+          <li>Deposito principal: Napoles 5600 (Corrientes)</li>
+        </ul>
+      </div>
+    </div>
   </div>
-  <br>
-  <h3 class="label">Algunas de nuestras marcas</h3>
-  <ul class="marcas">
-    <li class="marca" *ngFor="let m of marcas">
-      <a [routerLink]="m.routeLink" [queryParams]="m.queryParams">
-        <img [src]="m.url" [alt]="m.nombre">
-      </a>
-    </li>
-  </ul>
+  <div class="bg-gray">
+    <h3 class="label">Algunas de nuestras marcas</h3>
+    <ul class="marcas">
+      <li class="marca" *ngFor="let m of marcas">
+        <a [routerLink]="m.routeLink" [queryParams]="m.queryParams">
+          <img [src]="m.url" [alt]="m.nombre">
+        </a>
+      </li>
+    </ul>
+  </div>
 </div>

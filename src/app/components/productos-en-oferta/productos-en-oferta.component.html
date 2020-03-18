@@ -1,42 +1,7 @@
 <h3 class="label" *ngIf="enOferta.length">¡Ofertas!</h3>
 <div class="sic-com-productos-en-oferta" *ngIf="enOferta.length">
   <div class="scroll-container">
-    <div class="oferta" *ngFor="let p of enOferta">
-      <div class="encabezado">
-        <div fxLayout="row" fxLayoutAlign="space-between center">
-          <span class="off">{{ p.porcentajeBonificacionOferta }}% OFF!</span>
-          <span>
-            <button class="add-to-cart" mat-icon-button color="warn" (click)="showDialogCantidad($event, p)" *ngIf="authService.isAuthenticated() && cliente">
-              <mat-icon>add_shopping_cart</mat-icon>
-            </button>
-          </span>
-        </div>
-      </div>
-      <a [routerLink]="['/producto/' + p.idProducto]">
-      <mat-card>
-        <div class="img-container">
-        <img mat-card-image [src]="p.urlImagen ? p.urlImagen : 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1545616229/assets/sin_imagen.png'" alt="Imagen del producto">
-        </div>
-        <mat-card-content>
-          <span class="codigo">{{ p.codigo }}</span>
-          <p>
-            {{ p.descripcion }}
-          </p>
-        </mat-card-content>
-        <mat-card-header fxLayoutAlign="end center">
-          <mat-card-title fxLayout="column" fxLayoutAlign="center end">
-            <div>
-              <span class="precio bonificado">
-                <span *ngIf="p.bulto > 1">Llevando {{ p.bulto }} o más</span>
-                $ {{ p.precioBonificado | number:'1.0-2':'es-AR' }}
-              </span>
-            </div>
-            <span class="precio" [class.tachado]="!(p.bulto > 1)">$ {{p.precioLista | number:'1.0-2':'es-AR'}}</span>
-          </mat-card-title>
-        </mat-card-header>
-      </mat-card>
-      </a>
-    </div>
+    <sic-com-producto-card [producto]="p" [cliente]="cliente" *ngFor="let p of enOferta"></sic-com-producto-card>
     <div class="oferta" [class.first-loading]="!enOferta.length">
       <button mat-raised-button fxLayoutAlign="center center" *ngIf="!loading && pagina + 1< totalPaginas" (click)="paginaSiguiente()">
         <span></span><mat-icon aria-label="Página siguiente">more_horiz</mat-icon>
