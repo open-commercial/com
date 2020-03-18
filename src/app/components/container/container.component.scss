@@ -24,7 +24,7 @@
     background: whitesmoke;
     min-height: 100%;
     margin: 0 auto;
-    @media all and (min-width: 1600px){
+    &.width80porciento {
       width: 80%;
     }
   }
