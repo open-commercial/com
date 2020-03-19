@@ -34,5 +34,4 @@ export class ProductoCardComponent implements OnInit {
     dialogRef.componentInstance.producto = producto;
     dialogRef.componentInstance.cliente = this.cliente;
   }
-
 }

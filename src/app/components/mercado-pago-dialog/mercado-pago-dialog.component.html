@@ -2,7 +2,9 @@
   <mat-form-field fxFill>
     <mat-label>Ingrese el monto a depositar ($)</mat-label>
     <input matInput type="number" [(ngModel)]="monto" (keyup)="montoChange($event)">
+    <mat-hint>Mínimo $ {{ montoMinimo }}</mat-hint>
   </mat-form-field>
+  <br>
 </mat-dialog-content>
 <div fxLayout="row" fxLayoutGap="0.7rem" fxLayoutAlign="center center">
   <button mat-raised-button color="primary" (click)="aceptar()" *ngIf="!loading" [disabled]="!monto || monto < montoMinimo">Aceptar</button>
