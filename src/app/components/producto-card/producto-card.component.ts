@@ -19,10 +19,6 @@ export class ProductoCardComponent implements OnInit {
   @Input() set cliente(value: Cliente) { this.pCliente = value; }
   get cliente() { return this.pCliente; }
 
-  private pStretchOnMobile = false;
-  @Input() set stretchOnMobile(value: boolean) { this.pStretchOnMobile = value; }
-  get stretchOnMobile() { return this.pStretchOnMobile; }
-
   constructor(public authService: AuthService, private dialog: MatDialog) { }
 
   ngOnInit() {

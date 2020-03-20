@@ -11,11 +11,11 @@
   </div>
 </div>
 <a [routerLink]="['/producto/' + producto.idProducto]" class="producto">
-  <mat-card fxLayout="column">
-    <div class="img-container" fxFlex="50" fxLayout="column" fxLayoutAlign="center center">
+  <mat-card>
+    <div class="img-container" fxLayout="column" fxLayoutAlign="center center">
       <img [src]="producto.urlImagen ? producto.urlImagen : 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1545616229/assets/sin_imagen.png'" alt="Imagen del producto">
     </div>
-    <div class="info" fxFlex="50" fxLayout="column" fxLayoutAlign="end stretch">
+    <div class="info" fxLayout="column" fxLayoutAlign="end stretch">
       <div>
         <span class="codigo">{{ producto.codigo }}</span>
         <p>{{ producto.descripcion }}</p>

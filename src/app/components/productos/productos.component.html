@@ -6,8 +6,7 @@
     </span>
   </div>
   <div fxLayout="row wrap" fxLayoutAlign="center center" class="sic-com-listado">
-    <sic-com-producto-card [producto]="p" [cliente]="cliente" [stretchOnMobile]="true" *ngFor="let p of productos"
-                           ></sic-com-producto-card>
+    <sic-com-producto-card [producto]="p" [cliente]="cliente" *ngFor="let p of productos" ngClass.lt-sm="mobile"></sic-com-producto-card>
   </div>
   <div class="sic-com-paginator" *ngIf="!loadingProducts && (productos.length > 0)" fxLayout="row" fxLayoutAlign="center center">
     <button mat-button color="primary" [disabled]="pagina <= 0" (click)="paginaAnterior()">
