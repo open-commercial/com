@@ -13,19 +13,9 @@
     </form>
     <div fxFlex="15" fxFlex.gt-sm="20">
       <div fxLayoutAlign="center center" *ngIf="authService.isAuthenticated()">
-        <button mat-icon-button fxHide fxShow.gt-sm [matMenuTriggerFor]="menuReducido" matTooltip="Mi Perfil ({{usuarioConectado}})" color="primary">
+        <button mat-icon-button fxHide fxShow.gt-sm [routerLink]="['/perfil']" matTooltip="Mi Perfil ({{usuarioConectado}})" color="primary">
           <mat-icon>account_circle</mat-icon>
         </button>
-        <mat-menu #menuReducido="matMenu" fxHide fxShow.gt-sm [overlapTrigger]="false">
-          <button mat-menu-item [routerLink]="['/perfil']">
-            <mat-icon>account_circle</mat-icon>
-            <span>Mi Perfil</span>
-          </button>
-          <button mat-menu-item (click)="logout()">
-            <mat-icon>power_settings_new</mat-icon>
-            <span>Cerrar Sesión</span>
-          </button>
-        </mat-menu>
         <button mat-icon-button fxHide fxShow.gt-sm [routerLink]="['/carrito-compra']" matTooltip="Ir al carrito" color="primary">
           <mat-icon>shopping_cart</mat-icon>
           <span class="sic-com-contador-carrito" *ngIf="(cantidadItemsEnCarrito > 0)">{{cantidadItemsEnCarrito}}</span>
@@ -41,10 +31,6 @@
           <button mat-menu-item [routerLink]="['/carrito-compra']">
             <mat-icon>shopping_cart</mat-icon>
             <span>Ir al carrito ({{cantidadItemsEnCarrito}})</span>
-          </button>
-          <button mat-menu-item (click)="logout()">
-            <mat-icon>power_settings_new</mat-icon>
-            <span>Cerrar Sesión</span>
           </button>
         </mat-menu>
       </div>

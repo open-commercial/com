@@ -1,4 +1,5 @@
 import {Component} from '@angular/core';
+import {AuthService} from '../../services/auth.service';
 
 @Component({
   selector: 'sic-com-perfil',
@@ -13,6 +14,9 @@ export class PerfilComponent {
   isPedidosPanelOpened = false;
   isCuentaCorrientePanelOpened = false;
 
-  constructor() {}
+  constructor(private authService: AuthService) {}
 
+  logout() {
+    this.authService.logout();
+  }
 }
