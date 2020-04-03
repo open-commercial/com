@@ -36,12 +36,12 @@
       </div>
       <br>
       <span class="sic-com-stock" [style.color]="(producto.hayStock ? 'limegreen' : 'red')">
-        <strong>{{ producto.hayStock ? "Stock Disponible" : "Sin Stock" }}</strong>
+        <strong>{{ producto.hayStock ? "Stock Disponible: "+ (producto.cantidadTotalEnSucursales | number:'1.0-2':'es-AR') + ' ' + producto.nombreMedida : "Sin Stock" }}</strong>
       </span>
     </div>
   </div>
   <br>
-  <div fxLayoutAlign="center center">
+  <div fxLayoutAlign="center center" *ngIf="producto.hayStock">
     <button mat-mini-fab color="accent" (click)="menosUno(cantidad)" [disabled]="loading">
       <mat-icon>remove</mat-icon>
     </button>
@@ -60,7 +60,7 @@
   <br>
 </mat-dialog-content>
 <div fxLayoutAlign="center center" fxLayoutGap="0.5rem">
-  <button mat-raised-button color="primary" *ngIf="!loading"  (click)="aceptar()" [disabled]="!esCantidadValida()" cdkFocusInitial>Aceptar</button>
+  <button mat-raised-button color="primary" *ngIf="!loading && producto.hayStock"  (click)="aceptar()" [disabled]="!esCantidadValida()" cdkFocusInitial>Aceptar</button>
   <button mat-raised-button mat-dialog-close *ngIf="!loading">Cancelar</button>
   <mat-spinner [diameter]="50" [strokeWidth]="6" *ngIf="loading"></mat-spinner>
 </div>

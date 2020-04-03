@@ -51,36 +51,39 @@
           </div>
           <br>
           <span class="sic-com-stock" [style.color]="(producto.hayStock ? 'limegreen' : 'red')">
-            <strong>{{ producto.hayStock ? "Stock Disponible" : "Sin Stock" }}</strong>
+            <strong *ngIf="authService.isAuthenticated()">{{ producto.hayStock ? "Stock Disponible: " + (producto.cantidadTotalEnSucursales | number:'1.0-2':'es-AR') + ' ' + producto.nombreMedida : "Sin Stock" }}</strong>
+            <strong *ngIf="!authService.isAuthenticated()">{{ producto.hayStock ? "Stock Disponible" : "Sin Stock" }}</strong>
           </span>
         </div>
-        <div fxLayoutAlign="center center" class="sic-com-controles-cantidad" *ngIf="authService.isAuthenticated()">
-          <button mat-mini-fab color="accent" (click)="cambiarCantidad(cantidad, 0)" [disabled]="cargandoAlCarrito">
-            <mat-icon>remove</mat-icon>
-          </button>
-          <mat-form-field class="sic-com-input-cantidad">
-            <input matInput autofocus type="number" [(ngModel)]='cantidad' placeholder="Cantidad"
-                   min="0" [disabled]="cargandoAlCarrito">
-            <mat-hint *ngIf="cantidadEnCarrito" fxLayoutAlign="center center">
-              <mat-icon>shopping_cart</mat-icon>: {{ cantidadEnCarrito | number:'1.0-2':'es-AR' }}
-            </mat-hint>
-          </mat-form-field>
-          <button mat-mini-fab color="primary" (click)="cambiarCantidad(cantidad, 1)" [disabled]="cargandoAlCarrito">
-            <mat-icon>add</mat-icon>
-          </button>
-        </div>
-        <div fxLayoutAlign="center center" *ngIf="authService.isAuthenticated()">
-          <button mat-raised-button color="primary" class="sic-com-boton-agregar" (click)="cargarAlCarrito()"
-                  [disabled]="!esCantidadValida()" *ngIf="!cargandoAlCarrito">
-            <mat-icon>add_shopping_cart</mat-icon> Agregar al Carrito
-          </button>
-          <mat-spinner [diameter]="50" [strokeWidth]="6" *ngIf="cargandoAlCarrito"></mat-spinner>
-        </div>
-        <div fxLayoutAlign="center center" class="sic-com-controles-cantidad" *ngIf="!authService.isAuthenticated()">
-          <button mat-raised-button fxFill [routerLink]="['/login']" [queryParams]="{'pid': producto.idProducto}" color="primary">
-            <mat-icon>shopping_cart</mat-icon>
-            Comprar
-          </button>
+        <div *ngIf="producto.hayStock">
+          <div fxLayoutAlign="center center" class="sic-com-controles-cantidad" *ngIf="authService.isAuthenticated()">
+            <button mat-mini-fab color="accent" (click)="cambiarCantidad(cantidad, 0)" [disabled]="cargandoAlCarrito">
+              <mat-icon>remove</mat-icon>
+            </button>
+            <mat-form-field class="sic-com-input-cantidad">
+              <input matInput autofocus type="number" name="cantidad" [(ngModel)]='cantidad' placeholder="Cantidad"
+                     required min="0" [disabled]="cargandoAlCarrito">
+              <mat-hint *ngIf="cantidadEnCarrito" fxLayoutAlign="center center">
+                <mat-icon>shopping_cart</mat-icon>: {{ cantidadEnCarrito | number:'1.0-2':'es-AR' }}
+              </mat-hint>
+            </mat-form-field>
+            <button mat-mini-fab color="primary" (click)="cambiarCantidad(cantidad, 1)" [disabled]="cargandoAlCarrito">
+              <mat-icon>add</mat-icon>
+            </button>
+          </div>
+          <div fxLayoutAlign="center center" *ngIf="authService.isAuthenticated()">
+            <button mat-raised-button color="primary" class="sic-com-boton-agregar" (click)="cargarAlCarrito()"
+                    [disabled]="!esCantidadValida()" *ngIf="!cargandoAlCarrito">
+              <mat-icon>add_shopping_cart</mat-icon> Agregar al Carrito
+            </button>
+            <mat-spinner [diameter]="50" [strokeWidth]="6" *ngIf="cargandoAlCarrito"></mat-spinner>
+          </div>
+          <div fxLayoutAlign="center center" class="sic-com-controles-cantidad" *ngIf="!authService.isAuthenticated()">
+            <button mat-raised-button fxFill [routerLink]="['/login']" [queryParams]="{'pid': producto.idProducto}" color="primary">
+              <mat-icon>shopping_cart</mat-icon>
+              Comprar
+            </button>
+          </div>
         </div>
       </div>
     </div>
