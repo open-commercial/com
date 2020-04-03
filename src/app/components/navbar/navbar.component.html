@@ -35,32 +35,9 @@
         </mat-menu>
       </div>
       <div fxLayoutAlign="center center" *ngIf="!authService.isAuthenticated()">
-        <button mat-icon-button fxHide fxShow.gt-sm [matMenuTriggerFor]="menuReducido" color="primary">
+        <button mat-icon-button color="primary" (click)="goToLogin()">
           <mat-icon>account_circle</mat-icon>
         </button>
-        <mat-menu #menuReducido="matMenu" fxHide fxShow.gt-sm [overlapTrigger]="false">
-          <button mat-menu-item (click)="goToLogin()">
-            <mat-icon>account_circle</mat-icon>
-            <span>Ingresar</span>
-          </button>
-          <button mat-menu-item (click)="goToRegistracion()">
-            <mat-icon>how_to_reg</mat-icon>
-            <span>Registrarme</span>
-          </button>
-        </mat-menu>
-        <button mat-icon-button fxShow fxHide.gt-sm [matMenuTriggerFor]="menuCompleto" color="primary">
-          <mat-icon>more_vert</mat-icon>
-        </button>
-        <mat-menu #menuCompleto="matMenu" fxShow fxHide.gt-sm [overlapTrigger]="false">
-          <button mat-menu-item (click)="goToLogin()">
-            <mat-icon>account_circle</mat-icon>
-            <span>Ingresar</span>
-          </button>
-          <button mat-menu-item (click)="goToRegistracion()">
-            <mat-icon>how_to_reg</mat-icon>
-            <span>Registrarme</span>
-          </button>
-        </mat-menu>
       </div>
     </div>
     <div fxHide fxShow.gt-sm fxFlex.gt-sm="5"></div>
