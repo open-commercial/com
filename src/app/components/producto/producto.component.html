@@ -55,35 +55,44 @@
             <strong *ngIf="!authService.isAuthenticated()">{{ producto.hayStock ? "Stock Disponible" : "Sin Stock" }}</strong>
           </span>
         </div>
-        <div *ngIf="producto.hayStock">
-          <div fxLayoutAlign="center center" class="sic-com-controles-cantidad" *ngIf="authService.isAuthenticated()">
-            <button mat-mini-fab color="accent" (click)="cambiarCantidad(cantidad, 0)" [disabled]="cargandoAlCarrito">
+        <form [formGroup]="form" (ngSubmit)="submit()" *ngIf="authService.isAuthenticated() && producto.hayStock">
+          <div fxLayoutAlign="center center" class="sic-com-controles-cantidad" *ngIf="!cargandoAlCarrito">
+            <button type="button" mat-mini-fab color="accent" (click)="decCanitdad()" [disabled]="cargandoAlCarrito">
               <mat-icon>remove</mat-icon>
             </button>
             <mat-form-field class="sic-com-input-cantidad">
-              <input matInput autofocus type="number" name="cantidad" [(ngModel)]='cantidad' placeholder="Cantidad"
-                     required min="0" [disabled]="cargandoAlCarrito">
+              <input matInput autofocus  required type="number" name="cantidad" placeholder="Cantidad" formControlName="cantidad">
               <mat-hint *ngIf="cantidadEnCarrito" fxLayoutAlign="center center">
                 <mat-icon>shopping_cart</mat-icon>: {{ cantidadEnCarrito | number:'1.0-2':'es-AR' }}
               </mat-hint>
+              <mat-error *ngIf="form.get('cantidad').hasError('required')">
+                Requerido
+              </mat-error>
+              <mat-error *ngIf="form.get('cantidad').hasError('min')">
+                Mínimo: {{ form.get('cantidad').getError('min').min }}
+              </mat-error>
+              <mat-error *ngIf="form.get('cantidad').hasError('max')">
+                Máximo: {{ form.get('cantidad').getError('max').max }}
+              </mat-error>
             </mat-form-field>
-            <button mat-mini-fab color="primary" (click)="cambiarCantidad(cantidad, 1)" [disabled]="cargandoAlCarrito">
+            <button type="button" mat-mini-fab color="primary" (click)="incCantidad()" [disabled]="cargandoAlCarrito">
               <mat-icon>add</mat-icon>
             </button>
           </div>
-          <div fxLayoutAlign="center center" *ngIf="authService.isAuthenticated()">
-            <button mat-raised-button color="primary" class="sic-com-boton-agregar" (click)="cargarAlCarrito()"
-                    [disabled]="!esCantidadValida()" *ngIf="!cargandoAlCarrito">
+          <div fxLayoutAlign="center center">
+            <button type="submit" mat-raised-button color="primary" class="sic-com-boton-agregar" [disabled]="!form.valid" *ngIf="!cargandoAlCarrito">
               <mat-icon>add_shopping_cart</mat-icon> Agregar al Carrito
             </button>
-            <mat-spinner [diameter]="50" [strokeWidth]="6" *ngIf="cargandoAlCarrito"></mat-spinner>
           </div>
-          <div fxLayoutAlign="center center" class="sic-com-controles-cantidad" *ngIf="!authService.isAuthenticated()">
-            <button mat-raised-button fxFill [routerLink]="['/login']" [queryParams]="{'pid': producto.idProducto}" color="primary">
-              <mat-icon>shopping_cart</mat-icon>
-              Comprar
-            </button>
+          <div class="sic-com-spinner-container" fxLayoutAlign="center center" *ngIf="cargandoAlCarrito">
+            <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
           </div>
+        </form>
+        <div fxLayoutAlign="center center" class="sic-com-controles-cantidad" *ngIf="!authService.isAuthenticated()">
+          <button mat-raised-button fxFill [routerLink]="['/login']" [queryParams]="{'pid': producto.idProducto}" color="primary">
+            <mat-icon>shopping_cart</mat-icon>
+            Comprar
+          </button>
         </div>
       </div>
     </div>

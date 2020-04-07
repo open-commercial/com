@@ -11,6 +11,7 @@ import {CarritoCompra} from '../../models/carrito-compra';
 import {formatNumber, Location} from '@angular/common';
 import {finalize} from 'rxjs/operators';
 import {ItemCarritoCompra} from '../../models/item-carrito-compra';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 @Component({
   selector: 'sic-com-producto',
@@ -18,14 +19,14 @@ import {ItemCarritoCompra} from '../../models/item-carrito-compra';
   styleUrls: ['producto.component.scss']
 })
 export class ProductoComponent implements OnInit {
-
   producto: Producto;
-  cantidad = 1;
   cantidadEnCarrito = 0;
   loadingProducto = false;
   cargandoAlCarrito = false;
   cliente: Cliente = null;
   imgViewerVisible = false;
+
+  form: FormGroup;
 
   constructor(private productosService: ProductosService,
               private carritoCompraService: CarritoCompraService,
@@ -34,7 +35,8 @@ export class ProductoComponent implements OnInit {
               private clientesService: ClientesService,
               private router: Router,
               private route: ActivatedRoute,
-              private location: Location) {
+              private location: Location,
+              private fb: FormBuilder) {
   }
 
   ngOnInit() {
@@ -44,10 +46,18 @@ export class ProductoComponent implements OnInit {
         (cliente: Cliente) => this.cliente = cliente
       );
     }
+    this.createForm();
     this.getProducto(productoId);
   }
 
+  createForm() {
+    this.form = this.fb.group({
+      cantidad: [1, [Validators.required, Validators.min(1)]]
+    });
+  }
+
   getProducto(id: number) {
+    this.loadingProducto = true;
     this.loadingProducto = true;
     this.productosService.getProductoSoloPublico(id).subscribe(
       data => {
@@ -60,7 +70,10 @@ export class ProductoComponent implements OnInit {
             .pipe(finalize(() => this.loadingProducto = false))
             .subscribe(
               (icc: ItemCarritoCompra) => {
-                this.cantidad = icc ? icc.cantidad : 1;
+                this.form.get('cantidad').setValue(icc ? icc.cantidad : 1);
+                this.form.get('cantidad').setValidators(
+                  [Validators.required, Validators.min(1), Validators.max(this.producto.cantidadTotalEnSucursales)]
+                );
                 this.cantidadEnCarrito = icc ? icc.cantidad : 0;
               },
               err => this.avisoService.openSnackBar(err.error, '', 3500)
@@ -81,56 +94,56 @@ export class ProductoComponent implements OnInit {
     this.location.back();
   }
 
-  cargarAlCarrito() {
-    if (!this.esCantidadValida()) { return; }
-    this.cargandoAlCarrito = true;
-    this.carritoCompraService.actualizarAlPedido(this.producto, this.cantidad)
-      .subscribe(
-        data => {
-          if (this.cliente) {
-            this.carritoCompraService.getCarritoCompra(this.cliente.idCliente)
-              .subscribe(
-                (carrito: CarritoCompra) => {
-                  this.carritoCompraService.setCantidadItemsEnCarrito(carrito.cantRenglones);
-                  this.volver();
-                  this.cargandoAlCarrito = false;
-                },
-                err => {
-                  this.avisoService.openSnackBar(err.error, '', 3500);
-                  this.cargandoAlCarrito = false;
-                }
-              );
+  submit() {
+    if (this.form.valid) {
+      const cantidad = this.form.get('cantidad').value;
+      this.cargandoAlCarrito = true;
+      this.carritoCompraService.actualizarAlPedido(this.producto, cantidad)
+        .subscribe(
+          () => {
+            if (this.cliente) {
+              this.carritoCompraService.getCarritoCompra(this.cliente.idCliente)
+                .pipe(finalize(() => this.cargandoAlCarrito = false))
+                .subscribe(
+                  (carrito: CarritoCompra) => {
+                    this.carritoCompraService.setCantidadItemsEnCarrito(carrito.cantRenglones);
+                    this.volver();
+                  },
+                  err => this.avisoService.openSnackBar(err.error, '', 3500),
+                )
+              ;
+            }
+          },
+          err => {
+            this.cargandoAlCarrito = false;
+            this.avisoService.openSnackBar(err.error, '', 3500);
           }
-        },
-        err => {
-          this.cargandoAlCarrito = false;
-          this.avisoService.openSnackBar(err.error, '', 3500);
-        }
-      );
-  }
-
-  cambiarCantidad(cantidad, masMenos) {
-    if (masMenos === 1) {
-      this.cantidad = parseFloat(cantidad) + 1;
-    } else {
-      if (cantidad > 1) {
-        this.cantidad = parseFloat(cantidad) - 1;
-      } else {
-        this.cantidad = 1;
-      }
+        )
+      ;
     }
   }
 
+  decCanitdad() {
+    let cant = this.form.get('cantidad').value ? this.form.get('cantidad').value : 1;
+    if (cant > 1) { cant -= 1; }
+    this.form.get('cantidad').setValue(cant);
+  }
+
+  incCantidad() {
+    let cant = this.form.get('cantidad').value ? this.form.get('cantidad').value : 1;
+    cant += 1;
+    this.form.get('cantidad').setValue(cant);
+  }
+
   esCantidadBonificada() {
+    const cant = this.form && this.form.get('cantidad') ? this.form.get('cantidad').value : null;
+    if (!cant || cant < 0) { return false; }
+
     return this.producto.precioBonificado && this.producto.precioBonificado < this.producto.precioLista
-      && this.cantidad >= this.producto.bulto;
+      && cant >= this.producto.bulto;
   }
 
   toggleImgViewer() {
     this.imgViewerVisible = !this.imgViewerVisible;
-  }
-
-  esCantidadValida() {
-    return this.cantidad && this.cantidad > 0 && Number(this.cantidad) === parseInt(this.cantidad.toString(), 10);
   }
 }
