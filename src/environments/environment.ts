@@ -7,6 +7,6 @@ export const environment = {
   production: false,
   apiUrl: 'http://localhost:8080',
   idSucursal: 1,
-  appVersion: 6,
+  appVersion: 10,
   appName: 'SIC_COM'
 };
