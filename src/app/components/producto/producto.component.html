@@ -61,7 +61,7 @@
               <mat-icon>remove</mat-icon>
             </button>
             <mat-form-field class="sic-com-input-cantidad">
-              <input matInput autofocus  required type="number" name="cantidad" placeholder="Cantidad" formControlName="cantidad">
+              <input matInput required type="number" name="cantidad" placeholder="Cantidad" formControlName="cantidad" #cantInput>
               <mat-hint *ngIf="cantidadEnCarrito" fxLayoutAlign="center center">
                 <mat-icon>shopping_cart</mat-icon>: {{ cantidadEnCarrito | number:'1.0-2':'es-AR' }}
               </mat-hint>

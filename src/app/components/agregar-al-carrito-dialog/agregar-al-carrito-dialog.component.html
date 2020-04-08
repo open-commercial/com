@@ -41,26 +41,35 @@
     </div>
   </div>
   <br>
-  <div fxLayoutAlign="center center" *ngIf="producto.hayStock">
-    <button mat-mini-fab color="accent" (click)="menosUno(cantidad)" [disabled]="loading">
+  <form [formGroup]="form" (ngSubmit)="submit()" fxLayoutAlign="center center" *ngIf="producto.hayStock">
+    <button type="button" mat-mini-fab color="accent" (click)="decCantidad()" [disabled]="loading">
       <mat-icon>remove</mat-icon>
     </button>
     <mat-form-field class="input-cantidad">
-      <input matInput autofocus type="number" [(ngModel)]='cantidad' placeholder="Cantidad"
-             min="0" [disabled]="loading">
+      <input matInput cdkFocusInitial type="number" formControlName="cantidad" placeholder="Cantidad"
+             required min="0" [disabled]="loading">
       <mat-hint *ngIf="cantidadEnCarrito" fxLayoutAlign="center center">
           <mat-icon>shopping_cart</mat-icon>: {{ cantidadEnCarrito | number:'1.0-2':'es-AR' }}
       </mat-hint>
+      <mat-error *ngIf="form.get('cantidad').hasError('required')">
+        Requerido
+      </mat-error>
+      <mat-error *ngIf="form.get('cantidad').hasError('min')">
+        Mínimo: {{ form.get('cantidad').getError('min').min }}
+      </mat-error>
+      <mat-error *ngIf="form.get('cantidad').hasError('max')">
+        Máximo: {{ form.get('cantidad').getError('max').max }}
+      </mat-error>
       <br>
     </mat-form-field>
-    <button mat-mini-fab color="primary" (click)="masUno(cantidad)" [disabled]="loading">
+    <button type="button" mat-mini-fab color="primary" (click)="incCantidad()" [disabled]="loading">
       <mat-icon>add</mat-icon>
     </button>
-  </div>
+  </form>
   <br>
 </mat-dialog-content>
 <div fxLayoutAlign="center center" fxLayoutGap="0.5rem">
-  <button mat-raised-button color="primary" *ngIf="!loading && producto.hayStock"  (click)="aceptar()" [disabled]="!esCantidadValida()" cdkFocusInitial>Aceptar</button>
+  <button mat-raised-button color="primary" *ngIf="!loading && producto.hayStock" (click)="submit()" [disabled]="!form.valid">Aceptar</button>
   <button mat-raised-button mat-dialog-close *ngIf="!loading">Cancelar</button>
   <mat-spinner [diameter]="50" [strokeWidth]="6" *ngIf="loading"></mat-spinner>
 </div>

@@ -7,8 +7,7 @@ import {Cliente} from '../../models/cliente';
 import {AvisoService} from '../../services/aviso.service';
 import {finalize} from 'rxjs/operators';
 import {ItemCarritoCompra} from '../../models/item-carrito-compra';
-import {Router} from '@angular/router';
-import {formatNumber} from '@angular/common';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 @Component({
   selector: 'sic-com-agregar-al-carrito-dialog',
@@ -18,72 +17,89 @@ import {formatNumber} from '@angular/common';
 export class AgregarAlCarritoDialogComponent implements OnInit {
   producto: Producto;
   cliente: Cliente;
-  cantidad = 1;
   cantidadEnCarrito = 0;
   loading = false;
+
+  form: FormGroup;
 
   constructor(private dialogRef: MatDialogRef<AgregarAlCarritoDialogComponent>,
               private carritoCompraService: CarritoCompraService,
               private avisoService: AvisoService,
-              private router: Router) {
+              private fb: FormBuilder) {
     dialogRef.disableClose = true;
   }
 
   ngOnInit(): void {
+    this.createForm();
     this.loading = true;
     this.carritoCompraService.getCantidadEnCarrito(this.producto.idProducto)
       .pipe(finalize(() => this.loading = false))
       .subscribe((icc: ItemCarritoCompra) => {
-        this.cantidad = icc ? icc.cantidad : 1;
+        this.form.get('cantidad').setValue(icc ? icc.cantidad : 1);
+        this.form.get('cantidad').setValidators(
+          [Validators.required, Validators.min(1), Validators.max(this.producto.cantidadTotalEnSucursales)]
+        );
         this.cantidadEnCarrito = icc ? icc.cantidad : 0;
       })
     ;
   }
 
-  menosUno(cantidad) {
-    if (cantidad > 1) {
-      this.cantidad = parseFloat(cantidad) - 1;
-    } else {
-      this.cantidad = 1;
+  createForm() {
+    this.form = this.fb.group({
+      cantidad: [1, [Validators.required, Validators.min(1)]]
+    });
+  }
+
+  decCantidad() {
+    let cant = this.form.get('cantidad').value ? this.form.get('cantidad').value : 1;
+    if (cant > 1) { cant -= 1; }
+    this.form.get('cantidad').setValue(cant);
+  }
+
+  incCantidad() {
+    let cant = this.form.get('cantidad').value ? this.form.get('cantidad').value : 1;
+    cant += 1;
+    this.form.get('cantidad').setValue(cant);
+  }
+
+  submit() {
+    if (this.form.valid) {
+      const cantidad = this.form.get('cantidad').value;
+      this.loading = true;
+      this.carritoCompraService.actualizarAlPedido(this.producto, cantidad)
+        .subscribe(
+          () => {
+            if (this.cliente) {
+              this.carritoCompraService.getCarritoCompra(this.cliente.idCliente)
+                .subscribe(
+                  (carrito: CarritoCompra) => {
+                    this.carritoCompraService.setCantidadItemsEnCarrito(carrito.cantRenglones);
+                    this.loading = false;
+                    this.dialogRef.close(true);
+                  },
+                  err => {
+                    this.avisoService.openSnackBar(err.error, '', 3500);
+                    this.loading = false;
+                  }
+                );
+            }
+          },
+          err => {
+            this.loading = false;
+            this.avisoService.openSnackBar(err.error, '', 3500);
+          }
+        )
+      ;
     }
   }
-
-  masUno(cantidad) {
-    this.cantidad = parseFloat(cantidad) + 1;
-  }
-
-  aceptar() {
-    if (!this.esCantidadValida()) { return; }
-    this.loading = true;
-    this.carritoCompraService.actualizarAlPedido(this.producto, this.cantidad)
-      .subscribe(
-        data => {
-          if (this.cliente) {
-            this.carritoCompraService.getCarritoCompra(this.cliente.idCliente)
-              .subscribe(
-                (carrito: CarritoCompra) => {
-                  this.carritoCompraService.setCantidadItemsEnCarrito(carrito.cantRenglones);
-                  this.loading = false;
-                  this.dialogRef.close(true);
-                },
-                err => {
-                  this.avisoService.openSnackBar(err.error, '', 3500);
-                  this.loading = false;
-                }
-              );
-          }
-        },
-        err => {
-          this.loading = false;
-          this.avisoService.openSnackBar(err.error, '', 3500);
-        }
-      );
-  }
   esCantidadBonificada() {
+    const cant = this.form && this.form.get('cantidad') ? this.form.get('cantidad').value : null;
+    if (!cant || cant < 0) { return false; }
+
     return this.producto.precioBonificado && this.producto.precioBonificado < this.producto.precioLista
-      && this.cantidad >= this.producto.bulto;
+      && cant >= this.producto.bulto;
   }
-  esCantidadValida() {
+  /*esCantidadValida() {
     return this.cantidad && this.cantidad > 0 && Number(this.cantidad) === parseInt((this.cantidad).toString(), 10);
-  }
+  }*/
 }

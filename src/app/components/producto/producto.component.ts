@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild, AfterViewInit, ElementRef} from '@angular/core';
 import {ProductosService} from '../../services/productos.service';
 import {CarritoCompraService} from '../../services/carrito-compra.service';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -8,7 +8,7 @@ import {Producto} from '../../models/producto';
 import {ClientesService} from '../../services/clientes.service';
 import {Cliente} from '../../models/cliente';
 import {CarritoCompra} from '../../models/carrito-compra';
-import {formatNumber, Location} from '@angular/common';
+import {Location} from '@angular/common';
 import {finalize} from 'rxjs/operators';
 import {ItemCarritoCompra} from '../../models/item-carrito-compra';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
@@ -18,7 +18,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
   templateUrl: 'producto.component.html',
   styleUrls: ['producto.component.scss']
 })
-export class ProductoComponent implements OnInit {
+export class ProductoComponent implements OnInit, AfterViewInit {
   producto: Producto;
   cantidadEnCarrito = 0;
   loadingProducto = false;
@@ -27,6 +27,8 @@ export class ProductoComponent implements OnInit {
   imgViewerVisible = false;
 
   form: FormGroup;
+
+  @ViewChild('cantInput', {static: false}) cantInput: ElementRef;
 
   constructor(private productosService: ProductosService,
               private carritoCompraService: CarritoCompraService,
@@ -48,6 +50,10 @@ export class ProductoComponent implements OnInit {
     }
     this.createForm();
     this.getProducto(productoId);
+  }
+
+  ngAfterViewInit(): void {
+    setTimeout(() => { if (this.cantInput) { this.cantInput.nativeElement.focus(); }}, 500);
   }
 
   createForm() {
