@@ -1,9 +1,9 @@
 <mat-dialog-content class="sic-com-agregar-al-carrito-dialog">
-  <sic-com-agregar-al-carrito [cliente]="cliente" [producto]="producto" #aacc (cantidadUpdated)="onCantidadUpdated($event)"></sic-com-agregar-al-carrito>
+  <sic-com-agregar-al-carrito [cliente]="cliente" [producto]="producto"
+                              (cantidadUpdated)="onCantidadUpdated()" (loadingStatusUpdated)="onLoadingStatusUpdated($event)" #aacc></sic-com-agregar-al-carrito>
   <br>
 </mat-dialog-content>
 <div fxLayoutAlign="center center" fxLayoutGap="0.5rem">
-  <button mat-raised-button color="primary" *ngIf="producto.hayStock" (click)="aaccSubmit()">Aceptar</button>
-  <button mat-raised-button mat-dialog-close>Cancelar</button>
-  <mat-spinner [diameter]="50" [strokeWidth]="6" *ngIf="loading"></mat-spinner>
+  <button mat-raised-button color="primary" *ngIf="producto.hayStock" (click)="aaccSubmit()" [disabled]="aaccLoading">Aceptar</button>
+  <button mat-raised-button mat-dialog-close [disabled]="aaccLoading">Cancelar</button>
 </div>

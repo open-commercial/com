@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {CarritoCompraService} from '../../services/carrito-compra.service';
 import {AvisoService} from '../../services/aviso.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
@@ -7,14 +7,13 @@ import {Producto} from '../../models/producto';
 import {finalize} from 'rxjs/operators';
 import {ItemCarritoCompra} from '../../models/item-carrito-compra';
 import {CarritoCompra} from '../../models/carrito-compra';
-import {AuthService} from '../../services/auth.service';
 
 @Component({
   selector: 'sic-com-agregar-al-carrito',
   templateUrl: './agregar-al-carrito.component.html',
   styleUrls: ['./agregar-al-carrito.component.scss']
 })
-export class AgregarAlCarritoComponent implements OnInit {
+export class AgregarAlCarritoComponent implements OnInit, AfterViewInit {
   private pCliente: Cliente;
   @Input() set cliente(value: Cliente) {
     this.pCliente = value;
@@ -32,29 +31,45 @@ export class AgregarAlCarritoComponent implements OnInit {
   }
 
   cantidadEnCarrito = 0;
-  loading = false;
 
   form: FormGroup;
   @Output() cantidadUpdated = new EventEmitter<number>();
+  @Output() loadingStatusUpdated = new EventEmitter<boolean>();
+
+  private pLoading = false;
+  set loading(value: boolean) {
+    this.pLoading = value;
+    this.loadingStatusUpdated.emit(value);
+  }
+  get loading(): boolean {
+    return this.pLoading;
+  }
+
+  @ViewChild('cantInput', { static: false }) cantInput: ElementRef;
 
   constructor(private carritoCompraService: CarritoCompraService,
               private avisoService: AvisoService,
-              private fb: FormBuilder,
-              public authService: AuthService) { }
+              private fb: FormBuilder) { }
 
   ngOnInit() {
     this.createForm();
-    this.loading = true;
-    this.carritoCompraService.getCantidadEnCarrito(this.producto.idProducto)
-      .pipe(finalize(() => this.loading = false))
-      .subscribe((icc: ItemCarritoCompra) => {
-        this.form.get('cantidad').setValue(icc ? icc.cantidad : 1);
-        this.form.get('cantidad').setValidators(
-          [Validators.required, Validators.min(1), Validators.max(this.producto.cantidadTotalEnSucursales)]
-        );
-        this.cantidadEnCarrito = icc ? icc.cantidad : 0;
-      })
-    ;
+    if (this.cliente) {
+      this.loading = true;
+      this.carritoCompraService.getCantidadEnCarrito(this.producto.idProducto)
+        .pipe(finalize(() => this.loading = false))
+        .subscribe((icc: ItemCarritoCompra) => {
+          this.form.get('cantidad').setValue(icc ? icc.cantidad : 1);
+          this.form.get('cantidad').setValidators(
+            [Validators.required, Validators.min(1), Validators.max(this.producto.cantidadTotalEnSucursales)]
+          );
+          this.cantidadEnCarrito = icc ? icc.cantidad : 0;
+        })
+      ;
+    }
+  }
+
+  ngAfterViewInit(): void {
+    setTimeout(() => { if (this.cantInput) { this.cantInput.nativeElement.focus(); }}, 300);
   }
 
   createForm() {
@@ -70,7 +85,7 @@ export class AgregarAlCarritoComponent implements OnInit {
   }
 
   incCantidad() {
-    let cant = this.form.get('cantidad').value ? this.form.get('cantidad').value : 1;
+    let cant = this.form.get('cantidad').value ? this.form.get('cantidad').value : 0;
     cant += 1;
     this.form.get('cantidad').setValue(cant);
   }
@@ -78,32 +93,34 @@ export class AgregarAlCarritoComponent implements OnInit {
   submit() {
     if (this.form.valid) {
       const cantidad = this.form.get('cantidad').value;
-      this.cantidadUpdated.emit(cantidad);
-      // this.loading = true;
-      // this.carritoCompraService.actualizarAlPedido(this.producto, cantidad)
-      //   .subscribe(
-      //     () => {
-      //       if (this.cliente) {
-      //         this.carritoCompraService.getCarritoCompra(this.cliente.idCliente)
-      //           .subscribe(
-      //             (carrito: CarritoCompra) => {
-      //               this.carritoCompraService.setCantidadItemsEnCarrito(carrito.cantRenglones);
-      //               this.loading = false;
-      //               this.cantidadUpdated.emit(cantidad);
-      //             },
-      //             err => {
-      //               this.avisoService.openSnackBar(err.error, '', 3500);
-      //               this.loading = false;
-      //             }
-      //           );
-      //       }
-      //     },
-      //     err => {
-      //       this.loading = false;
-      //       this.avisoService.openSnackBar(err.error, '', 3500);
-      //     }
-      //   )
-      // ;
+      this.loading = true;
+      this.carritoCompraService.actualizarAlPedido(this.producto, cantidad)
+        .subscribe(
+          () => {
+            if (this.cliente) {
+              this.carritoCompraService.getCarritoCompra(this.cliente.idCliente)
+                .pipe(finalize(() => this.loading = false))
+                .subscribe(
+                  (carrito: CarritoCompra) => {
+                    this.carritoCompraService.setCantidadItemsEnCarrito(carrito.cantRenglones);
+                    this.cantidadUpdated.emit(cantidad);
+                  },
+                  err => {
+                    this.avisoService.openSnackBar(err.error, '', 3500);
+                  }
+                )
+              ;
+            } else {
+              this.cantidadUpdated.emit(cantidad);
+              this.loading = false;
+            }
+          },
+          err => {
+            this.loading = false;
+            this.avisoService.openSnackBar(err.error, '', 3500);
+          }
+        )
+      ;
     }
   }
 

@@ -12,7 +12,9 @@ import {AgregarAlCarritoComponent} from '../agregar-al-carrito/agregar-al-carrit
 export class AgregarAlCarritoDialogComponent implements OnInit {
   producto: Producto;
   cliente: Cliente;
+
   @ViewChild('aacc', { static: false }) aacc: AgregarAlCarritoComponent;
+  aaccLoading = false;
 
   constructor(private dialogRef: MatDialogRef<AgregarAlCarritoDialogComponent>) {
     dialogRef.disableClose = true;
@@ -25,7 +27,11 @@ export class AgregarAlCarritoDialogComponent implements OnInit {
     this.aacc.submit();
   }
 
-  onCantidadUpdated(cantidad: number) {
-    console.log(cantidad);
+  onCantidadUpdated() {
+    this.dialogRef.close(true);
+  }
+
+  onLoadingStatusUpdated(loadingStatus: boolean) {
+    this.aaccLoading = loadingStatus;
   }
 }

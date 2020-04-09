@@ -35,16 +35,16 @@
     </div>
     <br>
     <span class="sic-com-stock" [style.color]="(producto.hayStock ? 'limegreen' : 'red')">
-        <strong>{{ producto.hayStock ? "Stock Disponible: "+ (producto.cantidadTotalEnSucursales | number:'1.0-2':'es-AR') + ' ' + producto.nombreMedida : "Sin Stock" }}</strong>
-      </span>
+      <strong>{{ producto.hayStock ? "Stock Disponible: "+ (producto.cantidadTotalEnSucursales | number:'1.0-2':'es-AR') + ' ' + producto.nombreMedida : "Sin Stock" }}</strong>
+    </span>
   </div>
-  <form [formGroup]="form" *ngIf="authService.isAuthenticated() && producto.hayStock && !loading" fxLayoutAlign="center center">
+  <br>
+  <form [formGroup]="form" (ngSubmit)="submit()" *ngIf="cliente && producto.hayStock && !loading" fxLayoutAlign="center center">
     <button type="button" mat-mini-fab color="accent" (click)="decCantidad()">
       <mat-icon>remove</mat-icon>
     </button>
     <mat-form-field class="input-cantidad">
-      <input matInput cdkFocusInitial type="number" formControlName="cantidad" placeholder="Cantidad"
-             required min="0">
+      <input matInput type="number" formControlName="cantidad" placeholder="Cantidad" required #cantInput>
       <mat-hint *ngIf="cantidadEnCarrito" fxLayoutAlign="center center">
         <mat-icon>shopping_cart</mat-icon>: {{ cantidadEnCarrito | number:'1.0-2':'es-AR' }}
       </mat-hint>

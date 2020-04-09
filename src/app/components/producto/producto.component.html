@@ -1,8 +1,8 @@
 <div fxLayout="column" class="sic-com-producto">
-  <div class="sic-com-spinner-container" fxLayoutAlign="center center" *ngIf="loadingProducto">
+  <div class="sic-com-spinner-container" fxLayoutAlign="center center" *ngIf="loadingProducto || loadingCliente">
     <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
   </div>
-  <div *ngIf="!loadingProducto">
+  <div *ngIf="!loadingProducto && !loadingCliente && producto">
     <div fxLayoutAlign="start center" class="sic-com-ir-listado" (click)="volver()">
       <mat-icon>keyboard_arrow_left</mat-icon>
       <strong>Volver</strong>
@@ -21,79 +21,20 @@
         </div>
       </div>
       <div class="sic-com-detalle-producto">
-        <div fxLayout="column">
-          <span class="sic-com-codigo-producto">
-            {{producto.codigo}}
-            <mat-chip-list *ngIf="producto.oferta" class="sic-com-oferta">
-              <mat-chip class="sic-com-stock">OFERTA</mat-chip>
-            </mat-chip-list>
-          </span>
-          <div class="oferta-cantidad" *ngIf="producto.oferta">
-            <span *ngIf="producto.bulto > 1">Llevando {{producto.bulto | number:'1.0-2':'es-AR'}} o más</span>
-            {{producto.porcentajeBonificacionOferta | number:'1.0-2':'es-AR'}}% OFF!
-          </div>
-          <span class="sic-com-descripcion-producto">{{producto.descripcion}}</span>
-          <br>
-          <div class="precios" [class.sin-session]="!authService.isAuthenticated()">
-            <div *ngIf="producto.oferta">
-              <span [class.tachado]="producto.bulto == 1" [class.seleccionado]="!esCantidadBonificada()">P. U. $ {{producto.precioLista | number:'1.0-2':'es-AR' }}</span><br>
-              <span [class.seleccionado]="esCantidadBonificada()">P. U. Oferta $ {{ producto.precioBonificado | number:'1.0-2':'es-AR' }}</span>
-            </div>
-            <div *ngIf="!producto.oferta">
-              <span *ngIf="!esCantidadBonificada() || producto.bulto > 1" [class.seleccionado]="!esCantidadBonificada()">P. U. $ {{producto.precioLista | number:'1.0-2':'es-AR' }}</span>
-              <div [class.seleccionado]="esCantidadBonificada()" *ngIf="this.producto.precioLista > this.producto.precioBonificado">
-                P. U. Bonif.<span *ngIf="producto.bulto > 1"> x Cant. </span> $ {{ producto.precioBonificado | number:'1.0-2':'es-AR' }}
-              </div>
-            </div>
-            <div *ngIf="!producto.oferta && (this.producto.precioLista > this.producto.precioBonificado) && producto.bulto > 1" [class.seleccionado]="esCantidadBonificada()">
-              Llevando {{producto.bulto | number:'1.0-2':'es-AR'}} o más
-            </div>
-          </div>
-          <br>
-          <span class="sic-com-stock" [style.color]="(producto.hayStock ? 'limegreen' : 'red')">
-            <strong *ngIf="authService.isAuthenticated()">{{ producto.hayStock ? "Stock Disponible: " + (producto.cantidadTotalEnSucursales | number:'1.0-2':'es-AR') + ' ' + producto.nombreMedida : "Sin Stock" }}</strong>
-            <strong *ngIf="!authService.isAuthenticated()">{{ producto.hayStock ? "Stock Disponible" : "Sin Stock" }}</strong>
-          </span>
-        </div>
-        <form [formGroup]="form" (ngSubmit)="submit()" *ngIf="authService.isAuthenticated() && producto.hayStock">
-          <div fxLayoutAlign="center center" class="sic-com-controles-cantidad" *ngIf="!cargandoAlCarrito">
-            <button type="button" mat-mini-fab color="accent" (click)="decCanitdad()" [disabled]="cargandoAlCarrito">
-              <mat-icon>remove</mat-icon>
-            </button>
-            <mat-form-field class="sic-com-input-cantidad">
-              <input matInput required type="number" name="cantidad" placeholder="Cantidad" formControlName="cantidad" #cantInput>
-              <mat-hint *ngIf="cantidadEnCarrito" fxLayoutAlign="center center">
-                <mat-icon>shopping_cart</mat-icon>: {{ cantidadEnCarrito | number:'1.0-2':'es-AR' }}
-              </mat-hint>
-              <mat-error *ngIf="form.get('cantidad').hasError('required')">
-                Requerido
-              </mat-error>
-              <mat-error *ngIf="form.get('cantidad').hasError('min')">
-                Mínimo: {{ form.get('cantidad').getError('min').min }}
-              </mat-error>
-              <mat-error *ngIf="form.get('cantidad').hasError('max')">
-                Máximo: {{ form.get('cantidad').getError('max').max }}
-              </mat-error>
-            </mat-form-field>
-            <button type="button" mat-mini-fab color="primary" (click)="incCantidad()" [disabled]="cargandoAlCarrito">
-              <mat-icon>add</mat-icon>
-            </button>
-          </div>
-          <div fxLayoutAlign="center center">
-            <button type="submit" mat-raised-button color="primary" class="sic-com-boton-agregar" [disabled]="!form.valid" *ngIf="!cargandoAlCarrito">
-              <mat-icon>add_shopping_cart</mat-icon> Agregar al Carrito
-            </button>
-          </div>
-          <div class="sic-com-spinner-container" fxLayoutAlign="center center" *ngIf="cargandoAlCarrito">
-            <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
-          </div>
-        </form>
-        <div fxLayoutAlign="center center" class="sic-com-controles-cantidad" *ngIf="!authService.isAuthenticated()">
-          <button mat-raised-button fxFill [routerLink]="['/login']" [queryParams]="{'pid': producto.idProducto}" color="primary">
-            <mat-icon>shopping_cart</mat-icon>
-            Comprar
+        <sic-com-agregar-al-carrito [cliente]="cliente" [producto]="producto"
+                                    (cantidadUpdated)="onCantidadUpdated()" (loadingStatusUpdated)="onLoadingStatusUpdated($event)" #aacc></sic-com-agregar-al-carrito>
+        <br>
+        <div fxLayoutAlign="center center" *ngIf="authService.isAuthenticated()">
+          <button type="submit" mat-raised-button color="primary" (click)="aaccSubmit()" [disabled]="aaccLoading">
+            <mat-icon>add_shopping_cart</mat-icon> Agregar al Carrito
           </button>
         </div>
+      </div>
+      <div fxLayoutAlign="center center" class="sic-com-controles-cantidad" *ngIf="!authService.isAuthenticated()">
+        <button mat-raised-button fxFill [routerLink]="['/login']" [queryParams]="{'pid': producto.idProducto}" color="primary">
+          <mat-icon>shopping_cart</mat-icon>
+          Comprar
+        </button>
       </div>
     </div>
   </div>
