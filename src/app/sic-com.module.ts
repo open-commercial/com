@@ -60,6 +60,7 @@ import { ProductoCardComponent } from './components/producto-card/producto-card.
 import { BotonMercadoPagoComponent } from './components/boton-mercado-pago/boton-mercado-pago.component';
 import { CheckoutStatusComponent } from './components/checkout-status/checkout-status.component';
 import { MercadoPagoDialogComponent } from './components/mercado-pago-dialog/mercado-pago-dialog.component';
+import { AgregarAlCarritoComponent } from './components/agregar-al-carrito/agregar-al-carrito.component';
 
 registerLocaleData(localeEs, 'es-AR', localeEsExtra);
 
@@ -94,6 +95,7 @@ registerLocaleData(localeEs, 'es-AR', localeEsExtra);
     BotonMercadoPagoComponent,
     CheckoutStatusComponent,
     MercadoPagoDialogComponent,
+    AgregarAlCarritoComponent,
   ],
   imports: [
     GtagModule.forRoot({ trackingId: 'UA-132433044-1', trackPageviews: true }),
