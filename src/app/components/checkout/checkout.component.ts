@@ -136,7 +136,7 @@ export class CheckoutComponent implements OnInit {
 
   createForms() {
     this.datosDelClienteForm = this.fb.group({
-      continueStepValidator: ['whatever', Validators.required],
+      continueStepValidator: [null, Validators.required],
     });
 
     this.opcionEnvioForm = this.fb.group({
@@ -189,13 +189,14 @@ export class CheckoutComponent implements OnInit {
 
   modeStatusChanged(inEdition) {
     this.clienteEditionMode = inEdition;
-    this.datosDelClienteForm.get('continueStepValidator').setValue(inEdition ? null : 'whatever');
+    this.datosDelClienteForm.get('continueStepValidator').setValue(inEdition || !this.cliente || !this.cliente.email ? null : 'whatever');
   }
 
   asignarCliente(c: Cliente | null) {
     this.cliente = c;
     this.ubicacionFacturacion = c ? c.ubicacionFacturacion : null;
     this.ubicacionEnvio = c ? c.ubicacionEnvio : null;
+    this.datosDelClienteForm.get('continueStepValidator').setValue(!this.cliente || !this.cliente.email ? null : 'whatever');
     this.getTotalesInfo();
   }
 
