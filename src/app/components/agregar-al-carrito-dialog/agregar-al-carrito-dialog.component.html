@@ -1,66 +1,9 @@
 <mat-dialog-content class="sic-com-agregar-al-carrito-dialog">
-  <div fxLayout="row" fxLayoutAlign="center center">
-    <div class="producto-info">
-      <span class="codigo">
-        {{producto.codigo}}
-        <mat-chip-list *ngIf="producto.oferta" class="sic-com-oferta">
-          <mat-chip class="sic-com-stock">OFERTA</mat-chip>
-        </mat-chip-list>
-      </span>
-      <div class="oferta-cantidad" *ngIf="producto.oferta">
-        <span *ngIf="producto.bulto > 1">Llevando {{producto.bulto | number:'1.0-2':'es-AR'}} o más</span>
-        {{producto.porcentajeBonificacionOferta | number:'1.0-2':'es-AR'}}% OFF!
-      </div>
-      <div class="descripcion">{{producto.descripcion}}</div>
-      <div class="precios">
-        <div *ngIf="producto.oferta">
-          <span [class.tachado]="!(producto.bulto > 1)" [class.seleccionado]="!esCantidadBonificada()">
-            P. U. $ {{producto.precioLista | number:'1.0-2':'es-AR' }}
-          </span><br>
-          <span [class.seleccionado]="esCantidadBonificada()">
-            P. U. Oferta $ {{ producto.precioBonificado | number:'1.0-2':'es-AR' }}
-          </span>
-        </div>
-        <div *ngIf="!producto.oferta">
-          <span *ngIf="!esCantidadBonificada() || producto.bulto > 1" [class.seleccionado]="!esCantidadBonificada()">
-            P. U. $ {{producto.precioLista | number:'1.0-2':'es-AR' }}
-          </span>
-          <div [class.seleccionado]="esCantidadBonificada()" *ngIf="producto.precioLista > producto.precioBonificado">
-            P. U. Bonif.<span *ngIf="producto.bulto > 1"> x Cant. </span>
-            $ {{ producto.precioBonificado | number:'1.0-2':'es-AR' }}
-          </div>
-        </div>
-        <div *ngIf="!producto.oferta && (producto.precioLista > producto.precioBonificado) && producto.bulto > 1" [class.seleccionado]="esCantidadBonificada()">
-          Llevando {{producto.bulto | number:'1.0-2':'es-AR'}} o más
-        </div>
-      </div>
-      <br>
-      <span class="sic-com-stock" [style.color]="(producto.hayStock ? 'limegreen' : 'red')">
-        <strong>{{ producto.hayStock ? "Stock Disponible" : "Sin Stock" }}</strong>
-      </span>
-    </div>
-  </div>
-  <br>
-  <div fxLayoutAlign="center center">
-    <button mat-mini-fab color="accent" (click)="menosUno(cantidad)" [disabled]="loading">
-      <mat-icon>remove</mat-icon>
-    </button>
-    <mat-form-field class="input-cantidad">
-      <input matInput autofocus type="number" [(ngModel)]='cantidad' placeholder="Cantidad"
-             min="0" [disabled]="loading">
-      <mat-hint *ngIf="cantidadEnCarrito" fxLayoutAlign="center center">
-          <mat-icon>shopping_cart</mat-icon>: {{ cantidadEnCarrito | number:'1.0-2':'es-AR' }}
-      </mat-hint>
-      <br>
-    </mat-form-field>
-    <button mat-mini-fab color="primary" (click)="masUno(cantidad)" [disabled]="loading">
-      <mat-icon>add</mat-icon>
-    </button>
-  </div>
+  <sic-com-agregar-al-carrito [cliente]="cliente" [producto]="producto"
+                              (cantidadUpdated)="onCantidadUpdated()" (loadingStatusUpdated)="onLoadingStatusUpdated($event)" #aacc></sic-com-agregar-al-carrito>
   <br>
 </mat-dialog-content>
 <div fxLayoutAlign="center center" fxLayoutGap="0.5rem">
-  <button mat-raised-button color="primary" *ngIf="!loading"  (click)="aceptar()" [disabled]="!esCantidadValida()" cdkFocusInitial>Aceptar</button>
-  <button mat-raised-button mat-dialog-close *ngIf="!loading">Cancelar</button>
-  <mat-spinner [diameter]="50" [strokeWidth]="6" *ngIf="loading"></mat-spinner>
+  <button mat-raised-button color="primary" *ngIf="producto.hayStock" (click)="aaccSubmit()" [disabled]="aaccLoading">Aceptar</button>
+  <button mat-raised-button mat-dialog-close [disabled]="aaccLoading">Cancelar</button>
 </div>

@@ -15,85 +15,7 @@
   .sic-com-detalle-producto {
     border-top: 1px solid #ccc;
     padding: 20px 15px;
-    max-width: 60%;
-  }
-
-  .sic-com-codigo-producto {
-    font-size: 12px;
-  }
-
-  .sic-com-descripcion-producto {
-    color: $color-primary;
-    font-weight: bold;
-    font-size: 18px;
-  }
-
-  .sic-com-precio-producto {
-    font-weight: bold;
-    font-size: 20px;
-    &.bonificado {
-      font-weight: normal;
-      text-decoration: line-through;
-    }
-  }
-
-  .sic-com-precio-bonificado {
-    font-size: 20px;
-    font-weight: bold;
-  }
-
-  .bonificado-label {
-    color: green;
-    font-size: 18px;
-  }
-
-  .sic-com-controles-cantidad {
-    padding: 22px 0;
-  }
-
-  .sic-com-input-cantidad {
-    width: 100px;
-    padding: 0 10px;
-  }
-
-  .sic-com-boton-agregar {
-    width: 200px;
-    height: 40px;
-  }
-
-  .sic-com-stock {
-    color: white;
-    font-weight: 500;
-  }
-
-  .sic-com-oferta {
-    display: inline-block;
-    mat-chip {
-      min-height: 22px;
-      font-size: 0.85rem;
-      background: limegreen;
-      color: white;
-    }
-  }
-  .oferta-cantidad {
-    color: limegreen;
-    font-weight: bold;
-    font-size: 0.85em;
-  }
-
-  .precios {
-    color: darkgray;
-    &.sin-session {
-      font-weight: bold;
-      color: rgba(0, 0, 0, 0.87);
-    }
-  }
-  .seleccionado {
-    font-weight: bold;
-    color: rgba(0, 0, 0, 0.87);
-  }
-  .tachado {
-    text-decoration: line-through;
+    max-width: 70%;
   }
 
   .img-viewer {
@@ -107,6 +29,10 @@
     img {
       max-width: 100%; height: auto;
     }
+  }
+
+  .sic-com-controles-cantidad {
+    padding: 22px 0;
   }
 
   .sic-com-spinner-container {

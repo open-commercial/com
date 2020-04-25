@@ -119,3 +119,8 @@ html, body {
   background-color: $color-primary;
   color: $color-accent;
 }
+
+.custom-error {
+  color: red;
+  padding: 0.7rem 0;
+}
