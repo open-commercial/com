@@ -75,12 +75,14 @@
             </div>
           </div>
           <div *ngIf="opcionEnvioForm.get('opcionEnvio').value === opcionEnvio.ENVIO_A_DOMICILIO" fxLayout="column">
-            <mat-form-field>
-              <mat-select formControlName="opcionEnvioUbicacion" placeholder="Seleccione una ubicación">
-                <mat-option [value]="opcionEnvioUbicacion.USAR_UBICACION_FACTURACION">Usar ubicación de facturación</mat-option>
-                <mat-option [value]="opcionEnvioUbicacion.USAR_UBICACION_ENVIO">Usar ubicación de envío</mat-option>
-              </mat-select>
-            </mat-form-field>
+            <div fxLayout="row">
+              <mat-form-field fxFlex="100" fxFlex.gt-sm="50">
+                <mat-select formControlName="opcionEnvioUbicacion" placeholder="Seleccione una ubicación">
+                  <mat-option [value]="opcionEnvioUbicacion.USAR_UBICACION_FACTURACION">Usar ubicación de facturación</mat-option>
+                  <mat-option [value]="opcionEnvioUbicacion.USAR_UBICACION_ENVIO">Usar ubicación de envío</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
             <div *ngIf="opcionEnvioForm.get('opcionEnvioUbicacion').touched && opcionEnvioForm.errors?.requiredOpcionEnvioUbicacion" class="sucursal-error">
               Requerido
             </div>
