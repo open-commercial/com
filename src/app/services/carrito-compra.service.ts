@@ -5,6 +5,7 @@ import {HttpClient} from '@angular/common/http';
 import {CarritoCompra} from '../models/carrito-compra';
 import {ItemCarritoCompra} from '../models/item-carrito-compra';
 import {NuevaOrdenDePago} from '../models/nueva-orden-de-pago';
+import {ProductoFaltante} from '../models/producto-faltante';
 
 @Injectable()
 export class CarritoCompraService {
@@ -49,5 +50,9 @@ export class CarritoCompraService {
 
   getCantidadEnCarrito(idProducto): Observable<ItemCarritoCompra> {
     return this.http.get<ItemCarritoCompra>(`${this.uri}/productos/${idProducto}`);
+  }
+
+  getDisponibilidadStock(): Observable<ProductoFaltante[]> {
+    return this.http.get<ProductoFaltante[]>(`${this.uri}/disponibilidad-stock`);
   }
 }
