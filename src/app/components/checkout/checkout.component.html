@@ -7,6 +7,9 @@
     <strong>Ir al carrito</strong>
   </div>
   <mat-vertical-stepper *ngIf="!isLoading" linear #stepper>
+    <ng-template matStepperIcon="edit">
+      <mat-icon>done</mat-icon>
+    </ng-template>
     <mat-step [stepControl]="datosDelClienteForm" *ngIf="datosDelClienteForm">
       <div *ngIf="cliente && !cliente.email" class="error">Debe completar el email para poder continuar</div>
       <form [formGroup]="datosDelClienteForm">
@@ -132,5 +135,4 @@
       </form>
     </mat-step>
   </mat-vertical-stepper>
-
 </div>
