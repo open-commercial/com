@@ -85,13 +85,16 @@ export class BotonMercadoPagoComponent implements OnInit {
     const mov = this.pNuevaOrdenDePago.movimiento;
     if ( mov === Movimiento.PEDIDO || mov === Movimiento.COMPRA) {
       this.carritoCompraService.getDisponibilidadStock()
-        .subscribe((faltantes: ProductoFaltante[]) => {
-          if (faltantes.length) {
-            this.router.navigate(['/carrito-compra']);
-          } else {
-            this.doGetPreference();
-          }
-        });
+        .subscribe(
+          (faltantes: ProductoFaltante[]) => {
+            if (faltantes.length) {
+              this.router.navigate(['/carrito-compra']);
+            } else {
+              this.doGetPreference();
+            }
+          },
+          err => this.avisoService.openSnackBar(err.error, '', 3500)
+        );
     } else {
       this.doGetPreference();
     }
