@@ -5,6 +5,10 @@ import {NuevaOrdenDePago} from '../../models/nueva-orden-de-pago';
 import {AvisoService} from '../../services/aviso.service';
 import {MercadoPagoDialogComponent} from '../mercado-pago-dialog/mercado-pago-dialog.component';
 import {MatDialog} from '@angular/material/dialog';
+import {CarritoCompraService} from '../../services/carrito-compra.service';
+import {Movimiento} from '../../models/movimiento';
+import {ProductoFaltante} from '../../models/producto-faltante';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'sic-com-boton-mercado-pago',
@@ -49,15 +53,13 @@ export class BotonMercadoPagoComponent implements OnInit {
 
   constructor(private pagosService: PagosService,
               private avisoService: AvisoService,
-              private dialog: MatDialog) { }
+              private dialog: MatDialog,
+              private carritoCompraService: CarritoCompraService,
+              private router: Router) { }
 
   ngOnInit() {}
 
   goToInitPoint() {
-    this.getPreference();
-  }
-
-  getPreference() {
     if (!this.pNuevaOrdenDePago) { return; }
 
     if (this.showMontoDialog) {
@@ -69,17 +71,33 @@ export class BotonMercadoPagoComponent implements OnInit {
       dialogRef.afterClosed().subscribe(monto => {
         if (monto) {
           this.pNuevaOrdenDePago.monto = monto;
-          this.doGetPreference();
+          this.getPreference();
         }
       });
+    } else {
+      this.getPreference();
+    }
+  }
+
+  getPreference() {
+    this.loading = true;
+    this.preCheckout.emit();
+    const mov = this.pNuevaOrdenDePago.movimiento;
+    if ( mov === Movimiento.PEDIDO || mov === Movimiento.COMPRA) {
+      this.carritoCompraService.getDisponibilidadStock()
+        .subscribe((faltantes: ProductoFaltante[]) => {
+          if (faltantes.length) {
+            this.router.navigate(['/carrito-compra']);
+          } else {
+            this.doGetPreference();
+          }
+        });
     } else {
       this.doGetPreference();
     }
   }
 
   doGetPreference() {
-    this.loading = true;
-    this.preCheckout.emit();
     this.pagosService.getMercadoPagoPreference(this.pNuevaOrdenDePago)
       .subscribe(
         (mpp: MercadoPagoPreference) => window.location.replace(mpp.initPoint),

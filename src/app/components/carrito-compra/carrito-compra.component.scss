@@ -1,7 +1,9 @@
 @import "../../../_colors.scss";
 
 .sic-com-carrito-compra {
-  background-color: white;
+  .cabecera-and-items {
+    background-color: white;
+  }
 
   .sic-com-ir-listado {
     height: 40px;
@@ -25,16 +27,16 @@
   .sic-com-renglones-items {
     .stock-no-disponible {
       margin: .2rem 0;
-      padding: .5rem .7rem;
+      padding: .4rem .6rem;
       display: inline-block;
       text-align: center;
       color: #5a0c10;
       font-size: .9rem;
       background-color: #FFD2D2;
       border: .07rem solid #5a0c10;
-      -webkit-border-radius: .5rem;
-      -moz-border-radius: .5rem;
-      border-radius: .5rem;
+      -webkit-border-radius: 4px;
+      -moz-border-radius: 4px;
+      border-radius: 4px;
     }
     border-bottom: 1px solid #ccc;
     height: auto;

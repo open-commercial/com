@@ -17,6 +17,7 @@ import {UbicacionesService} from '../../services/ubicaciones.service';
 import {TipoDeEnvio} from '../../models/tipo-de-envio';
 import {NuevaOrdenDePago} from '../../models/nueva-orden-de-pago';
 import {Movimiento} from '../../models/movimiento';
+import {ProductoFaltante} from '../../models/producto-faltante';
 
 enum OpcionEnvio {
   RETIRO_EN_SUCURSAL = 'RETIRO_EN_SUCURSAL',
@@ -89,6 +90,7 @@ export class CheckoutComponent implements OnInit {
   total = 0;
   loadingTotales = false;
   enviarOrdenLoading = false;
+  verificandoStock = false;
 
   opcionPago = OpcionPago;
 
@@ -318,19 +320,29 @@ export class CheckoutComponent implements OnInit {
       this.cliente && this.datosDelClienteForm.valid &&
       this.pagoForm.valid && this.opcionEnvioForm.valid
     ) {
-      const orden = this.getNuevaOrdeDeCompra();
-
-      this.enviarOrdenLoading = true;
-      this.carritoCompraService.enviarOrden(orden)
-        .pipe(finalize(() => {
-          this.enviarOrdenLoading = false;
-        }))
+      this.verificandoStock = true;
+      this.carritoCompraService.getDisponibilidadStock()
+        .pipe(finalize(() => this.verificandoStock = false))
         .subscribe(
-        () => this.router.navigateByUrl('/checkout/pendiente'),
-        err => {
-          this.avisoService.openSnackBar(err.error, '', 3500);
-        }
-      );
+          (faltantes: ProductoFaltante[]) => {
+            if (faltantes.length) {
+              this.router.navigate(['/carrito-compra']);
+            } else {
+              const orden = this.getNuevaOrdeDeCompra();
+              this.enviarOrdenLoading = true;
+              this.carritoCompraService.enviarOrden(orden)
+                .pipe(finalize(() => this.enviarOrdenLoading = false))
+                .subscribe(
+                  () => this.router.navigateByUrl('/checkout/pendiente'),
+                  err => {
+                    this.avisoService.openSnackBar(err.error, '', 3500);
+                  }
+                )
+              ;
+            }
+          }
+        )
+      ;
     }
   }
 

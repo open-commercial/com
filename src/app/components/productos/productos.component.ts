@@ -1,15 +1,14 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ProductosService} from '../../services/productos.service';
-import {ActivatedRoute, ParamMap, Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {AvisoService} from 'app/services/aviso.service';
-import {combineLatest, Subscription} from 'rxjs';
+import {Subscription} from 'rxjs';
 import {AuthService} from '../../services/auth.service';
 import {Producto} from '../../models/producto';
 import {Cliente} from '../../models/cliente';
 import {ClientesService} from '../../services/clientes.service';
 import { MatDialog } from '@angular/material/dialog';
 import {AgregarAlCarritoDialogComponent} from '../agregar-al-carrito-dialog/agregar-al-carrito-dialog.component';
-import {switchMap} from 'rxjs/operators';
 
 @Component({
   selector: 'sic-com-productos',

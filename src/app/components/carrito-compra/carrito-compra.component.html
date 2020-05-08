@@ -1,5 +1,5 @@
 <div fxLayout="column" class="sic-com-carrito-compra">
-  <div *ngIf="!(loadingCarritoCompra || loadingTotales)">
+  <div *ngIf="!(loadingCarritoCompra || loadingTotales || verificandoStock)" class="cabecera-and-items">
     <div fxLayout="column">
       <div fxLayoutAlign="start center" class="sic-com-ir-listado" (click)="volver()">
         <mat-icon>keyboard_arrow_left</mat-icon>
@@ -86,7 +86,7 @@
       </mat-list-item>
     </mat-list>
   </div>
-  <div class="sic-com-paginator" *ngIf="!loadingCarritoCompra && !loadingRenglones && !loadingTotales && (itemsCarritoCompra.length > 0)" fxLayout="row" fxLayoutAlign="center center">
+  <div class="sic-com-paginator" *ngIf="!loadingCarritoCompra && !loadingRenglones && !loadingTotales && !verificandoStock && (itemsCarritoCompra.length > 0)" fxLayout="row" fxLayoutAlign="center center">
     <button mat-button color="primary" [disabled]="pagina <= 0" (click)="paginaAnterior()">
       <mat-icon aria-label="Página anterior">navigate_before</mat-icon><span>Anterior</span>
     </button>
@@ -95,7 +95,7 @@
       <span>Siguiente</span><mat-icon aria-label="Página siguiente">navigate_next</mat-icon>
     </button>
   </div>
-  <div class="sic-com-spinner-container" fxLayoutAlign="center center" *ngIf="loadingCarritoCompra || loadingRenglones || loadingTotales">
+  <div class="sic-com-spinner-container" fxLayoutAlign="center center" *ngIf="loadingCarritoCompra || loadingRenglones || loadingTotales || verificandoStock">
     <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
   </div>
 </div>
