@@ -83,7 +83,7 @@ export class BotonMercadoPagoComponent implements OnInit {
     this.loading = true;
     this.preCheckout.emit();
     const mov = this.pNuevaOrdenDePago.movimiento;
-    if ( mov === Movimiento.PEDIDO || mov === Movimiento.COMPRA) {
+    if (mov === Movimiento.PEDIDO) {
       this.carritoCompraService.getDisponibilidadStock()
         .subscribe(
           (faltantes: ProductoFaltante[]) => {
