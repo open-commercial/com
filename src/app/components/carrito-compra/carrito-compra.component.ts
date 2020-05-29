@@ -67,7 +67,7 @@ export class CarritoCompraComponent implements OnInit {
                 this.verificarStock((faltantes: ProductoFaltante[]) => {
                   this.verificandoStock = false;
                   if (faltantes.length) {
-                    const msg = 'La cantidad solicitada de uno o mas productos en su carrito supera la cantidad disponible . Por favor revise los items del carrito';
+                    const msg = 'La cantidad solicitada supera la disponibilidad de stock. Revise los items del carrito';
                     this.avisoService.openSnackBar(msg, 'Cerrar', 0);
                   }
                 });
@@ -100,7 +100,6 @@ export class CarritoCompraComponent implements OnInit {
   reloadPage() {
     this.vsForzado = true;
     this.router.navigate(['/carrito-compra'], { queryParams: { p: this.pagina, refresh: new Date().getTime() }});
-    // this.router.navigate(['/carrito-compra'], { queryParams: { p: this.pagina }});
   }
 
   vaciarCarritoCompra() {

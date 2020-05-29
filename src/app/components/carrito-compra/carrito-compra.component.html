@@ -17,7 +17,7 @@
           <mat-icon>remove_shopping_cart</mat-icon> Limpiar Listado
         </button>
         <button mat-raised-button (click)="goToCheckout()" [disabled]="!itemsCarritoCompra.length || disabledButtons() || total < cliente.montoCompraMinima" color="primary">
-          <mat-icon>local_shipping</mat-icon> Cerrar Orden
+          <mat-icon>local_shipping</mat-icon> Enviar Pedido
         </button>
       </div>
     </div>
@@ -25,8 +25,8 @@
       <mat-list-item *ngFor="let icc of itemsCarritoCompra" class="sic-com-renglones-items">
         <div matLine *ngIf="icc.cantidad > icc.producto.cantidadTotalEnSucursales" fxLayout="row" fxLayoutAlign="center center">
           <span class="stock-no-disponible">
-            La cantidad solicitada ({{ icc.cantidad + ' ' + icc.producto.nombreMedida }})
-            supera el stock disponible ({{ icc.producto.cantidadTotalEnSucursales + ' ' + icc.producto.nombreMedida }})
+            Solicitado ({{ icc.cantidad + ' ' + icc.producto.nombreMedida }})
+            Disponible ({{ icc.producto.cantidadTotalEnSucursales + ' ' + icc.producto.nombreMedida }})
           </span>
         </div>
         <div matLine fxLayout="row" fxLayout.lt-sm="column">
