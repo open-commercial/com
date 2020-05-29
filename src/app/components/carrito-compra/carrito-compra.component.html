@@ -28,7 +28,7 @@
             <div fxFlex="30" fxLayoutAlign="center center">
               <img mat-list-avatar class="sic-com-img-avatar" [src]="icc.producto.urlImagen" alt="">
             </div>
-            <div class="sic-com-producto-info" fxFlex="70" fxLayoutAlign="center start" fxLayout="column" [routerLink]="['/producto/' + icc.producto.idProducto]">
+            <div class="sic-com-producto-info" fxFlex="70" fxLayoutAlign="center start" fxLayout="column">
               <div>
                 <span class="sic-com-codigo-producto">{{icc.producto.codigo}}</span>
                 <mat-chip-list *ngIf="icc.producto.oferta" class="sic-com-oferta">
