@@ -1,10 +1,9 @@
 @import "../../../_colors.scss";
 
 .sic-com-carrito-compra {
-  .cabecera-and-items {
+  .carrito-header-and-body {
     background-color: white;
   }
-
   .sic-com-ir-listado {
     height: 40px;
     cursor: pointer;
@@ -101,7 +100,6 @@
     color: $color-primary;
     font-weight: bold;
     font-size: 15px;
-    cursor: pointer;
   }
 
   mat-chip-list {

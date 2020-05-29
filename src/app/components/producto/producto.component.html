@@ -1,41 +1,39 @@
-<div fxLayout="column" class="sic-com-producto">
-  <div class="sic-com-spinner-container" fxLayoutAlign="center center" *ngIf="loadingProducto || loadingCliente">
-    <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
+<div fxLayout="column" class="sic-com-producto" *ngIf="!loadingProducto && !loadingCliente && producto">
+  <div fxLayoutAlign="start center" class="sic-com-ir-listado" (click)="volver()">
+    <mat-icon>keyboard_arrow_left</mat-icon>
+    <strong>Volver</strong>
   </div>
-  <div *ngIf="!loadingProducto && !loadingCliente && producto">
-    <div fxLayoutAlign="start center" class="sic-com-ir-listado" (click)="volver()">
-      <mat-icon>keyboard_arrow_left</mat-icon>
-      <strong>Volver</strong>
-    </div>
-    <div fxLayout="column" fxLayoutAlign="start center">
-      <img class="sic-com-img-producto" [src]="producto.urlImagen" (click)="toggleImgViewer()" [alt]="'Imágen del producto ' + producto.descripcion">
-      <button mat-icon-button color="primary" (click)="toggleImgViewer()">
-        <mat-icon aria-label="Pantalla completa">zoom_in</mat-icon>
-      </button>
-      <div class="img-viewer" *ngIf="imgViewerVisible">
-        <div fxLayout="column" fxLayoutAlign="center center" fxFill>
-          <img [src]="producto.urlImagen" (click)="toggleImgViewer()" [alt]="'Imágen del producto ' + producto.descripcion">
-          <button mat-button color="primary" (click)="toggleImgViewer()">
-            <mat-icon aria-label="Cerrar imagen">close</mat-icon> CERRAR
-          </button>
-        </div>
-      </div>
-      <div class="sic-com-detalle-producto">
-        <sic-com-agregar-al-carrito [cliente]="cliente" [producto]="producto"
-                                    (cantidadUpdated)="onCantidadUpdated()" (loadingStatusUpdated)="onLoadingStatusUpdated($event)" #aacc></sic-com-agregar-al-carrito>
-        <br>
-        <div fxLayoutAlign="center center" *ngIf="authService.isAuthenticated() && producto.hayStock">
-          <button type="submit" mat-raised-button color="primary" (click)="aaccSubmit()" [disabled]="aaccLoading">
-            <mat-icon>add_shopping_cart</mat-icon> Agregar al Carrito
-          </button>
-        </div>
-      </div>
-      <div fxLayoutAlign="center center" class="sic-com-controles-cantidad" *ngIf="!authService.isAuthenticated()">
-        <button mat-raised-button fxFill [routerLink]="['/login']" [queryParams]="{'pid': producto.idProducto}" color="primary">
-          <mat-icon>shopping_cart</mat-icon>
-          Comprar
+  <div fxLayout="column" fxLayoutAlign="start center">
+    <img class="sic-com-img-producto" [src]="producto.urlImagen" (click)="toggleImgViewer()" [alt]="'Imágen del producto ' + producto.descripcion">
+    <button mat-icon-button color="primary" (click)="toggleImgViewer()">
+      <mat-icon aria-label="Pantalla completa">zoom_in</mat-icon>
+    </button>
+    <div class="img-viewer" *ngIf="imgViewerVisible">
+      <div fxLayout="column" fxLayoutAlign="center center" fxFill>
+        <img [src]="producto.urlImagen" (click)="toggleImgViewer()" [alt]="'Imágen del producto ' + producto.descripcion">
+        <button mat-button color="primary" (click)="toggleImgViewer()">
+          <mat-icon aria-label="Cerrar imagen">close</mat-icon> CERRAR
         </button>
       </div>
     </div>
+    <div class="sic-com-detalle-producto">
+      <sic-com-agregar-al-carrito [cliente]="cliente" [producto]="producto"
+                                  (cantidadUpdated)="onCantidadUpdated()" (loadingStatusUpdated)="onLoadingStatusUpdated($event)" #aacc></sic-com-agregar-al-carrito>
+      <br>
+      <div fxLayoutAlign="center center" *ngIf="authService.isAuthenticated() && producto.hayStock">
+        <button type="submit" mat-raised-button color="primary" (click)="aaccSubmit()" [disabled]="aaccLoading">
+          <mat-icon>add_shopping_cart</mat-icon> Agregar al Carrito
+        </button>
+      </div>
+    </div>
+    <div fxLayoutAlign="center center" class="sic-com-controles-cantidad" *ngIf="!authService.isAuthenticated()">
+      <button mat-raised-button fxFill [routerLink]="['/login']" [queryParams]="{'pid': producto.idProducto}" color="primary">
+        <mat-icon>shopping_cart</mat-icon>
+        Comprar
+      </button>
+    </div>
   </div>
+</div>
+<div class="sic-com-spinner-container" fxLayoutAlign="center center" *ngIf="loadingProducto || loadingCliente">
+  <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
 </div>
