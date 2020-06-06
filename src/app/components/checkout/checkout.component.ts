@@ -110,30 +110,53 @@ export class CheckoutComponent implements OnInit {
   ngOnInit() {
     this.createForms();
     this.isLoading = true;
-    this.authService.getLoggedInUsuario().subscribe(
-      (usuario: Usuario) => {
-        if (usuario) {
-          this.usuario = usuario;
-          this.clientesService.getClienteDelUsuario(this.usuario.idUsuario)
-            .pipe(
-              finalize(() => this.isLoading = false)
-            )
-            .subscribe(
-              (cliente: Cliente) => this.asignarCliente(cliente),
-              err => this.avisoService.openSnackBar(err.error, '', 3500)
-            )
-          ;
-        } else {
+    this.verificarStockCarrito(() => {
+      this.authService.getLoggedInUsuario().subscribe(
+        (usuario: Usuario) => {
+          if (usuario) {
+            this.usuario = usuario;
+            this.clientesService.getClienteDelUsuario(this.usuario.idUsuario)
+              .pipe(
+                finalize(() => this.isLoading = false)
+              )
+              .subscribe(
+                (cliente: Cliente) => this.asignarCliente(cliente),
+                err => this.avisoService.openSnackBar(err.error, '', 3500)
+              )
+            ;
+          } else {
+            this.isLoading = false;
+          }
+        },
+        err => {
           this.isLoading = false;
+          this.avisoService.openSnackBar(err.error, '', 3500);
         }
-      },
-      err => {
-        this.isLoading = false;
-        this.avisoService.openSnackBar(err.error, '', 3500);
-      }
-    );
+      );
 
-    this.getSucursales();
+      this.getSucursales();
+    });
+  }
+
+  verificarStockCarrito(successCallback: () => void) {
+    this.verificandoStock = true;
+    this.carritoCompraService.getDisponibilidadStock()
+      .subscribe(
+        (faltantes: ProductoFaltante[]) => {
+          if (faltantes.length) {
+            this.router.navigate(['/carrito-compra']);
+          } else {
+            successCallback();
+          }
+        },
+        err => {
+          this.verificandoStock = false;
+          this.avisoService.openSnackBar(err.error, 'Cerrar', 0)
+            .afterDismissed().subscribe(() => this.router.navigate(['/carrito-compra']))
+          ;
+        }
+      )
+    ;
   }
 
   createForms() {
