@@ -24,6 +24,19 @@
   }
 
   .sic-com-renglones-items {
+    .stock-no-disponible {
+      margin: .2rem 0;
+      padding: .4rem .6rem;
+      display: inline-block;
+      text-align: center;
+      color: white;
+      font-size: .9rem;
+      font-weight: 500;
+      background-color: red;
+      -webkit-border-radius: 4px;
+      -moz-border-radius: 4px;
+      border-radius: 4px;
+    }
     border-bottom: 1px solid #ccc;
     height: auto;
     .mat-line {
@@ -96,6 +109,11 @@
   .sic-com-bonificacion {
     color: white;
     background-color: limegreen;
+  }
+
+  .monto {
+    font-size: 16px;
+    font-weight: bold;
   }
 
   .valor {

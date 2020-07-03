@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, SimpleChange, OnInit, EventEmitter, Output, ViewChild} from '@angular/core';
+import {Component, Input, OnChanges, SimpleChange, OnInit, EventEmitter, Output} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AuthService} from '../../services/auth.service';
 import {Cliente} from '../../models/cliente';

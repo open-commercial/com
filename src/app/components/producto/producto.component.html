@@ -18,10 +18,10 @@
     </div>
     <div class="sic-com-detalle-producto">
       <sic-com-agregar-al-carrito [cliente]="cliente" [producto]="producto"
-                                  (cantidadUpdated)="onCantidadUpdated()" (loadingStatusUpdated)="onLoadingStatusUpdated($event)" #aacc></sic-com-agregar-al-carrito>
+        (cantidadUpdated)="onCantidadUpdated()" (loadingStatusUpdated)="onLoadingStatusUpdated($event)" (validStatusChanged)="onValidadStatusChanged($event)" #aacc></sic-com-agregar-al-carrito>
       <br>
       <div fxLayoutAlign="center center" *ngIf="authService.isAuthenticated() && producto.hayStock">
-        <button type="submit" mat-raised-button color="primary" (click)="aaccSubmit()" [disabled]="aaccLoading">
+        <button type="submit" mat-raised-button color="primary" (click)="aaccSubmit()" [disabled]="aaccLoading || !cantidadValida">
           <mat-icon>add_shopping_cart</mat-icon> Agregar al Carrito
         </button>
       </div>

@@ -25,6 +25,8 @@ export class ProductoComponent implements OnInit {
 
   imgViewerVisible = false;
 
+  cantidadValida = false;
+
   @ViewChild('aacc', { static: false }) aacc: AgregarAlCarritoComponent;
   aaccLoading = false;
 
@@ -84,5 +86,9 @@ export class ProductoComponent implements OnInit {
 
   onLoadingStatusUpdated(loadingStatus: boolean) {
     this.aaccLoading = loadingStatus;
+  }
+
+  onValidadStatusChanged(valid: boolean) {
+    this.cantidadValida = valid;
   }
 }

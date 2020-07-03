@@ -16,6 +16,8 @@ export class AgregarAlCarritoDialogComponent implements OnInit {
   @ViewChild('aacc', { static: false }) aacc: AgregarAlCarritoComponent;
   aaccLoading = false;
 
+  cantidadValida = false;
+
   constructor(private dialogRef: MatDialogRef<AgregarAlCarritoDialogComponent>) {
     dialogRef.disableClose = true;
   }
@@ -33,5 +35,9 @@ export class AgregarAlCarritoDialogComponent implements OnInit {
 
   onLoadingStatusUpdated(loadingStatus: boolean) {
     this.aaccLoading = loadingStatus;
+  }
+
+  onValidStatusChanged(valid: boolean) {
+    this.cantidadValida = valid;
   }
 }

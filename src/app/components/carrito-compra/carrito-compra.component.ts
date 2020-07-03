@@ -13,6 +13,7 @@ import {Producto} from '../../models/producto';
 import {AgregarAlCarritoDialogComponent} from '../agregar-al-carrito-dialog/agregar-al-carrito-dialog.component';
 import {Location} from '@angular/common';
 import {ItemCarritoCompra} from '../../models/item-carrito-compra';
+import {ProductoFaltante} from '../../models/producto-faltante';
 
 @Component({
   selector: 'sic-com-carrito-compra',
@@ -21,7 +22,7 @@ import {ItemCarritoCompra} from '../../models/item-carrito-compra';
 })
 export class CarritoCompraComponent implements OnInit {
   itemsCarritoCompra = [];
-  cantidadRenglones = 0;
+
   pagina = 0;
   totalPaginas = 0;
   totalElements = 0;
@@ -29,10 +30,13 @@ export class CarritoCompraComponent implements OnInit {
   loadingRenglones = false;
   loadingTotales = false;
   deleting = false;
-  mostrarBotonAsignarCliente = true;
+
   cantidadArticulos = 0;
   total = 0;
   cliente: Cliente = null;
+
+  verificandoStock = false;
+  vsForzado = true;
 
   constructor(private carritoCompraService: CarritoCompraService,
               private clientesService: ClientesService,
@@ -51,16 +55,51 @@ export class CarritoCompraComponent implements OnInit {
       (cliente: Cliente) => {
         if (cliente) {
           this.cliente = cliente;
-          this.cargarItemsCarritoCompra();
-        } else {
           this.loadingCarritoCompra = false;
-        }
+          this.route.queryParamMap.subscribe(
+            queryParams => {
+              let auxp = Number(queryParams.get('p'));
+              auxp = isNaN(auxp) ? 1 : (auxp < 1 ? 1 : auxp);
+              this.pagina = auxp - 1;
+              this.cargarItemsCarritoCompra();
+
+              if (this.vsForzado) {
+                this.verificarStock((faltantes: ProductoFaltante[]) => {
+                  this.verificandoStock = false;
+                  if (faltantes.length) {
+                    const msg = 'La cantidad solicitada supera la disponibilidad de stock. Revise los items del carrito';
+                    this.avisoService.openSnackBar(msg, 'Cerrar', 0);
+                  }
+                });
+              }
+            }
+          );
+        } else { this.loadingCarritoCompra = false; }
       },
       err => {
         this.loadingCarritoCompra = false;
         this.avisoService.openSnackBar(err.error, '', 3500);
       }
     );
+  }
+
+  verificarStock(callback: (faltantes: ProductoFaltante[]) => void) {
+    this.verificandoStock = true;
+    this.vsForzado = false;
+    this.carritoCompraService.getDisponibilidadStock()
+      .subscribe(
+        callback,
+        err => {
+          this.verificandoStock = false;
+          this.avisoService.openSnackBar(err.error, 'Cerrar', 0);
+        }
+      )
+    ;
+  }
+
+  reloadPage() {
+    this.vsForzado = true;
+    this.router.navigate(['/carrito-compra'], { queryParams: { p: this.pagina, refresh: new Date().getTime() }});
   }
 
   vaciarCarritoCompra() {
@@ -108,33 +147,28 @@ export class CarritoCompraComponent implements OnInit {
 
   cargarItemsCarritoCompra() {
     this.loadingRenglones = true;
-    this.route.queryParamMap.subscribe(
-      queryParams => {
-        let auxp = Number(queryParams.get('p'));
-        auxp = isNaN(auxp) ? 1 : (auxp < 1 ? 1 : auxp);
-        this.pagina = auxp - 1;
-        this.carritoCompraService.getItems(this.pagina)
-          .pipe(finalize(() => {
-            this.loadingRenglones = false;
-            this.loadingCarritoCompra = false;
-            this.carritoCompraService.setCantidadItemsEnCarrito(this.totalElements);
-          }))
-          .subscribe(
-            data => {
-              this.itemsCarritoCompra = [];
-              data['content'].forEach(item => {
-                if (item.producto.urlImagen == null || item.producto.urlImagen === '') {
-                  item.producto.urlImagen = 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1545616229/assets/sin_imagen.png';
-                }
-                this.itemsCarritoCompra.push(item);
-              });
-              this.totalPaginas = data['totalPages'];
-              this.totalElements = data['totalElements'];
-              this.cargarCarritoCompra();
-            },
-            err => this.avisoService.openSnackBar(err.error, '', 3500));
-      }
-    );
+    this.carritoCompraService.getItems(this.pagina)
+      .pipe(finalize(() => {
+        this.loadingRenglones = false;
+        this.loadingCarritoCompra = false;
+        this.carritoCompraService.setCantidadItemsEnCarrito(this.totalElements);
+      }))
+      .subscribe(
+        data => {
+          this.itemsCarritoCompra = [];
+          data['content'].forEach(item => {
+            if (item.producto.urlImagen == null || item.producto.urlImagen === '') {
+              item.producto.urlImagen = 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1545616229/assets/sin_imagen.png';
+            }
+            this.itemsCarritoCompra.push(item);
+          });
+          this.totalPaginas = data['totalPages'];
+          this.totalElements = data['totalElements'];
+          this.cargarCarritoCompra();
+        },
+        err => this.avisoService.openSnackBar(err.error, '', 3500)
+      )
+    ;
   }
 
   eliminarItemDelCarrito(itemCarritoCompra) {
@@ -168,21 +202,14 @@ export class CarritoCompraComponent implements OnInit {
     });
   }
 
-  masItemsCarritoCompra() {
-    this.loadingRenglones = true;
-    if ((this.pagina + 1) < this.totalPaginas) {
-      this.pagina++;
-      this.cargarItemsCarritoCompra();
-    }
-  }
-
   volver() {
-    // this.location.back();
     this.router.navigate(['']);
   }
 
   goToCheckout() {
-    this.router.navigate(['checkout']);
+    this.verificarStock((faltantes: ProductoFaltante[]) => {
+      if (faltantes.length) { this.reloadPage(); } else { this.router.navigate(['/checkout']); }
+    });
   }
 
   disabledButtons() {

@@ -35,6 +35,7 @@ export class AgregarAlCarritoComponent implements OnInit, AfterViewInit {
   form: FormGroup;
   @Output() cantidadUpdated = new EventEmitter<number>();
   @Output() loadingStatusUpdated = new EventEmitter<boolean>();
+  @Output() validStatusChanged = new EventEmitter<boolean>();
 
   private pLoading = false;
   set loading(value: boolean) {
@@ -44,6 +45,8 @@ export class AgregarAlCarritoComponent implements OnInit, AfterViewInit {
   get loading(): boolean {
     return this.pLoading;
   }
+
+  valid = false;
 
   @ViewChild('cantInput', { static: false }) cantInput: ElementRef;
 
@@ -58,10 +61,10 @@ export class AgregarAlCarritoComponent implements OnInit, AfterViewInit {
       this.carritoCompraService.getCantidadEnCarrito(this.producto.idProducto)
         .pipe(finalize(() => this.loading = false))
         .subscribe((icc: ItemCarritoCompra) => {
-          this.form.get('cantidad').setValue(icc ? icc.cantidad : 1);
           this.form.get('cantidad').setValidators(
             [Validators.required, Validators.min(1), Validators.max(this.producto.cantidadTotalEnSucursales)]
           );
+          this.form.get('cantidad').setValue(icc ? icc.cantidad : 1);
           this.cantidadEnCarrito = icc ? icc.cantidad : 0;
         })
       ;
@@ -69,12 +72,20 @@ export class AgregarAlCarritoComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    setTimeout(() => { if (this.cantInput) { this.cantInput.nativeElement.focus(); }}, 300);
+    setTimeout(() => {
+      if (this.cantInput) { this.cantInput.nativeElement.focus(); }
+    }, 1000);
   }
 
   createForm() {
     this.form = this.fb.group({
       cantidad: [1, [Validators.required, Validators.min(1)]]
+    });
+    this.form.valueChanges.subscribe(() => {
+      if (this.valid !== this.form.valid) {
+        this.valid = this.form.valid;
+        this.validStatusChanged.emit(this.valid);
+      }
     });
   }
 
