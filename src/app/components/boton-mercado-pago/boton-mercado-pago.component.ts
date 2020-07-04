@@ -112,6 +112,7 @@ export class BotonMercadoPagoComponent implements OnInit {
         err => {
           this.loading = false;
           this.avisoService.openSnackBar(err.error, '', 3500);
+          this.router.navigate(['/carrito-compra']);
         }
       )
     ;
