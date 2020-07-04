@@ -47,6 +47,7 @@ export class AgregarAlCarritoComponent implements OnInit, AfterViewInit {
   }
 
   valid = false;
+  defaultValidatos = [Validators.required, Validators.min(1), Validators.pattern('[0-9]*')];
 
   @ViewChild('cantInput', { static: false }) cantInput: ElementRef;
 
@@ -61,9 +62,9 @@ export class AgregarAlCarritoComponent implements OnInit, AfterViewInit {
       this.carritoCompraService.getCantidadEnCarrito(this.producto.idProducto)
         .pipe(finalize(() => this.loading = false))
         .subscribe((icc: ItemCarritoCompra) => {
-          this.form.get('cantidad').setValidators(
-            [Validators.required, Validators.min(1), Validators.max(this.producto.cantidadTotalEnSucursales)]
-          );
+          const validators = this.defaultValidatos.map(v => v);
+          validators.push(Validators.max(this.producto.cantidadTotalEnSucursales));
+          this.form.get('cantidad').setValidators(validators);
           this.form.get('cantidad').setValue(icc ? icc.cantidad : 1);
           this.cantidadEnCarrito = icc ? icc.cantidad : 0;
         })
@@ -79,7 +80,7 @@ export class AgregarAlCarritoComponent implements OnInit, AfterViewInit {
 
   createForm() {
     this.form = this.fb.group({
-      cantidad: [1, [Validators.required, Validators.min(1)]]
+      cantidad: [1, this.defaultValidatos]
     });
     this.form.valueChanges.subscribe(() => {
       if (this.valid !== this.form.valid) {
@@ -90,13 +91,15 @@ export class AgregarAlCarritoComponent implements OnInit, AfterViewInit {
   }
 
   decCantidad() {
-    let cant = this.form.get('cantidad').value ? this.form.get('cantidad').value : 1;
+    const val = parseInt(this.form.get('cantidad').value, 10);
+    let cant = !isNaN(val) ? val : 1;
     if (cant > 1) { cant -= 1; }
     this.form.get('cantidad').setValue(cant);
   }
 
   incCantidad() {
-    let cant = this.form.get('cantidad').value ? this.form.get('cantidad').value : 0;
+    const val = parseInt(this.form.get('cantidad').value, 10);
+    let cant = !isNaN(val) ? val : 0;
     cant += 1;
     this.form.get('cantidad').setValue(cant);
   }

@@ -358,7 +358,9 @@ export class CheckoutComponent implements OnInit {
                 .subscribe(
                   () => this.router.navigateByUrl('/checkout/pendiente'),
                   err => {
+                    this.enviarOrdenLoading = false;
                     this.avisoService.openSnackBar(err.error, '', 3500);
+                    this.router.navigate(['/carrito-compra']);
                   }
                 )
               ;

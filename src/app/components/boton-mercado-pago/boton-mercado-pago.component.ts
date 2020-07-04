@@ -88,12 +88,17 @@ export class BotonMercadoPagoComponent implements OnInit {
         .subscribe(
           (faltantes: ProductoFaltante[]) => {
             if (faltantes.length) {
+              this.loading = false;
               this.router.navigate(['/carrito-compra']);
             } else {
               this.doGetPreference();
             }
           },
-          err => this.avisoService.openSnackBar(err.error, '', 3500)
+          err => {
+            this.loading = false;
+            this.avisoService.openSnackBar(err.error, '', 3500);
+            this.router.navigate(['/carrito-compra']);
+          }
         );
     } else {
       this.doGetPreference();
