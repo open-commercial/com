@@ -34,6 +34,7 @@ export class ProductosService {
   getProductosEnOferta(pagina: number) {
     return this.http.post(this.urlBusqueda, {
       oferta: true,
+      publico: true,
       pagina: pagina
     });
   }

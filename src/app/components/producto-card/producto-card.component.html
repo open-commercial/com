@@ -21,10 +21,10 @@
         <p>{{ producto.descripcion }}</p>
       </div>
       <div *ngIf="producto.porcentajeBonificacionOferta || producto.porcentajeBonificacionPrecio">
-      <span class="precio bonificado">
-        <span *ngIf="producto.bulto > 1">Llevando {{ producto.bulto }} o más</span>
-        $ {{ producto.precioBonificado | number:'1.0-2':'es-AR' }}
-      </span>
+        <span class="precio bonificado">
+          <span *ngIf="producto.bulto > 1">Llevando {{ producto.bulto }} o más</span>
+          $ {{ producto.precioBonificado | number:'1.0-2':'es-AR' }}
+        </span>
       </div>
       <span class="precio" [class.tachado]="!(producto.bulto > 1) && (producto.porcentajeBonificacionOferta || producto.porcentajeBonificacionPrecio)">
         $ {{producto.precioLista | number:'1.0-2':'es-AR'}}
