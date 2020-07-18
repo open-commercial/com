@@ -71,7 +71,9 @@
           </div>
           <div fxLayout fxFlex="40">
             <div fxFlex="40" fxLayoutAlign="center center">
-              <button mat-raised-button (click)="showDialogCantidad($event, icc.producto)" color="primary" [disabled]="disabledButtons()">Cantidad {{icc.cantidad | number:'1.0-2':'es-AR' }}</button>
+              <button mat-raised-button (click)="showDialogCantidad($event, icc.producto)" color="primary" [disabled]="disabledButtons()" [class.fondo-rojo]="icc.cantidad > icc.producto.cantidadTotalEnSucursales">
+                Cantidad {{icc.cantidad | number:'1.0-2':'es-AR' }}
+              </button>
             </div>
             <div fxFlex="40" fxLayoutAlign="center center" class="monto">
               $ {{(icc.importeBonificado > 0 ? icc.importeBonificado : icc.importe) | number:'1.0-2':'es-AR'}}
