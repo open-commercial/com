@@ -72,17 +72,13 @@
               <span>{{ cliente.nombreFantasia }}</span>
             </span>
             <span fxLayout="row" fxLayoutGap="1rem" fxLayoutAlign="start center">
-              <mat-icon>attach_money</mat-icon>
-              <span>{{ cliente.montoCompraMinima | number:'1.0-2':'es-AR' }}</span>
+              <mat-icon>account_balance</mat-icon>
+              <span>{{ categoriasIVA[cliente.categoriaIVA] }}</span>
             </span>
           </div>
         </div>
         <div fxFlex>
           <div fxLayout="column" fxLayoutGap="0.7rem">
-            <span fxLayout="row" fxLayoutGap="1rem" fxLayoutAlign="start center">
-              <mat-icon>account_balance</mat-icon>
-              <span>{{ categoriasIVA[cliente.categoriaIVA] }}</span>
-            </span>
             <span fxLayout="row" fxLayoutGap="1rem" fxLayoutAlign="start center" *ngIf="cliente.telefono">
               <mat-icon>phone</mat-icon>
               <span>{{ cliente.telefono }}</span>
