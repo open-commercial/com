@@ -1,0 +1,5 @@
+<div class="sic-com-rubro-button rubro-button">
+  <button type="button" (click)="buttonClick()" [innerHTML]="getImagenHtml(rubro)" ngClass.gt-sm="md">
+  </button>
+  <div class="name" *ngIf="rubro">{{ rubro.nombre | titlecase }}</div>
+</div>

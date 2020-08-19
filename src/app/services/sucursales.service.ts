@@ -7,17 +7,17 @@ import {Sucursal} from '../models/sucursal';
 @Injectable()
 export class SucursalesService {
 
-  public url = environment.apiUrl + '/api/v1';
+  public url = environment.apiUrl + '/api/v1/sucursales';
 
   constructor(private http: HttpClient) { }
 
   getSucursalesConPuntoDeRetiro(): Observable<Sucursal[]> {
-    const urlSucursal = this.url + '/sucursales?puntoDeRetiro=true';
+    const urlSucursal = this.url + '?puntoDeRetiro=true';
     return this.http.get<Sucursal[]>(urlSucursal);
   }
 
   getSucursal(idSucursal): Observable<Sucursal> {
-    const urlSucursal = this.url + '/sucursales/' + idSucursal;
+    const urlSucursal = this.url + `/${idSucursal}`;
     return this.http.get<Sucursal>(urlSucursal);
   }
 }

@@ -1,0 +1,24 @@
+<div class="sic-com-rubros-main-menu">
+  <nav aria-labelledby="rubros-heading" *ngIf="type === types.Normal">
+    <h2 id="rubros-heading">Rubros</h2>
+    <ul>
+      <li [class.selected]="!selected"><a class="pointer" (click)="clear()">Todos</a></li>
+      <li [class.selected]="selected && selected.idRubro === r.idRubro" *ngFor="let r of rubros">
+        <a class="pointer" (click)="goToProductos(r)" >{{ r.nombre | titlecase }}</a>
+      </li>
+    </ul>
+  </nav>
+  <ng-template [ngIf]="type === types.Dropdown">
+    <a class="trigger" [matMenuTriggerFor]="rubrosMenu" fxLayout="row" fxLayoutAlign="start center" (menuOpened)="isOpen = true" (menuClosed)="isOpen = false">
+      <span class="selected">{{ selected ? (selected.nombre | titlecase) : 'Todos' }}</span>
+      <mat-icon aria-hidden="false" aria-label="Example home icon">{{ isOpen ? 'expand_less' : 'expand_more' }}</mat-icon>
+    </a>
+    <mat-menu #rubrosMenu="matMenu">
+      <button mat-menu-item [disabled]="!selected" (click)="clear()">Todos</button>
+      <button mat-menu-item [disabled]="selected && selected.idRubro === r.idRubro" *ngFor="let r of rubros" (click)="goToProductos(r)">
+        {{ r.nombre | titlecase }}
+      </button>
+    </mat-menu>
+  </ng-template>
+</div>
+

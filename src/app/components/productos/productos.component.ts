@@ -9,6 +9,8 @@ import {Cliente} from '../../models/cliente';
 import {ClientesService} from '../../services/clientes.service';
 import { MatDialog } from '@angular/material/dialog';
 import {AgregarAlCarritoDialogComponent} from '../agregar-al-carrito-dialog/agregar-al-carrito-dialog.component';
+import { RubrosMainMenuType } from '../rubros-main-menu/rubros-main-menu.component';
+import { BusquedaProductoCriteria } from '../../models/criterias/BusquedaProductoCriteria';
 
 @Component({
   selector: 'sic-com-productos',
@@ -21,9 +23,11 @@ export class ProductosComponent implements OnInit, OnDestroy {
   totalPaginas = 0;
   totalElements = 0;
   pagina = 0;
-  busquedaCriteria = '';
+  busquedaCriteria: BusquedaProductoCriteria = null;
   buscarProductosSubscription: Subscription;
   cliente: Cliente = null;
+
+  rubrosMMTypes = RubrosMainMenuType;
 
   constructor(private clienteService: ClientesService,
               private productosService: ProductosService,
@@ -41,10 +45,20 @@ export class ProductosComponent implements OnInit, OnDestroy {
     });
 
     this.route.queryParamMap.subscribe((params) => {
-      let auxp = Number(params.get('p'));
-      auxp = isNaN(auxp) ? 1 : (auxp < 1 ? 1 : auxp);
-      this.pagina = auxp - 1;
-      this.productosService.buscarProductos(params.get('q') || '');
+      let p = Number(params.get('p'));
+
+      p = isNaN(p) ? 1 : (p < 1 ? 1 : p);
+      this.pagina = p - 1;
+
+      const q = params.get('q') || '';
+      const r = params.has('r') && !isNaN(Number(params.get('r'))) ? Number(params.get('r')) : null;
+      const criteria: BusquedaProductoCriteria = {
+        codigo: q,
+        descripcion: q,
+        pagina: p,
+        idRubro: r
+      };
+      this.productosService.buscarProductos(criteria);
     });
 
     if (this.authService.isAuthenticated()) {
@@ -85,12 +99,12 @@ export class ProductosComponent implements OnInit, OnDestroy {
 
   paginaAnterior() {
     if (this.pagina <= 0) { return; }
-    this.router.navigate(['/productos'], { queryParams: { q: this.busquedaCriteria || '', p: this.pagina } });
+    this.router.navigate(['/productos'], { queryParams: this.getQueryParams(this.pagina) });
   }
 
   paginaSiguiente() {
     if (this.pagina + 1 >= this.totalPaginas) { return; }
-    this.router.navigate(['/productos'], { queryParams: { q: this.busquedaCriteria || '', p: this.pagina + 2 } });
+    this.router.navigate(['/productos'], { queryParams:  this.getQueryParams(this.pagina + 2) });
   }
 
   showDialogCantidad($event, producto: Producto) {
@@ -98,5 +112,16 @@ export class ProductosComponent implements OnInit, OnDestroy {
     $event.stopPropagation();
     dialogRef.componentInstance.producto = producto;
     dialogRef.componentInstance.cliente = this.cliente;
+  }
+
+  getQueryParams(pagina: number) {
+    const ret = { p: pagina };
+    if (this.busquedaCriteria && (this.busquedaCriteria.codigo || this.busquedaCriteria.descripcion)) {
+      ret['q'] = this.busquedaCriteria.codigo || this.busquedaCriteria.descripcion;
+    }
+    if (this.busquedaCriteria && this.busquedaCriteria.idRubro) {
+      ret['r'] = this.busquedaCriteria.idRubro;
+    }
+    return ret;
   }
 }

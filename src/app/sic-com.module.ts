@@ -61,6 +61,10 @@ import { BotonMercadoPagoComponent } from './components/boton-mercado-pago/boton
 import { CheckoutStatusComponent } from './components/checkout-status/checkout-status.component';
 import { MercadoPagoDialogComponent } from './components/mercado-pago-dialog/mercado-pago-dialog.component';
 import { AgregarAlCarritoComponent } from './components/agregar-al-carrito/agregar-al-carrito.component';
+import { RubrosComponent } from './components/rubros/rubros.component';
+import { RubroButtonComponent } from './components/rubro-button/rubro-button.component';
+import { RubrosMainMenuComponent } from './components/rubros-main-menu/rubros-main-menu.component';
+import { RubrosEnHomeComponent } from './components/rubros-en-home/rubros-en-home.component';
 
 registerLocaleData(localeEs, 'es-AR', localeEsExtra);
 
@@ -96,6 +100,10 @@ registerLocaleData(localeEs, 'es-AR', localeEsExtra);
     CheckoutStatusComponent,
     MercadoPagoDialogComponent,
     AgregarAlCarritoComponent,
+    RubrosComponent,
+    RubroButtonComponent,
+    RubrosMainMenuComponent,
+    RubrosEnHomeComponent,
   ],
   imports: [
     GtagModule.forRoot({ trackingId: 'UA-132433044-1', trackPageviews: true }),
@@ -138,6 +146,7 @@ registerLocaleData(localeEs, 'es-AR', localeEsExtra);
     ConfirmationDialogComponent,
     AgregarAlCarritoDialogComponent,
     MercadoPagoDialogComponent,
+    RubrosComponent, // es un dialog tambien
   ],
   bootstrap: [
     SicComComponent
