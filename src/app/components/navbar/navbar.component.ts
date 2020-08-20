@@ -15,31 +15,32 @@ import {CarritoCompra} from '../../models/carrito-compra';
   styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent implements OnInit {
-
   cantidadItemsEnCarrito = 0;
   usuarioConectado = '';
-  busquedaCriteria = '';
   busquedaForm = new FormGroup ({
     criteriaControl: new FormControl()
   });
   cliente: Cliente = null;
 
-  constructor(public authService: AuthService, private productosService: ProductosService,
+  constructor(public authService: AuthService,
+              private productosService: ProductosService,
               private carritoCompraService: CarritoCompraService, private router: Router,
               private clientesService: ClientesService,
               private avisoService: AvisoService) {}
 
   ngOnInit() {
     const criteriaControl = this.busquedaForm.get('criteriaControl');
-    criteriaControl.setValue(this.productosService.getInputCriteria());
+    const bCriteria = this.productosService.getCriteria();
+    const value = bCriteria ? bCriteria.codigo || bCriteria.descripcion : '';
+    criteriaControl.setValue(value);
 
     this.loadNavbarInfo();
     this.carritoCompraService.cantidadItemsEnCarrito$.subscribe(data => this.cantidadItemsEnCarrito = data);
     this.authService.nombreUsuarioLoggedIn$.subscribe(data => this.usuarioConectado = data);
 
     this.productosService.buscarProductos$.subscribe(data => {
-      this.busquedaCriteria = data;
-      criteriaControl.setValue(data);
+      const v = data ? data.codigo || data.descripcion : '';
+      criteriaControl.setValue(v);
     });
   }
 
@@ -73,9 +74,5 @@ export class NavbarComponent implements OnInit {
 
   goToLogin() {
     this.router.navigate(['login']);
-  }
-
-  goToRegistracion() {
-    this.router.navigate(['registracion']);
   }
 }

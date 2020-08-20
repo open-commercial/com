@@ -10,19 +10,20 @@ export class ProductosService {
 
   url = environment.apiUrl + '/api/v1/productos';
   urlBusqueda = this.url + '/busqueda/criteria?';
-  private buscarProductosSubject = new Subject<string>();
+  private buscarProductosSubject = new Subject<BusquedaProductoCriteria>();
   buscarProductos$ = this.buscarProductosSubject.asObservable();
-  private inputCriteria = '';
+  private criteria: BusquedaProductoCriteria = null;
 
   constructor(private http: HttpClient) {}
 
-  buscarProductos(criteria: string) {
-    this.inputCriteria = criteria === null ? '' : criteria;
-    this.buscarProductosSubject.next(this.inputCriteria);
+  buscarProductos(criteria: BusquedaProductoCriteria) {
+    this.criteria = criteria;
+    this.buscarProductosSubject.next(this.criteria);
   }
 
   getBusquedaCriteria(pagina: number): BusquedaProductoCriteria {
-    return {codigo: this.getInputCriteria(), descripcion: this.getInputCriteria(), pagina: pagina};
+    this.criteria.pagina = pagina;
+    return this.criteria;
   }
 
   getProductosSoloPublicos(pagina: number) {
@@ -43,7 +44,7 @@ export class ProductosService {
     return this.http.get<Producto>(`${this.url}/${idProducto}?publicos=true`);
   }
 
-  getInputCriteria(): string {
-    return this.inputCriteria;
+  getCriteria(): BusquedaProductoCriteria|null {
+    return this.criteria;
   }
 }

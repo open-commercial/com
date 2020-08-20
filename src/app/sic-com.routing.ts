@@ -13,6 +13,7 @@ import {PasswordRecoveryRequestComponent} from './components/password-recovery-r
 import {HomeComponent} from './components/home/home.component';
 import {RegistracionRealizadaComponent} from './components/registracion-realizada/registracion-realizada.component';
 import {CheckoutStatusComponent} from './components/checkout-status/checkout-status.component';
+import { RubrosComponent } from './components/rubros/rubros.component';
 
 const sicComRoutes: Routes = [
   {path: 'login', component: LoginComponent},
@@ -25,6 +26,7 @@ const sicComRoutes: Routes = [
       {path: '', component: HomeComponent},
       {path: 'productos', component: ProductosComponent},
       {path: 'producto/:id', component: ProductoComponent},
+      {path: 'rubros', component: RubrosComponent},
     ]
   },
   {path: '', component: ContainerComponent, canActivate: [AuthGuard],

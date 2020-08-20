@@ -5,19 +5,25 @@
       &nbsp;Sin Resultados
     </span>
   </div>
-  <div fxLayout="row wrap" fxLayoutAlign="center center" class="sic-com-listado">
-    <sic-com-producto-card [producto]="p" [cliente]="cliente" *ngFor="let p of productos" ngClass.lt-sm="mobile"></sic-com-producto-card>
-  </div>
-  <div class="sic-com-paginator" *ngIf="!loadingProducts && (productos.length > 0)" fxLayout="row" fxLayoutAlign="center center">
-    <button mat-button color="primary" [disabled]="pagina <= 0" (click)="paginaAnterior()">
-      <mat-icon aria-label="Página anterior">navigate_before</mat-icon><span>Anterior</span>
-    </button>
-    <span class="page">{{ this.pagina + 1 }}/{{ totalPaginas }}</span>
-    <button mat-button color="primary" [disabled]="pagina + 1 >= totalPaginas" (click)="paginaSiguiente()">
-      <span>Siguiente</span><mat-icon aria-label="Página siguiente">navigate_next</mat-icon>
-    </button>
-  </div>
-  <div class="sic-com-mas-resultados" fxLayoutAlign="center center" *ngIf="loadingProducts">
-    <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
+  <div fxLayout="row">
+    <sic-com-rubros-main-menu fxHide fxShow.gt-sm></sic-com-rubros-main-menu>
+    <div fxFlex fxFill>
+      <sic-com-rubros-main-menu fxShow fxHide.gt-sm [type]="rubrosMMTypes.Dropdown"></sic-com-rubros-main-menu>
+      <div fxLayout="row wrap" fxLayoutAlign="center center" class="sic-com-listado">
+        <sic-com-producto-card [producto]="p" [cliente]="cliente" *ngFor="let p of productos" ngClass.lt-sm="mobile"></sic-com-producto-card>
+      </div>
+      <div class="sic-com-paginator" *ngIf="!loadingProducts && (productos.length > 0)" fxLayout="row" fxLayoutAlign="center center">
+        <button mat-button color="primary" [disabled]="pagina <= 0" (click)="paginaAnterior()">
+          <mat-icon aria-label="Página anterior">navigate_before</mat-icon><span>Anterior</span>
+        </button>
+        <span class="page">{{ this.pagina + 1 }}/{{ totalPaginas }}</span>
+        <button mat-button color="primary" [disabled]="pagina + 1 >= totalPaginas" (click)="paginaSiguiente()">
+          <span>Siguiente</span><mat-icon aria-label="Página siguiente">navigate_next</mat-icon>
+        </button>
+      </div>
+      <div class="sic-com-mas-resultados" fxLayoutAlign="center center" *ngIf="loadingProducts">
+        <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
+      </div>
+    </div>
   </div>
 </div>

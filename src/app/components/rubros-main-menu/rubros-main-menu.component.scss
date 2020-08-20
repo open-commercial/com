@@ -1,0 +1,36 @@
+.sic-com-rubros-main-menu {
+  h2 {
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+  }
+  nav {
+    padding: .3rem .7rem;
+    ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      li {
+        margin-bottom: 1rem;
+        color: #666666;
+        &.selected {
+          color: black;
+          font-weight: bold;
+        }
+      }
+    }
+  }
+
+  .trigger {
+    margin: .7rem .7rem .3rem .7rem;
+    text-align: left;
+    font-weight: normal;
+    cursor: pointer;
+    .selected {
+      color: black;
+    }
+  }
+
+  .name {
+    margin-left: 0.2em;
+  }
+}

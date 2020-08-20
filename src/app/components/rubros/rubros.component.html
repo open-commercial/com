@@ -1,0 +1,10 @@
+<mat-dialog-content class="sic-com-rubros">
+  <div *ngIf="!loading">
+    <div fxLayout="row wrap" fxLayoutAlign="center center">
+      <sic-com-rubro-button *ngFor="let r of rubros" [rubro]="r" (rubroClick)="goToProductos(r)"></sic-com-rubro-button>
+    </div>
+  </div>
+  <div class="sic-com-spinner-container" fxLayoutAlign="center center" *ngIf="loading">
+    <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
+  </div>
+</mat-dialog-content>
