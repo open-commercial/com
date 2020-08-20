@@ -170,3 +170,16 @@ html, body {
   }
 
 }
+
+.svg-container {
+  height: 1em;
+  width: 1em;
+  display: inline-block;
+  text-align: center;
+  margin: 0 0.1em;
+  svg {
+    max-height: 100%;
+    max-width: 100%;
+    object-fit: contain;
+  }
+}

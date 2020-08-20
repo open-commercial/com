@@ -6,6 +6,7 @@ import { AvisoService } from '../../services/aviso.service';
 import { ProductosService } from '../../services/productos.service';
 import { BusquedaProductoCriteria } from '../../models/criterias/BusquedaProductoCriteria';
 import { Router } from '@angular/router';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 export enum RubrosMainMenuType {
   Normal,
@@ -33,7 +34,8 @@ export class RubrosMainMenuComponent implements OnInit {
   constructor(private rubrosService: RubrosService,
               private productosService: ProductosService,
               private avisoService: AvisoService,
-              private router: Router) { }
+              private router: Router,
+              private sanitizer: DomSanitizer) { }
 
   ngOnInit() {
     this.loading = true;
@@ -77,5 +79,9 @@ export class RubrosMainMenuComponent implements OnInit {
 
   clear() {
     this.goToProductos();
+  }
+
+  getImagenHtml(r: Rubro): SafeHtml {
+    return this.sanitizer.bypassSecurityTrustHtml(r && r.imagenHtml ? r.imagenHtml : '');
   }
 }
