@@ -14,7 +14,7 @@
   <ng-template [ngIf]="type === types.Dropdown">
     <a class="trigger" [matMenuTriggerFor]="rubrosMenu" fxLayout="row" fxLayoutAlign="start center" (menuOpened)="isOpen = true" (menuClosed)="isOpen = false">
       <span class="selected">
-        <span class="svg-container" *ngIf="selected.imagenHtml" [innerHTML]="getImagenHtml(selected)"></span>
+        <span class="svg-container" *ngIf="selected && selected.imagenHtml" [innerHTML]="getImagenHtml(selected)"></span>
         <span class="name">{{ selected ? (selected.nombre | titlecase) : 'Todos' }}</span>
       </span>
       <mat-icon aria-hidden="false" aria-label="Example home icon">{{ isOpen ? 'expand_less' : 'expand_more' }}</mat-icon>
