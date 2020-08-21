@@ -1,13 +1,13 @@
 <div fxLayout="column" class="sic-com-productos">
-  <div class="sic-com-sin-resultados" *ngIf="!loadingProducts && (productos.length === 0)">
+  <div fxLayout="column" fxLayout.gt-sm="row">
+    <sic-com-rubros-main-menu></sic-com-rubros-main-menu>
+    <div fxFlex fxFill>
+      <div class="sic-com-sin-resultados" *ngIf="!loadingProducts && (productos.length === 0)">
     <span fxLayoutAlign="center center">
       <mat-icon color="primary">sentiment_neutral</mat-icon>
       &nbsp;Sin Resultados
     </span>
-  </div>
-  <div fxLayout="column" fxLayout.gt-sm="row">
-    <sic-com-rubros-main-menu></sic-com-rubros-main-menu>
-    <div fxFlex fxFill>
+      </div>
       <div fxLayout="row wrap" fxLayoutAlign="center center" class="sic-com-listado">
         <sic-com-producto-card [producto]="p" [cliente]="cliente" *ngFor="let p of productos" ngClass.lt-sm="mobile"></sic-com-producto-card>
       </div>
