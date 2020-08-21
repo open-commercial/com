@@ -1,5 +1,5 @@
-<div class="sic-com-rubros-main-menu">
-  <nav aria-labelledby="rubros-heading" *ngIf="type === types.Normal">
+<div class="sic-com-rubros-main-menu" *ngIf="!loading">
+  <nav aria-labelledby="rubros-heading" fxHide fxShow.gt-sm>
     <h2 id="rubros-heading">Rubros</h2>
     <ul>
       <li [class.selected]="!selected"><a class="pointer" (click)="clear()">Todos</a></li>
@@ -11,7 +11,7 @@
       </li>
     </ul>
   </nav>
-  <ng-template [ngIf]="type === types.Dropdown">
+  <div fxHide.gt-sm>
     <a class="trigger" [matMenuTriggerFor]="rubrosMenu" fxLayout="row" fxLayoutAlign="start center" (menuOpened)="isOpen = true" (menuClosed)="isOpen = false">
       <span class="selected">
         <span class="svg-container" *ngIf="selected && selected.imagenHtml" [innerHTML]="getImagenHtml(selected)"></span>
@@ -26,6 +26,6 @@
           <span style="margin-left: 0.3em">{{ r.nombre | titlecase }}</span>
       </button>
     </mat-menu>
-  </ng-template>
+  </div>
 </div>
 

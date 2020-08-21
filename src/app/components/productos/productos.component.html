@@ -5,10 +5,9 @@
       &nbsp;Sin Resultados
     </span>
   </div>
-  <div fxLayout="row">
-    <sic-com-rubros-main-menu fxHide fxShow.gt-sm></sic-com-rubros-main-menu>
+  <div fxLayout="column" fxLayout.gt-sm="row">
+    <sic-com-rubros-main-menu></sic-com-rubros-main-menu>
     <div fxFlex fxFill>
-      <sic-com-rubros-main-menu fxShow fxHide.gt-sm [type]="rubrosMMTypes.Dropdown"></sic-com-rubros-main-menu>
       <div fxLayout="row wrap" fxLayoutAlign="center center" class="sic-com-listado">
         <sic-com-producto-card [producto]="p" [cliente]="cliente" *ngFor="let p of productos" ngClass.lt-sm="mobile"></sic-com-producto-card>
       </div>

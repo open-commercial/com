@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RubrosService } from '../../services/rubros.service';
 import { Rubro } from '../../models/rubro';
 import { finalize } from 'rxjs/operators';
@@ -7,11 +7,6 @@ import { ProductosService } from '../../services/productos.service';
 import { BusquedaProductoCriteria } from '../../models/criterias/BusquedaProductoCriteria';
 import { Router } from '@angular/router';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-
-export enum RubrosMainMenuType {
-  Normal,
-  Dropdown
-}
 
 @Component({
   selector: 'sic-com-rubros-main-menu',
@@ -22,12 +17,6 @@ export class RubrosMainMenuComponent implements OnInit {
   rubros: Rubro[] = [];
   loading = false;
   selected: Rubro = null;
-
-  types = RubrosMainMenuType;
-
-  private pType: RubrosMainMenuType = RubrosMainMenuType.Normal;
-  @Input() set type(value: RubrosMainMenuType) { this.pType = value; }
-  get type(): RubrosMainMenuType { return this.pType; }
 
   isOpen = false;
 

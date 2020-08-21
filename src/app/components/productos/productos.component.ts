@@ -9,7 +9,6 @@ import {Cliente} from '../../models/cliente';
 import {ClientesService} from '../../services/clientes.service';
 import { MatDialog } from '@angular/material/dialog';
 import {AgregarAlCarritoDialogComponent} from '../agregar-al-carrito-dialog/agregar-al-carrito-dialog.component';
-import { RubrosMainMenuType } from '../rubros-main-menu/rubros-main-menu.component';
 import { BusquedaProductoCriteria } from '../../models/criterias/BusquedaProductoCriteria';
 
 @Component({
@@ -26,8 +25,6 @@ export class ProductosComponent implements OnInit, OnDestroy {
   busquedaCriteria: BusquedaProductoCriteria = null;
   buscarProductosSubscription: Subscription;
   cliente: Cliente = null;
-
-  rubrosMMTypes = RubrosMainMenuType;
 
   constructor(private clienteService: ClientesService,
               private productosService: ProductosService,
