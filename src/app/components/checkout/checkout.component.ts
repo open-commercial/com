@@ -165,7 +165,8 @@ export class CheckoutComponent implements OnInit {
     });
 
     this.opcionEnvioForm = this.fb.group({
-      opcionEnvio: [null, Validators.required],
+      // opcionEnvio: [null, Validators.required],
+      opcionEnvio: [OpcionEnvio.ENVIO_A_DOMICILIO, Validators.required],
       sucursal: null,
       opcionEnvioUbicacion: null,
       continueStepValidator: [null, Validators.required],

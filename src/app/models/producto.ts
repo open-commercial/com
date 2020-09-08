@@ -17,7 +17,9 @@ export interface Producto {
   ivaPorcentaje: number;
   ivaNeto: number;
   precioLista: number;
+  idRubro: number;
   nombreRubro: string;
+  imagenHtmlRubro: string;
   ilimitado: boolean;
   publico: boolean;
   oferta: boolean;

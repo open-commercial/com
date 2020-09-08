@@ -7,6 +7,7 @@ import {Producto} from '../../models/producto';
 import {finalize} from 'rxjs/operators';
 import {ItemCarritoCompra} from '../../models/item-carrito-compra';
 import {CarritoCompra} from '../../models/carrito-compra';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 @Component({
   selector: 'sic-com-agregar-al-carrito',
@@ -53,7 +54,8 @@ export class AgregarAlCarritoComponent implements OnInit, AfterViewInit {
 
   constructor(private carritoCompraService: CarritoCompraService,
               private avisoService: AvisoService,
-              private fb: FormBuilder) { }
+              private fb: FormBuilder,
+              private sanitizer: DomSanitizer) { }
 
   ngOnInit() {
     this.createForm();
@@ -144,5 +146,11 @@ export class AgregarAlCarritoComponent implements OnInit, AfterViewInit {
 
     return this.producto.precioBonificado && this.producto.precioBonificado < this.producto.precioLista
       && cant >= this.producto.bulto;
+  }
+
+  getRubroImagenHtml(): SafeHtml {
+    return this.sanitizer.bypassSecurityTrustHtml(
+      this.producto && this.producto.imagenHtmlRubro ? this.producto.imagenHtmlRubro : ''
+    );
   }
 }

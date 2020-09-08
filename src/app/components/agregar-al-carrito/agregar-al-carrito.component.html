@@ -34,6 +34,10 @@
       </div>
     </div>
     <br>
+    <div fxLayout="row" fxLayoutAlign="start center">
+      <span [innerHTML]="getRubroImagenHtml()" class="svg-container"></span>&nbsp;
+      <span>{{ producto.nombreRubro | titlecase }}</span>
+    </div>
     <span class="sic-com-stock" [style.color]="(producto.hayStock ? 'limegreen' : 'red')" *ngIf="cliente">
       <strong>{{ producto.hayStock ? "Stock Disponible: "+ (producto.cantidadTotalEnSucursales | number:'1.0-2':'es-AR') + ' ' + producto.nombreMedida : "Sin Stock" }}</strong>
     </span>

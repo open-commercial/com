@@ -33,7 +33,7 @@
           <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
         </div>
         <div *ngIf="!isUbicacionesLoading">
-          <br>
+          <!--<br>
           <mat-button-toggle-group formControlName="opcionEnvio" aria-label="Opción de Envío">
             <mat-button-toggle class="btn-small" [value]="opcionEnvio.RETIRO_EN_SUCURSAL" [disabled]="!sucursales.length" color="primary">Retiro en Sucursal</mat-button-toggle>
             <mat-button-toggle class="btn-small" [value]="opcionEnvio.ENVIO_A_DOMICILIO" color="primary">Envío a Domicilio</mat-button-toggle>
@@ -70,7 +70,7 @@
                 </agm-marker>
               </agm-map>
             </div>
-          </div>
+          </div>-->
           <div *ngIf="opcionEnvioForm.get('opcionEnvio').value === opcionEnvio.ENVIO_A_DOMICILIO" fxLayout="column">
             <div fxLayout="row">
               <mat-form-field fxFlex="100" fxFlex.gt-sm="50">
