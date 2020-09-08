@@ -13,7 +13,7 @@
     </form>
     <div fxFlex="15" fxFlex.gt-sm="20">
       <div fxLayoutAlign="center center" *ngIf="authService.isAuthenticated()">
-        <button mat-icon-button fxHide fxShow.gt-sm [routerLink]="['/perfil']" matTooltip="Mi Perfil ({{usuarioConectado}})" color="primary">
+        <button mat-icon-button fxHide fxShow.gt-sm [routerLink]="['/perfil']" matTooltip="Mi Perfil" color="primary">
           <mat-icon>account_circle</mat-icon>
         </button>
         <button mat-icon-button fxHide fxShow.gt-sm [routerLink]="['/carrito-compra']" matTooltip="Ir al carrito" color="primary">
