@@ -27,8 +27,6 @@ export interface Producto {
   porcentajeBonificacionPrecio: number;
   precioBonificado: number;
   fechaUltimaModificacion: Date;
-  estanteria: string;
-  estante: string;
   razonSocialProveedor: string;
   nota: string;
   fechaAlta: Date;
