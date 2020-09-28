@@ -65,6 +65,8 @@ import { RubrosComponent } from './components/rubros/rubros.component';
 import { RubroButtonComponent } from './components/rubro-button/rubro-button.component';
 import { RubrosMainMenuComponent } from './components/rubros-main-menu/rubros-main-menu.component';
 import { RubrosEnHomeComponent } from './components/rubros-en-home/rubros-en-home.component';
+import { FavoritosComponent } from './components/favoritos/favoritos.component';
+import { FavoritoButtonComponent } from './components/favorito-button/favorito-button.component';
 
 registerLocaleData(localeEs, 'es-AR', localeEsExtra);
 
@@ -104,6 +106,8 @@ registerLocaleData(localeEs, 'es-AR', localeEsExtra);
     RubroButtonComponent,
     RubrosMainMenuComponent,
     RubrosEnHomeComponent,
+    FavoritosComponent,
+    FavoritoButtonComponent,
   ],
   imports: [
     GtagModule.forRoot({ trackingId: 'UA-132433044-1', trackPageviews: true }),

@@ -69,20 +69,16 @@
               </div>
             </div>
           </div>
-          <div fxLayout fxFlex="40">
-            <div fxFlex="40" fxLayoutAlign="center center">
-              <button mat-raised-button (click)="showDialogCantidad($event, icc.producto)" color="primary" [disabled]="disabledButtons()" [class.fondo-rojo]="icc.cantidad > icc.producto.cantidadTotalEnSucursales">
-                Cantidad {{icc.cantidad | number:'1.0-2':'es-AR' }}
-              </button>
-            </div>
-            <div fxFlex="40" fxLayoutAlign="center center" class="monto">
+          <div fxLayout="row" fxLayoutAlign="space-around center" fxFlex="40">
+            <button mat-raised-button (click)="showDialogCantidad($event, icc.producto)" color="primary" [disabled]="disabledButtons()" [class.fondo-rojo]="icc.cantidad > icc.producto.cantidadTotalEnSucursales">
+              Cantidad {{icc.cantidad | number:'1.0-2':'es-AR' }}
+            </button>
+            <div class="monto">
               $ {{(icc.importeBonificado > 0 ? icc.importeBonificado : icc.importe) | number:'1.0-2':'es-AR'}}
             </div>
-            <div fxFlex="20" fxLayoutAlign="center center">
-              <button mat-icon-button (click)="eliminarItemDelCarrito(icc)" matTooltip="Quitar del listado" [disabled]="disabledButtons()">
-                <mat-icon>delete_forever</mat-icon>
-              </button>
-            </div>
+            <button mat-icon-button (click)="eliminarItemDelCarrito(icc)" matTooltip="Quitar del listado" [disabled]="disabledButtons()">
+              <mat-icon>delete_forever</mat-icon>
+            </button>
           </div>
         </div>
       </mat-list-item>

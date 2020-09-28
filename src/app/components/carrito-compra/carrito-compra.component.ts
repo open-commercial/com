@@ -11,7 +11,6 @@ import {Cliente} from '../../models/cliente';
 import {finalize} from 'rxjs/operators';
 import {Producto} from '../../models/producto';
 import {AgregarAlCarritoDialogComponent} from '../agregar-al-carrito-dialog/agregar-al-carrito-dialog.component';
-import {Location} from '@angular/common';
 import {ItemCarritoCompra} from '../../models/item-carrito-compra';
 import {ProductoFaltante} from '../../models/producto-faltante';
 
@@ -45,8 +44,7 @@ export class CarritoCompraComponent implements OnInit {
               private productosService: ProductosService,
               private dialog: MatDialog,
               private route: ActivatedRoute,
-              private router: Router,
-              private location: Location) {
+              private router: Router) {
   }
 
   ngOnInit() {
@@ -117,7 +115,7 @@ export class CarritoCompraComponent implements OnInit {
             })
           )
           .subscribe(
-            data => {
+            () => {
               this.cargarCarritoCompra();
               this.cargarItemsCarritoCompra();
               this.carritoCompraService.setCantidadItemsEnCarrito(0);
@@ -182,7 +180,7 @@ export class CarritoCompraComponent implements OnInit {
         this.carritoCompraService.eliminarItem(itemCarritoCompra.producto.idProducto)
           .pipe(finalize(() => this.deleting = false))
           .subscribe(
-            data => this.cargarItemsCarritoCompra(),
+            () => this.cargarItemsCarritoCompra(),
             err => this.avisoService.openSnackBar(err.error, '', 3500)
           );
       }

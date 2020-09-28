@@ -4,6 +4,7 @@ import {environment} from 'environments/environment';
 import {HttpClient} from '@angular/common/http';
 import {Producto} from '../models/producto';
 import {BusquedaProductoCriteria} from '../models/criterias/BusquedaProductoCriteria';
+import { Pagination } from '../models/pagination';
 
 @Injectable()
 export class ProductosService {
@@ -46,5 +47,17 @@ export class ProductosService {
 
   getCriteria(): BusquedaProductoCriteria|null {
     return this.criteria;
+  }
+
+  getProductosFavoritos(pagina = 0): Observable<Pagination> {
+    return this.http.get<Pagination>(`${this.url}/favorito?pagina=${pagina}`);
+  }
+
+  marcarComoFavorito(idProducto: number): Observable<Producto> {
+    return this.http.post<Producto>(`${this.url}/favorito/${idProducto}`, null);
+  }
+
+  quitarProductoDeFavorito(idProducto: number): Observable<void> {
+    return this.http.delete<void>(`${this.url}/favorito/${idProducto}`);
   }
 }
