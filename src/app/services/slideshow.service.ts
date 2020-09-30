@@ -12,10 +12,10 @@ export class SlideshowService {
 
   getSlideshowDataForDesktop(): (string | IImage)[] {
     return [
-      /*{
-        url: 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1558558477/slideshow/caloventor-1280x550-nueva.jpg',
-        clickAction: () => this.router.navigate(['/productos'], { queryParams: { q: 'caloventor'}})
-      },*/
+      {
+        url: 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1601498326/slideshow/stanley-1280x550.jpg',
+        clickAction: () => this.router.navigate(['/productos'], {queryParams: {q: 'termo stanley'}})
+      },
       {
         url: 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1558410150/slideshow/redes-1280x550.jpg'
       },
@@ -27,10 +27,10 @@ export class SlideshowService {
 
   getSlideshowDataForMobile(): (string | IImage)[] {
     return [
-      /*{
-        url: 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1558558475/slideshow/caloventor-800x450-nueva.jpg',
-        clickAction: () => this.router.navigate(['/productos'], { queryParams: { q: 'caloventor'}})
-      },*/
+      {
+        url: 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1601498327/slideshow/stanley-mobile-800x450.jpg',
+        clickAction: () => this.router.navigate(['/productos'], {queryParams: {q: 'termo stanley'}})
+      },
       {
         url: 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1558410141/slideshow/redes-800x450.jpg'
       },
