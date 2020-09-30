@@ -68,11 +68,17 @@ export class FavoritosComponent implements OnInit {
     this.productos = [];
     this.productosService.getProductosFavoritos(this.pagina)
       .pipe(finalize(() => this.loading = false))
-      .subscribe((data: Pagination) => {
-        this.productos = data['content'];
-        this.totalPaginas = data['totalPages'];
-        this.totalElements = data['totalElements'];
-      })
+      .subscribe(
+        (data: Pagination) => {
+          this.productos = data['content'];
+          this.totalPaginas = data['totalPages'];
+          this.totalElements = data['totalElements'];
+        },
+        err => {
+          this.avisoService.openSnackBar(err.error);
+          this.router.navigate(['']);
+        }
+      )
     ;
   }
 
@@ -88,13 +94,30 @@ export class FavoritosComponent implements OnInit {
     });
   }
 
-  quitarDeFavorito($event, producto: Producto) {
+  quitarDeFavorito(producto: Producto) {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent);
     dialogRef.componentInstance.titulo = '¿Está seguro de quitar este producto de tus favoritos?';
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.loading = true;
         this.productosService.quitarProductoDeFavorito(producto.idProducto)
+          .pipe(finalize(() => this.loading = false))
+          .subscribe(
+            () => this.cargarProductosFavoritos(),
+            err => this.avisoService.openSnackBar(err.error),
+          )
+        ;
+      }
+    });
+  }
+
+  vaciarFavoritos() {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent);
+    dialogRef.componentInstance.titulo = '¿Está seguro de quitar todos los productos de tus favoritos?';
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.loading = true;
+        this.productosService.quitarTodosDeFavoritos()
           .pipe(finalize(() => this.loading = false))
           .subscribe(
             () => this.cargarProductosFavoritos(),

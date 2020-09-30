@@ -8,7 +8,7 @@
       <div class="page-title" fxLayout="row" fxLayoutAlign="center center">
         <mat-icon>favorite</mat-icon><span>&nbsp;Favoritos</span>
       </div>
-      <button mat-icon-button aria-label="Remover todos los productos de Favoritos"  matTooltip="Quitar Todos">
+      <button mat-icon-button aria-label="Remover todos los productos de Favoritos"  matTooltip="Quitar Todos" (click)="vaciarFavoritos()">
         <mat-icon>delete</mat-icon>
       </button>
     </div>
@@ -44,7 +44,7 @@
               <button mat-raised-button (click)="showDialogCantidad($event, p)" color="primary">
                 Agregar al Carrito
               </button>
-              <button mat-icon-button (click)="quitarDeFavorito($event, p)" matTooltip="Quitar de Favoritos">
+              <button mat-icon-button (click)="quitarDeFavorito(p)" matTooltip="Quitar de Favoritos">
                 <mat-icon>delete_forever</mat-icon>
               </button>
           </div>

@@ -50,14 +50,18 @@ export class ProductosService {
   }
 
   getProductosFavoritos(pagina = 0): Observable<Pagination> {
-    return this.http.get<Pagination>(`${this.url}/favorito?pagina=${pagina}`);
+    return this.http.get<Pagination>(`${this.url}/favoritos?pagina=${pagina}`);
   }
 
   marcarComoFavorito(idProducto: number): Observable<Producto> {
-    return this.http.post<Producto>(`${this.url}/favorito/${idProducto}`, null);
+    return this.http.post<Producto>(`${this.url}/${idProducto}/favoritos`, null);
   }
 
   quitarProductoDeFavorito(idProducto: number): Observable<void> {
-    return this.http.delete<void>(`${this.url}/favorito/${idProducto}`);
+    return this.http.delete<void>(`${this.url}/${idProducto}/favoritos`);
+  }
+
+  quitarTodosDeFavoritos(): Observable<void> {
+    return this.http.delete<void>(`${this.url}/favoritos`);
   }
 }
