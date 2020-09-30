@@ -13,7 +13,7 @@ export class SlideshowService {
   getSlideshowDataForDesktop(): (string | IImage)[] {
     return [
       {
-        url: 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1601498326/slideshow/stanley-1280x550.jpg',
+        url: 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1601508662/slideshow/stanley-1280x550.jpg',
         clickAction: () => this.router.navigate(['/productos'], {queryParams: {q: 'termo stanley'}})
       },
       {
@@ -28,7 +28,7 @@ export class SlideshowService {
   getSlideshowDataForMobile(): (string | IImage)[] {
     return [
       {
-        url: 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1601498327/slideshow/stanley-mobile-800x450.jpg',
+        url: 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1601508662/slideshow/stanley-mobile-800x450.jpg',
         clickAction: () => this.router.navigate(['/productos'], {queryParams: {q: 'termo stanley'}})
       },
       {
