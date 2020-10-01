@@ -12,31 +12,31 @@
           No posee pedidos realizados
       </span>
     </div>
-    <mat-nav-list>
-      <mat-list-item *ngFor="let pedido of pedidos" class="pedido-row" (click)="downloadPedidoPdf(pedido)">
-        <div matLine fxLayoutAlign="space-around center" fxFill class="pedido-row-content">
-          <div fxFlex fxLayout="row" fxLayout.lt-sm="column">
-            <div fxFlex class="pedido-column-content">
-                <span [ngClass]="pedido.estado.toLowerCase()">
-                    {{ pedido.estado }}
-                </span>
-            </div>
-            <div fxFlex class="pedido-column-content nro-pedido">
-              Nº {{ pedido.nroPedido }}
-            </div>
+    <div *ngFor="let pedido of pedidos" class="pedido-row" ngClass.gt-xs="gt-xs" fxLayoutAlign="space-between center">
+        <div fxFlex="45" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="center center" fxLayoutAlign.gt-xs="start center">
+          <div fxFlex class="estado">
+              <span [ngClass]="pedido.estado.toLowerCase()">
+                  {{ pedido.estado }}
+              </span>
           </div>
-          <div fxFlex fxLayout="row" fxLayout.lt-sm="column">
-            <div fxFlex class="pedido-column-content">
-              <span>{{ pedido.fecha | date: 'dd/MM/yyyy' }}</span>
-            </div>
-            <div fxFlex class="pedido-column-content">
-              <strong>$ {{ pedido.total | number:'1.0-2':'es-AR' }}</strong>
-            </div>
+          <div fxFlex class="nro-pedido">
+            Nº {{ pedido.nroPedido }}
           </div>
         </div>
-        <mat-divider></mat-divider>
-      </mat-list-item>
-    </mat-nav-list>
+        <div fxFlex="45" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="center center">
+          <div fxFlex class="fecha">
+            <span>{{ pedido.fecha | date: 'dd/MM/yyyy' }}</span>
+          </div>
+          <div fxFlex class="total">
+            <strong>$ {{ pedido.total | number:'1.0-2':'es-AR' }}</strong>
+          </div>
+        </div>
+        <div fxFlex fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="end center">
+          <button mat-icon-button aria-label="Descargar" (click)="downloadPedidoPdf(pedido)">
+            <mat-icon>get_app</mat-icon>
+          </button>
+        </div>
+    </div>
     <div class="mas-resultados" fxLayoutAlign="center center" (click)="masPedidos()"
          *ngIf="!loading && (pedidos.length > 0) && (totalPaginas > (pagina + 1))">
       <strong>MAS RESULTADOS</strong>

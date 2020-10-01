@@ -2,19 +2,32 @@
 
 .sic-com-pedidos {
   .pedido-row {
-    height: auto;
-    vertical-align: middle;
-    .mat-line {
-      white-space: normal;
-    }
-    .pedido-row-content {
+    font-size: 0.85rem;
+    padding: .5em .2rem;
+    &.gt-xs {
+      font-size: unset;
       padding: .5em;
-      .pedido-column-content {
-          text-align: center;
-      }
-      .nro-pedido {
-        white-space: nowrap;
-      }
+    }
+    &:first-child {
+      border-top: 1px solid grey;
+    }
+    border-bottom: 1px solid grey;
+
+    &:hover {
+      background: darken(white, 7.5);
+    }
+    .estado {
+      text-align: left;
+    }
+    .nro-pedido {
+      text-align: left;
+      white-space: nowrap;
+    }
+    .fecha {
+      text-align: center;
+    }
+    .total {
+      text-align: right;
     }
   }
 
