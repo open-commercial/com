@@ -12,7 +12,8 @@
           No posee pedidos realizados
       </span>
     </div>
-    <div *ngFor="let pedido of pedidos" class="pedido-row" ngClass.gt-xs="gt-xs" fxLayoutAlign="space-between center">
+    <div *ngFor="let pedido of pedidos">
+      <div fxLayoutAlign="space-between center" class="pedido-row">
         <div fxFlex="45" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="center center" fxLayoutAlign.gt-xs="start center">
           <div fxFlex class="estado">
               <span [ngClass]="pedido.estado.toLowerCase()">
@@ -36,6 +37,8 @@
             <mat-icon>get_app</mat-icon>
           </button>
         </div>
+      </div>
+      <mat-divider></mat-divider>
     </div>
     <div class="mas-resultados" fxLayoutAlign="center center" (click)="masPedidos()"
          *ngIf="!loading && (pedidos.length > 0) && (totalPaginas > (pagina + 1))">
