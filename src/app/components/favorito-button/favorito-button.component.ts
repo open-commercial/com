@@ -40,7 +40,7 @@ export class FavoritoButtonComponent implements OnInit {
       this.productoService.marcarComoFavorito(this.pProducto.idProducto)
         .pipe(finalize(() => this.toggling = false))
         .subscribe(
-          (p: Producto) => this.pProducto = p,
+          (p: Producto) => this.producto.favorito = true,
           err => this.avisoService.openSnackBar(err.error, 'Cerrar', 0),
         )
       ;
