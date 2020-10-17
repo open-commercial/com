@@ -73,6 +73,7 @@ export class FavoritosComponent implements OnInit {
           this.productos = data['content'];
           this.totalPaginas = data['totalPages'];
           this.totalElements = data['totalElements'];
+          this.productosService.setCantidadEnFavoritos(this.totalElements);
         },
         err => {
           this.avisoService.openSnackBar(err.error);
@@ -101,17 +102,19 @@ export class FavoritosComponent implements OnInit {
       if (result) {
         this.loading = true;
         this.productosService.quitarProductoDeFavorito(producto.idProducto)
-          .pipe(finalize(() => this.loading = false))
           .subscribe(
-            () => this.cargarProductosFavoritos(),
-            err => this.avisoService.openSnackBar(err.error),
+            () => this.cargarProductosFavoritos(), // el loading termina con la carga de todos los productos nuevamente
+            err => {
+              this.loading = false;
+              this.avisoService.openSnackBar(err.error);
+            },
           )
         ;
       }
     });
   }
 
-  vaciarFavoritos() {
+  /*vaciarFavoritos() {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent);
     dialogRef.componentInstance.titulo = '¿Está seguro de quitar todos los productos de tus favoritos?';
     dialogRef.afterClosed().subscribe(result => {
@@ -126,7 +129,7 @@ export class FavoritosComponent implements OnInit {
         ;
       }
     });
-  }
+  }*/
 
   paginaAnterior() {
     if (this.pagina <= 0) { return; }

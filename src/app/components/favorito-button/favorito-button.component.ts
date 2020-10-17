@@ -4,6 +4,7 @@ import { AuthService } from '../../services/auth.service';
 import { ProductosService } from '../../services/productos.service';
 import { finalize } from 'rxjs/operators';
 import { AvisoService } from '../../services/aviso.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'sic-com-favorito-button',
@@ -18,7 +19,7 @@ export class FavoritoButtonComponent implements OnInit {
   toggling = false;
 
   constructor(public authService: AuthService,
-              private productoService: ProductosService,
+              private productosService: ProductosService,
               private avisoService: AvisoService) {
   }
 
@@ -27,23 +28,26 @@ export class FavoritoButtonComponent implements OnInit {
 
   toggleFavorito($event) {
     $event.stopPropagation();
+    const obs: Observable<void> = this.pProducto.favorito
+      ? this.productosService.quitarProductoDeFavorito(this.pProducto.idProducto)
+      : this.productosService.marcarComoFavorito(this.pProducto.idProducto)
+    ;
     this.toggling = true;
-    if (this.pProducto.favorito) {
-      this.productoService.quitarProductoDeFavorito(this.pProducto.idProducto)
-        .pipe(finalize(() => this.toggling = false))
-        .subscribe(
-          () => this.producto.favorito = false,
-          err => this.avisoService.openSnackBar(err.error, 'Cerrar', 0),
-        )
-      ;
-    } else {
-      this.productoService.marcarComoFavorito(this.pProducto.idProducto)
-        .pipe(finalize(() => this.toggling = false))
-        .subscribe(
-          (p: Producto) => this.producto.favorito = true,
-          err => this.avisoService.openSnackBar(err.error, 'Cerrar', 0),
-        )
-      ;
-    }
+    obs.subscribe(
+      () => {
+        this.pProducto.favorito = !this.pProducto.favorito;
+        this.productosService.getCantidadEnFavoritos()
+          .pipe(finalize(() => this.toggling = false))
+          .subscribe(
+            (cantidad: number) => this.productosService.setCantidadEnFavoritos(cantidad),
+            err => this.avisoService.openSnackBar(err.error, 'Cerrar', 0),
+          )
+        ;
+      },
+      err => {
+        this.toggling = false;
+        this.avisoService.openSnackBar(err.error, 'Cerrar', 0);
+      },
+    );
   }
 }

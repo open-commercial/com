@@ -10,6 +10,7 @@ import {Cliente} from '../../models/cliente';
 import {Location} from '@angular/common';
 import {finalize} from 'rxjs/operators';
 import {AgregarAlCarritoComponent} from '../agregar-al-carrito/agregar-al-carrito.component';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'sic-com-producto',
@@ -19,6 +20,7 @@ import {AgregarAlCarritoComponent} from '../agregar-al-carrito/agregar-al-carrit
 export class ProductoComponent implements OnInit {
   producto: Producto;
   loadingProducto = false;
+  favoritoToggling = false;
 
   cliente: Cliente = null;
   loadingCliente = false;
@@ -90,5 +92,29 @@ export class ProductoComponent implements OnInit {
 
   onValidadStatusChanged(valid: boolean) {
     this.cantidadValida = valid;
+  }
+
+  toggleFavorito() {
+    const obs: Observable<void> = this.producto.favorito
+      ? this.productosService.quitarProductoDeFavorito(this.producto.idProducto)
+      : this.productosService.marcarComoFavorito(this.producto.idProducto)
+    ;
+    this.favoritoToggling = true;
+    obs.subscribe(
+      () => {
+        this.producto.favorito = !this.producto.favorito;
+        this.productosService.getCantidadEnFavoritos()
+          .pipe(finalize(() => this.favoritoToggling = false))
+          .subscribe(
+            (cantidad: number) => this.productosService.setCantidadEnFavoritos(cantidad),
+            err => this.avisoService.openSnackBar(err.error, 'Cerrar', 0),
+          )
+        ;
+      },
+      err => {
+        this.favoritoToggling = false;
+        this.avisoService.openSnackBar(err.error, 'Cerrar', 0);
+      },
+    );
   }
 }

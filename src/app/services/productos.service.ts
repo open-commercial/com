@@ -11,9 +11,13 @@ export class ProductosService {
 
   url = environment.apiUrl + '/api/v1/productos';
   urlBusqueda = this.url + '/busqueda/criteria?';
+
   private buscarProductosSubject = new Subject<BusquedaProductoCriteria>();
   buscarProductos$ = this.buscarProductosSubject.asObservable();
   private criteria: BusquedaProductoCriteria = null;
+
+  private cantidadEnFavoritosSubject = new Subject<number>();
+  cantidadEnFavoritos$ = this.cantidadEnFavoritosSubject.asObservable();
 
   constructor(private http: HttpClient) {}
 
@@ -33,6 +37,10 @@ export class ProductosService {
     return this.http.post(this.urlBusqueda, criteria);
   }
 
+  setCantidadEnFavoritos(cantidad: number) {
+    this.cantidadEnFavoritosSubject.next(cantidad);
+  }
+
   getProductosEnOferta(pagina: number) {
     return this.http.post(this.urlBusqueda, {
       oferta: true,
@@ -49,12 +57,16 @@ export class ProductosService {
     return this.criteria;
   }
 
+  getCantidadEnFavoritos(): Observable<number> {
+    return this.http.get<number>(`${this.url}/favoritos/cantidad`);
+  }
+
   getProductosFavoritos(pagina = 0): Observable<Pagination> {
     return this.http.get<Pagination>(`${this.url}/favoritos?pagina=${pagina}`);
   }
 
-  marcarComoFavorito(idProducto: number): Observable<Producto> {
-    return this.http.post<Producto>(`${this.url}/${idProducto}/favoritos`, null);
+  marcarComoFavorito(idProducto: number): Observable<void> {
+    return this.http.post<void>(`${this.url}/${idProducto}/favoritos`, null);
   }
 
   quitarProductoDeFavorito(idProducto: number): Observable<void> {

@@ -47,7 +47,7 @@
     }
   }
 
-  .sic-com-contador-carrito {
+  .contador {
     border-radius: 200px 200px 200px 200px;
     -moz-border-radius: 200px 200px 200px 200px;
     -webkit-border-radius: 200px 200px 200px 200px;
@@ -55,8 +55,8 @@
     position: absolute;
     background-color: $color-primary;
     color: #323232;
-    top: -8px;
-    right: -5px;
+    top: -5px;
+    right: -3px;
     padding: 0 6px;
     line-height: 20px;
   }
