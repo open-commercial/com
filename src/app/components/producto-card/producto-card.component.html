@@ -4,6 +4,7 @@
       <span class="off" *ngIf="producto.porcentajeBonificacionOferta">{{ producto.porcentajeBonificacionOferta }}% OFF!</span>
     </span>
     <span>
+      <sic-com-favorito-button [producto]="producto"></sic-com-favorito-button>
       <button class="add-to-cart" mat-icon-button color="warn" (click)="showDialogCantidad($event, producto)" *ngIf="authService.isAuthenticated() && cliente">
         <mat-icon>add_shopping_cart</mat-icon>
       </button>

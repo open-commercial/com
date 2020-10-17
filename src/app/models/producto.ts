@@ -33,5 +33,6 @@ export interface Producto {
   fechaVencimiento: Date;
   eliminado: boolean;
   urlImagen: string;
+  favorito: boolean;
 }
 

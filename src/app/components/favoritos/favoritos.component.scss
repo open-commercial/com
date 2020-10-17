@@ -1,0 +1,97 @@
+@import "../../../_colors.scss";
+
+.sic-com-favoritos {
+  .contenido {
+    background: white;
+
+    .ir-listado {
+      color: rgba(0, 0, 0, 0.87);
+      text-decoration: none;
+    }
+
+    .page-title {
+      font-size: 1.5em;
+
+      mat-icon {
+        color: $color-primary;
+      }
+    }
+
+    .favoritos {
+      border-bottom: 1px solid #ccc;
+      height: auto;
+
+      .mat-line {
+        white-space: normal;
+        padding: 0.75rem 0;
+      }
+
+      .avatar {
+        width: 80px;
+        height: 60px;
+        border-radius: 0;
+        object-fit: contain;
+      }
+
+      .codigo {
+        font-size: 12px;
+      }
+
+      .oferta {
+        display: inline-block;
+        margin-left: 0.2rem;
+
+        mat-chip {
+          min-height: 22px;
+          font-size: 0.85rem;
+          background: limegreen;
+          color: white;
+        }
+      }
+
+      .oferta-cantidad {
+        color: limegreen;
+        font-weight: bold;
+        font-size: 0.85em;
+      }
+
+      .descripcion {
+        color: $color-primary;
+        font-weight: bold;
+        font-size: 15px;
+        padding-bottom: 0.3rem;
+      }
+
+      .precio {
+        color: #323232;
+        font-size: 0.93rem;
+        font-weight: bold;
+
+        &.tachado {
+          text-decoration: line-through;
+        }
+
+        &.bonificado {
+          color: limegreen;
+        }
+      }
+    }
+  }
+
+  .sic-com-spinner-container {
+    height: 90px;
+    color: $color-primary;
+  }
+
+  .sic-com-paginator {
+    padding: .7rem;
+    .page {
+      padding: .5rem .9rem;
+      margin: 0 .3rem;
+      background: #DFDFDF;
+      -webkit-border-radius: 3px;
+      -moz-border-radius: 3px;
+      border-radius: 3px;
+    }
+  }
+}

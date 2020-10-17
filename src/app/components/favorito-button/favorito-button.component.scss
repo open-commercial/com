@@ -1,0 +1,9 @@
+@import "../../../_colors.scss";
+
+.sic-com-favorito-button {
+  padding: 0;
+  color: #cccccc;
+  &.on {
+    color: $color-warn;
+  }
+}

@@ -14,6 +14,7 @@ import {HomeComponent} from './components/home/home.component';
 import {RegistracionRealizadaComponent} from './components/registracion-realizada/registracion-realizada.component';
 import {CheckoutStatusComponent} from './components/checkout-status/checkout-status.component';
 import { RubrosComponent } from './components/rubros/rubros.component';
+import { FavoritosComponent } from './components/favoritos/favoritos.component';
 
 const sicComRoutes: Routes = [
   {path: 'login', component: LoginComponent},
@@ -35,6 +36,7 @@ const sicComRoutes: Routes = [
       {path: 'perfil', component: PerfilComponent},
       {path: 'checkout', component: CheckoutComponent},
       {path: 'checkout/:status', component: CheckoutStatusComponent},
+      {path: 'productos/favoritos', component: FavoritosComponent},
     ]
   },
   {path: '**', redirectTo: ''}

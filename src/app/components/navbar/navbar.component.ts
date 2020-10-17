@@ -8,6 +8,7 @@ import {AvisoService} from '../../services/aviso.service';
 import {Cliente} from '../../models/cliente';
 import {ClientesService} from '../../services/clientes.service';
 import {CarritoCompra} from '../../models/carrito-compra';
+import { combineLatest } from 'rxjs';
 
 @Component({
   selector: 'sic-com-navbar',
@@ -16,6 +17,7 @@ import {CarritoCompra} from '../../models/carrito-compra';
 })
 export class NavbarComponent implements OnInit {
   cantidadItemsEnCarrito = 0;
+  cantidadEnFavoritos = 0;
   usuarioConectado = '';
   busquedaForm = new FormGroup ({
     criteriaControl: new FormControl()
@@ -35,8 +37,10 @@ export class NavbarComponent implements OnInit {
     criteriaControl.setValue(value);
 
     this.loadNavbarInfo();
+
     this.carritoCompraService.cantidadItemsEnCarrito$.subscribe(data => this.cantidadItemsEnCarrito = data);
     this.authService.nombreUsuarioLoggedIn$.subscribe(data => this.usuarioConectado = data);
+    this.productosService.cantidadEnFavoritos$.subscribe(data => this.cantidadEnFavoritos = data);
 
     this.productosService.buscarProductos$.subscribe(data => {
       const v = data ? data.codigo || data.descripcion : '';
@@ -54,9 +58,15 @@ export class NavbarComponent implements OnInit {
       this.clientesService.getClienteDelUsuario(this.authService.getLoggedInIdUsuario()).subscribe(
         (cliente: Cliente) => {
           this.cliente = cliente;
-          this.carritoCompraService.getCarritoCompra(cliente.idCliente).subscribe(
-            (carrito: CarritoCompra) => this.carritoCompraService.setCantidadItemsEnCarrito(carrito.cantRenglones),
-            err => this.avisoService.openSnackBar(err.error, '', 3500)
+          combineLatest([
+            this.carritoCompraService.getCarritoCompra(cliente.idCliente),
+            this.productosService.getCantidadEnFavoritos(),
+          ])
+          .subscribe(
+            (data: [CarritoCompra, number]) => {
+              this.carritoCompraService.setCantidadItemsEnCarrito(data[0].cantRenglones);
+              this.productosService.setCantidadEnFavoritos(data[1]);
+            }
           );
         }
       );

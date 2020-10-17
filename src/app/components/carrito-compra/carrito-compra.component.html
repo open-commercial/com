@@ -69,26 +69,22 @@
               </div>
             </div>
           </div>
-          <div fxLayout fxFlex="40">
-            <div fxFlex="40" fxLayoutAlign="center center">
-              <button mat-raised-button (click)="showDialogCantidad($event, icc.producto)" color="primary" [disabled]="disabledButtons()" [class.fondo-rojo]="icc.cantidad > icc.producto.cantidadTotalEnSucursales">
-                Cantidad {{icc.cantidad | number:'1.0-2':'es-AR' }}
-              </button>
-            </div>
-            <div fxFlex="40" fxLayoutAlign="center center" class="monto">
+          <div fxLayout="row" fxLayoutAlign="space-between center" fxFlex="40">
+            <button mat-raised-button (click)="showDialogCantidad($event, icc.producto)" color="primary" [disabled]="disabledButtons()" [class.fondo-rojo]="icc.cantidad > icc.producto.cantidadTotalEnSucursales">
+              Cantidad {{icc.cantidad | number:'1.0-2':'es-AR' }}
+            </button>
+            <div class="monto">
               $ {{(icc.importeBonificado > 0 ? icc.importeBonificado : icc.importe) | number:'1.0-2':'es-AR'}}
             </div>
-            <div fxFlex="20" fxLayoutAlign="center center">
-              <button mat-icon-button (click)="eliminarItemDelCarrito(icc)" matTooltip="Quitar del listado" [disabled]="disabledButtons()">
-                <mat-icon>delete_forever</mat-icon>
-              </button>
-            </div>
+            <button mat-icon-button (click)="eliminarItemDelCarrito(icc)" matTooltip="Quitar del listado" [disabled]="disabledButtons()">
+              <mat-icon>delete_forever</mat-icon>
+            </button>
           </div>
         </div>
       </mat-list-item>
     </mat-list>
   </div>
-  <div class="sic-com-paginator" *ngIf="!loadingCarritoCompra && !loadingRenglones && !loadingTotales && !verificandoStock && (itemsCarritoCompra.length > 0)" fxLayout="row" fxLayoutAlign="center center">
+  <div class="sic-com-paginator" *ngIf="!loadingCarritoCompra && !loadingRenglones && !loadingTotales && !verificandoStock && (totalPaginas > 1)" fxLayout="row" fxLayoutAlign="center center">
     <button mat-button color="primary" [disabled]="pagina <= 0" (click)="paginaAnterior()">
       <mat-icon aria-label="Página anterior">navigate_before</mat-icon><span>Anterior</span>
     </button>

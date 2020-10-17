@@ -16,9 +16,13 @@
         <button mat-icon-button fxHide fxShow.gt-sm [routerLink]="['/perfil']" matTooltip="Mi Perfil" color="primary">
           <mat-icon>account_circle</mat-icon>
         </button>
+        <button mat-icon-button fxHide fxShow.gt-sm [routerLink]="['/productos/favoritos']" matTooltip="Favoritos" color="primary">
+          <mat-icon>favorite</mat-icon>
+          <span class="contador" *ngIf="(cantidadEnFavoritos > 0)">{{cantidadEnFavoritos}}</span>
+        </button>
         <button mat-icon-button fxHide fxShow.gt-sm [routerLink]="['/carrito-compra']" matTooltip="Ir al carrito" color="primary">
           <mat-icon>shopping_cart</mat-icon>
-          <span class="sic-com-contador-carrito" *ngIf="(cantidadItemsEnCarrito > 0)">{{cantidadItemsEnCarrito}}</span>
+          <span class="contador" *ngIf="(cantidadItemsEnCarrito > 0)">{{cantidadItemsEnCarrito}}</span>
         </button>
         <button mat-icon-button fxShow fxHide.gt-sm [matMenuTriggerFor]="menuCompleto" color="primary">
           <mat-icon>more_vert</mat-icon>
@@ -28,9 +32,13 @@
             <mat-icon>account_circle</mat-icon>
             <span>Mi Perfil</span>
           </button>
+          <button mat-menu-item [routerLink]="['/productos/favoritos']">
+            <mat-icon>favorite</mat-icon>
+            <span>Favoritos{{cantidadEnFavoritos > 0 ? ' (' + cantidadEnFavoritos + ')' : ''}}</span>
+          </button>
           <button mat-menu-item [routerLink]="['/carrito-compra']">
             <mat-icon>shopping_cart</mat-icon>
-            <span>Ir al carrito ({{cantidadItemsEnCarrito}})</span>
+            <span>Ir al carrito{{cantidadItemsEnCarrito > 0 ? ' (' + cantidadItemsEnCarrito + ')' : ''}}</span>
           </button>
         </mat-menu>
       </div>
