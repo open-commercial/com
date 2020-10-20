@@ -4,7 +4,10 @@
       <mat-icon>keyboard_arrow_left</mat-icon>
       <strong>Volver</strong>
     </a>
-    <mat-list>
+    <div class="mensaje" *ngIf="!productos.length" fxLayoutAlign="center center">
+      Puede marcar sus productos favoritos tocando el <mat-icon color="primary">favorite</mat-icon> en cada producto
+    </div>
+    <mat-list *ngIf="productos.length">
       <mat-list-item *ngFor="let p of productos" class="favoritos">
         <div matLine fxLayout="row" fxLayout.lt-sm="column">
           <div fxFlex="60" fxLayout="row" fxLayoutAlign="space-around center">
@@ -37,7 +40,7 @@
                 Agregar al Carrito
               </button>
               <button mat-icon-button (click)="quitarDeFavorito(p)" matTooltip="Quitar de Favoritos">
-                <mat-icon>delete_forever</mat-icon>
+                <mat-icon>favorite_border</mat-icon>
               </button>
           </div>
         </div>

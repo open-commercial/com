@@ -21,11 +21,11 @@
         (cantidadUpdated)="onCantidadUpdated()" (loadingStatusUpdated)="onLoadingStatusUpdated($event)" (validStatusChanged)="onValidadStatusChanged($event)" #aacc></sic-com-agregar-al-carrito>
       <br>
       <div fxLayout="column" fxLayoutAlign="center center" *ngIf="authService.isAuthenticated()">
-        <button type="button" mat-raised-button color="primary" (click)="aaccSubmit()" [disabled]="aaccLoading || !cantidadValida || favoritoToggling" *ngIf="producto.hayStock">
+        <button class="boton" type="button" mat-raised-button color="primary" (click)="aaccSubmit()" [disabled]="aaccLoading || !cantidadValida || favoritoToggling" *ngIf="producto.hayStock">
           <mat-icon>add_shopping_cart</mat-icon> Agregar al Carrito
         </button>
         <br>
-        <button type="button" mat-raised-button (click)="toggleFavorito()" [disabled]="favoritoToggling || aaccLoading">
+        <button class="boton" type="button" mat-raised-button (click)="toggleFavorito()" [disabled]="favoritoToggling || aaccLoading">
           <span *ngIf="producto.favorito" fxLayoutAlign="center center">
             <mat-icon [class.spin]="favoritoToggling">{{ favoritoToggling ? 'sync' : 'favorite_border' }}</mat-icon>&nbsp;Quitar de Favoritos
           </span>

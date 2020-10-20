@@ -1,4 +1,4 @@
-<button class="sic-com-favorito-button" mat-icon-button *ngIf="authService.isAuthenticated()" [class.on]="producto.favorito"
+<button class="sic-com-favorito-button" mat-icon-button *ngIf="authService.isAuthenticated()" [class.on]="!toggling && producto.favorito"
         (click)="toggleFavorito($event)" [disabled]="toggling">
   <mat-icon [class.spin]="toggling">{{ toggling ? 'sync' : 'favorite' }}</mat-icon>
 </button>

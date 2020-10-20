@@ -3,10 +3,17 @@
 .sic-com-favoritos {
   .contenido {
     background: white;
-
+    .mensaje {
+      height: 100px;
+      color: $color-primary;
+      font-size: 18px;
+      text-align: center;
+    }
     .ir-listado {
       color: rgba(0, 0, 0, 0.87);
       text-decoration: none;
+      height: 40px;
+      cursor: pointer;
     }
 
     .page-title {
