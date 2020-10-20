@@ -5,7 +5,7 @@
       <strong>Volver</strong>
     </a>
     <div class="mensaje" *ngIf="!productos.length" fxLayoutAlign="center center">
-      Puede marcar sus productos favoritos tocando el <mat-icon color="primary">favorite</mat-icon> en cada producto
+      <mat-icon color="primary">favorite</mat-icon> Marca tus productos favoritos para verlos listados aqui
     </div>
     <mat-list *ngIf="productos.length">
       <mat-list-item *ngFor="let p of productos" class="favoritos">
