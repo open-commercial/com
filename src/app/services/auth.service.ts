@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {environment} from 'environments/environment';
 import {HttpClient} from '@angular/common/http';
 import {throwError, Observable, Subject} from 'rxjs';
-import {map, catchError, finalize} from 'rxjs/operators';
+import {map, catchError} from 'rxjs/operators';
 import {JwtHelperService} from '@auth0/angular-jwt';
 import {Router} from '@angular/router';
 import {Usuario} from '../models/usuario';
@@ -30,7 +30,7 @@ export class AuthService {
   }
 
   login(user: string, pass: string) {
-    const credential = {username: user, password: pass, aplicacion: environment.appName};
+    const credential = {username: user, password: pass};
     return this.http.post(this.urlLogin, credential, {responseType: 'text'})
       .pipe(
         map(data => {
@@ -50,14 +50,14 @@ export class AuthService {
 
   logout() {
     this.http.put(this.urlLogout, null)
-      .pipe(
-        finalize(() => {
-          ['token', 'idUsuario'].forEach(v => this.storageService.removeItem(v));
-          this.router.navigate(['']);
-        })
-      )
-      .subscribe()
-    ;
+      .subscribe(() => {
+        this.cleanAccessTokenInLocalStorage();
+        this.router.navigate(['/login'], {queryParams: {return: this.router.routerState.snapshot.url}});
+      });
+  }
+
+  cleanAccessTokenInLocalStorage() {
+    this.storageService.removeItem('token');
   }
 
   getToken(): string {
@@ -65,7 +65,9 @@ export class AuthService {
   }
 
   isAuthenticated(): boolean {
-    return !this.jwtHelper.isTokenExpired(this.storageService.getItem('token'));
+    const isExpired = this.jwtHelper.isTokenExpired(this.storageService.getItem('token'));
+    if (isExpired) { this.cleanAccessTokenInLocalStorage(); }
+    return !isExpired;
   }
 
   getLoggedInUsuario(): Observable<Usuario> {
@@ -85,7 +87,7 @@ export class AuthService {
   }
 
   cambiarPassword(k: string, i: number) {
-    return this.http.post(this.urlPasswordRecovery, {'key': k, 'id': i, aplicacion: environment.appName}, {responseType: 'text'});
+    return this.http.post(this.urlPasswordRecovery, {'key': k, 'id': i}, {responseType: 'text'});
   }
 
   setAuthenticationInfo(token: string) {

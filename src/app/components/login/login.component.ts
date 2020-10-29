@@ -19,7 +19,6 @@ export class LoginComponent implements OnInit {
   returnUrl = '';
   loginForm: FormGroup;
   usuario: Usuario;
-  redirectProductId = 0;
 
   constructor(private router: Router,
               private authService: AuthService,
@@ -35,7 +34,6 @@ export class LoginComponent implements OnInit {
       this.router.navigate(['']);
     } else {
       this.route.queryParamMap.subscribe(params => {
-        if (params.has('pid')) { this.redirectProductId = Number(params.get('pid')) || null; }
         if (params.has('return')) { this.returnUrl = params.get('return'); }
       });
     }
@@ -65,9 +63,7 @@ export class LoginComponent implements OnInit {
             .subscribe(
               (cliente: Cliente) => {
                 if (cliente) {
-                  if (this.redirectProductId) {
-                    this.router.navigate(['/producto', this.redirectProductId]);
-                  } else if (this.returnUrl) {
+                  if (this.returnUrl) {
                     this.router.navigateByUrl(this.returnUrl);
                   } else {
                     this.router.navigate(['']);

@@ -43,7 +43,7 @@ export class PasswordRecoveryRequestComponent implements OnInit {
           this.loading = false;
           let message = 'El pedido para recuperar su contraseña ha sido realizado correctamente.';
           message += ' En breve recibirá un correo electrónico con instrucciones';
-          this.avisoService.openSnackBar(message, '', 5000);
+          this.avisoService.openSnackBar(message, 'Cerrar', 0);
           this.router.navigate(['']);
         },
         err => {

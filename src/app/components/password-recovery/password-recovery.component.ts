@@ -26,7 +26,7 @@ export class PasswordRecoveryComponent implements OnInit {
     this.authService.cambiarPassword(key, id).subscribe(
       (token: string) => {
         this.authService.setAuthenticationInfo(token);
-        this.avisoService.openSnackBar('Debe cambiar su contraseña en la sección "Mi Usuario"', '', 5000);
+        this.avisoService.openSnackBar('Debe cambiar su contraseña en la sección "Mi Usuario"', 'Cerrar', 0);
         this.router.navigate(['perfil']);
       },
       err => {
