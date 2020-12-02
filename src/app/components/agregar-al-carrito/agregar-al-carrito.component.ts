@@ -65,7 +65,7 @@ export class AgregarAlCarritoComponent implements OnInit, AfterViewInit {
         .pipe(finalize(() => this.loading = false))
         .subscribe((icc: ItemCarritoCompra) => {
           const validators = this.defaultValidatos.map(v => v);
-          validators.push(Validators.max(this.producto.cantidadTotalEnSucursales));
+          validators.push(Validators.max(this.producto.cantidadTotalEnSucursalesDisponible));
           this.form.get('cantidad').setValidators(validators);
           this.form.get('cantidad').setValue(icc ? icc.cantidad : 1);
           this.cantidadEnCarrito = icc ? icc.cantidad : 0;

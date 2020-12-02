@@ -39,7 +39,7 @@
       <span>{{ producto.nombreRubro | titlecase }}</span>
     </div>
     <span class="sic-com-stock" [style.color]="(producto.hayStock ? 'limegreen' : 'red')" *ngIf="cliente">
-      <strong>{{ producto.hayStock ? "Stock Disponible: "+ (producto.cantidadTotalEnSucursales | number:'1.0-2':'es-AR') + ' ' + producto.nombreMedida : "Sin Stock" }}</strong>
+      <strong>{{ producto.hayStock ? "Stock Disponible: "+ (producto.cantidadTotalEnSucursalesDisponible | number:'1.0-2':'es-AR') + ' ' + producto.nombreMedida : "Sin Stock" }}</strong>
     </span>
   </div>
   <br>

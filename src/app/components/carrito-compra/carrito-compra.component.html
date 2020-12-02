@@ -23,10 +23,10 @@
     </div>
     <mat-list>
       <mat-list-item *ngFor="let icc of itemsCarritoCompra" class="sic-com-renglones-items">
-        <div matLine *ngIf="icc.cantidad > icc.producto.cantidadTotalEnSucursales" fxLayout="row" fxLayoutAlign="center center">
+        <div matLine *ngIf="icc.cantidad > icc.producto.cantidadTotalEnSucursalesDisponible" fxLayout="row" fxLayoutAlign="center center">
           <span class="stock-no-disponible">
             Solicitado ({{ icc.cantidad + ' ' + icc.producto.nombreMedida }})
-            Disponible ({{ icc.producto.cantidadTotalEnSucursales + ' ' + icc.producto.nombreMedida }})
+            Disponible ({{ icc.producto.cantidadTotalEnSucursalesDisponible + ' ' + icc.producto.nombreMedida }})
           </span>
         </div>
         <div matLine fxLayout="row" fxLayout.lt-sm="column">
@@ -70,7 +70,7 @@
             </div>
           </div>
           <div fxLayout="row" fxLayoutAlign="space-between center" fxFlex="40">
-            <button mat-raised-button (click)="showDialogCantidad($event, icc.producto)" color="primary" [disabled]="disabledButtons()" [class.fondo-rojo]="icc.cantidad > icc.producto.cantidadTotalEnSucursales">
+            <button mat-raised-button (click)="showDialogCantidad($event, icc.producto)" color="primary" [disabled]="disabledButtons()" [class.fondo-rojo]="icc.cantidad > icc.producto.cantidadTotalEnSucursalesDisponible">
               Cantidad {{icc.cantidad | number:'1.0-2':'es-AR' }}
             </button>
             <div class="monto">
