@@ -128,7 +128,7 @@ export class CarritoCompraComponent implements OnInit {
 
   cargarCarritoCompra() {
     this.loadingTotales = true;
-    this.carritoCompraService.getCarritoCompra(this.cliente.idCliente)
+    this.carritoCompraService.getCarritoCompra()
       .pipe(
         finalize(() =>  {
           this.loadingTotales = false;

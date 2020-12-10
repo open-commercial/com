@@ -59,7 +59,7 @@ export class NavbarComponent implements OnInit {
         (cliente: Cliente) => {
           this.cliente = cliente;
           combineLatest([
-            this.carritoCompraService.getCarritoCompra(cliente.idCliente),
+            this.carritoCompraService.getCarritoCompra(),
             this.productosService.getCantidadEnFavoritos(),
           ])
           .subscribe(
