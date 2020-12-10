@@ -16,8 +16,8 @@ export class CarritoCompraService {
 
   constructor(private http: HttpClient) {}
 
-  getCarritoCompra(idCliente: number): Observable<CarritoCompra> {
-    return this.http.get<CarritoCompra>(`${this.uri}/clientes/${idCliente}`);
+  getCarritoCompra(): Observable<CarritoCompra> {
+    return this.http.get<CarritoCompra>(`${this.uri}`);
   }
 
   setCantidadItemsEnCarrito(cantidad: number) {
