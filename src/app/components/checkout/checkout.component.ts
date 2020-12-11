@@ -323,7 +323,7 @@ export class CheckoutComponent implements OnInit {
 
   getTotalesInfo() {
     if (this.cliente) {
-      this.carritoCompraService.getCarritoCompra(this.cliente.idCliente)
+      this.carritoCompraService.getCarritoCompra()
         .subscribe(data => {
           if (data.total < this.cliente.montoCompraMinima) {
             this.router.navigate(['carrito-compra']);

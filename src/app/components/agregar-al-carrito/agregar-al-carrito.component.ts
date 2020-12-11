@@ -114,7 +114,7 @@ export class AgregarAlCarritoComponent implements OnInit, AfterViewInit {
         .subscribe(
           () => {
             if (this.cliente) {
-              this.carritoCompraService.getCarritoCompra(this.cliente.idCliente)
+              this.carritoCompraService.getCarritoCompra()
                 .pipe(finalize(() => this.loading = false))
                 .subscribe(
                   (carrito: CarritoCompra) => {
