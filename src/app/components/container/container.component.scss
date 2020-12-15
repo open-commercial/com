@@ -1,12 +1,23 @@
 @import "../../../_colors.scss";
 
+.placement {
+  width: 1250px;
+  margin: 0 auto;
+}
+
 .sic-com-container {
-  .navbar {
+  .navbar-container {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     z-index: 3;
+    background: $color-FFDA41;
+    .navbar-placement {
+      &.desktop {
+        @extend .placement;
+      }
+    }
   }
 
   .sic-com-content {
@@ -16,7 +27,7 @@
       margin-top: 64px;
     }
     &.desktop {
-      margin-top: 100px;
+      margin-top: 90px;
     }
   }
 
@@ -24,8 +35,18 @@
     background: whitesmoke;
     min-height: 100%;
     margin: 0 auto;
-    &.width80porciento {
-      width: 80%;
+    .contenido-central-placement {
+      &.desktop {
+        @extend .placement;
+      }
+    }
+  }
+  .footer-container {
+    background: $color-1E222B;
+    .footer-placement {
+      &.desktop {
+        @extend .placement;
+      }
     }
   }
 }

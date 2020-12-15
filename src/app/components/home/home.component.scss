@@ -1,5 +1,10 @@
 @import "../../../_colors.scss";
 .sic-com-home {
+  .slideshow-container {
+    &.desktop {
+      margin-top: 1.5rem;
+    }
+  }
 
   .bannerMP {
     display: inline-block;
