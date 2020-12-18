@@ -67,6 +67,8 @@ import { RubrosMainMenuComponent } from './components/rubros-main-menu/rubros-ma
 import { RubrosEnHomeComponent } from './components/rubros-en-home/rubros-en-home.component';
 import { FavoritosComponent } from './components/favoritos/favoritos.component';
 import { FavoritoButtonComponent } from './components/favorito-button/favorito-button.component';
+import { RECAPTCHA_V3_SITE_KEY, RecaptchaV3Module } from 'ng-recaptcha';
+import { RecaptchaModule, RecaptchaFormsModule } from 'ng-recaptcha';
 
 registerLocaleData(localeEs, 'es-AR', localeEsExtra);
 
@@ -126,7 +128,10 @@ registerLocaleData(localeEs, 'es-AR', localeEsExtra);
       libraries: ['places']
     }),
     AgmSnazzyInfoWindowModule,
-    NgSelectModule
+    NgSelectModule,
+    RecaptchaV3Module,
+    RecaptchaModule,
+    RecaptchaFormsModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
@@ -145,6 +150,7 @@ registerLocaleData(localeEs, 'es-AR', localeEsExtra);
     UbicacionesService,
     DynamicScriptLoaderService,
     PagosService,
+    { provide: RECAPTCHA_V3_SITE_KEY, useValue: '6LdTowkaAAAAACZ5Wts2hesX6x6Lee2T6VRTl7OY' },
   ],
   entryComponents: [
     ConfirmationDialogComponent,

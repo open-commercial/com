@@ -80,15 +80,6 @@
         </mat-form-field>
       </div>
       <span><br></span>
-      <mat-action-row fxLayout="column" fxLayoutAlign="center center">
-        <ngx-recaptcha2 #captchaElem
-          [siteKey]="siteKey"
-          hl="es-419"
-          theme="light"
-          formControlName="recaptcha">
-        </ngx-recaptcha2>
-        <span><br></span>
-      </mat-action-row>
       <div fxLayout="column" fxLayoutGap=".7em" *ngIf="!loading">
           <button mat-raised-button color="primary">Registrarme</button>
           <a mat-raised-button routerLink="/login">Volver al Ingreso</a>
