@@ -33,10 +33,8 @@ import {PasswordRecoveryRequestComponent} from './components/password-recovery-r
 import {PasswordRecoveryComponent} from './components/password-recovery/password-recovery.component';
 import {CuentasCorrienteService} from './services/cuentas-corriente.service';
 import {CuentaCorrienteComponent} from './components/cuenta-corriente/cuenta-corriente.component';
-import {NgxCaptchaModule} from 'ngx-captcha';
 import {RegistracionService} from './services/registracion.service';
 import {CheckoutComponent} from './components/checkout/checkout.component';
-import {SlideshowModule} from 'ng-simple-slideshow';
 import {HomeComponent} from './components/home/home.component';
 import {ProductosEnOfertaComponent} from './components/productos-en-oferta/productos-en-oferta.component';
 import {UbicacionFormComponent} from './components/ubicacion-form/ubicacion-form.component';
@@ -69,6 +67,8 @@ import { FavoritosComponent } from './components/favoritos/favoritos.component';
 import { FavoritoButtonComponent } from './components/favorito-button/favorito-button.component';
 import { RECAPTCHA_V3_SITE_KEY, RecaptchaV3Module } from 'ng-recaptcha';
 import { RecaptchaModule, RecaptchaFormsModule } from 'ng-recaptcha';
+import { SlideshowComponent } from './components/slideshow/slideshow.component';
+import { NguCarouselModule } from '@ngu/carousel';
 
 registerLocaleData(localeEs, 'es-AR', localeEsExtra);
 
@@ -110,6 +110,7 @@ registerLocaleData(localeEs, 'es-AR', localeEsExtra);
     RubrosEnHomeComponent,
     FavoritosComponent,
     FavoritoButtonComponent,
+    SlideshowComponent,
   ],
   imports: [
     GtagModule.forRoot({ trackingId: 'UA-132433044-1', trackPageviews: true }),
@@ -121,8 +122,6 @@ registerLocaleData(localeEs, 'es-AR', localeEsExtra);
     FlexLayoutModule,
     BrowserAnimationsModule,
     sicComRouting,
-    NgxCaptchaModule,
-    SlideshowModule,
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyCB4ieC2bSFgfWwHcpdFGegDH7vb8K5YG8',
       libraries: ['places']
@@ -131,7 +130,8 @@ registerLocaleData(localeEs, 'es-AR', localeEsExtra);
     NgSelectModule,
     RecaptchaV3Module,
     RecaptchaModule,
-    RecaptchaFormsModule
+    RecaptchaFormsModule,
+    NguCarouselModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},

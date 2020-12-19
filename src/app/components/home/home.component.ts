@@ -1,5 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {IImage} from 'ng-simple-slideshow';
 import {SlideshowService} from '../../services/slideshow.service';
 import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
 
@@ -10,9 +9,7 @@ import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
 })
 export class HomeComponent implements OnInit {
   isMobile = true;
-  urlBannerMP = '';
   height = '50vw';
-  imageUrls: (string | IImage)[] = [];
   marcas = [
     {
       url: 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1543814304/slideshow/gladiator-pro.png',
@@ -73,11 +70,11 @@ export class HomeComponent implements OnInit {
     ]).subscribe(result => {
       if (result.matches) {
         this.height = '50vw';
-        this.imageUrls = this.slideshowService.getSlideshowDataForMobile();
+        // this.imageUrls = this.slideshowService.getSlideshowDataForMobile();
         this.isMobile = true;
       } else {
         this.height = '30vw';
-        this.imageUrls = this.slideshowService.getSlideshowDataForDesktop();
+        // this.imageUrls = this.slideshowService.getSlideshowDataForDesktop();
         this.isMobile = false;
       }
     });
