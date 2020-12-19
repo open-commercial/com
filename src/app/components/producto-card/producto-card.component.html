@@ -1,7 +1,7 @@
 <div class="encabezado">
   <div fxLayout="row" fxLayoutAlign="space-between start">
-    <span *ngIf="producto.oferta && producto.porcentajeBonificacionOferta">
-      <span class="off">{{ producto.porcentajeBonificacionOferta }}% OFF!</span>
+    <span>
+      <span class="off" *ngIf="producto.oferta && producto.porcentajeBonificacionOferta">{{ producto.porcentajeBonificacionOferta }}% OFF!</span>
     </span>
     <span>
       <sic-com-favorito-button [producto]="producto"></sic-com-favorito-button>
