@@ -49,7 +49,7 @@ export class CarritoCompraService {
   }
 
   getCantidadEnCarrito(idProducto): Observable<ItemCarritoCompra> {
-    return this.http.get<ItemCarritoCompra>(`${this.uri}/productos/${idProducto}`);
+    return this.http.get<ItemCarritoCompra>(`${this.uri}/productos/${idProducto}/sucursales/${environment.idSucursal}`);
   }
 
   getDisponibilidadStock(): Observable<ProductoFaltante[]> {
