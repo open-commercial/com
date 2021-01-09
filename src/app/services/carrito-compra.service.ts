@@ -30,7 +30,7 @@ export class CarritoCompraService {
   }
 
   getItems(pagina: number) {
-    const uriGet = `${this.uri}/items?pagina=${pagina}`;
+    const uriGet = `${this.uri}/items/sucursales/${environment.idSucursal}?pagina=${pagina}`;
     return this.http.get(uriGet);
   }
 
