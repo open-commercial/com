@@ -7,5 +7,5 @@ export const environment = {
   production: false,
   apiUrl: 'http://localhost:8080',
   idSucursal: 1,
-  appVersion: 15
+  appVersion: 16
 };
