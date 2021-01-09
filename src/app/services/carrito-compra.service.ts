@@ -53,6 +53,6 @@ export class CarritoCompraService {
   }
 
   getDisponibilidadStock(): Observable<ProductoFaltante[]> {
-    return this.http.get<ProductoFaltante[]>(`${this.uri}/disponibilidad-stock`);
+    return this.http.get<ProductoFaltante[]>(`${this.uri}/disponibilidad-stock/sucursales/${environment.idSucursal}`);
   }
 }
