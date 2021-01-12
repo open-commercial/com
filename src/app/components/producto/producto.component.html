@@ -21,7 +21,7 @@
         (cantidadUpdated)="onCantidadUpdated()" (loadingStatusUpdated)="onLoadingStatusUpdated($event)" (validStatusChanged)="onValidadStatusChanged($event)" #aacc></sic-com-agregar-al-carrito>
       <br>
       <div fxLayout="column" fxLayoutAlign="center center" *ngIf="authService.isAuthenticated()">
-        <button class="boton" type="button" mat-raised-button color="primary" (click)="aaccSubmit()" [disabled]="aaccLoading || !cantidadValida || favoritoToggling" *ngIf="producto.hayStock">
+        <button class="boton" type="button" mat-raised-button color="primary" (click)="aaccSubmit()" [disabled]="aaccLoading || !cantidadValida || favoritoToggling" *ngIf="producto.cantidadTotalEnSucursalesDisponible">
           <mat-icon>add_shopping_cart</mat-icon> Agregar al Carrito
         </button>
         <br>

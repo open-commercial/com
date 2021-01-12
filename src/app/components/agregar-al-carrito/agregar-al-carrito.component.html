@@ -38,12 +38,12 @@
       <span [innerHTML]="getRubroImagenHtml()" class="svg-container"></span>&nbsp;
       <span>{{ producto.nombreRubro | titlecase }}</span>
     </div>
-    <span class="sic-com-stock" [style.color]="(producto.hayStock ? 'limegreen' : 'red')" *ngIf="cliente">
-      <strong>{{ producto.hayStock ? "Stock Disponible: "+ (producto.cantidadTotalEnSucursalesDisponible | number:'1.0-2':'es-AR') + ' ' + producto.nombreMedida : "Sin Stock" }}</strong>
+    <span class="sic-com-stock" [style.color]="(producto.cantidadTotalEnSucursalesDisponible > 0 ? 'limegreen' : 'red')" *ngIf="cliente">
+      <strong>{{ producto.cantidadTotalEnSucursalesDisponible > 0 ? "Stock Disponible: "+ (producto.cantidadTotalEnSucursalesDisponible | number:'1.0-2':'es-AR') + ' ' + producto.nombreMedida : "Sin Stock" }}</strong>
     </span>
   </div>
   <br>
-  <form [formGroup]="form" (ngSubmit)="submit()" *ngIf="cliente && producto.hayStock && !loading" fxLayoutAlign="center center">
+  <form [formGroup]="form" (ngSubmit)="submit()" *ngIf="cliente && producto.cantidadTotalEnSucursalesDisponible > 0 && !loading" fxLayoutAlign="center center">
     <button type="button" mat-mini-fab color="accent" (click)="decCantidad()">
       <mat-icon>remove</mat-icon>
     </button>
