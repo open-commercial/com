@@ -62,14 +62,14 @@ export class RegistracionComponent implements OnInit, OnDestroy {
 
   registrar() {
     if (this.registracionForm.valid) {
-      this.captchaV3subscription = this.recaptchaV3Service.execute('Registración')
+      this.captchaV3subscription = this.recaptchaV3Service.execute('Registracion')
         .subscribe(
           (token) => {
-            console.log(token);
             const reg: RegistracionCuenta = this.registracionForm.value;
             if (reg.categoriaIVA === <CategoriaIVA>'CONSUMIDOR_FINAL') {
               reg.nombreFiscal = '';
             }
+            reg.recaptcha = token;
             this.loading = true;
             this.registracionForm.disable();
             this.registracionService.registrar(reg)

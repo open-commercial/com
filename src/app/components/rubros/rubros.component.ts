@@ -35,7 +35,6 @@ export class RubrosComponent implements OnInit {
   }
 
   goToProductos(r: Rubro) {
-    console.log(r);
     this.dialogRef.close();
   }
 
