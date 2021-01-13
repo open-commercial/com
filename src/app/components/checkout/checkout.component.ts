@@ -18,6 +18,7 @@ import {TipoDeEnvio} from '../../models/tipo-de-envio';
 import {NuevaOrdenDePago} from '../../models/nueva-orden-de-pago';
 import {Movimiento} from '../../models/movimiento';
 import {ProductoFaltante} from '../../models/producto-faltante';
+import { environment } from '../../../environments/environment';
 
 enum OpcionEnvio {
   RETIRO_EN_SUCURSAL = 'RETIRO_EN_SUCURSAL',
@@ -377,7 +378,7 @@ export class CheckoutComponent implements OnInit {
     if (!dataEnvio) { return null; }
 
     let tipoDeEnvio = null;
-    let idSucursal = null;
+    let idSucursal = environment.idSucursal;
 
     if (dataEnvio.opcionEnvio === OpcionEnvio.RETIRO_EN_SUCURSAL) {
       tipoDeEnvio = TipoDeEnvio.RETIRO_EN_SUCURSAL;
