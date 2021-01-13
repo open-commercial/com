@@ -6,7 +6,9 @@ export interface Producto {
   descripcion: string;
   cantidadEnSucursales: Array<CantidadEnSucursal>;
   cantidadTotalEnSucursales: number;
-  hayStock: boolean;
+  cantidadEnSucursalesDisponible: Array<CantidadEnSucursal>;
+  cantidadTotalEnSucursalesDisponible: number;
+  cantidadReservada: number;
   cantMinima: number;
   bulto: number;
   nombreMedida: string;

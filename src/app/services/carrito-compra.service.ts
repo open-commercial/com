@@ -30,7 +30,7 @@ export class CarritoCompraService {
   }
 
   getItems(pagina: number) {
-    const uriGet = `${this.uri}/items?pagina=${pagina}`;
+    const uriGet = `${this.uri}/items/sucursales/${environment.idSucursal}?pagina=${pagina}`;
     return this.http.get(uriGet);
   }
 
@@ -49,10 +49,10 @@ export class CarritoCompraService {
   }
 
   getCantidadEnCarrito(idProducto): Observable<ItemCarritoCompra> {
-    return this.http.get<ItemCarritoCompra>(`${this.uri}/productos/${idProducto}`);
+    return this.http.get<ItemCarritoCompra>(`${this.uri}/productos/${idProducto}/sucursales/${environment.idSucursal}`);
   }
 
   getDisponibilidadStock(): Observable<ProductoFaltante[]> {
-    return this.http.get<ProductoFaltante[]>(`${this.uri}/disponibilidad-stock`);
+    return this.http.get<ProductoFaltante[]>(`${this.uri}/disponibilidad-stock/sucursales/${environment.idSucursal}`);
   }
 }

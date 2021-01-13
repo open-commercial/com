@@ -10,7 +10,7 @@ import { Pagination } from '../models/pagination';
 export class ProductosService {
 
   url = environment.apiUrl + '/api/v1/productos';
-  urlBusqueda = this.url + '/busqueda/criteria?';
+  urlBusqueda = this.url + '/busqueda/criteria/sucursales/' + environment.idSucursal;
 
   private buscarProductosSubject = new Subject<BusquedaProductoCriteria>();
   buscarProductos$ = this.buscarProductosSubject.asObservable();
@@ -50,7 +50,7 @@ export class ProductosService {
   }
 
   getProductoSoloPublico(idProducto: number): Observable<Producto> {
-    return this.http.get<Producto>(`${this.url}/${idProducto}?publicos=true`);
+    return this.http.get<Producto>(`${this.url}/${idProducto}/sucursales/${environment.idSucursal}?publicos=true`);
   }
 
   getCriteria(): BusquedaProductoCriteria|null {
