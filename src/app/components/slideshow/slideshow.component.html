@@ -1,25 +1,8 @@
-<ngu-carousel #myCarousel [inputs]="carouselConfig" [dataSource]="[first, second, third]">
-  <div *nguCarouselDef="let item;" class="item">
-    <div class="tile">
-      <ng-container *ngTemplateOutlet="item"></ng-container>
-    </div>
+<div id="slider">
+  <div class="slider-img-container" #imgContainer>
+    <ng-container *ngFor="let i of imagenes">
+      <img [src]="i.url" alt="" *ngIf="i.clickAction" (click)="i.clickAction()">
+      <img [src]="i.url" alt="" *ngIf="!i.clickAction">
+    </ng-container>
   </div>
-
-  <ng-template #first>
-    <p>First</p>
-  </ng-template>
-
-  <ng-template #second>
-    <p>Second</p>
-  </ng-template>
-
-  <ng-template #third>
-    <p>Third</p>
-  </ng-template>
-
-  <button NguCarouselNext class="rightRs">></button>
-  <button NguCarouselPrev class="leftRs"><</button>
-  <ul class="myPoint" NguCarouselPoint>
-    <li *ngFor="let j of myCarousel.pointNumbers; let i = index" [class.active]="j==myCarousel.activePoint" (click)="myCarousel.moveTo(i)"></li>
-  </ul>
-</ngu-carousel>
+</div>

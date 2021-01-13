@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {SlideshowService} from '../../services/slideshow.service';
+import { IImagen, SlideshowService } from '../../services/slideshow.service';
 import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
 
 @Component({
@@ -60,6 +60,7 @@ export class HomeComponent implements OnInit {
       nombre: 'Bulit'
     },
   ];
+  imageUrls: IImagen[] = [];
 
   constructor(private slideshowService: SlideshowService,
               private breakpointObserver: BreakpointObserver) {}
@@ -70,11 +71,11 @@ export class HomeComponent implements OnInit {
     ]).subscribe(result => {
       if (result.matches) {
         this.height = '50vw';
-        // this.imageUrls = this.slideshowService.getSlideshowDataForMobile();
+        this.imageUrls = this.slideshowService.getSlideshowDataForMobile();
         this.isMobile = true;
       } else {
         this.height = '30vw';
-        // this.imageUrls = this.slideshowService.getSlideshowDataForDesktop();
+        this.imageUrls = this.slideshowService.getSlideshowDataForDesktop();
         this.isMobile = false;
       }
     });

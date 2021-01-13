@@ -68,7 +68,6 @@ import { FavoritoButtonComponent } from './components/favorito-button/favorito-b
 import { RECAPTCHA_V3_SITE_KEY, RecaptchaV3Module } from 'ng-recaptcha';
 import { RecaptchaModule, RecaptchaFormsModule } from 'ng-recaptcha';
 import { SlideshowComponent } from './components/slideshow/slideshow.component';
-import { NguCarouselModule } from '@ngu/carousel';
 
 registerLocaleData(localeEs, 'es-AR', localeEsExtra);
 
@@ -131,7 +130,6 @@ registerLocaleData(localeEs, 'es-AR', localeEsExtra);
     RecaptchaV3Module,
     RecaptchaModule,
     RecaptchaFormsModule,
-    NguCarouselModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},

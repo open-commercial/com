@@ -1,5 +1,5 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
-import { NguCarousel, NguCarouselConfig } from '@ngu/carousel';
+import { Component, ElementRef, Input, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { IImagen } from '../../services/slideshow.service';
 
 @Component({
   selector: 'sic-com-slideshow',
@@ -7,26 +7,67 @@ import { NguCarousel, NguCarouselConfig } from '@ngu/carousel';
   styleUrls: ['./slideshow.component.css']
 })
 export class SlideshowComponent implements OnInit, AfterViewInit {
-  name = 'Angular';
-  slideNo = 0;
+  private pImagenes: IImagen[] = [];
+  @Input() set imagenes(value: IImagen[]) { this.pImagenes = value; }
+  get imagenes(): IImagen[] { return this.pImagenes; }
 
-  @ViewChild('myCarousel') myCarousel: NguCarousel<any>;
-  carouselConfig: NguCarouselConfig = {
-    grid: { xs: 1, sm: 1, md: 1, lg: 1, all: 0 },
-    load: 3,
-    interval: { timing: 4000, initialDelay: 1000 },
-    loop: true,
-    touch: true,
-    velocity: 0.2
-  };
+  currentImgIndex = 0;
+  imgCount = 0;
+  interval = null;
+  intervalTime = 1;
+  pauseTime = 5000;
 
-  constructor(private cdr: ChangeDetectorRef) { }
+  @ViewChild('imgContainer', { static: false }) imgContainer: ElementRef;
+
+  constructor() { }
 
   ngOnInit() {
-
+    this.imgCount = this.imagenes.length;
   }
 
   ngAfterViewInit() {
-    this.cdr.detectChanges();
+    setTimeout(() => this.scrollToImg(1), this.pauseTime);
+  }
+
+  scrollToImg(index) {
+    if (this.imgCount < 2) { return; }
+
+    this.checkIndex(index);
+
+    const step = Math.floor(this.imgContainer.nativeElement.offsetWidth / 80);
+    const toScroll = this.imgContainer.nativeElement.offsetWidth * index;
+
+    let i = this.imgContainer.nativeElement.scrollLeft;
+    this.interval = setInterval(() => {
+      const dir = i < toScroll ? 1 : -1;
+      i += dir * step;
+      const endCondition = dir > 0 ? i >= toScroll : i <= toScroll;
+
+      if (endCondition) {
+        i = toScroll;
+        clearInterval(this.interval);
+        const nextIndex = index === (this.imgCount - 1) ? 0 : index + 1;
+
+        setTimeout(() => {
+          if (nextIndex === 0) { this.reorderImgs(); }
+          this.scrollToImg(nextIndex);
+        }, this.pauseTime - 2000);
+      }
+      this.imgContainer.nativeElement.scrollLeft = i;
+    }, this.intervalTime);
+  }
+
+  checkIndex(index) {
+    if (index < 0 || index >= this.imgCount) {
+      throw new Error('Invalid index');
+    }
+  }
+
+  reorderImgs() {
+    if (this.imgCount < 2) { return; }
+    const lastImg = this.pImagenes.splice(this.imgCount - 1, 1);
+    const imgsToMove = this.pImagenes.splice(0, this.imgCount - 1);
+    this.imagenes = lastImg.concat(imgsToMove);
+    this.imgContainer.nativeElement.scrollLeft = 0;
   }
 }
