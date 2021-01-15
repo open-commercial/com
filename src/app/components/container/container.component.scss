@@ -28,4 +28,13 @@
       width: 80%;
     }
   }
+  .env-banner {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    text-align: center;
+    background: #39ff14;
+    z-index: 4;
+  }
 }

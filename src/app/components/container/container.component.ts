@@ -1,4 +1,5 @@
 import {Component} from '@angular/core';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'sic-com-container',
@@ -6,6 +7,6 @@ import {Component} from '@angular/core';
   styleUrls: ['./container.component.scss']
 })
 export class ContainerComponent {
-
+  envQA = environment.qa;
   constructor() {}
 }
