@@ -67,6 +67,7 @@ import { RubrosMainMenuComponent } from './components/rubros-main-menu/rubros-ma
 import { RubrosEnHomeComponent } from './components/rubros-en-home/rubros-en-home.component';
 import { FavoritosComponent } from './components/favoritos/favoritos.component';
 import { FavoritoButtonComponent } from './components/favorito-button/favorito-button.component';
+import { QaBannerComponent } from './components/qa-banner/qa-banner.component';
 
 registerLocaleData(localeEs, 'es-AR', localeEsExtra);
 
@@ -108,6 +109,7 @@ registerLocaleData(localeEs, 'es-AR', localeEsExtra);
     RubrosEnHomeComponent,
     FavoritosComponent,
     FavoritoButtonComponent,
+    QaBannerComponent,
   ],
   imports: [
     GtagModule.forRoot({ trackingId: 'UA-132433044-1', trackPageviews: true }),
