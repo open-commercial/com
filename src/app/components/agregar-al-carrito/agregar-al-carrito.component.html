@@ -35,7 +35,7 @@
     </div>
     <br>
     <div fxLayout="row" fxLayoutAlign="start center">
-      <span [innerHTML]="getRubroImagenHtml()" class="svg-container"></span>&nbsp;
+      <span [innerHTML]="helper.getSafeHtml(producto && producto.imagenHtmlRubro ? producto.imagenHtmlRubro : '')" class="svg-container"></span>&nbsp;
       <span>{{ producto.nombreRubro | titlecase }}</span>
     </div>
     <span class="sic-com-stock" [style.color]="(producto.cantidadTotalEnSucursalesDisponible > 0 ? 'limegreen' : 'red')" *ngIf="cliente">

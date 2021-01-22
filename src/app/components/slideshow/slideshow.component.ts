@@ -4,17 +4,16 @@ import { IImagen } from '../../services/slideshow.service';
 @Component({
   selector: 'sic-com-slideshow',
   templateUrl: './slideshow.component.html',
-  styleUrls: ['./slideshow.component.css']
+  styleUrls: ['./slideshow.component.scss']
 })
 export class SlideshowComponent implements OnInit, AfterViewInit {
   private pImagenes: IImagen[] = [];
   @Input() set imagenes(value: IImagen[]) { this.pImagenes = value; }
   get imagenes(): IImagen[] { return this.pImagenes; }
 
-  currentImgIndex = 0;
   imgCount = 0;
   interval = null;
-  intervalTime = 1;
+  intervalTime = 20;
   pauseTime = 5000;
 
   @ViewChild('imgContainer', { static: false }) imgContainer: ElementRef;
@@ -34,7 +33,7 @@ export class SlideshowComponent implements OnInit, AfterViewInit {
 
     this.checkIndex(index);
 
-    const step = Math.floor(this.imgContainer.nativeElement.offsetWidth / 80);
+    const step = Math.floor(this.imgContainer.nativeElement.offsetWidth / 10);
     const toScroll = this.imgContainer.nativeElement.offsetWidth * index;
 
     let i = this.imgContainer.nativeElement.scrollLeft;

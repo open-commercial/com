@@ -1,0 +1,24 @@
+.sic-com-rubros-list {
+  padding: 1.2rem 1.2rem 0 1.2rem;
+  margin: 0;
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    li {
+      margin-bottom: 1rem;
+      color: #666666;
+      &.selected {
+       color: black;
+       font-weight: bold;
+      }
+    }
+  }
+  .svg-container {
+    margin-right: 0.5em;
+  }
+
+  mat-icon {
+    margin-right: 0.5em;
+  }
+}

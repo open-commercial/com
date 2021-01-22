@@ -9,6 +9,9 @@ import {Cliente} from '../../models/cliente';
 import {ClientesService} from '../../services/clientes.service';
 import {CarritoCompra} from '../../models/carrito-compra';
 import { combineLatest } from 'rxjs';
+import { RubrosService } from '../../services/rubros.service';
+import { finalize } from 'rxjs/operators';
+import { Rubro } from '../../models/rubro';
 
 @Component({
   selector: 'sic-com-navbar',
@@ -23,11 +26,14 @@ export class NavbarComponent implements OnInit {
     criteriaControl: new FormControl()
   });
   cliente: Cliente = null;
+  loading = false;
+  rubros: Rubro[] = [];
 
   constructor(public authService: AuthService,
               private productosService: ProductosService,
               private carritoCompraService: CarritoCompraService, private router: Router,
               private clientesService: ClientesService,
+              private rubrosService: RubrosService,
               private avisoService: AvisoService) {}
 
   ngOnInit() {
@@ -46,6 +52,14 @@ export class NavbarComponent implements OnInit {
       const v = data ? data.codigo || data.descripcion : '';
       criteriaControl.setValue(v);
     });
+
+    this.rubrosService.getRubros()
+      .pipe(finalize(() => this.loading = false))
+      .subscribe(
+        rubros => this.rubros = rubros,
+        err => this.avisoService.openSnackBar(err.error, 'Cerrar', 0),
+      )
+    ;
   }
 
   loadNavbarInfo() {

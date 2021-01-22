@@ -1,7 +1,7 @@
 <div id="slider">
   <div class="slider-img-container" #imgContainer>
     <ng-container *ngFor="let i of imagenes">
-      <img [src]="i.url" alt="" *ngIf="i.clickAction" (click)="i.clickAction()">
+      <img [src]="i.url" alt="" *ngIf="i.clickAction" (click)="i.clickAction()" class="pointer">
       <img [src]="i.url" alt="" *ngIf="!i.clickAction">
     </ng-container>
   </div>

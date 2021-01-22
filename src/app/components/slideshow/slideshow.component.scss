@@ -1,0 +1,18 @@
+#slider {
+  white-space: nowrap;
+  padding: 0;
+  margin: 0;
+  .slider-img-container {
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+    img {
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      display: inline-block;
+      box-sizing: border-box;
+    }
+  }
+}
+

@@ -7,15 +7,15 @@ import { Router } from '@angular/router';
 import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
-  selector: 'sic-com-rubros',
-  templateUrl: './rubros.component.html',
-  styleUrls: ['./rubros.component.scss']
+  selector: 'sic-com-rubros-dialog',
+  templateUrl: './rubros-dialog.component.html',
+  styleUrls: ['./rubros-dialog.component.scss']
 })
-export class RubrosComponent implements OnInit {
+export class RubrosDialogComponent implements OnInit {
   loading = false;
   rubros: Rubro[];
 
-  constructor(private dialogRef: MatDialogRef<RubrosComponent>,
+  constructor(private dialogRef: MatDialogRef<RubrosDialogComponent>,
               private rubrosService: RubrosService,
               private avisoService: AvisoService,
               private router: Router) { }
@@ -35,6 +35,7 @@ export class RubrosComponent implements OnInit {
   }
 
   goToProductos(r: Rubro) {
+    this.router.navigate(['/productos'], { queryParams: { r: r.idRubro }});
     this.dialogRef.close();
   }
 

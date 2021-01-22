@@ -59,7 +59,7 @@ import { BotonMercadoPagoComponent } from './components/boton-mercado-pago/boton
 import { CheckoutStatusComponent } from './components/checkout-status/checkout-status.component';
 import { MercadoPagoDialogComponent } from './components/mercado-pago-dialog/mercado-pago-dialog.component';
 import { AgregarAlCarritoComponent } from './components/agregar-al-carrito/agregar-al-carrito.component';
-import { RubrosComponent } from './components/rubros/rubros.component';
+import { RubrosDialogComponent } from './components/rubros-dialog/rubros-dialog.component';
 import { RubroButtonComponent } from './components/rubro-button/rubro-button.component';
 import { RubrosMainMenuComponent } from './components/rubros-main-menu/rubros-main-menu.component';
 import { RubrosEnHomeComponent } from './components/rubros-en-home/rubros-en-home.component';
@@ -68,6 +68,8 @@ import { FavoritoButtonComponent } from './components/favorito-button/favorito-b
 import { RECAPTCHA_V3_SITE_KEY, RecaptchaV3Module } from 'ng-recaptcha';
 import { RecaptchaModule, RecaptchaFormsModule } from 'ng-recaptcha';
 import { SlideshowComponent } from './components/slideshow/slideshow.component';
+import { RubrosListComponent } from './components/rubros-list/rubros-list.component';
+import { SvgButtonComponent } from './components/svg-button/svg-button.component';
 
 registerLocaleData(localeEs, 'es-AR', localeEsExtra);
 
@@ -103,13 +105,15 @@ registerLocaleData(localeEs, 'es-AR', localeEsExtra);
     CheckoutStatusComponent,
     MercadoPagoDialogComponent,
     AgregarAlCarritoComponent,
-    RubrosComponent,
+    RubrosDialogComponent,
     RubroButtonComponent,
     RubrosMainMenuComponent,
     RubrosEnHomeComponent,
     FavoritosComponent,
     FavoritoButtonComponent,
     SlideshowComponent,
+    RubrosListComponent,
+    SvgButtonComponent,
   ],
   imports: [
     GtagModule.forRoot({ trackingId: 'UA-132433044-1', trackPageviews: true }),
@@ -154,7 +158,7 @@ registerLocaleData(localeEs, 'es-AR', localeEsExtra);
     ConfirmationDialogComponent,
     AgregarAlCarritoDialogComponent,
     MercadoPagoDialogComponent,
-    RubrosComponent, // es un dialog tambien
+    RubrosDialogComponent, // es un dialog tambien
   ],
   bootstrap: [
     SicComComponent

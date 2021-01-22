@@ -1,4 +1,7 @@
 <mat-dialog-content class="sic-com-rubros">
+  <button class="close-button" mat-icon-button tabindex="-1" mat-dialog-close aria-label="Cerrar rubros">
+    <mat-icon>close</mat-icon>
+  </button>
   <div *ngIf="!loading">
     <div fxLayout="row wrap" fxLayoutAlign="center center">
       <sic-com-rubro-button *ngFor="let r of rubros" [rubro]="r" (rubroClick)="goToProductos(r)"></sic-com-rubro-button>

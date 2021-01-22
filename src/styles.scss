@@ -130,18 +130,20 @@ html, body {
 }
 
 .rubro-button {
-  text-align: center;
-  padding: .5rem;
-  button {
+  padding: .4rem;
+}
+
+.svg-button-wrapper {
+  button.svg-button {
     cursor: pointer;
     width: 70px;
     height: 70px;
     padding: 1.2em;
     margin-bottom: 0.7rem;
     &.md {
-      width: 90px;
-      height: 90px;
-      padding: 1.5em;
+      width: 135px;
+      height: 135px;
+      padding: 2.7em;
       margin-bottom: 0.7rem;
     }
     border-radius: 50%;
@@ -167,8 +169,8 @@ html, body {
     font-size: .9em;
     font-weight: bold;
     color: #323232;
+    text-align: center;
   }
-
 }
 
 .svg-container {
