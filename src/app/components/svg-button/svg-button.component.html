@@ -2,5 +2,5 @@
   <button class="svg-button" type="button" (click)="click()"
           [innerHTML]="helper.getSafeHtml(svg ? svg : defaultSvg)" ngClass.gt-sm="md">
   </button>
-  <div class="name" *ngIf="title">{{ title | titlecase }}</div>
+  <div class="name" *ngIf="title" ngClass.gt-sm="md">{{ title | titlecase }}</div>
 </div>

@@ -28,6 +28,7 @@ export class FavoritoButtonComponent implements OnInit {
 
   toggleFavorito($event) {
     $event.stopPropagation();
+    $event.preventDefault();
     const obs: Observable<void> = this.pProducto.favorito
       ? this.productosService.quitarProductoDeFavorito(this.pProducto.idProducto)
       : this.productosService.marcarComoFavorito(this.pProducto.idProducto)

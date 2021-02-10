@@ -1,5 +1,5 @@
 <div class="sic-com-rubros-en-home" fxLayout="row wrap" fxLayoutAlign="center center" #container>
-  <sic-com-rubro-button *ngFor="let r of rubrosToShow" [rubro]="r" (rubroClick)="irAProductosConRubro(r)" style="margin: 5px;"></sic-com-rubro-button>
+  <sic-com-rubro-button *ngFor="let r of rubrosToShow" [rubro]="r" (rubroClick)="irAProductosConRubro(r)" class="r-b"></sic-com-rubro-button>
   <div class="rubro-button" #plusButton>
     <sic-com-svg-button (buttonClick)="verTodos()" title="Más" [svg]="plusSvgIcon"></sic-com-svg-button>
   </div>

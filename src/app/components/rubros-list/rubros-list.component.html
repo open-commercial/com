@@ -1,6 +1,6 @@
 <div class="sic-com-rubros-list">
-  <ul>
-    <li [class.selected]="!selected" *ngIf="!hideTodos"><a class="pointer" (click)="clear()">Todos</a></li>
+  <ul class="li-hover">
+    <li [class.selected]="!selected" *ngIf="!hideTodos"><a class="pointer" (click)="clear()">Todos los rubros</a></li>
     <li [class.selected]="selected && selected.idRubro === r.idRubro" *ngFor="let r of rubros">
       <a class="pointer" (click)="goToProductos(r)" >
         <span class="svg-container" *ngIf="r.imagenHtml" [innerHTML]="helper.getSafeHtml(r && r.imagenHtml ? r.imagenHtml : '')"></span>

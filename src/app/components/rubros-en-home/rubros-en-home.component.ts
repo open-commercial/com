@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { Rubro } from '../../models/rubro';
 import { RubrosService } from '../../services/rubros.service';
 import { AvisoService } from '../../services/aviso.service';
@@ -45,9 +45,11 @@ export class RubrosEnHomeComponent implements OnInit {
         err => this.avisoService.openSnackBar(err.error, '', 3500),
       )
     ;
-    window.onresize = () => {
-      this.calcularFit();
-    };
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize() {
+    this.calcularFit();
   }
 
   verTodos() {

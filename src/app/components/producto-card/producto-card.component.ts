@@ -27,6 +27,7 @@ export class ProductoCardComponent implements OnInit {
   showDialogCantidad($event, producto: Producto) {
     const dialogRef = this.dialog.open(AgregarAlCarritoDialogComponent);
     $event.stopPropagation();
+    $event.preventDefault();
     dialogRef.componentInstance.producto = producto;
     dialogRef.componentInstance.cliente = this.cliente;
   }

@@ -9,7 +9,7 @@
   padding: 0 2rem;
   .outer-container {
     position: relative;
-    height: 324px;
+    height: 297px;
     &.desktop {
       height: 400px;
     }
@@ -20,9 +20,8 @@
       bottom: 0;
       right: 0;
       overflow-y: hidden;
-      overflow-x: auto;
+      overflow-x: hidden;
       white-space: nowrap;
-      //background: #efefef;
       padding-top: .4rem;
       padding-left: .4rem;
       .oferta {

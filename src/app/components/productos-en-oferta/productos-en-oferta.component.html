@@ -1,18 +1,13 @@
 <div class="sic-com-productos-en-oferta" *ngIf="enOferta.length">
   <div class="outer-container">
-    <div class="scroll-container">
+    <div class="scroll-container" #cardsContainer>
       <sic-com-producto-card [producto]="p" [cliente]="cliente" *ngFor="let p of enOferta"></sic-com-producto-card>
-      <div class="oferta" [class.first-loading]="!enOferta.length">
-        <div *ngIf="loading" fxLayoutAlign="center center" class="spinner">
-          <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
-        </div>
-      </div>
     </div>
-    <button mat-raised-button class="left-button">
+    <button mat-raised-button class="left-button" (click)="scrollLeft()" [disabled]="scrolling">
       <mat-icon>keyboard_arrow_left</mat-icon>
     </button>
-    <button mat-raised-button class="right-button">
-      <mat-icon>keyboard_arrow_right</mat-icon>
+    <button mat-raised-button class="right-button" (click)="scrollRight()" [disabled]="scrolling">
+      <mat-icon [class.spin]="loading">{{ loading ? 'sync' : 'keyboard_arrow_right' }}</mat-icon>
     </button>
   </div>
 </div>

@@ -1,7 +1,7 @@
-<div class="sic-com-login">
-  <a routerLink="/" fxLayout="row" fxLayoutAlign="start center">
+<div class="sic-com-login login-template placement" ngClass.gt-xs="tablet" ngClass.gt-md="desktop">
+  <a routerLink="/" fxLayout="row" fxLayoutAlign="start center" class="back-button">
     <mat-icon>keyboard_arrow_left</mat-icon>
-    <strong>Ir a la Portada</strong>
+    <span>Ir al Inicio</span>
   </a>
   <div fxLayout="row" fxLayoutAlign="center center">
     <form [formGroup]="loginForm" (ngSubmit)="login()" class="sic-com-form">
@@ -35,14 +35,12 @@
         <span>&nbsp;</span>
       </div>
       <div *ngIf="!loading" fxLayout="column" fxLayoutGap=".7em">
-        <button fxFill mat-raised-button color="primary" >Ingresar</button>
-        <a fxFill mat-raised-button routerLink="/registracion">Registrarme</a>
+        <button fxFill mat-flat-button color="primary" >Ingresar</button>
+        <a fxFill mat-flat-button routerLink="/registracion">Registrarme</a>
       </div>
       <div *ngIf="loading" fxLayout="row" fxLayoutAlign="center center">
         <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
       </div>
     </form>
   </div>
-  <sic-com-footer></sic-com-footer>
 </div>
-

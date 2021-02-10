@@ -1,17 +1,20 @@
-<div class="sic-com-home">
-  <div class="slideshow-container" ngClass.gt-sm="desktop">
-    <sic-com-slideshow [imagenes]="imageUrls"></sic-com-slideshow>
-  </div>
+<div class="sic-com-home" ngClass.gt-xs="tablet" ngClass.gt-md="desktop">
+  <sic-com-slideshow [imagenes]="imageUrls"></sic-com-slideshow>
   <h2 class="title">PRODUCTOS QUE TE PUEDEN INTERESAR</h2>
   <sic-com-rubros-en-home></sic-com-rubros-en-home>
   <h2 class="title">CONOCÉ NUESTRAS OFERTAS</h2>
   <sic-com-productos-en-oferta></sic-com-productos-en-oferta>
-  <h2 class="title">MARCAS CON LAS QUE TRABAJAMOS</h2>
-  <ul class="marcas">
-    <li class="marca" *ngFor="let m of marcas">
-      <a [routerLink]="m.routeLink" [queryParams]="m.queryParams">
-        <img [src]="m.url" [alt]="m.nombre">
-      </a>
-    </li>
-  </ul>
+  <div class="img-wrapper" ngClass.gt-sm="desktop">
+    <img class="imagen-responsive" src="https://res.cloudinary.com/hf0vu1bg2/image/upload/v1611796181/slideshow/BannerEnvios.png" alt="envios">
+  </div>
+  <div class="">
+    <h2 class="title">MARCAS CON LAS QUE TRABAJAMOS</h2>
+    <ul class="marcas">
+      <li class="marca" *ngFor="let m of marcas">
+        <a [routerLink]="m.routeLink" [queryParams]="m.queryParams">
+          <img [src]="m.url" [alt]="m.nombre">
+        </a>
+      </li>
+    </ul>
+  </div>
 </div>

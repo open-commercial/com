@@ -2,8 +2,14 @@
 
 .sic-com-favorito-button {
   padding: 0;
-  color: #cccccc;
+  color: $color-BDBDBD;
+  &:hover {
+    color: $color-828282
+  }
   &.on {
-    color: $color-warn;
+    color: $color-FFDA41;
+    &:hover {
+      color: $color-F0C71B;
+    }
   }
 }
