@@ -62,7 +62,7 @@ export class ProductosService {
   }
 
   getProductosFavoritos(pagina = 0): Observable<Pagination> {
-    return this.http.get<Pagination>(`${this.url}/favoritos?pagina=${pagina}`);
+    return this.http.get<Pagination>(`${this.url}/favoritos/sucursales/${environment.idSucursal}?pagina=${pagina}`);
   }
 
   marcarComoFavorito(idProducto: number): Observable<void> {
