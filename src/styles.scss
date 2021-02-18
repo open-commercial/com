@@ -166,7 +166,7 @@ html, body {
 
 .login-template {
   color: $color-536070;
-  padding: 2.5em 1rem 1rem 1rem;
+  padding: 1rem;
   text-align: center;
 
   img {
@@ -316,4 +316,5 @@ mat-icon.spin {
 .mat-flat-button {
   line-height: 50px!important;
   font-size: 1.1em!important;
+  min-width: 170px!important;
 }

@@ -11,6 +11,7 @@ import {Location} from '@angular/common';
 import {finalize} from 'rxjs/operators';
 import {AgregarAlCarritoComponent} from '../agregar-al-carrito/agregar-al-carrito.component';
 import { Observable } from 'rxjs';
+import { HelperService } from '../../services/helper.service';
 
 @Component({
   selector: 'sic-com-producto',
@@ -39,7 +40,8 @@ export class ProductoComponent implements OnInit {
               private clientesService: ClientesService,
               private router: Router,
               private route: ActivatedRoute,
-              private location: Location) {
+              private location: Location,
+              public helper: HelperService) {
   }
 
   ngOnInit() {

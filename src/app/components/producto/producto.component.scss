@@ -1,9 +1,68 @@
 @import "../../../_colors.scss";
 
 .sic-com-producto {
-  background-color: white;
+  background-color: #fafafa;
+  color: $color-536070;
+  padding: 1rem;
 
-  .sic-com-ir-listado {
+  a {
+    text-decoration: none;
+    font-size: 0.9em;
+    color: inherit;
+    cursor: pointer;
+  }
+
+  .img-container {
+    position: relative;
+    .rubro {
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
+      z-index: 1;
+      display: inline-block;
+      padding: 0.45em 0.6em 0.3em 0.6em;
+      font-size: 0.9em;
+      border-radius: 0.3em;
+      background: $color-BDBDBD;
+      color: $color-F2F2F2;
+      font-weight: 500;
+    }
+    padding: .5rem;
+    img {
+      max-height: 100%;
+      max-width: 100%;
+      -o-object-fit: contain;
+      object-fit: contain;
+      object-position: center center;
+      margin: 0;
+      display: inline-block;
+      &:hover {
+        cursor: zoom-in;
+      }
+    }
+  }
+
+  .img-viewer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background-color: white;
+    z-index: 200;
+    img {
+      max-width: 100%; height: auto;
+      &:hover {
+        cursor: zoom-out;
+      }
+    }
+  }
+
+  .detalle-producto {
+    padding: .5rem;
+  }
+
+/*  .sic-com-ir-listado {
     height: 40px;
     cursor: pointer;
   }
@@ -42,5 +101,5 @@
 
   .boton {
     min-width: 15rem;
-  }
+  }*/
 }

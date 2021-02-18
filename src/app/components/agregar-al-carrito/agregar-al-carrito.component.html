@@ -1,54 +1,48 @@
 <div class="sic-com-agregar-al-carrito">
-  <div class="producto-info">
-    <span class="codigo">
-      {{producto.codigo}}
-      <mat-chip-list *ngIf="producto.oferta" class="sic-com-oferta">
-        <mat-chip class="sic-com-stock">OFERTA</mat-chip>
-      </mat-chip-list>
-    </span>
-    <div class="oferta-cantidad" *ngIf="producto.oferta">
+  <div class="oferta" fxLayout="row" fxLayoutGap=".75rem" fxLayoutAlign="start center"
+       *ngIf="producto.oferta && producto.porcentajeBonificacionOferta > 0">
+    <span class="oferta-label">OFERTA</span>
+    <span class="oferta-descripcion">
       <span *ngIf="producto.bulto > 1">Llevando {{producto.bulto | number:'1.0-2':'es-AR'}} o más</span>
-      {{producto.porcentajeBonificacionOferta | number:'1.0-2':'es-AR'}}% OFF!
-    </div>
-    <div class="descripcion">{{producto.descripcion}}</div>
-    <div class="precios">
-      <div *ngIf="producto.oferta">
-          <span [class.tachado]="!(producto.bulto > 1)" [class.seleccionado]="!esCantidadBonificada()">
-            P. U. $ {{producto.precioLista | number:'1.0-2':'es-AR' }}
-          </span><br>
-        <span [class.seleccionado]="esCantidadBonificada()">
-            P. U. Oferta $ {{ producto.precioBonificado | number:'1.0-2':'es-AR' }}
-          </span>
-      </div>
-      <div *ngIf="!producto.oferta">
-          <span *ngIf="!esCantidadBonificada() || producto.bulto > 1" [class.seleccionado]="!esCantidadBonificada()">
-            P. U. $ {{producto.precioLista | number:'1.0-2':'es-AR' }}
-          </span>
-        <div [class.seleccionado]="esCantidadBonificada()" *ngIf="producto.precioLista > producto.precioBonificado">
-          P. U. Bonif.<span *ngIf="producto.bulto > 1"> x Cant. </span>
-          $ {{ producto.precioBonificado | number:'1.0-2':'es-AR' }}
-        </div>
-      </div>
-      <div *ngIf="!producto.oferta && (producto.precioLista > producto.precioBonificado) && producto.bulto > 1" [class.seleccionado]="esCantidadBonificada()">
-        Llevando {{producto.bulto | number:'1.0-2':'es-AR'}} o más
-      </div>
-    </div>
-    <br>
-    <div fxLayout="row" fxLayoutAlign="start center">
-      <span [innerHTML]="helper.getSafeHtml(producto && producto.imagenHtmlRubro ? producto.imagenHtmlRubro : '')" class="svg-container"></span>&nbsp;
-      <span>{{ producto.nombreRubro | titlecase }}</span>
-    </div>
-    <span class="sic-com-stock" [style.color]="(producto.cantidadTotalEnSucursalesDisponible > 0 ? 'limegreen' : 'red')" *ngIf="cliente">
-      <strong>{{ producto.cantidadTotalEnSucursalesDisponible > 0 ? "Stock Disponible: "+ (producto.cantidadTotalEnSucursalesDisponible | number:'1.0-2':'es-AR') + ' ' + producto.nombreMedida : "Sin Stock" }}</strong>
+      $ {{ producto.precioBonificado | number:'1.0-2':'es-AR' }}
     </span>
   </div>
-  <br>
-  <form [formGroup]="form" (ngSubmit)="submit()" *ngIf="cliente && producto.cantidadTotalEnSucursalesDisponible > 0 && !loading" fxLayoutAlign="center center">
-    <button type="button" mat-mini-fab color="accent" (click)="decCantidad()">
+  <div class="producto">
+    <div class="producto-descripcion">{{ producto.descripcion }}</div>
+  </div>
+  <div class="precios">
+    <div *ngIf="producto.oferta">
+      <span [class.seleccionado]="!esCantidadBonificada()">
+        P. U. $ {{producto.precioLista | number:'1.0-2':'es-AR' }}
+      </span><br>
+      <span [class.seleccionado]="esCantidadBonificada()">
+        P. U. Oferta $ {{ producto.precioBonificado | number:'1.0-2':'es-AR' }}
+      </span>
+    </div>
+    <div *ngIf="!producto.oferta">
+      <span *ngIf="!esCantidadBonificada() || producto.bulto > 1" [class.seleccionado]="!esCantidadBonificada()">
+        P. U. $ {{producto.precioLista | number:'1.0-2':'es-AR' }}
+      </span>
+      <div [class.seleccionado]="esCantidadBonificada()" *ngIf="producto.precioLista > producto.precioBonificado">
+        P. U. Bonif.<span *ngIf="producto.bulto > 1"> x Cant. </span>
+        $ {{ producto.precioBonificado | number:'1.0-2':'es-AR' }}
+      </div>
+    </div>
+    <div *ngIf="!producto.oferta && (producto.precioLista > producto.precioBonificado) && producto.bulto > 1" [class.seleccionado]="esCantidadBonificada()">
+      Llevando {{producto.bulto | number:'1.0-2':'es-AR'}} o más
+    </div>
+  </div>
+  <div class="stock" [ngClass]="producto.cantidadTotalEnSucursalesDisponible > 0 ? 'disponible' : 'no-disponible'" *ngIf="cliente">
+    {{ producto.cantidadTotalEnSucursalesDisponible > 0 ? "Stock Disponible: "+ (producto.cantidadTotalEnSucursalesDisponible | number:'1.0-2':'es-AR') + ' ' + producto.nombreMedida : "Sin Stock" }}
+  </div>
+  <form [formGroup]="form" (ngSubmit)="submit()" *ngIf="cliente && producto.cantidadTotalEnSucursalesDisponible > 0 && !loading"
+        fxLayout="row" fxLayoutAlign="start center">
+    <label for="input-cantidad">Cantidad</label>
+    <button type="button" mat-icon-button (click)="decCantidad()">
       <mat-icon>remove</mat-icon>
     </button>
     <mat-form-field class="input-cantidad">
-      <input matInput type="number" formControlName="cantidad" placeholder="Cantidad" required #cantInput>
+      <input id="input-cantidad" matInput type="number" formControlName="cantidad" required #cantInput>
       <mat-hint *ngIf="cantidadEnCarrito" fxLayoutAlign="center center">
         <mat-icon>shopping_cart</mat-icon>: {{ cantidadEnCarrito | number:'1.0-2':'es-AR' }}
       </mat-hint>
@@ -66,7 +60,7 @@
       </mat-error>
       <br>
     </mat-form-field>
-    <button type="button" mat-mini-fab color="primary" (click)="incCantidad()">
+    <button type="button" mat-icon-button (click)="incCantidad()">
       <mat-icon>add</mat-icon>
     </button>
   </form>

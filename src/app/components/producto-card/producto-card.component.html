@@ -18,7 +18,6 @@
             </div>
           </div>
         </div>
-        <!--<span class="codigo">{{ producto.codigo }}</span>-->
         <p>{{ producto.descripcion }}</p>
       </div>
       <div fxFlex="45">
@@ -31,13 +30,12 @@
           </span>
           </div>
           <div *ngIf="(producto.oferta && producto.porcentajeBonificacionOferta) || producto.porcentajeBonificacionPrecio">
-          <span class="bonificado">
-            <span *ngIf="producto.bulto > 1">Llevando {{ producto.bulto }} o más <span class="nowrap">$ {{ producto.precioBonificado | number:'1.0-2':'es-AR' }}</span></span>
-            <!--$ {{ producto.precioBonificado | number:'1.0-2':'es-AR' }}-->
-          </span>
+            <span class="bonificado">
+              <span *ngIf="producto.bulto > 1">Llevando {{ producto.bulto }} o más <span class="nowrap">$ {{ producto.precioBonificado | number:'1.0-2':'es-AR' }}</span></span>
+            </span>
+          </div>
         </div>
       </div>
-    </div>
-  </mat-card>
+    </mat-card>
 </a>
 

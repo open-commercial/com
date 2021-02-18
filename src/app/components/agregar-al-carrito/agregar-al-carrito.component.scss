@@ -1,53 +1,60 @@
 @import "../../../colors";
 
 .sic-com-agregar-al-carrito {
-  padding: 0;
-  span.codigo {
-    font-size: 12px;
-    font-weight: normal;
-    color: black;
-  }
-  .descripcion {
-    color: $color-primary;
-    font-weight: bold;
-    margin-top: 0;
-    margin-bottom: 0.5rem;
-  }
-  .input-cantidad {
-    width: 100px;
-    padding: 0 10px;
-  }
-  .en-carrito {
-    margin-top: 0;
-    font-size: 0.85em;
-  }
-  .sic-com-stock {
-    color: white;
+  color: $color-536070;
+  .oferta {
+    margin-bottom: 1.3rem;
+    font-size: 0.86em;
     font-weight: 500;
-  }
-  .sic-com-oferta {
-    display: inline-block;
-    mat-chip {
-      min-height: 22px;
-      font-size: 0.85rem;
-      background: limegreen;
+    .oferta-label {
+      font-weight: bold;
+      padding: .65em 1em .5em 1em;
+      background: $color-30CC81;
       color: white;
+      border-radius: 1.2em;
+    }
+    .oferta-descripcion {
+      color: $color-30CC81;
     }
   }
-  .oferta-cantidad {
-    color: limegreen;
-    font-weight: bold;
-    font-size: 0.85em;
+  .producto {
+    margin-bottom: 1.3rem;
+    .producto-descripcion {
+      font-size: 1.3em;
+      font-weight: 500;
+    }
   }
 
   .precios {
-    color: darkgray;
+    font-weight: 500;
+    font-size: 1.2em;
+    margin-bottom: 1.3rem;
+    color: $color-828282;
+    .seleccionado {
+      font-size: 1.3em;
+      color: $color-1E222B;
+    }
   }
-  .seleccionado {
-    font-weight: bold;
-    color: rgba(0, 0, 0, 0.87);
+
+  .stock {
+    margin-bottom: 1.3rem;
+    font-size: 0.86em;
+    font-weight: 500;
+    &.no-disponible {
+      color: $color-EB5757;
+    }
+    &.disponible {
+      color: $color-30CC81;
+    }
   }
-  .tachado {
-    text-decoration: line-through;
+
+  label[for="input-cantidad"] {
+    font-weight: 500;
+    font-size: 0.86em;
+    margin-right: 0.7rem;
+  }
+  .input-cantidad {
+    width: 5rem;
+    padding: 0 0.5rem;
   }
 }
