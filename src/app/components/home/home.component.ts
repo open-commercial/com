@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import { IImagen, SlideshowService } from '../../services/slideshow.service';
 import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
+import { ProductosService } from '../../services/productos.service';
 
 @Component({
   selector: 'sic-com-home',
@@ -63,7 +64,8 @@ export class HomeComponent implements OnInit {
   imageUrls: IImagen[] = [];
 
   constructor(private slideshowService: SlideshowService,
-              private breakpointObserver: BreakpointObserver) {}
+              private breakpointObserver: BreakpointObserver,
+              private productoService: ProductosService) {}
 
   ngOnInit(): void {
     this.breakpointObserver.observe([
@@ -79,5 +81,9 @@ export class HomeComponent implements OnInit {
         this.isMobile = false;
       }
     });
+  }
+
+  getLoadMoreObservable() {
+    return this.productoService.getProductosEnOferta();
   }
 }

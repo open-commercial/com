@@ -1,161 +1,110 @@
 @import "../../../_colors.scss";
 
 .sic-com-carrito-compra {
-  .carrito-header-and-body {
-    background-color: white;
-  }
-  .sic-com-ir-listado {
-    height: 40px;
-    cursor: pointer;
-  }
-
-  .sic-com-totalizadores {
-    height: 60px;
-    font-weight: bold;
-    .subtotal.bonificado {
-      font-weight: normal;
-      text-decoration: line-through;
+  color: $color-536070;
+  .carrito {
+    margin-top: 1rem;
+    font-weight: 500;
+    .item-carrito {
+      background: white;
+      padding: 0.7rem;
+      margin-bottom: 0.7rem;
+      -webkit-box-shadow: 1px 1px 5px 0px rgba(160,160,160,0.5);
+      box-shadow: 1px 1px 5px 0px rgba(160,160,160,0.5);
     }
   }
 
-  .sic-com-botonera {
-    padding: 0 2rem;
-    margin: 0.7rem 0;
-  }
-
-  .sic-com-renglones-items {
-    .stock-no-disponible {
-      margin: .2rem 0;
-      padding: .4rem .6rem;
+  .img-container {
+    height: 9rem;
+    text-align: center;
+    padding: .5rem .5rem .5rem 0;
+    img {
+      max-width: 100%;
+      max-height: 100%;
+      -o-object-fit: contain;
+      object-fit: contain;
+      object-position: center center;
+      margin: 0;
       display: inline-block;
-      text-align: center;
+    }
+  }
+
+  .oferta {
+    margin-bottom: 1.3rem;
+    font-size: 0.86em;
+    font-weight: 500;
+    .oferta-label {
+      font-weight: bold;
+      padding: .65em 1em .5em 1em;
+      background: $color-30CC81;
       color: white;
-      font-size: .9rem;
+      border-radius: 1.2em;
+    }
+    .oferta-descripcion {
+      color: $color-30CC81;
+    }
+  }
+
+  .producto {
+    margin-bottom: 1.3rem;
+    .producto-descripcion {
       font-weight: 500;
-      background-color: red;
-      -webkit-border-radius: 4px;
-      -moz-border-radius: 4px;
-      border-radius: 4px;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow:hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
     }
-    border-bottom: 1px solid #ccc;
-    height: auto;
-    .mat-line {
-      white-space: normal;
-    }
-    padding-bottom: 7px;
-    .precio-item.bonificado {
-      font-weight: normal;
-      text-decoration: line-through;
-    }
-  }
-
-  .sic-com-img-avatar {
-    width: 80px;
-    height: 60px;
-    border-radius: 0;
-    object-fit: contain;
-  }
-
-  .sic-com-producto-info {
-    padding: 13px 0 10px 0;
-  }
-
-  .sic-com-codigo-producto {
-    font-size: 12px;
-  }
-
-  .sic-com-compra-minima {
-    color: $color-primary;
-  }
-
-  .sic-com-oferta {
-    display: inline-block;
-    margin-left: 0.2rem;
-    mat-chip {
-      min-height: 22px;
-      font-size: 0.85rem;
-      background: limegreen;
-      color: white;
-    }
-  }
-
-  .oferta-cantidad {
-    color: limegreen;
-    font-weight: bold;
-    font-size: 0.85em;
   }
 
   .precios {
-    color: darkgray;
-  }
-  .seleccionado {
-    font-weight: bold;
-    color: rgba(0, 0, 0, 0.87);
-  }
-  .tachado {
-    text-decoration: line-through;
-  }
-
-  .sic-com-descripcion-producto {
-    color: $color-primary;
-    font-weight: bold;
-    font-size: 15px;
-  }
-
-  mat-chip-list {
-    display: inline-block;
-  }
-
-  .sic-com-bonificacion {
-    color: white;
-    background-color: limegreen;
-  }
-
-  .monto {
-    font-size: 16px;
-    font-weight: bold;
-  }
-
-  .valor {
-    white-space: nowrap;
-  }
-
-  .sic-com-input-cantidad {
-    width: 100px;
-    min-width: 60px;
-    padding: 0 10px;
-  }
-
-  .sic-com-mas-resultados {
-    color: $color-primary;
-    cursor: pointer;
-    height: 90px;
-  }
-
-  .sic-com-spinner-container {
-    height: 90px;
-    color: $color-primary;
-  }
-
-/*  .sic-com-paginator {
-    padding: .7rem;
-    .page {
-      padding: .5rem .9rem;
-      margin: 0 .3rem;
-      background: #DFDFDF;
-      -webkit-border-radius: 3px;
-      -moz-border-radius: 3px;
-      border-radius: 3px;
-    }
-  }*/
-  .total {
-    color: red;
-    &.cumple-compra-minima {
-      color: limegreen;
+    font-weight: 500;
+    color: $color-828282;
+    .seleccionado {
+      color: $color-1E222B;
     }
   }
-  .fondo-rojo {
-    background-color: red;
-    color: white;
+
+  .stock-no-disponible {
+    text-align: center;
+    margin-top: 0.5rem;
+    color: $color-EB5757;
+    font-size: 0.85em;
+    font-weight: 600;
+  }
+
+  .cantidades {
+    padding: 0 1rem;
+    margin: 1rem 0;
+    font-size: 1.57rem;
+    font-weight: 500;
+
+    .cantidad-minima {
+      font-size: 0.9rem;
+      color: $color-828282;
+    }
+    .total {
+      .cantidad {
+        color: $color-828282;
+        &.cumple-compra-minima {
+          color: $color-30CC81;
+        }
+      }
+    }
+  }
+
+  &.desktop {
+    .producto {
+      .producto-descripcion {
+        font-size: 1.2em;
+      }
+    }
+    .precios {
+      font-size: 1.2em;
+    }
+    .stock-no-disponible {
+      margin-top: 1rem;
+      font-size: unset;
+    }
   }
 }

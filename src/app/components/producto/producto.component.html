@@ -1,4 +1,4 @@
-<div fxLayout="column" class="sic-com-producto" *ngIf="!loadingProducto && !loadingCliente && producto">
+<div fxLayout="column" class="sic-com-producto page-template" *ngIf="!loadingProducto && !loadingCliente && producto">
   <a fxLayoutAlign="start center" class="sic-com-ir-listado back-button" (click)="volver()">
     <mat-icon>keyboard_arrow_left</mat-icon>
     <span>Volver</span>
@@ -45,6 +45,9 @@
       </div>
     </div>
   </div>
+  <br>
+  <h2 class="title">También te puede interesar</h2>
+  <sic-com-productos-recomendados-slider [producto]="producto"></sic-com-productos-recomendados-slider>
 </div>
 <div class="sic-com-spinner-container" fxLayoutAlign="center center" *ngIf="loadingProducto || loadingCliente">
   <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>

@@ -36,7 +36,6 @@ import {CuentaCorrienteComponent} from './components/cuenta-corriente/cuenta-cor
 import {RegistracionService} from './services/registracion.service';
 import {CheckoutComponent} from './components/checkout/checkout.component';
 import {HomeComponent} from './components/home/home.component';
-import {ProductosEnOfertaComponent} from './components/productos-en-oferta/productos-en-oferta.component';
 import {UbicacionFormComponent} from './components/ubicacion-form/ubicacion-form.component';
 import {UbicacionComponent} from './components/ubicacion-component/ubicacion.component';
 import {ClienteUbicacionesComponent} from './components/cliente-ubicaciones/cliente-ubicaciones.component';
@@ -70,6 +69,8 @@ import { RecaptchaModule, RecaptchaFormsModule } from 'ng-recaptcha';
 import { SlideshowComponent } from './components/slideshow/slideshow.component';
 import { RubrosListComponent } from './components/rubros-list/rubros-list.component';
 import { SvgButtonComponent } from './components/svg-button/svg-button.component';
+import { ProductosEnOfertaSliderComponent } from './components/productos-en-oferta-slider/productos-en-oferta-slider.component';
+import { ProductosRecomendadosSliderComponent } from './components/productos-recomendados-slider/productos-recomendados-slider.component';
 
 registerLocaleData(localeEs, 'es-AR', localeEsExtra);
 
@@ -93,7 +94,6 @@ registerLocaleData(localeEs, 'es-AR', localeEsExtra);
     CuentaCorrienteComponent,
     CheckoutComponent,
     HomeComponent,
-    ProductosEnOfertaComponent,
     UbicacionFormComponent,
     UbicacionComponent,
     ClienteUbicacionesComponent,
@@ -114,6 +114,8 @@ registerLocaleData(localeEs, 'es-AR', localeEsExtra);
     SlideshowComponent,
     RubrosListComponent,
     SvgButtonComponent,
+    ProductosEnOfertaSliderComponent,
+    ProductosRecomendadosSliderComponent,
   ],
   imports: [
     GtagModule.forRoot({ trackingId: 'UA-132433044-1', trackPageviews: true }),

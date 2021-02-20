@@ -186,6 +186,17 @@ html, body {
   }
 }
 
+.page-template {
+  color: $color-536070 !important;
+  padding: 1rem;
+  a {
+    text-decoration: none;
+    font-size: 0.9em;
+    color: inherit;
+    cursor: pointer;
+  }
+}
+
 .svg-button-wrapper {
   button.svg-button {
     cursor: pointer;
@@ -315,6 +326,15 @@ mat-icon.spin {
 
 .mat-flat-button {
   line-height: 50px!important;
-  font-size: 1.1em!important;
-  min-width: 170px!important;
+  font-size: 1.1rem!important;
+}
+
+.bg-color-FFDA41 {
+  background-color: $color-FFDA41;
+  color: $color-536070;
+}
+
+.bg-color-EB5757 {
+  background-color: $color-EB5757;
+  color: white;
 }

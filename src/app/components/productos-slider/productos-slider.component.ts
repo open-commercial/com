@@ -6,16 +6,18 @@ import {finalize} from 'rxjs/operators';
 import {AvisoService} from '../../services/aviso.service';
 import {Cliente} from '../../models/cliente';
 import {ClientesService} from '../../services/clientes.service';
+import { Observable } from 'rxjs';
+import { Pagination } from '../../models/pagination';
 
 @Component({
-  selector: 'sic-com-productos-en-oferta',
-  templateUrl: 'productos-en-oferta.component.html',
-  styleUrls: ['./productos-en-oferta.component.scss']
+  selector: 'sic-com-productos-slider',
+  templateUrl: 'productos-slider.component.html',
+  styleUrls: ['./productos-slider.component.scss']
 })
-export class ProductosEnOfertaComponent implements OnInit {
+export abstract class ProductosSliderComponent implements OnInit {
 
   cliente: Cliente;
-  enOferta: Producto[] = [];
+  productos: Producto[] = [];
   firstLoading = false;
   loading = false;
   totalPaginas = 1;
@@ -31,10 +33,12 @@ export class ProductosEnOfertaComponent implements OnInit {
 
   @ViewChild('cardsContainer', { static: false }) cardsContainer: ElementRef;
 
-  constructor(private productosService: ProductosService,
-              private authService: AuthService,
-              private clienteService: ClientesService,
-              private avisoService: AvisoService) {}
+  protected constructor(protected productosService: ProductosService,
+              protected authService: AuthService,
+              protected clienteService: ClientesService,
+              protected avisoService: AvisoService) {}
+
+  abstract getProductosObservableMethod(pagina: number): Observable<Pagination>;
 
   ngOnInit(): void {
     this.firstLoading = true;
@@ -57,17 +61,16 @@ export class ProductosEnOfertaComponent implements OnInit {
 
     this.loading = true;
     this.scrolling = true;
-    this.productosService.getProductosEnOferta(this.pagina)
+    // this.productosService.getProductosEnOferta(this.pagina)
+    this.getProductosObservableMethod(this.pagina)
       .pipe(finalize(() => { this.loading = false; this.firstLoading = false; }))
       .subscribe(
         (data) => {
           data['content'] = this.shuffle(data['content']);
-          data['content'].forEach(p => this.enOferta.push(p));
+          data['content'].forEach(p => this.productos.push(p));
           this.totalPaginas = data['totalPages'];
           if (this.cardsContainer && this.pagina > 1 && data['content'].length) {
-            setTimeout(() => {
-              this.scroll(1);
-            }, 800);
+            setTimeout(() => { this.scroll(1); }, 800);
           } else {
             this.scrolling = false;
           }
@@ -126,7 +129,6 @@ export class ProductosEnOfertaComponent implements OnInit {
   }
 
   scrollRight() {
-    // myDiv.offsetHeight + myDiv.scrollTop >= myDiv.scrollHeight
     const c = this.cardsContainer.nativeElement;
     const eos = c.offsetWidth + c.scrollLeft >= c.scrollWidth;
     if (eos) {
@@ -134,10 +136,6 @@ export class ProductosEnOfertaComponent implements OnInit {
     } else {
       this.scroll(1);
     }
-  }
-
-  cargarMasSiEsNecesario() {
-
   }
 
   scrollLeft() {
