@@ -1,51 +1,73 @@
-<div class="sic-com-favoritos">
-  <div *ngIf="!loading" class="contenido">
-    <a fxLayoutAlign="start center" class="ir-listado" [routerLink]="''">
-      <mat-icon>keyboard_arrow_left</mat-icon>
-      <strong>Volver</strong>
-    </a>
-    <div class="mensaje" *ngIf="!productos.length" fxLayoutAlign="center center">
-      <mat-icon color="primary">favorite</mat-icon> Marca tus productos favoritos para verlos listados aqui
+<div class="sic-com-favoritos" ngClass.gt-sm="desktop">
+  <div *ngIf="!loading" class="page-template">
+    <div fxLayout="row" fxLayoutAlign="space-between center">
+      <a fxLayoutAlign="start center" class="sic-com-ir-listado back-button" [routerLink]="''">
+        <mat-icon>keyboard_arrow_left</mat-icon>
+        <span>Volver</span>
+      </a>
+      <button mat-icon-button (click)="vaciarFavoritos()" [disabled]="!productos.length"  matTooltip="Quitar todos los items" *ngIf="productos.length">
+        <mat-icon>delete_sweep</mat-icon>
+      </button>
     </div>
-    <mat-list *ngIf="productos.length">
-      <mat-list-item *ngFor="let p of productos" class="favoritos">
-        <div matLine fxLayout="row" fxLayout.lt-sm="column">
-          <div fxFlex="60" fxLayout="row" fxLayoutAlign="space-around center">
-            <img fxFlex="30" mat-list-avatar class="avatar" [src]="p.urlImagen ? p.urlImagen : 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1545616229/assets/sin_imagen.png'" alt="">
-            <div class="info" fxFlex="70" fxLayoutAlign="center start" fxLayout="column">
-              <div>
-                <span class="codigo">{{p.codigo}}</span>
-                <mat-chip-list *ngIf="p.oferta" class="oferta">
-                  <mat-chip class="sic-com-stock">OFERTA</mat-chip>
-                </mat-chip-list>
-              </div>
-              <div class="oferta-cantidad" *ngIf="p.oferta">
-                <span *ngIf="p.bulto > 1">Llevando {{p.bulto | number:'1.0-2':'es-AR'}} o más</span>
-                {{p.porcentajeBonificacionOferta | number:'1.0-2':'es-AR'}}% OFF!
-              </div>
-              <div class="descripcion">{{p.descripcion}}</div>
-              <div *ngIf="p.porcentajeBonificacionOferta || p.porcentajeBonificacionPrecio">
-                <span class="precio bonificado">
-                  <span *ngIf="p.bulto > 1">Llevando {{ p.bulto }} o más</span>
-                  $ {{ p.precioBonificado | number:'1.0-2':'es-AR' }}
-                </span>
-              </div>
-              <span class="precio" [class.tachado]="!(p.bulto > 1) && (p.porcentajeBonificacionOferta || p.porcentajeBonificacionPrecio)">
-                $ {{p.precioLista | number:'1.0-2':'es-AR'}}
-              </span>
+    <div class="mensaje" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="0.5rem" *ngIf="!productos.length">
+        <mat-icon>favorite</mat-icon>
+        <span>Marca tus productos favoritos para verlos listados aquí</span>
+    </div>
+    <div class="favoritos">
+      <div *ngFor="let producto of productos" class="favorito" fxLayout="column" fxLayout.gt-sm="row" fxLayoutGap="0.5rem">
+        <div fxFlex fxLayout="row" fxLayoutAlign="start center">
+          <div fxFlex="50" fxFlex.gt-sm="30">
+            <div class="img-container">
+              <img [src]="producto.urlImagen" alt="">
             </div>
           </div>
-          <div fxFlex="40" fxLayout="row" fxLayoutAlign="space-between center">
-              <button mat-raised-button (click)="showDialogCantidad($event, p)" color="primary">
-                Agregar al Carrito
-              </button>
-              <button mat-icon-button (click)="quitarDeFavorito(p)" matTooltip="Quitar de Favoritos">
-                <mat-icon>favorite_border</mat-icon>
-              </button>
+          <div fxFlex class="info">
+            <div class="oferta" fxLayout="row" fxLayoutGap=".75rem" fxLayoutAlign="start center"
+                 *ngIf="producto.oferta && producto.porcentajeBonificacionOferta > 0">
+              <span class="oferta-label">OFERTA</span>
+              <span class="oferta-descripcion">
+              <span *ngIf="producto.bulto > 1">Llevando {{producto.bulto | number:'1.0-2':'es-AR'}} o más</span>
+                $ {{ producto.precioBonificado | number:'1.0-2':'es-AR' }}
+              </span>
+            </div>
+            <div class="producto">
+              <div class="producto-descripcion">{{ producto.descripcion }}</div>
+            </div>
+            <div class="precios">
+              <div *ngIf="producto.oferta">
+                <span>
+                  P. U. $ {{ producto.precioLista | number:'1.0-2':'es-AR'}}
+                </span><br>
+                <span>
+                  P. U. Oferta $ {{ producto.precioBonificado | number:'1.0-2':'es-AR'}}
+                </span>
+              </div>
+              <div *ngIf="!producto.oferta">
+                <span *ngIf="!estaBonificado(producto) || producto.bulto > 1">
+                  P. U. $ {{ producto.precioLista | number:'1.0-2':'es-AR'}}<br>
+                </span>
+                <span *ngIf="producto.precioLista > producto.precioBonificado">
+                  P. U. Bonif. <span *ngIf="producto.bulto > 1"> x Cant.</span>&nbsp;$ {{ producto.precioBonificado | number:'1.0-2':'es-AR'}}
+                </span>
+              </div>
+              <div *ngIf="!producto.oferta && (producto.precioLista > producto.precioBonificado) && producto.bulto > 1">
+                <span [class.seleccionado]="estaBonificado(producto)">Llevando {{producto.bulto | number:'1.0-2':'es-AR'}} o más</span>
+              </div>
+            </div>
           </div>
         </div>
-      </mat-list-item>
-    </mat-list>
+        <div fxFlex="50" fxFlex.gt-sm="40" fxLayout="row" fxLayoutAlign="space-between center" fxLayoutAlign.gt-sm="space-evenly center">
+          <div fxLayout="column" fxLayoutAlign="center center">
+            <button mat-flat-button (click)="showDialogCantidad($event, producto)" class ="bg-color-FFDA41">
+              Agregar al carrito
+            </button>
+          </div>
+          <button mat-icon-button (click)="quitarDeFavorito(producto)" matTooltip="Quitar del listado">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
   <div class="sic-com-paginator" *ngIf="!loading && totalPaginas > 1" fxLayout="row" fxLayoutAlign="center center">
     <button mat-button [disabled]="pagina <= 0" (click)="paginaAnterior()">
