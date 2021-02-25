@@ -1,5 +1,17 @@
-.info {
-    .user-word-break {
-        word-break: break-all;
+@import "../../../_colors.scss";
+
+.sic-com-usuario {
+  color: $color-536070;
+  font-size: 1.1rem;
+  //font-weight: 500;
+  .info {
+    mat-icon {
+      color: $color-BDBDBD;
     }
+    .user-word-break {
+      word-break: break-all;
+    }
+  }
 }
+
+

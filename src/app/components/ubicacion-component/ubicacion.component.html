@@ -1,70 +1,72 @@
-<div *ngIf="!inEdition">
+<div class="sic-com-ubicacion">
+  <div *ngIf="!inEdition">
   <span fxLayout="row" fxLayoutGap=".7rem" fxLayoutAlign="start center">
     <mat-icon>location_on</mat-icon>
     <span>{{ getUbicacionLabel() }}</span>
   </span>
-  <br>
-  <button mat-raised-button type="button" color="primary" (click)="toggleEdit()">Modificar</button>
-</div>
-<form [formGroup]="ubicacionForm" (ngSubmit)="submit()" *ngIf="inEdition" fxLayout="column" fxLayoutGap="0.5rem">
-  <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.5rem">
-    <div class="ng-select-wrapper" fxFlex="50" fxLayout="row">
-      <ng-select [items]="provincias"
-                 [selectOnTab]="true"
-                 bindValue="idProvincia"
-                 bindLabel="nombre"
-                 placeholder="Provincia *"
-                 formControlName="idProvincia"
-                 fxFlex
-      >
-      </ng-select>
-      <mat-error *ngIf="ubicacionForm.get('idProvincia').touched && ubicacionForm.get('idProvincia').invalid">
-        Requerido
-      </mat-error>
-    </div>
-    <div class="ng-select-wrapper" fxFlex="50">
-      <ng-select [items]="localidades"
-                 [selectOnTab]="true"
-                 bindValue="idLocalidad"
-                 bindLabel="nombre"
-                 placeholder="Localidad *"
-                 formControlName="idLocalidad"
-                 >
-      </ng-select>
-      <mat-error *ngIf="ubicacionForm.get('idLocalidad').touched && ubicacionForm.get('idLocalidad').invalid">
-        Requerido
-      </mat-error>
-    </div>
+    <br>
+    <button mat-raised-button type="button" color="primary" (click)="toggleEdit()">Modificar</button>
+  </div>
+  <form [formGroup]="ubicacionForm" (ngSubmit)="submit()" *ngIf="inEdition" fxLayout="column" fxLayoutGap="0.5rem">
+    <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.5rem">
+      <div class="ng-select-wrapper" fxFlex="50" fxLayout="row">
+        <ng-select [items]="provincias"
+                   [selectOnTab]="true"
+                   bindValue="idProvincia"
+                   bindLabel="nombre"
+                   placeholder="Provincia *"
+                   formControlName="idProvincia"
+                   fxFlex
+        >
+        </ng-select>
+        <mat-error *ngIf="ubicacionForm.get('idProvincia').touched && ubicacionForm.get('idProvincia').invalid">
+          Requerido
+        </mat-error>
+      </div>
+      <div class="ng-select-wrapper" fxFlex="50">
+        <ng-select [items]="localidades"
+                   [selectOnTab]="true"
+                   bindValue="idLocalidad"
+                   bindLabel="nombre"
+                   placeholder="Localidad *"
+                   formControlName="idLocalidad"
+        >
+        </ng-select>
+        <mat-error *ngIf="ubicacionForm.get('idLocalidad').touched && ubicacionForm.get('idLocalidad').invalid">
+          Requerido
+        </mat-error>
+      </div>
 
-  </div>
-  <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.5rem">
-    <mat-form-field fxFlex>
-      <input matInput placeholder="Calle" formControlName="calle">
-      <mat-error *ngIf="ubicacionForm.get('calle').hasError('required')">
-        Requerido
-      </mat-error>
+    </div>
+    <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.5rem">
+      <mat-form-field fxFlex>
+        <input matInput placeholder="Calle" formControlName="calle">
+        <mat-error *ngIf="ubicacionForm.get('calle').hasError('required')">
+          Requerido
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field fxFlex>
+        <input type="number" matInput placeholder="Número" formControlName="numero">
+        <mat-error *ngIf="ubicacionForm.get('numero').hasError('required')">
+          Requerido
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.5rem">
+      <mat-form-field fxFlex>
+        <input matInput placeholder="Piso" formControlName="piso">
+      </mat-form-field>
+      <mat-form-field fxFlex>
+        <input matInput placeholder="Dpto." formControlName="departamento">
+      </mat-form-field>
+    </div>
+    <mat-form-field class="example-full-width">
+      <textarea matInput #descripcion maxlength="256" placeholder="Descripción" formControlName="descripcion"></textarea>
+      <mat-hint align="end">{{descripcion.value.length}} / 256</mat-hint>
     </mat-form-field>
-    <mat-form-field fxFlex>
-      <input type="number" matInput placeholder="Número" formControlName="numero">
-      <mat-error *ngIf="ubicacionForm.get('numero').hasError('required')">
-        Requerido
-      </mat-error>
-    </mat-form-field>
-  </div>
-  <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.5rem">
-    <mat-form-field fxFlex>
-      <input matInput placeholder="Piso" formControlName="piso">
-    </mat-form-field>
-    <mat-form-field fxFlex>
-      <input matInput placeholder="Dpto." formControlName="departamento">
-    </mat-form-field>
-  </div>
-  <mat-form-field class="example-full-width">
-    <textarea matInput #descripcion maxlength="256" placeholder="Descripción" formControlName="descripcion"></textarea>
-    <mat-hint align="end">{{descripcion.value.length}} / 256</mat-hint>
-  </mat-form-field>
-  <div fxLayoutGap="0.5rem">
-    <button mat-raised-button type="submit" color="primary" [disabled]="isProvinciasLoading || isLocalidadesLoading">Guardar</button>
-    <button mat-raised-button type="button" (click)="toggleEdit()">Cancelar</button>
-  </div>
-</form>
+    <div fxLayoutGap="0.5rem">
+      <button mat-raised-button type="submit" color="primary" [disabled]="isProvinciasLoading || isLocalidadesLoading">Guardar</button>
+      <button mat-raised-button type="button" (click)="toggleEdit()">Cancelar</button>
+    </div>
+  </form>
+</div>

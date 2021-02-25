@@ -1,3 +1,14 @@
+@import "../../../_colors.scss";
+
 .sic-com-cliente {
-  padding: 0;
+  color: $color-536070;
+  font-size: 1.1rem;
+  .info {
+    mat-icon {
+      color: $color-BDBDBD;
+    }
+    /*.user-word-break {
+      word-break: break-all;
+    }*/
+  }
 }

@@ -1,4 +1,4 @@
-<div class="sic-com-container">
+<div class="sic-com-usuario">
   <form fxLayout="column" [formGroup]="usuarioForm" (ngSubmit)="submit()" *ngIf="!isLoading && inEdition" fxLayoutGap="0.7rem">
     <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.7rem">
       <mat-form-field fxFlex="50">
@@ -68,22 +68,22 @@
     </div>
   </form>
   <div *ngIf="!isLoading && usuario && !inEdition" class="info">
-    <div fxLayout="row" fxLayoutGap="0.4rem" fxLayoutAlign="start center">
+    <div fxLayout="row" fxLayoutGap="0.7rem" fxLayoutAlign="start center">
       <mat-icon>account_circle</mat-icon>
       <span>{{ usuario.username }}</span>
     </div>
     <br>
-    <div fxLayout="row" fxLayoutGap="0.4rem" fxLayoutAlign="start center">
+    <div fxLayout="row" fxLayoutGap="0.7rem" fxLayoutAlign="start center">
       <mat-icon>person</mat-icon>
       <span>{{ usuario.nombre }} {{ usuario.apellido}}</span>
     </div>
     <br>
-    <div fxLayout="row" fxLayoutGap="0.4rem" fxLayoutAlign="start center">
+    <div fxLayout="row" fxLayoutGap="0.7rem" fxLayoutAlign="start center">
       <mat-icon>email</mat-icon>
       <span class="user-word-break">{{ usuario.email }}</span>
     </div>
     <br>
-    <div fxLayout="row" fxLayoutGap="0.4rem" fxLayoutAlign="start center">
+    <div fxLayout="row" fxLayoutGap="0.7rem" fxLayoutAlign="start center">
       <mat-icon>group</mat-icon>
       <span class="user-word-break">{{ usuario.roles }}</span>
     </div>

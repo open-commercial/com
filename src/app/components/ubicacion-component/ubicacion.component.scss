@@ -1,3 +1,10 @@
+@import "../../../_colors.scss";
+
 .sic-com-ubicacion {
-  padding: 0;
+  color: $color-536070;
+  font-size: 1.1rem;
+  mat-icon {
+    color: $color-BDBDBD;
+  }
 }
+

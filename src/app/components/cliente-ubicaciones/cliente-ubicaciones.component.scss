@@ -1,3 +1,11 @@
+@import "../../../_colors.scss";
+
 .sic-com-cliente-ubicaciones {
-  padding: 0;
+  .mat-expansion-panel-header {
+    font-size: 1.1rem;
+    font-weight: 500;
+  }
+  .mat-expansion-panel-header-title {
+    color: $color-536070;
+  }
 }

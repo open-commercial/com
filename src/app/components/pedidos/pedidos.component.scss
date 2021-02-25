@@ -1,8 +1,12 @@
 @import "../../../_colors.scss";
 
 .sic-com-pedidos {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: $color-536070;
+
   .pedido-row {
-    padding: .2rem;
+    padding: .65rem 0;
     .estado {
       text-align: left;
     }
@@ -31,14 +35,14 @@
   }
 
   .abierto {
-    color: #333;
+    color: $color-536070;
   }
 
   .cancelado {
-    color: red;
+    color: $color-EB5757;
   }
   .cerrado {
-    color: green;
+    color: $color-30CC81;
   }
 
   .mas-resultados {
