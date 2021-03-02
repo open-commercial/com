@@ -1,8 +1,4 @@
-<div class="sic-com-checkout" *ngIf="!isLoading">
-  <div fxLayoutAlign="start center" class="sic-com-ir-listado" (click)="irAlCarrito()">
-    <mat-icon>keyboard_arrow_left</mat-icon>
-    <strong>Ir al carrito</strong>
-  </div>
+<div class="sic-com-checkout" *ngIf="!isLoading" ngClass.gt-xs="tablet" ngClass.gt-sm="desktop">
   <mat-vertical-stepper linear #stepper>
     <ng-template matStepperIcon="edit">
       <mat-icon>done</mat-icon>
@@ -20,7 +16,7 @@
           <sic-com-cliente [c]="cliente" [editionMode]="clienteEditionMode" (updated)="clienteUpdated($event)" (modeStatusChanged)="modeStatusChanged($event)" ></sic-com-cliente>
         </div>
         <div class="botonera">
-          <button mat-raised-button color="primary" matStepperNext [disabled]="!cliente || !cliente.email || !datosDelClienteForm.valid">Continuar</button>
+          <button class="small bg-color-FFDA41" mat-flat-button  matStepperNext [disabled]="!cliente || !cliente.email || !datosDelClienteForm.valid">Continuar</button>
         </div>
       </form>
     </mat-step>
@@ -103,26 +99,34 @@
         </div>
         <br>
         <div class="botonera">
-          <button mat-raised-button color="primary" matStepperNext [disabled]="!envioValidToContinueNextStep()">Continuar</button>
+          <button class="small bg-color-FFDA41" mat-flat-button matStepperNext [disabled]="!envioValidToContinueNextStep()">Continuar</button>
         </div>
       </form>
     </mat-step>
     <mat-step [stepControl]="pagoForm" *ngIf="pagoForm">
       <form [formGroup]="pagoForm">
-        <ng-template matStepLabel>Pago</ng-template>
+        <ng-template matStepLabel>
+          <div class="cliente-label">Pago</div>
+        </ng-template>
         <div *ngIf="!enviarOrdenLoading">
-          <div fxLayoutAlign="space-between center" fxLayout="column" *ngIf="!loadingTotales && cliente" class="resumen"
-               fxLayoutGap="0.3rem">
-            <div>Cant. de Artículos: {{ cantidadArticulos| number:'1.0-2':'es-AR' }}</div>
-            <div>Total: <span class="valor">$ {{ total| number:'1.0-2':'es-AR' }}</span></div>
+          <div class="cantidades" fxLayout="column" fxLayout.gt-xs="row" *ngIf="!loadingTotales && cliente">
+            <div fxFlex fxFlex.gt-sm="40" fxLayout="column" fxLayoutGap="0.7rem">
+              <div fxLayout="row" fxLayoutAlign="space-between center" class="cantidad-articulos">
+                <span class="label">Cant. de artículos</span><span class="cantidad">{{ cantidadArticulos | number:'1.0-2':'es-AR' }}</span>
+              </div>
+              <div fxLayout="row" fxLayoutAlign="space-between center" class="total">
+                <span class="label">Total</span><span class="cantidad">$ {{total | number:'1.0-2':'es-AR' }}</span>
+              </div>
+            </div>
+            <div fxFlex></div>
           </div>
           <div fxLayout="row" fxLayoutAlign="center center" *ngIf="loadingTotales" class="sic-com-spinner-container">
             <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
           </div>
           <br>
-          <div fxLayout="column" fxLayout.gt-sm="row" fxLayoutAlign="center center" fxLayoutGap="1rem" *ngIf="getNuevaOrdeDeCompra()">
+          <div fxLayout="column" fxLayoutAlign="center center" fxLayoutAlign.gt-xs="center start" fxLayoutGap="1rem" *ngIf="getNuevaOrdeDeCompra()">
             <sic-com-boton-mercado-pago [nuevaOrdenDePago]="getNuevaOrdeDeCompra()" (preCheckout)="this.enviarOrdenLoading = true"></sic-com-boton-mercado-pago>
-            <button mat-raised-button color="primary" class="boton-pago" (click)="cerrarOrden()" *ngIf="cliente && cliente.puedeComprarAPlazo"
+            <button mat-flat-button class="small boton-pago" (click)="cerrarOrden()" *ngIf="cliente && cliente.puedeComprarAPlazo"
                     [disabled]="loadingTotales || !cliente || opcionEnvioForm.invalid">
               Acordar con el vendedor
             </button>

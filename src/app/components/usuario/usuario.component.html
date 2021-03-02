@@ -63,8 +63,8 @@
     </div>
     <br>
     <div fxLayoutGap="0.7rem" *ngIf="inEdition">
-      <button mat-raised-button type="submit" color="primary">Guardar</button>
-      <button mat-raised-button type="button" (click)="toggleEdit()">Cancelar</button>
+      <button class="small bg-color-FFDA41" mat-flat-button type="submit">Guardar</button>
+      <button class="small" mat-flat-button type="button" (click)="toggleEdit()">Cancelar</button>
     </div>
   </form>
   <div *ngIf="!isLoading && usuario && !inEdition" class="info">
@@ -88,7 +88,7 @@
       <span class="user-word-break">{{ usuario.roles }}</span>
     </div>
     <br>
-    <button mat-raised-button color="primary" (click)="toggleEdit()">Modificar</button>
+    <button class="small bg-color-FFDA41" mat-flat-button (click)="toggleEdit()">Modificar</button>
   </div>
   <div *ngIf="isLoading" fxLayout="row" fxLayoutAlign="center center">
     <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>

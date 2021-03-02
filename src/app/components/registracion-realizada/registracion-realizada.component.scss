@@ -1,21 +1,57 @@
 @import "../../../_colors.scss";
 
 .sic-com-registracion-realizada {
-  padding: 1.5rem;
-  .icono {
-    font-size: 5rem;
-    color: $color-primary;
-    width: auto;
-    height: auto;
+  padding: 4rem 1rem 1.5rem 1rem;
+
+  .icono-container {
+    background-color: $color-30CC81;
+    border-radius: 50%;
+    display: flex;
+    padding: 0.8rem 0.9rem;
+    margin-bottom: 1.5rem;
+    .icono {
+      font-size: 1.7rem;
+      font-weight: bold;
+      color: white;
+      width: auto;
+      height: auto;
+    }
   }
+
   .info {
     padding: 0.7rem 0.5rem;
     text-align: center;
-    font-size: 1.3rem;
-    margin-bottom: 1rem;
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+    max-width: 27rem;
+    .gracias {
+      font-size: 1.5rem;
+      margin-bottom: 2rem;
+    }
     .nombre {
-      font-style: italic;
       font-weight: bold;
+    }
+    .correo {
+      margin-bottom: 2rem;
+    }
+  }
+
+  &.desktop {
+    .info {
+      font-size: 1.3rem;
+      .gracias {
+        font-size: 1.8rem;
+        margin-bottom: 2.5rem;
+      }
+      .correo {
+        margin-bottom: 2.5rem;
+      }
+    }
+    .icono-container {
+      padding: 1.2rem 1.3rem;
+      .icono {
+        font-size: 2.6rem;
+      }
     }
   }
 }

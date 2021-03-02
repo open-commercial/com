@@ -5,7 +5,7 @@
     <span>{{ getUbicacionLabel() }}</span>
   </span>
     <br>
-    <button mat-raised-button type="button" color="primary" (click)="toggleEdit()">Modificar</button>
+    <button class="small bg-color-FFDA41" mat-flat-button type="button" (click)="toggleEdit()">Modificar</button>
   </div>
   <form [formGroup]="ubicacionForm" (ngSubmit)="submit()" *ngIf="inEdition" fxLayout="column" fxLayoutGap="0.5rem">
     <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.5rem">
@@ -65,8 +65,8 @@
       <mat-hint align="end">{{descripcion.value.length}} / 256</mat-hint>
     </mat-form-field>
     <div fxLayoutGap="0.5rem">
-      <button mat-raised-button type="submit" color="primary" [disabled]="isProvinciasLoading || isLocalidadesLoading">Guardar</button>
-      <button mat-raised-button type="button" (click)="toggleEdit()">Cancelar</button>
+      <button class="small bg-color-FFDA41" mat-flat-button type="submit" [disabled]="isProvinciasLoading || isLocalidadesLoading">Guardar</button>
+      <button class="small bg-color-E0E0E0" mat-flat-button type="button" (click)="toggleEdit()">Cancelar</button>
     </div>
   </form>
 </div>

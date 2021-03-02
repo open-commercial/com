@@ -331,14 +331,41 @@ mat-icon.spin {
 .mat-flat-button {
   line-height: 50px!important;
   font-size: 1.1rem!important;
+  &.small {
+    line-height: 38px !important;
+    font-size: 0.9rem !important;
+  }
 }
 
 .bg-color-FFDA41 {
   background-color: $color-FFDA41;
   color: $color-536070;
+  &:hover, &:focus {
+    background-color: $color-F0C71B;
+  }
 }
 
 .bg-color-EB5757 {
   background-color: $color-EB5757;
   color: white;
 }
+
+.bg-color-E0E0E0 {
+  background-color: $color-E0E0E0;
+  color: $color-536070;
+  &:hover, &:focus {
+    background-color: $color-BDBDBD;
+  }
+}
+
+.mat-step-header .mat-step-icon {
+  color: $color-536070;
+  background-color: $color-BDBDBD;
+}
+
+.mat-step-header .mat-step-icon-selected {
+  color: $color-536070;
+  background-color: $color-FFDA41;
+}
+
+

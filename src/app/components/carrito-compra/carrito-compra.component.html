@@ -95,7 +95,7 @@
       <div fxLayout="row" fxLayoutAlign="space-between center" class="total">
         <span class="label">Total</span><span class="cantidad" [class.cumple-compra-minima]="total >= cliente.montoCompraMinima">$ {{total | number:'1.0-2':'es-AR' }}</span>
       </div>
-      <button class="bg-color-EB5757" mat-flat-button (click)="goToCheckout()" [disabled]="!itemsCarritoCompra.length || disabledButtons() || total < cliente.montoCompraMinima" color="primary">
+      <button class="bg-color-FFDA41" mat-flat-button (click)="goToCheckout()" [disabled]="!itemsCarritoCompra.length || disabledButtons() || total < cliente.montoCompraMinima">
         Enviar Pedido
       </button>
     </div>
