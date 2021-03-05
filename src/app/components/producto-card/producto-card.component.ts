@@ -4,6 +4,7 @@ import {AgregarAlCarritoDialogComponent} from '../agregar-al-carrito-dialog/agre
 import {MatDialog} from '@angular/material/dialog';
 import {Cliente} from '../../models/cliente';
 import {AuthService} from '../../services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'sic-com-producto-card',
@@ -19,7 +20,9 @@ export class ProductoCardComponent implements OnInit {
   @Input() set cliente(value: Cliente) { this.pCliente = value; }
   get cliente() { return this.pCliente; }
 
-  constructor(public authService: AuthService, private dialog: MatDialog) { }
+  constructor(public authService: AuthService,
+              private dialog: MatDialog,
+              private router: Router) { }
 
   ngOnInit() {
   }
@@ -30,5 +33,11 @@ export class ProductoCardComponent implements OnInit {
     $event.preventDefault();
     dialogRef.componentInstance.producto = producto;
     dialogRef.componentInstance.cliente = this.cliente;
+  }
+
+  irAlProducto($event, producto: Producto) {
+    $event.preventDefault();
+    this.router.navigateByUrl('', {skipLocationChange: true})
+      .then(() => this.router.navigate(['/producto', producto.idProducto]));
   }
 }

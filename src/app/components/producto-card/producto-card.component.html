@@ -1,4 +1,4 @@
-<a [routerLink]="['/producto/' + producto.idProducto]" class="producto">
+<a (click)="irAlProducto($event, producto)" class="producto">
   <mat-card>
     <div class="img-container" fxLayout="column" fxLayoutAlign="center center">
       <img [src]="producto.urlImagen ? producto.urlImagen : 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1545616229/assets/sin_imagen.png'" alt="Imagen del producto">
