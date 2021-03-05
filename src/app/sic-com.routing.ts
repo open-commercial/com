@@ -42,4 +42,4 @@ const sicComRoutes: Routes = [
   {path: '**', redirectTo: ''}
 ];
 
-export const sicComRouting = RouterModule.forRoot(sicComRoutes);
+export const sicComRouting = RouterModule.forRoot(sicComRoutes, { onSameUrlNavigation: 'reload', scrollPositionRestoration: 'top'});

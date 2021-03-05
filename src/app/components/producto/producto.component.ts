@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import {ProductosService} from '../../services/productos.service';
 import {CarritoCompraService} from '../../services/carrito-compra.service';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -70,6 +70,14 @@ export class ProductoComponent implements OnInit {
         .subscribe((cliente: Cliente) => this.cliente = cliente)
       ;
     }
+  }
+
+  @HostListener('window:popstate', ['$event'])
+  onBrowserBackBtnClose(event: Event) {
+    event.preventDefault();
+    const url = (event.target as Window).location.pathname;
+    this.router.navigateByUrl('', {skipLocationChange: true})
+      .then(() => this.router.navigateByUrl(url));
   }
 
   volver() {
