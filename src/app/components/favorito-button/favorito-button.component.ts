@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Producto } from '../../models/producto';
 import { AuthService } from '../../services/auth.service';
 import { ProductosService } from '../../services/productos.service';
@@ -11,7 +11,7 @@ import { Observable } from 'rxjs';
   templateUrl: './favorito-button.component.html',
   styleUrls: ['./favorito-button.component.scss']
 })
-export class FavoritoButtonComponent implements OnInit {
+export class FavoritoButtonComponent {
   private pProducto: Producto;
   @Input() set producto(value: Producto) { this.pProducto = value; }
   get producto() { return this.pProducto; }
@@ -21,9 +21,6 @@ export class FavoritoButtonComponent implements OnInit {
   constructor(public authService: AuthService,
               private productosService: ProductosService,
               private avisoService: AvisoService) {
-  }
-
-  ngOnInit() {
   }
 
   toggleFavorito($event) {

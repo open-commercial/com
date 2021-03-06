@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { HelperService } from '../../services/helper.service';
 import { Rubro } from '../../models/rubro';
 import { Router } from '@angular/router';
@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
   templateUrl: './rubros-list.component.html',
   styleUrls: ['./rubros-list.component.scss']
 })
-export class RubrosListComponent implements OnInit {
+export class RubrosListComponent {
   private pRubros: Rubro[] = [];
   @Input() set rubros(value: Rubro[]) { this.pRubros = value; }
   get rubros(): Rubro[] { return this.pRubros; }
@@ -23,9 +23,6 @@ export class RubrosListComponent implements OnInit {
 
   constructor(public helper: HelperService,
               private router: Router) { }
-
-  ngOnInit(): void {
-  }
 
   goToProductos(r: Rubro = null) {
     const queryParams = r ? { r: r.idRubro } : {};

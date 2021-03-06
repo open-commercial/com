@@ -18,7 +18,9 @@ export class SlideshowComponent implements OnInit, AfterViewInit {
 
   @ViewChild('imgContainer', { static: false }) imgContainer: ElementRef;
 
-  constructor() { }
+  constructor() {
+    // This is intentional
+  }
 
   ngOnInit() {
     this.imgCount = this.imagenes.length;

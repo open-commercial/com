@@ -36,8 +36,8 @@ export class FavoritosComponent implements OnInit {
   ngOnInit() {
     this.route.queryParamMap.subscribe((params) => {
       let p = Number(params.get('p'));
-
-      p = isNaN(p) ? 1 : (p < 1 ? 1 : p);
+      if (isNaN(p)) { p = 1; }
+      p = p < 1 ? 1 : p;
       this.pagina = p - 1;
 
       this.loading = true;

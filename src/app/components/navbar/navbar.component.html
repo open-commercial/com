@@ -38,33 +38,6 @@
         </button>
       </ng-container>
     </div>
-
-    <!--    <div *ngIf="authService.isAuthenticated()" fxFlex.gt-sm="15"  fxLayoutAlign="space-evenly center">
-      <button mat-icon-button [routerLink]="['/productos/favoritos']" matTooltip="Favoritos">
-        <mat-icon>favorite</mat-icon>
-        <span class="contador" *ngIf="(cantidadEnFavoritos > 0)">{{cantidadEnFavoritos}}</span>
-      </button>
-      <button mat-icon-button [routerLink]="['/carrito-compra']" matTooltip="Ir al carrito">
-        <mat-icon>shopping_cart</mat-icon>
-        <span class="contador" *ngIf="(cantidadItemsEnCarrito > 0)">{{cantidadItemsEnCarrito}}</span>
-      </button>
-      <button mat-icon-button matTooltip="Mostrar menú" [matMenuTriggerFor]="authMenu">
-        <mat-icon>menu</mat-icon>
-      </button>
-      <mat-menu #authMenu="matMenu" xPosition="before">
-        <button mat-menu-item [routerLink]="['/perfil']" matTooltip="Mi Cuenta">
-          <mat-icon>account_circle</mat-icon>
-          <span>Mi cuenta</span>
-        </button>
-        <mat-divider></mat-divider>
-        <sic-com-rubros-list [rubros]="rubros" [hideTodos]="true"></sic-com-rubros-list>
-      </mat-menu>
-    </div>
-    <div *ngIf="!authService.isAuthenticated()">
-      <button mat-icon-button matTooltip="Ingresar" [routerLink]="['/login']">
-        <mat-icon>account_circle</mat-icon>
-      </button>
-    </div>-->
   </mat-toolbar>
 </div>
 

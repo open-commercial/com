@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Rubro } from '../../models/rubro';
 import { HelperService } from '../../services/helper.service';
 
@@ -7,7 +7,7 @@ import { HelperService } from '../../services/helper.service';
   templateUrl: './rubro-button.component.html',
   styleUrls: ['./rubro-button.component.scss']
 })
-export class RubroButtonComponent implements OnInit {
+export class RubroButtonComponent {
   private pRubro: Rubro;
   @Input() set rubro(value: Rubro) { this.pRubro = value; }
   get rubro(): Rubro { return this.pRubro; }
@@ -15,9 +15,6 @@ export class RubroButtonComponent implements OnInit {
   @Output() rubroClick = new EventEmitter<void>();
 
   constructor(public helper: HelperService) { }
-
-  ngOnInit() {
-  }
 
   buttonClick() {
     this.rubroClick.emit();

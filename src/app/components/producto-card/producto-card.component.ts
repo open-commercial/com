@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {Producto} from '../../models/producto';
 import {AgregarAlCarritoDialogComponent} from '../agregar-al-carrito-dialog/agregar-al-carrito-dialog.component';
 import {MatDialog} from '@angular/material/dialog';
@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
   templateUrl: './producto-card.component.html',
   styleUrls: ['./producto-card.component.scss']
 })
-export class ProductoCardComponent implements OnInit {
+export class ProductoCardComponent {
   private pProducto: Producto;
   @Input() set producto(value: Producto) { this.pProducto = value; }
   get producto() { return this.pProducto; }
@@ -23,9 +23,6 @@ export class ProductoCardComponent implements OnInit {
   constructor(public authService: AuthService,
               private dialog: MatDialog,
               private router: Router) { }
-
-  ngOnInit() {
-  }
 
   showDialogCantidad($event, producto: Producto) {
     const dialogRef = this.dialog.open(AgregarAlCarritoDialogComponent);
