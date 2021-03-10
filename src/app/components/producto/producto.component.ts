@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import {ProductosService} from '../../services/productos.service';
 import {CarritoCompraService} from '../../services/carrito-compra.service';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -18,7 +18,7 @@ import { HelperService } from '../../services/helper.service';
   templateUrl: 'producto.component.html',
   styleUrls: ['producto.component.scss']
 })
-export class ProductoComponent implements OnInit {
+export class ProductoComponent implements OnInit, OnDestroy {
   producto: Producto;
   loadingProducto = false;
   favoritoToggling = false;
@@ -72,6 +72,10 @@ export class ProductoComponent implements OnInit {
     }
   }
 
+  ngOnDestroy() {
+    this.unlockBodyScroll();
+  }
+
   @HostListener('window:popstate', ['$event'])
   onBrowserBackBtnClose(event: Event) {
     event.preventDefault();
@@ -86,6 +90,22 @@ export class ProductoComponent implements OnInit {
 
   toggleImgViewer() {
     this.imgViewerVisible = !this.imgViewerVisible;
+    if (this.imgViewerVisible) {
+      this.lockBodyScroll();
+    } else {
+      this.unlockBodyScroll();
+    }
+  }
+
+  lockBodyScroll() {
+    const body = document.body;
+    window.scrollTo(0, 0);
+    body.classList.add('hide-scroll');
+  }
+
+  unlockBodyScroll() {
+    const body = document.body;
+    body.classList.remove('hide-scroll');
   }
 
   aaccSubmit() {
