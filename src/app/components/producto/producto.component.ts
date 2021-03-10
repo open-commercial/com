@@ -27,6 +27,7 @@ export class ProductoComponent implements OnInit, OnDestroy {
   loadingCliente = false;
 
   imgViewerVisible = false;
+  windowLastTopPosition = 0;
 
   cantidadValida = false;
 
@@ -99,6 +100,7 @@ export class ProductoComponent implements OnInit, OnDestroy {
 
   lockBodyScroll() {
     const body = document.body;
+    this.windowLastTopPosition = window.pageYOffset || document.documentElement.scrollTop;
     window.scrollTo(0, 0);
     body.classList.add('hide-scroll');
   }
@@ -106,6 +108,7 @@ export class ProductoComponent implements OnInit, OnDestroy {
   unlockBodyScroll() {
     const body = document.body;
     body.classList.remove('hide-scroll');
+    window.scrollTo(0, this.windowLastTopPosition);
   }
 
   aaccSubmit() {
