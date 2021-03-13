@@ -74,7 +74,7 @@ export class ProductoComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.unlockBodyScroll();
+    this.helper.unlockBodyScroll();
   }
 
   @HostListener('window:popstate', ['$event'])
@@ -92,23 +92,10 @@ export class ProductoComponent implements OnInit, OnDestroy {
   toggleImgViewer() {
     this.imgViewerVisible = !this.imgViewerVisible;
     if (this.imgViewerVisible) {
-      this.lockBodyScroll();
+      this.helper.lockBodyScroll();
     } else {
-      this.unlockBodyScroll();
+      this.helper.unlockBodyScroll();
     }
-  }
-
-  lockBodyScroll() {
-    const body = document.body;
-    this.windowLastTopPosition = window.pageYOffset || document.documentElement.scrollTop;
-    window.scrollTo(0, 0);
-    body.classList.add('hide-scroll');
-  }
-
-  unlockBodyScroll() {
-    const body = document.body;
-    body.classList.remove('hide-scroll');
-    window.scrollTo(0, this.windowLastTopPosition);
   }
 
   aaccSubmit() {

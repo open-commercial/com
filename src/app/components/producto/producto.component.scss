@@ -1,8 +1,13 @@
 @import "../../../_colors.scss";
 
 .sic-com-producto {
-  background-color: #fafafa;
   color: $color-536070;
+
+  .preview-and-info {
+    margin: 1rem 0;
+    padding: 0.5rem 0;
+    background-color: white;
+  }
 
   .img-container {
     position: relative;
@@ -56,45 +61,4 @@
   .detalle-producto {
     padding: .5rem;
   }
-
-/*  .sic-com-ir-listado {
-    height: 40px;
-    cursor: pointer;
-  }
-
-  .sic-com-img-producto {
-    height: 220px;
-  }
-
-  .sic-com-detalle-producto {
-    border-top: 1px solid #ccc;
-    padding: 20px 15px;
-    max-width: 70%;
-  }
-
-  .img-viewer {
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    background-color: white;
-    z-index: 200;
-    img {
-      max-width: 100%; height: auto;
-    }
-  }
-
-  .sic-com-controles-cantidad {
-    padding: 22px 0;
-  }
-
-  .sic-com-spinner-container {
-    height: 90px;
-    color: $color-primary;
-  }
-
-  .boton {
-    min-width: 15rem;
-  }*/
 }

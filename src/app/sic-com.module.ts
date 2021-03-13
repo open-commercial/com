@@ -71,6 +71,7 @@ import { RubrosListComponent } from './components/rubros-list/rubros-list.compon
 import { SvgButtonComponent } from './components/svg-button/svg-button.component';
 import { ProductosEnOfertaSliderComponent } from './components/productos-en-oferta-slider/productos-en-oferta-slider.component';
 import { ProductosRecomendadosSliderComponent } from './components/productos-recomendados-slider/productos-recomendados-slider.component';
+import { MenuComponent } from './components/menu/menu.component';
 
 registerLocaleData(localeEs, 'es-AR', localeEsExtra);
 
@@ -116,6 +117,7 @@ registerLocaleData(localeEs, 'es-AR', localeEsExtra);
     SvgButtonComponent,
     ProductosEnOfertaSliderComponent,
     ProductosRecomendadosSliderComponent,
+    MenuComponent,
   ],
   imports: [
     GtagModule.forRoot({ trackingId: 'UA-132433044-1', trackPageviews: true }),

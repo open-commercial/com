@@ -20,17 +20,9 @@
           <mat-icon>shopping_cart</mat-icon>
           <span class="contador" *ngIf="(cantidadItemsEnCarrito > 0)">{{cantidadItemsEnCarrito}}</span>
         </button>
-        <button mat-icon-button matTooltip="Mostrar menú" [matMenuTriggerFor]="authMenu">
+        <button mat-icon-button matTooltip="Mostrar menú" (click)="toggleMenu()" id="menu-button">
           <mat-icon>menu</mat-icon>
         </button>
-        <mat-menu #authMenu="matMenu" xPosition="before">
-          <button mat-menu-item [routerLink]="['/perfil']" matTooltip="Mi Cuenta">
-            <mat-icon>account_circle</mat-icon>
-            <span>Mi cuenta</span>
-          </button>
-          <mat-divider></mat-divider>
-          <sic-com-rubros-list [rubros]="rubros" [hideTodos]="true"></sic-com-rubros-list>
-        </mat-menu>
       </ng-container>
       <ng-container *ngIf="!authService.isAuthenticated()">
         <button mat-icon-button matTooltip="Ingresar" [routerLink]="['/login']">
@@ -40,4 +32,3 @@
     </div>
   </mat-toolbar>
 </div>
-

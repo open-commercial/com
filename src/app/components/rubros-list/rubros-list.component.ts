@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { HelperService } from '../../services/helper.service';
 import { Rubro } from '../../models/rubro';
 import { Router } from '@angular/router';
+import { MenuService } from '../../services/menu.service';
 
 @Component({
   selector: 'sic-com-rubros-list',
@@ -22,10 +23,12 @@ export class RubrosListComponent {
   get hideTodos() { return this.pHideTodos; }
 
   constructor(public helper: HelperService,
-              private router: Router) { }
+              private router: Router,
+              private menuService: MenuService) { }
 
   goToProductos(r: Rubro = null) {
     const queryParams = r ? { r: r.idRubro } : {};
+    this.menuService.toggle();
     this.router.navigate(['/productos'], { queryParams: queryParams });
   }
 
