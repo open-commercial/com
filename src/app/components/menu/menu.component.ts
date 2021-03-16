@@ -4,6 +4,7 @@ import { RubrosService } from '../../services/rubros.service';
 import { finalize } from 'rxjs/operators';
 import { AvisoService } from '../../services/aviso.service';
 import { MenuService } from '../../services/menu.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'sic-com-menu',
@@ -16,7 +17,8 @@ export class MenuComponent implements OnInit {
 
   constructor(private rubrosService: RubrosService,
               private avisoService: AvisoService,
-              private menuService: MenuService) { }
+              private menuService: MenuService,
+              private router: Router) { }
 
   ngOnInit(): void {
     this.loading = true;
@@ -30,6 +32,11 @@ export class MenuComponent implements OnInit {
   }
 
   close() {
+    this.menuService.toggle();
+  }
+
+  goToMiCuenta() {
+    this.router.navigate(['/perfil']);
     this.menuService.toggle();
   }
 }
