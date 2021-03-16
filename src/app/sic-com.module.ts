@@ -64,8 +64,7 @@ import { RubrosMainMenuComponent } from './components/rubros-main-menu/rubros-ma
 import { RubrosEnHomeComponent } from './components/rubros-en-home/rubros-en-home.component';
 import { FavoritosComponent } from './components/favoritos/favoritos.component';
 import { FavoritoButtonComponent } from './components/favorito-button/favorito-button.component';
-import { RECAPTCHA_V3_SITE_KEY, RecaptchaV3Module } from 'ng-recaptcha';
-import { RecaptchaModule, RecaptchaFormsModule } from 'ng-recaptcha';
+import { RECAPTCHA_V3_SITE_KEY, RecaptchaV3Module, RecaptchaModule, RecaptchaFormsModule } from 'ng-recaptcha';
 import { SlideshowComponent } from './components/slideshow/slideshow.component';
 import { RubrosListComponent } from './components/rubros-list/rubros-list.component';
 import { SvgButtonComponent } from './components/svg-button/svg-button.component';

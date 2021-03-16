@@ -56,6 +56,8 @@ export class ContainerComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @HostListener('document:click', ['$event'])
   onClick(event) {
+    if (!(this.menu && this.menuButton)) { return; }
+
     const menuId = this.menu.id;
     const menuButtonId = this.menuButton.id;
 

@@ -11,8 +11,6 @@ export class SlideshowService {
 
   url = environment.apiUrl;
 
-  constructor() {}
-
   getSlideshowDataForDesktop(): IImagen[] {
     return [
       /*{
