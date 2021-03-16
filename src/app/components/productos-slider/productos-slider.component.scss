@@ -1,0 +1,60 @@
+@import "../../../_colors.scss";
+.label {
+  background: $color-primary;
+  margin-bottom: 0;
+  margin-top: 0;
+  padding: .2rem .5rem;
+}
+.sic-com-productos-en-oferta {
+  padding: 0 2rem;
+  .outer-container {
+    position: relative;
+    height: 297px;
+    &.desktop {
+      height: 400px;
+    }
+    .scroll-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      overflow-y: hidden;
+      overflow-x: hidden;
+      white-space: nowrap;
+      padding-top: .4rem;
+      padding-left: .4rem;
+      .oferta {
+        position: relative;
+        &.first-loading {
+          display: block;
+          height: 100%;
+        }
+        vertical-align: middle;
+        display: inline-block;
+        margin-right: .5rem;
+        white-space: normal;
+        padding: 0;
+
+        .spinner {
+          height: 100%;
+          padding: 0 7px;
+        }
+      }
+    }
+    .left-button {
+      position: absolute;
+      left: -0.95rem;
+      top: calc(50% - 18px);
+      min-width: 40px;
+      padding: 0;
+    }
+    .right-button {
+      position: absolute;
+      right: -0.95rem;
+      top: calc(50% - 18px);
+      min-width: 40px;
+      padding: 0;
+    }
+  }
+}

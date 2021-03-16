@@ -36,8 +36,8 @@ export class FavoritosComponent implements OnInit {
   ngOnInit() {
     this.route.queryParamMap.subscribe((params) => {
       let p = Number(params.get('p'));
-
-      p = isNaN(p) ? 1 : (p < 1 ? 1 : p);
+      if (isNaN(p)) { p = 1; }
+      p = p < 1 ? 1 : p;
       this.pagina = p - 1;
 
       this.loading = true;
@@ -114,7 +114,7 @@ export class FavoritosComponent implements OnInit {
     });
   }
 
-  /*vaciarFavoritos() {
+  vaciarFavoritos() {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent);
     dialogRef.componentInstance.titulo = '¿Está seguro de quitar todos los productos de tus favoritos?';
     dialogRef.afterClosed().subscribe(result => {
@@ -129,7 +129,7 @@ export class FavoritosComponent implements OnInit {
         ;
       }
     });
-  }*/
+  }
 
   paginaAnterior() {
     if (this.pagina <= 0) { return; }
@@ -139,5 +139,9 @@ export class FavoritosComponent implements OnInit {
   paginaSiguiente() {
     if (this.pagina + 1 >= this.totalPaginas) { return; }
     this.router.navigate(['/productos/favoritos'], { queryParams: { p: this.pagina + 2 } });
+  }
+
+  estaBonificado(producto: Producto): boolean {
+    return !!(producto && producto.precioLista > producto.precioBonificado);
   }
 }

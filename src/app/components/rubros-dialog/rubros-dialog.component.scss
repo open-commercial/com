@@ -1,0 +1,13 @@
+.sic-com-rubros-dialog {
+  padding: 1rem;
+  position: relative;
+  .close-button {
+    position: absolute;
+    right: 10px;
+    top: -5px;
+    outline: none;
+  }
+  .inner-container {
+    padding: 1rem;
+  }
+}

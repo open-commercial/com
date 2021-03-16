@@ -12,11 +12,11 @@
         <sic-com-producto-card [producto]="p" [cliente]="cliente" *ngFor="let p of productos" ngClass.lt-sm="mobile"></sic-com-producto-card>
       </div>
       <div class="sic-com-paginator" *ngIf="!loadingProducts && (productos.length > 0) && totalPaginas > 1" fxLayout="row" fxLayoutAlign="center center">
-        <button mat-button color="primary" [disabled]="pagina <= 0" (click)="paginaAnterior()">
+        <button mat-button [disabled]="pagina <= 0" (click)="paginaAnterior()">
           <mat-icon aria-label="Página anterior">navigate_before</mat-icon><span>Anterior</span>
         </button>
         <span class="page">{{ this.pagina + 1 }}/{{ totalPaginas }}</span>
-        <button mat-button color="primary" [disabled]="pagina + 1 >= totalPaginas" (click)="paginaSiguiente()">
+        <button mat-button [disabled]="pagina + 1 >= totalPaginas" (click)="paginaSiguiente()">
           <span>Siguiente</span><mat-icon aria-label="Página siguiente">navigate_next</mat-icon>
         </button>
       </div>

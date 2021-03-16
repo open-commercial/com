@@ -1,13 +1,19 @@
-<div class="sic-com-registracion-realizada">
+<div class="sic-com-registracion-realizada" ngClass.gt-sm="desktop">
   <div *ngIf="registracion" fxLayout="column" fxLayoutAlign="center center">
-    <mat-icon class="icono" aria-hidden="false" aria-label="Registración realizada">check_circle_outline</mat-icon>
-    <div class="info">
-      Gracias <span class="nombre">{{ registracion.nombre }} {{ registracion.apellido}}</span> por registrarse en globodeoro.com!<br>
-      Recibirá un correo electrónico en la dirección {{ registracion.email }} para confirmar su registración.
+    <span class="icono-container">
+      <mat-icon class="icono" aria-hidden="false" aria-label="Registración realizada">check</mat-icon>
+    </span>
+    <div class="info" fxLayout="column" fxLayoutAlign="center center">
+      <p class="gracias">
+        Gracias <span class="nombre">{{ registracion.nombre }} {{ registracion.apellido}}</span> por registrarse en globodeoro.com!
+      </p>
+      <p class="correo">
+        Recibirá un correo electrónico en la dirección {{ registracion.email }} para confirmar su registración.
+      </p>
+      <button fxFlexAlign="stretch" class="bg-color-FFDA41" mat-flat-button [routerLink]="''">
+        Ir al Inicio
+      </button>
     </div>
-    <button mat-raised-button color="primary" [routerLink]="''">
-      <mat-icon>home</mat-icon> Ir a la Portada
-    </button>
   </div>
 </div>
 

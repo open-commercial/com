@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import {ProductosService} from '../../services/productos.service';
 import {CarritoCompraService} from '../../services/carrito-compra.service';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -11,13 +11,14 @@ import {Location} from '@angular/common';
 import {finalize} from 'rxjs/operators';
 import {AgregarAlCarritoComponent} from '../agregar-al-carrito/agregar-al-carrito.component';
 import { Observable } from 'rxjs';
+import { HelperService } from '../../services/helper.service';
 
 @Component({
   selector: 'sic-com-producto',
   templateUrl: 'producto.component.html',
   styleUrls: ['producto.component.scss']
 })
-export class ProductoComponent implements OnInit {
+export class ProductoComponent implements OnInit, OnDestroy {
   producto: Producto;
   loadingProducto = false;
   favoritoToggling = false;
@@ -26,6 +27,7 @@ export class ProductoComponent implements OnInit {
   loadingCliente = false;
 
   imgViewerVisible = false;
+  windowLastTopPosition = 0;
 
   cantidadValida = false;
 
@@ -39,7 +41,8 @@ export class ProductoComponent implements OnInit {
               private clientesService: ClientesService,
               private router: Router,
               private route: ActivatedRoute,
-              private location: Location) {
+              private location: Location,
+              public helper: HelperService) {
   }
 
   ngOnInit() {
@@ -70,12 +73,29 @@ export class ProductoComponent implements OnInit {
     }
   }
 
+  ngOnDestroy() {
+    this.helper.unlockBodyScroll();
+  }
+
+  @HostListener('window:popstate', ['$event'])
+  onBrowserBackBtnClose(event: Event) {
+    event.preventDefault();
+    const url = (event.target as Window).location.pathname;
+    this.router.navigateByUrl('', {skipLocationChange: true})
+      .then(() => this.router.navigateByUrl(url));
+  }
+
   volver() {
     this.location.back();
   }
 
   toggleImgViewer() {
     this.imgViewerVisible = !this.imgViewerVisible;
+    if (this.imgViewerVisible) {
+      this.helper.lockBodyScroll();
+    } else {
+      this.helper.unlockBodyScroll();
+    }
   }
 
   aaccSubmit() {

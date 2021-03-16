@@ -2,6 +2,7 @@
 
 .sic-com-checkout {
   background-color: white;
+
   .sic-com-ir-listado {
     height: 40px;
     cursor: pointer;
@@ -54,6 +55,8 @@
 
   .cliente-label {
     white-space: normal;
+    color: $color-536070;
+    font-weight: 500;
   }
 
   .botonera {
@@ -95,5 +98,29 @@
 
   .boton-pago {
     min-width: 13rem;
+    color: $color-536070;
+  }
+
+  .cantidades {
+    color: $color-828282;
+    padding: 0 1rem;
+    font-size: 1.2rem;
+    margin: 1rem 0;
+    font-weight: 500;
+    .total {
+        color: $color-1E222B;
+    }
+  }
+
+  &.tablet {
+    .cantidades {
+      font-size: 1.35rem;
+    }
+  }
+
+  &.desktop {
+    .cantidades {
+      font-size: 1.57rem;
+    }
   }
 }

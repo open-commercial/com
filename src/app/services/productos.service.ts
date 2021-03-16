@@ -41,8 +41,8 @@ export class ProductosService {
     this.cantidadEnFavoritosSubject.next(cantidad);
   }
 
-  getProductosEnOferta(pagina: number) {
-    return this.http.post(this.urlBusqueda, {
+  getProductosEnOferta(pagina: number = 0): Observable<Pagination> {
+    return this.http.post<Pagination>(this.urlBusqueda, {
       oferta: true,
       publico: true,
       pagina: pagina
@@ -75,5 +75,9 @@ export class ProductosService {
 
   quitarTodosDeFavoritos(): Observable<void> {
     return this.http.delete<void>(`${this.url}/favoritos`);
+  }
+
+  getProductosRecomendados(idProducto: number, pagina = 0): Observable<Pagination> {
+    return this.http.get<Pagination>(`${this.url}/${idProducto}/recomendados?pagina=${pagina}`);
   }
 }

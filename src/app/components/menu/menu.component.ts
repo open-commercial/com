@@ -3,43 +3,40 @@ import { Rubro } from '../../models/rubro';
 import { RubrosService } from '../../services/rubros.service';
 import { finalize } from 'rxjs/operators';
 import { AvisoService } from '../../services/aviso.service';
+import { MenuService } from '../../services/menu.service';
 import { Router } from '@angular/router';
-import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
-  selector: 'sic-com-rubros',
-  templateUrl: './rubros.component.html',
-  styleUrls: ['./rubros.component.scss']
+  selector: 'sic-com-menu',
+  templateUrl: './menu.component.html',
+  styleUrls: ['./menu.component.scss']
 })
-export class RubrosComponent implements OnInit {
+export class MenuComponent implements OnInit {
   loading = false;
-  rubros: Rubro[];
+  rubros: Rubro[] = [];
 
-  constructor(private dialogRef: MatDialogRef<RubrosComponent>,
-              private rubrosService: RubrosService,
+  constructor(private rubrosService: RubrosService,
               private avisoService: AvisoService,
+              private menuService: MenuService,
               private router: Router) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.loading = true;
     this.rubrosService.getRubros()
       .pipe(finalize(() => this.loading = false))
       .subscribe(
         rubros => this.rubros = rubros,
-        err => {
-          this.avisoService.openSnackBar(err.error, '', 3500);
-          this.router.navigate(['']);
-        },
+        err => this.avisoService.openSnackBar(err.error, 'Cerrar', 0),
       )
     ;
   }
 
-  goToProductos(r: Rubro) {
-    console.log(r);
-    this.dialogRef.close();
+  close() {
+    this.menuService.toggle();
   }
 
-  volver() {
-    this.router.navigate(['']);
+  goToMiCuenta() {
+    this.router.navigate(['/perfil']);
+    this.menuService.toggle();
   }
 }

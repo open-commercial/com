@@ -33,12 +33,9 @@ import {PasswordRecoveryRequestComponent} from './components/password-recovery-r
 import {PasswordRecoveryComponent} from './components/password-recovery/password-recovery.component';
 import {CuentasCorrienteService} from './services/cuentas-corriente.service';
 import {CuentaCorrienteComponent} from './components/cuenta-corriente/cuenta-corriente.component';
-import {NgxCaptchaModule} from 'ngx-captcha';
 import {RegistracionService} from './services/registracion.service';
 import {CheckoutComponent} from './components/checkout/checkout.component';
-import {SlideshowModule} from 'ng-simple-slideshow';
 import {HomeComponent} from './components/home/home.component';
-import {ProductosEnOfertaComponent} from './components/productos-en-oferta/productos-en-oferta.component';
 import {UbicacionFormComponent} from './components/ubicacion-form/ubicacion-form.component';
 import {UbicacionComponent} from './components/ubicacion-component/ubicacion.component';
 import {ClienteUbicacionesComponent} from './components/cliente-ubicaciones/cliente-ubicaciones.component';
@@ -61,13 +58,19 @@ import { BotonMercadoPagoComponent } from './components/boton-mercado-pago/boton
 import { CheckoutStatusComponent } from './components/checkout-status/checkout-status.component';
 import { MercadoPagoDialogComponent } from './components/mercado-pago-dialog/mercado-pago-dialog.component';
 import { AgregarAlCarritoComponent } from './components/agregar-al-carrito/agregar-al-carrito.component';
-import { RubrosComponent } from './components/rubros/rubros.component';
+import { RubrosDialogComponent } from './components/rubros-dialog/rubros-dialog.component';
 import { RubroButtonComponent } from './components/rubro-button/rubro-button.component';
 import { RubrosMainMenuComponent } from './components/rubros-main-menu/rubros-main-menu.component';
 import { RubrosEnHomeComponent } from './components/rubros-en-home/rubros-en-home.component';
 import { FavoritosComponent } from './components/favoritos/favoritos.component';
 import { FavoritoButtonComponent } from './components/favorito-button/favorito-button.component';
-import { QaBannerComponent } from './components/qa-banner/qa-banner.component';
+import { RECAPTCHA_V3_SITE_KEY, RecaptchaV3Module, RecaptchaModule, RecaptchaFormsModule } from 'ng-recaptcha';
+import { SlideshowComponent } from './components/slideshow/slideshow.component';
+import { RubrosListComponent } from './components/rubros-list/rubros-list.component';
+import { SvgButtonComponent } from './components/svg-button/svg-button.component';
+import { ProductosEnOfertaSliderComponent } from './components/productos-en-oferta-slider/productos-en-oferta-slider.component';
+import { ProductosRecomendadosSliderComponent } from './components/productos-recomendados-slider/productos-recomendados-slider.component';
+import { MenuComponent } from './components/menu/menu.component';
 
 registerLocaleData(localeEs, 'es-AR', localeEsExtra);
 
@@ -91,7 +94,6 @@ registerLocaleData(localeEs, 'es-AR', localeEsExtra);
     CuentaCorrienteComponent,
     CheckoutComponent,
     HomeComponent,
-    ProductosEnOfertaComponent,
     UbicacionFormComponent,
     UbicacionComponent,
     ClienteUbicacionesComponent,
@@ -103,13 +105,18 @@ registerLocaleData(localeEs, 'es-AR', localeEsExtra);
     CheckoutStatusComponent,
     MercadoPagoDialogComponent,
     AgregarAlCarritoComponent,
-    RubrosComponent,
+    RubrosDialogComponent,
     RubroButtonComponent,
     RubrosMainMenuComponent,
     RubrosEnHomeComponent,
     FavoritosComponent,
     FavoritoButtonComponent,
-    QaBannerComponent,
+    SlideshowComponent,
+    RubrosListComponent,
+    SvgButtonComponent,
+    ProductosEnOfertaSliderComponent,
+    ProductosRecomendadosSliderComponent,
+    MenuComponent,
   ],
   imports: [
     GtagModule.forRoot({ trackingId: 'UA-132433044-1', trackPageviews: true }),
@@ -121,14 +128,15 @@ registerLocaleData(localeEs, 'es-AR', localeEsExtra);
     FlexLayoutModule,
     BrowserAnimationsModule,
     sicComRouting,
-    NgxCaptchaModule,
-    SlideshowModule,
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyCB4ieC2bSFgfWwHcpdFGegDH7vb8K5YG8',
       libraries: ['places']
     }),
     AgmSnazzyInfoWindowModule,
-    NgSelectModule
+    NgSelectModule,
+    RecaptchaV3Module,
+    RecaptchaModule,
+    RecaptchaFormsModule,
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
@@ -147,12 +155,13 @@ registerLocaleData(localeEs, 'es-AR', localeEsExtra);
     UbicacionesService,
     DynamicScriptLoaderService,
     PagosService,
+    { provide: RECAPTCHA_V3_SITE_KEY, useValue: '6LdTowkaAAAAACZ5Wts2hesX6x6Lee2T6VRTl7OY' },
   ],
   entryComponents: [
     ConfirmationDialogComponent,
     AgregarAlCarritoDialogComponent,
     MercadoPagoDialogComponent,
-    RubrosComponent, // es un dialog tambien
+    RubrosDialogComponent, // es un dialog tambien
   ],
   bootstrap: [
     SicComComponent

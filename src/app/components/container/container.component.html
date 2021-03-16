@@ -1,14 +1,14 @@
-<div class="sic-com-container" fxLayout="column" fxFlexFill>
-  <sic-com-qa-banner></sic-com-qa-banner>
-  <sic-com-navbar class="navbar"></sic-com-navbar>
-  <div class="sic-com-content" ngClass.gt-xs="tablet" ngClass.gt-sm="desktop" fxFlex>
-    <div class="sic-com-contenido-central-container" ngClass.gt-lg="width80porciento">
-      <div fxLayout="column" fxLayoutAlign="space-between stretch" fxFlex>
-        <div fxFlex class="sic-com-contenido-central"><router-outlet></router-outlet></div>
-        <div flex="noshrink">
-          <sic-com-footer></sic-com-footer>
-        </div>
-      </div>
+<div class="sic-com-container" fxLayout="column">
+
+  <div class="navbar-container">
+    <div class="placement" ngClass.gt-xs="tablet" ngClass.gt-md="desktop">
+      <sic-com-navbar class="navbar"></sic-com-navbar>
     </div>
+  </div>
+  <div class="sic-com-content" ngClass.gt-xs="tablet" ngClass.gt-sm="desktop" fxFill>
+      <div class="placement" ngClass.gt-xs="tablet" ngClass.gt-md="desktop" [ngStyle.gt-xs]="'position: relative;'">
+        <sic-com-menu id="sic-com-menu" class="menu" ngClass.lt-sm="full-screen" [class.show]="menuVisible" [ngStyle]="{'right.px': menuRight}"></sic-com-menu>
+        <router-outlet></router-outlet>
+      </div>
   </div>
 </div>

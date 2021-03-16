@@ -1,12 +1,20 @@
 @import "../../../_colors.scss";
 
 .sic-com-cuenta-corriente {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: $color-536070;
+
+  .saldo {
+    margin: 1rem 0;
+  }
+
   .monto {
     white-space: nowrap;
-    color: green;
+    color: $color-30CC81;
     font-weight: bold;
     &.negativo {
-      color: red;
+      color: $color-EB5757;
     }
   }
 
@@ -17,10 +25,11 @@
       white-space: normal;
     }
     .renglon-row-content {
-      padding: .5em 0;
+      padding: .7rem 0;
       .pedido-column-content {
         text-align: center;
-        font-size: 0.86em;
+        font-weight: 500;
+        font-size: 1.1rem;
       }
     }
   }
@@ -39,7 +48,11 @@
     }
   }
   .error {
-    color: red;
+    color: $color-EB5757;
     padding: 0.7rem 0;
+  }
+
+  .mat-list-base .mat-list-item {
+    color: inherit;
   }
 }

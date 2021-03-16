@@ -2,8 +2,10 @@
   padding: 0;
   .mp-boton {
     display: inline-block;
-    height: 2.2rem;
+    height: 3.2rem;
     min-width: 13rem;
+    padding: .5rem 1rem;
+    line-height: unset!important;
     img {
       height: 85%;
     }

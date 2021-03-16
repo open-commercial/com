@@ -1,6 +1,6 @@
 <div class="sic-com-boton-mercado-pago" fxLayout="row" fxLayoutAlign="center center">
   <mat-spinner *ngIf="loading" [diameter]="30" [strokeWidth]="4"></mat-spinner>
-  <button class="mp-boton" mat-raised-button color="primary" title="Pagar con Mercado Pago" (click)="goToInitPoint()" *ngIf="!loading"
+  <button class="mp-boton bg-color-FFDA41" mat-flat-button title="Pagar con Mercado Pago" (click)="goToInitPoint()" *ngIf="!loading"
           [disabled]="isDisabled()">
     Pagar con
     <img src="https://res.cloudinary.com/hf0vu1bg2/image/upload/v1583880285/assets/mercadopago-logo.png" alt="Mercado Pago">

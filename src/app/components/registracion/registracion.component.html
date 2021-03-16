@@ -1,7 +1,7 @@
-<div class="sic-com-registracion">
-  <a routerLink="/" fxLayout="row" fxLayoutAlign="start center">
+<div class="sic-com-registracion login-template placement" ngClass.gt-xs="tablet" ngClass.gt-md="desktop">
+  <a routerLink="/" fxLayout="row" fxLayoutAlign="start center" class="back-button">
     <mat-icon>keyboard_arrow_left</mat-icon>
-    <strong>Ir a la Portada</strong>
+    <span>Ir al Inicio</span>
   </a>
   <div fxLayout="column" fxLayoutAlign="center center">
     <img src="https://res.cloudinary.com/hf0vu1bg2/image/upload/v1588301481/assets/logo-globo-500x500px.png" alt="logo">
@@ -80,23 +80,13 @@
         </mat-form-field>
       </div>
       <span><br></span>
-      <mat-action-row fxLayout="column" fxLayoutAlign="center center">
-        <ngx-recaptcha2 #captchaElem
-          [siteKey]="siteKey"
-          hl="es-419"
-          theme="light"
-          formControlName="recaptcha">
-        </ngx-recaptcha2>
-        <span><br></span>
-      </mat-action-row>
       <div fxLayout="column" fxLayoutGap=".7em" *ngIf="!loading">
-          <button mat-raised-button color="primary">Registrarme</button>
-          <a mat-raised-button routerLink="/login">Volver al Ingreso</a>
+          <button mat-flat-button color="primary">Registrarme</button>
+          <a mat-flat-button routerLink="/login">Volver al Ingreso</a>
       </div>
     </form>
     <div *ngIf="loading" fxLayout="row" fxLayoutAlign="center center">
       <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
     </div>
   </div>
-  <sic-com-footer></sic-com-footer>
 </div>

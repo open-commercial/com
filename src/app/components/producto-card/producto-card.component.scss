@@ -1,13 +1,149 @@
 @import "../../../_colors.scss";
+
+$mat-card-padding: 0.7rem;
 :host {
-  padding: .3rem;
-  height: 295px;
-  width: 220px;
+  padding: .5rem;
+  height: 255px;
+  width: 190px;
+  display: inline-block;
+  position: relative;
+  white-space: normal;
+  a.producto {
+    cursor: pointer;
+    text-decoration: none;
+    display: block;
+    width: inherit;
+    height: 100%;
+  }
+  mat-card {
+    padding: $mat-card-padding;
+    display: flex;
+    height: 100%;
+    box-sizing: border-box;
+    flex-direction: column;
+    > .img-container {
+      height: 50%;
+      flex-shrink: 0;
+      flex-grow: 0;
+    }
+    > .info {
+      height: 50%;
+    }
+    .encabezado {
+      padding: 0 $mat-card-padding;
+      &.fix-padding-top {
+        padding-top: $mat-card-padding;
+      }
+      position: absolute;
+      right: 0;
+      top: 0;
+      left: 0;
+      z-index: 2;
+      .off {
+        display: inline-block;
+        background: $color-30CC81;
+        color: white;
+        padding: 0.6em 1em 0.4em 1em;
+        border-radius: 1.5rem;
+        font-weight: bold;
+        font-size: 0.75em;
+      }
+      .add-to-cart {
+        padding: 0;
+        color: $color-BDBDBD;
+        &:hover {
+          color: $color-828282;
+        }
+      }
+    }
+    .img-container {
+      padding: .5rem;
+      img {
+        max-height: 100%;
+        max-width: 100%;
+        -o-object-fit: contain;
+        object-fit: contain;
+        object-position: center center;
+        margin: 0;
+        display: inline-block;
+      }
+    }
+    .info {
+      width: 100%;
+      font-size: 14px;
+      min-height: 80px;
+      margin: 0;
+      font-weight: 500;
+      color: $color-536070;
+      p {
+        margin: 0 0 0.7rem 0;
+        padding: 0.3rem 0 0 0;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow:hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+      }
+      .codigo {
+        font-weight: normal;
+        font-size: 12px;
+        color: black;
+        display: inline-block;
+        margin-bottom: 0.3em;
+      }
+      .precio {
+        color: #323232;
+        font-size: 1.1rem;
+        margin-bottom: .5rem;
+        font-weight: bold;
+        &.tachado {
+          text-decoration: line-through;
+          font-weight: normal;
+          font-size: .9rem;
+        }
+      }
+      .bonificado {
+        font-weight: 500;
+        color: $color-30CC81;
+      }
+    }
+  }
+  &.mobile {
+    width: 100%;
+    height: auto;
+    display: block;
+    padding-top: 0;
+    mat-card {
+      flex-direction: row;
+      > .img-container {
+        //align-self: center;
+        height: 100px;
+        width: 30%;
+        padding-left: 0;
+      }
+      > .info {
+        align-self: center;
+        height: auto;
+      }
+      .encabezado {
+        position: unset;
+        padding-left: 0;
+        padding-right: 0;
+        margin-top: - ($mat-card-padding);
+      }
+    }
+  }
+}
+
+/*:host {
+  padding: .5rem;
+  height: 255px;
+  width: 190px;
   display: inline-block;
   position: relative;
   white-space: normal;
   .encabezado {
-    padding: .2rem;
+    padding: .7rem;
     position: absolute;
     right: 0;
     top: 0;
@@ -16,16 +152,20 @@
     background: transparent;
     .off {
       display: inline-block;
-      background: limegreen;
+      background: $color-30CC81;
       color: white;
-      padding: 0.3rem 0.5rem;
-      margin: 0.5rem;
+      padding: 0.6em 1em 0.4em 1em;
+      //margin: 0.5rem;
       border-radius: 1.5rem;
       font-weight: bold;
-      font-size: 0.95em;
+      font-size: 0.7em;
     }
     .add-to-cart {
       padding: 0;
+      color: $color-BDBDBD;
+      &:hover {
+        color: $color-828282;
+      }
     }
   }
   a.producto {
@@ -35,7 +175,7 @@
     height: 100%;
   }
   mat-card {
-    padding: .5rem;
+    padding: .7rem;
     display: flex;
     flex-direction: column;
     > .img-container {
@@ -49,7 +189,7 @@
     height: 100%;
     box-sizing: border-box;
     .img-container {
-      padding: .5rem;
+      padding: 1rem .5rem;
       img {
         max-height: 100%;
         max-width: 100%;
@@ -66,10 +206,16 @@
     font-size: 14px;
     min-height: 80px;
     margin: 0;
-    font-weight: bold;
-    color: $color-primary;
+    font-weight: 500;
+    color: $color-536070;
     p {
-      margin: 0;
+      margin: 0 0 0.7rem 0;
+      padding: 0.3rem 0 0 0;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow:hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
     }
     .codigo {
       font-weight: normal;
@@ -80,24 +226,35 @@
     }
     .precio {
       color: #323232;
-      font-size: 0.93rem;
+      font-size: 1.1rem;
+      margin-bottom: .7rem;
+      font-weight: bold;
       &.tachado {
         text-decoration: line-through;
+        font-weight: normal;
+        font-size: .9rem;
       }
-      &.bonificado {
-        font-weight: bold;
-        color: limegreen;
-      }
+    }
+    .bonificado {
+      font-weight: 500;
+      color: $color-30CC81;
     }
   }
   &.mobile {
     width: 100%;
-    height: 150px;
+    height: auto;
+    //height: 200px;
     display: block;
+    .encabezado {
+      position: unset;
+      padding-top: 0;
+      padding-left: 0;
+      padding-right: 0;
+    }
     mat-card {
       flex-direction: row;
       > .img-container {
-        height: 100%;
+        height: 100px;
         width: 30%;
       }
       > .info {
@@ -106,4 +263,4 @@
       }
     }
   }
-}
+} */

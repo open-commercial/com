@@ -13,7 +13,7 @@ import {PasswordRecoveryRequestComponent} from './components/password-recovery-r
 import {HomeComponent} from './components/home/home.component';
 import {RegistracionRealizadaComponent} from './components/registracion-realizada/registracion-realizada.component';
 import {CheckoutStatusComponent} from './components/checkout-status/checkout-status.component';
-import { RubrosComponent } from './components/rubros/rubros.component';
+import { RubrosDialogComponent } from './components/rubros-dialog/rubros-dialog.component';
 import { FavoritosComponent } from './components/favoritos/favoritos.component';
 
 const sicComRoutes: Routes = [
@@ -27,7 +27,7 @@ const sicComRoutes: Routes = [
       {path: '', component: HomeComponent},
       {path: 'productos', component: ProductosComponent},
       {path: 'producto/:id', component: ProductoComponent},
-      {path: 'rubros', component: RubrosComponent},
+      {path: 'rubros', component: RubrosDialogComponent},
     ]
   },
   {path: '', component: ContainerComponent, canActivate: [AuthGuard],
@@ -42,4 +42,4 @@ const sicComRoutes: Routes = [
   {path: '**', redirectTo: ''}
 ];
 
-export const sicComRouting = RouterModule.forRoot(sicComRoutes);
+export const sicComRouting = RouterModule.forRoot(sicComRoutes, { onSameUrlNavigation: 'reload', scrollPositionRestoration: 'top'});

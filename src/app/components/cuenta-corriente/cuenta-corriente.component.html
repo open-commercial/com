@@ -18,7 +18,7 @@
       Debe completar su email en Cuenta de Cliente para poder ingresar un deposito
     </div>
     <br>
-    <div fxLayout="row" fxLayoutAlign="start center">
+    <div fxLayout="row" fxLayoutAlign="start center" class="saldo">
       <span fxFlex></span>
       <span>SALDO: <span class="monto" [class.negativo]="cuentaCorriente.saldo < 0">$ {{ cuentaCorriente.saldo | number:'1.0-2':'es-AR' }}</span></span>
     </div>

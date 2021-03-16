@@ -19,5 +19,4 @@ export class RegistracionRealizadaComponent implements OnInit {
       .pipe(map(() => window.history.state))
       .subscribe(data => this.registracion = data.reg || null);
   }
-
 }

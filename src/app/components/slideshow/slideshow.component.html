@@ -1,0 +1,8 @@
+<div id="slider">
+  <div class="slider-img-container" #imgContainer ngClass.gt-xs="tablet" ngClass.gt-sm="desktop">
+    <ng-container *ngFor="let i of imagenes">
+      <img [src]="i.url" alt="" *ngIf="i.clickAction" (click)="i.clickAction()" class="pointer">
+      <img [src]="i.url" alt="" *ngIf="!i.clickAction">
+    </ng-container>
+  </div>
+</div>

@@ -1,6 +1,19 @@
 @import "~@ng-select/ng-select/themes/material.theme.css";
 @import "_colors.scss";
 
+$mat-dialog-padding: 1rem;
+
+.mat-dialog-container {
+  padding: $mat-dialog-padding!important;
+}
+.mat-dialog-content {
+  margin: 0 (-$mat-dialog-padding)!important;
+  padding: 0 $mat-dialog-padding!important;
+}
+.mat-dialog-actions {
+  margin-bottom: (-$mat-dialog-padding)!important;
+}
+
 .ng-select-wrapper {
   display: block !important;
   margin-bottom: 1.25em !important;
@@ -62,6 +75,10 @@ html, body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
+.mat-app-background {
+  background: $color-F2F2F2;
+}
+
 .sic-com-index {
   display: -webkit-box;
   display: -moz-box;
@@ -71,7 +88,6 @@ html, body {
   align-items: center;
   justify-content: center;
   height: 100%;
-  background-color: whitesmoke;
 
   .sic-com-spinner {
     text-align: center;
@@ -115,13 +131,28 @@ html, body {
   }
 }
 
+.placement {
+  &.tablet {
+    width: 90%;
+    margin: 0 auto;
+  }
+  &.desktop {
+    width: 1250px;
+    margin: 0 auto;
+  }
+}
+
 .mat-button-toggle-checked {
   background-color: $color-primary;
   color: $color-accent;
 }
 
+.mat-error {
+  color: $color-BDBDBD;
+}
+
 .custom-error {
-  color: red;
+  color: $color-BDBDBD;
   padding: 0.7rem 0;
 }
 
@@ -130,18 +161,53 @@ html, body {
 }
 
 .rubro-button {
+  padding: .4rem;
+}
+
+.login-template {
+  color: $color-536070;
+  padding: 1rem;
   text-align: center;
-  padding: .5rem;
-  button {
+
+  img {
+    width: 135px;
+    margin: 1.25rem 0;
+  }
+
+  a {
+    text-decoration: none;
+    font-size: 0.9em;
+    color: inherit;
+  }
+
+  form {
+    width: 100%;
+    max-width: 300px;
+  }
+}
+
+.page-template {
+  color: $color-536070 !important;
+  padding: 1rem;
+  a {
+    text-decoration: none;
+    font-size: 0.9em;
+    color: inherit;
+    cursor: pointer;
+  }
+}
+
+.svg-button-wrapper {
+  button.svg-button {
     cursor: pointer;
     width: 70px;
     height: 70px;
     padding: 1.2em;
     margin-bottom: 0.7rem;
     &.md {
-      width: 90px;
-      height: 90px;
-      padding: 1.5em;
+      width: 135px;
+      height: 135px;
+      padding: 2.7em;
       margin-bottom: 0.7rem;
     }
     border-radius: 50%;
@@ -150,14 +216,15 @@ html, body {
     box-shadow:         1px 0 5px 0 rgba(25, 25, 25, 0.3);
     background-color: white;
     border: none;
-    color: $color-primary;
+    color: $color-FFDA41;
     outline: none;
     svg {
       max-width: 100%;
       max-height: 100%;
       object-fit: contain;
     }
-    &:focus {
+    &:focus, &:hover {
+      color: $color-F0C71B;
       -webkit-box-shadow: 1px 0 7px 0 rgba(25, 25, 25, 0.5);
       -moz-box-shadow:    1px 0 7px 0 rgba(25, 25, 25, 0.5);
       box-shadow:         1px 0 7px 0 rgba(25, 25, 25, 0.5);
@@ -165,10 +232,33 @@ html, body {
   }
   .name {
     font-size: .9em;
-    font-weight: bold;
+    font-weight: 500;
     color: #323232;
+    text-align: center;
+    &.md {
+      font-size: 1.1em;
+    }
   }
+}
 
+.nowrap {
+  white-space: nowrap;
+}
+
+.sic-com-paginator {
+  padding: .7rem;
+  color: $color-536070;
+  button {
+    font-weight: 500;
+  }
+  .page {
+    padding: .5rem .9rem;
+    margin: 0 .3rem;
+    background: #DFDFDF;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+  }
 }
 
 .svg-container {
@@ -184,6 +274,11 @@ html, body {
   }
 }
 
+.back-button {
+  font-size: 0.9em;
+  font-weight: 500;
+}
+
 mat-icon.spin {
   animation-name: spin;
   animation-duration: 1500ms;
@@ -197,4 +292,82 @@ mat-icon.spin {
   to {
     transform:rotate(360deg);
   }
+}
+
+//Form override
+.mat-form-field.mat-form-field-invalid .mat-form-field-ripple, .mat-form-field.mat-form-field-invalid .mat-form-field-ripple.mat-accent {
+  background-color: $color-BDBDBD;
+}
+
+.mat-form-field.mat-focused {
+  .mat-form-field-label {
+    color: $color-828282;
+  }
+  .mat-form-field-ripple {
+    background-color: $color-BDBDBD;
+  }
+}
+
+.mat-form-field.mat-warn .mat-input-element, .mat-form-field-invalid .mat-input-element {
+  caret-color: $color-828282;
+}
+
+.mat-form-field-label {
+  font-size: 1.1em!important;
+}
+
+.mat-form-field.mat-form-field-invalid .mat-form-field-label {
+  color: $color-828282;
+}
+
+.mat-form-field.mat-form-field-invalid .mat-form-field-label.mat-accent, .mat-form-field.mat-form-field-invalid .mat-form-field-label .mat-form-field-required-marker {
+  color: $color-828282;
+}
+
+.mat-select-value {
+  color: $color-536070;
+}
+
+.mat-flat-button {
+  line-height: 50px!important;
+  font-size: 1.1rem!important;
+  &.small {
+    line-height: 38px !important;
+    font-size: 0.9rem !important;
+  }
+}
+
+.bg-color-FFDA41 {
+  background-color: $color-FFDA41;
+  color: $color-536070;
+  &:hover, &:focus {
+    background-color: $color-F0C71B;
+  }
+}
+
+.bg-color-EB5757 {
+  background-color: $color-EB5757;
+  color: white;
+}
+
+.bg-color-E0E0E0 {
+  background-color: $color-E0E0E0;
+  color: $color-536070;
+  &:hover, &:focus {
+    background-color: $color-BDBDBD;
+  }
+}
+
+.mat-step-header .mat-step-icon {
+  color: $color-536070;
+  background-color: $color-BDBDBD;
+}
+
+.mat-step-header .mat-step-icon-selected {
+  color: $color-536070;
+  background-color: $color-FFDA41;
+}
+
+.hide-scroll {
+  overflow: hidden;
 }

@@ -1,31 +1,23 @@
 @import "../../../_colors.scss";
 
 .sic-com-container {
-  .navbar {
+  .navbar-container {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     z-index: 3;
+    background: $color-FFDA41;
   }
-
   .sic-com-content {
-    background: whitesmoke;
+    min-height: 100%;
     margin-top: 56px;
     &.tablet {
       margin-top: 64px;
     }
     &.desktop {
-      margin-top: 100px;
+      margin-top: 90px;
     }
   }
-
-  .sic-com-contenido-central-container {
-    background: whitesmoke;
-    min-height: 100%;
-    margin: 0 auto;
-    &.width80porciento {
-      width: 80%;
-    }
-  }
+  padding-bottom: 1rem;
 }

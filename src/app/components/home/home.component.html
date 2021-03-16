@@ -1,21 +1,11 @@
-<div class="sic-com-home">
-  <slideshow
-    [hideOnNoSlides]="true"
-    [imageUrls]="imageUrls"
-    [backgroundSize]="'cover'"
-    [height]="height"
-    [autoPlay]="true"
-    [autoPlayInterval]="8000"
-    [showArrows]="false"
-    [showDots]="true"
-    [dotColor]="'#000'"
-    [showCaptions]="false"
-    [stopAutoPlayOnSlide]="false">
-  </slideshow>
+<div class="sic-com-home" ngClass.gt-xs="tablet" ngClass.gt-md="desktop">
+  <sic-com-slideshow [imagenes]="imageUrls"></sic-com-slideshow>
+  <h2 class="title">PRODUCTOS QUE TE PUEDEN INTERESAR</h2>
   <sic-com-rubros-en-home></sic-com-rubros-en-home>
-  <sic-com-productos-en-oferta></sic-com-productos-en-oferta>
-  <div class="bg-gray">
-    <h3 class="label">Algunas de nuestras marcas</h3>
+  <h2 class="title">CONOCÉ NUESTRAS OFERTAS</h2>
+  <sic-com-productos-en-oferta-slider></sic-com-productos-en-oferta-slider>
+  <div class="">
+    <h2 class="title">MARCAS CON LAS QUE TRABAJAMOS</h2>
     <ul class="marcas">
       <li class="marca" *ngFor="let m of marcas">
         <a [routerLink]="m.routeLink" [queryParams]="m.queryParams">

@@ -17,7 +17,7 @@
         <div fxFlex="45" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="center center" fxLayoutAlign.gt-xs="start center">
           <div fxFlex class="estado">
               <span [ngClass]="pedido.estado.toLowerCase()">
-                  {{ pedido.estado }}
+                  {{ pedido.estado | titlecase }}
               </span>
           </div>
           <div fxFlex class="nro-pedido">

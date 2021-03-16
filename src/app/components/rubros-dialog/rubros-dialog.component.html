@@ -1,0 +1,15 @@
+<mat-dialog-content class="sic-com-rubros-dialog">
+  <a class="pointer close-button" tabindex="-1" mat-dialog-close aria-label="Cerrar rubros">
+    <mat-icon>close</mat-icon>
+  </a>
+  <div class="inner-container">
+    <div *ngIf="!loading">
+      <div fxLayout="row wrap" fxLayoutAlign="center center">
+        <sic-com-rubro-button *ngFor="let r of rubros" [rubro]="r" (rubroClick)="goToProductos(r)"></sic-com-rubro-button>
+      </div>
+    </div>
+    <div class="sic-com-spinner-container" fxLayoutAlign="center center" *ngIf="loading">
+      <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
+    </div>
+  </div>
+</mat-dialog-content>

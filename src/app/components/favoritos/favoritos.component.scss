@@ -1,104 +1,80 @@
 @import "../../../_colors.scss";
 
 .sic-com-favoritos {
-  .contenido {
-    background: white;
-    .mensaje {
-      height: 100px;
-      color: $color-primary;
-      font-size: 18px;
-      text-align: center;
-    }
-    .ir-listado {
-      color: rgba(0, 0, 0, 0.87);
-      text-decoration: none;
-      height: 40px;
-      cursor: pointer;
-    }
+  .mensaje {
+    height: 100px;
+    font-size: 1.2rem;
+    text-align: center;
+  }
 
-    .page-title {
-      font-size: 1.5em;
-
-      mat-icon {
-        color: $color-primary;
-      }
-    }
-
-    .favoritos {
-      border-bottom: 1px solid #ccc;
-      height: auto;
-
-      .mat-line {
-        white-space: normal;
-        padding: 0.75rem 0;
-      }
-
-      .avatar {
-        width: 80px;
-        height: 60px;
-        border-radius: 0;
-        object-fit: contain;
-      }
-
-      .codigo {
-        font-size: 12px;
-      }
-
-      .oferta {
-        display: inline-block;
-        margin-left: 0.2rem;
-
-        mat-chip {
-          min-height: 22px;
-          font-size: 0.85rem;
-          background: limegreen;
-          color: white;
-        }
-      }
-
-      .oferta-cantidad {
-        color: limegreen;
-        font-weight: bold;
-        font-size: 0.85em;
-      }
-
-      .descripcion {
-        color: $color-primary;
-        font-weight: bold;
-        font-size: 15px;
-        padding-bottom: 0.3rem;
-      }
-
-      .precio {
-        color: #323232;
-        font-size: 0.93rem;
-        font-weight: bold;
-
-        &.tachado {
-          text-decoration: line-through;
-        }
-
-        &.bonificado {
-          color: limegreen;
-        }
-      }
+  .favoritos {
+    margin-top: 1rem;
+    font-weight: 500;
+    .favorito {
+      background: white;
+      padding: 0.7rem;
+      margin-bottom: 0.7rem;
+      -webkit-box-shadow: 1px 1px 5px 0 rgba(160,160,160,0.5);
+      box-shadow: 1px 1px 5px 0 rgba(160,160,160,0.5);
     }
   }
 
-  .sic-com-spinner-container {
-    height: 90px;
-    color: $color-primary;
+  .img-container {
+    height: 9rem;
+    text-align: center;
+    padding: .5rem .5rem .5rem 0;
+    img {
+      max-width: 100%;
+      max-height: 100%;
+      -o-object-fit: contain;
+      object-fit: contain;
+      object-position: center center;
+      margin: 0;
+      display: inline-block;
+    }
   }
 
-  .sic-com-paginator {
-    padding: .7rem;
-    .page {
-      padding: .5rem .9rem;
-      margin: 0 .3rem;
-      background: #DFDFDF;
-      -webkit-border-radius: 3px;
-      -moz-border-radius: 3px;
-      border-radius: 3px;
+  .oferta {
+    margin-bottom: 1.3rem;
+    font-size: 0.86em;
+    font-weight: 500;
+    .oferta-label {
+      font-weight: bold;
+      padding: .65em 1em .5em 1em;
+      background: $color-30CC81;
+      color: white;
+      border-radius: 1.2em;
+    }
+    .oferta-descripcion {
+      color: $color-30CC81;
+    }
+  }
+
+  .producto {
+    margin-bottom: 1.3rem;
+    .producto-descripcion {
+      font-weight: 500;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow:hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+    }
+  }
+
+  .precios {
+    font-weight: 500;
+    color: $color-1E222B;
+  }
+
+  &.desktop {
+    .producto {
+      .producto-descripcion {
+        font-size: 1.2em;
+      }
+    }
+    .precios {
+      font-size: 1.2em;
     }
   }
 }

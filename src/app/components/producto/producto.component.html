@@ -1,13 +1,16 @@
-<div fxLayout="column" class="sic-com-producto" *ngIf="!loadingProducto && !loadingCliente && producto">
-  <div fxLayoutAlign="start center" class="sic-com-ir-listado" (click)="volver()">
+<div fxLayout="column" class="sic-com-producto page-template" *ngIf="!loadingProducto && !loadingCliente && producto">
+  <a fxLayoutAlign="start center" class="sic-com-ir-listado back-button" (click)="volver()">
     <mat-icon>keyboard_arrow_left</mat-icon>
-    <strong>Volver</strong>
-  </div>
-  <div fxLayout="column" fxLayoutAlign="start center">
-    <img class="sic-com-img-producto" [src]="producto.urlImagen" (click)="toggleImgViewer()" [alt]="'Imágen del producto ' + producto.descripcion">
-    <button mat-icon-button color="primary" (click)="toggleImgViewer()">
-      <mat-icon aria-label="Pantalla completa">zoom_in</mat-icon>
-    </button>
+    <span>Volver</span>
+  </a>
+  <div fxLayout="column" fxLayout.gt-sm="row" fxLayoutAlign="center stretch" class="preview-and-info">
+    <div fxFlex class="img-container">
+      <span class="rubro">
+        <span class="svg-container" [innerHTML]="helper.getSafeHtml(producto && producto.imagenHtmlRubro ? producto.imagenHtmlRubro : '')"></span>
+        {{ producto.nombreRubro | titlecase }}
+      </span>
+      <img [src]="producto.urlImagen" (click)="toggleImgViewer()" [alt]="'Imágen del producto ' + producto.descripcion">
+    </div>
     <div class="img-viewer" *ngIf="imgViewerVisible">
       <div fxLayout="column" fxLayoutAlign="center center" fxFill>
         <img [src]="producto.urlImagen" (click)="toggleImgViewer()" [alt]="'Imágen del producto ' + producto.descripcion">
@@ -16,32 +19,35 @@
         </button>
       </div>
     </div>
-    <div class="sic-com-detalle-producto">
+    <div fxFlex class="detalle-producto">
       <sic-com-agregar-al-carrito [cliente]="cliente" [producto]="producto"
-        (cantidadUpdated)="onCantidadUpdated()" (loadingStatusUpdated)="onLoadingStatusUpdated($event)" (validStatusChanged)="onValidadStatusChanged($event)" #aacc></sic-com-agregar-al-carrito>
+                                  (cantidadUpdated)="onCantidadUpdated()" (loadingStatusUpdated)="onLoadingStatusUpdated($event)"
+                                  (validStatusChanged)="onValidadStatusChanged($event)" #aacc></sic-com-agregar-al-carrito>
       <br>
-      <div fxLayout="column" fxLayoutAlign="center center" *ngIf="authService.isAuthenticated()">
-        <button class="boton" type="button" mat-raised-button color="primary" (click)="aaccSubmit()" [disabled]="aaccLoading || !cantidadValida || favoritoToggling" *ngIf="producto.cantidadTotalEnSucursalesDisponible">
-          <mat-icon>add_shopping_cart</mat-icon> Agregar al Carrito
+      <div fxLayout="column" fxLayoutAlign="center stretch" fxLayoutAlign.gt-xs="center start" *ngIf="authService.isAuthenticated()">
+        <button class="boton" type="button" mat-flat-button color="primary" (click)="aaccSubmit()" [disabled]="aaccLoading || !cantidadValida || favoritoToggling" *ngIf="producto.cantidadTotalEnSucursalesDisponible">
+          Agregar al Carrito <mat-icon>add_shopping_cart</mat-icon>
         </button>
         <br>
-        <button class="boton" type="button" mat-raised-button (click)="toggleFavorito()" [disabled]="favoritoToggling || aaccLoading">
+        <button type="button" mat-button (click)="toggleFavorito()" [disabled]="favoritoToggling || aaccLoading">
           <span *ngIf="producto.favorito" fxLayoutAlign="center center">
-            <mat-icon [class.spin]="favoritoToggling">{{ favoritoToggling ? 'sync' : 'favorite_border' }}</mat-icon>&nbsp;Quitar de Favoritos
+            Quitar de Favoritos&nbsp;<mat-icon [class.spin]="favoritoToggling">{{ favoritoToggling ? 'sync' : 'favorite_border' }}</mat-icon>
           </span>
           <span *ngIf="!producto.favorito" fxLayoutAlign="center center">
-            <mat-icon [class.spin]="favoritoToggling">{{ favoritoToggling ? 'sync' : 'favorite' }}</mat-icon>&nbsp;Agregar a Favoritos
+            Agregar a Favoritos&nbsp;<mat-icon [class.spin]="favoritoToggling">{{ favoritoToggling ? 'sync' : 'favorite' }}</mat-icon>
           </span>
         </button>
       </div>
-    </div>
-    <div fxLayoutAlign="center center" class="sic-com-controles-cantidad" *ngIf="!authService.isAuthenticated()">
-      <button mat-raised-button fxFill [routerLink]="['/login']" [queryParams]="{'return': '/producto/' + producto.idProducto}" color="primary">
-        <mat-icon>shopping_cart</mat-icon>
-        Comprar
-      </button>
+      <div fxLayout="column" fxLayoutAlign="center stretch" fxLayoutAlign.gt-xs="center start" class="sic-com-controles-cantidad" *ngIf="!authService.isAuthenticated()">
+        <button mat-flat-button [routerLink]="['/login']" [queryParams]="{'return': '/producto/' + producto.idProducto}" color="primary">
+          Comprar <mat-icon>shopping_cart</mat-icon>
+        </button>
+      </div>
     </div>
   </div>
+  <br>
+  <h2 class="title">También te puede interesar</h2>
+  <sic-com-productos-recomendados-slider [producto]="producto"></sic-com-productos-recomendados-slider>
 </div>
 <div class="sic-com-spinner-container" fxLayoutAlign="center center" *ngIf="loadingProducto || loadingCliente">
   <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>

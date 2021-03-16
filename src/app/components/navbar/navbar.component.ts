@@ -9,6 +9,7 @@ import {Cliente} from '../../models/cliente';
 import {ClientesService} from '../../services/clientes.service';
 import {CarritoCompra} from '../../models/carrito-compra';
 import { combineLatest } from 'rxjs';
+import { MenuService } from '../../services/menu.service';
 
 @Component({
   selector: 'sic-com-navbar',
@@ -23,12 +24,16 @@ export class NavbarComponent implements OnInit {
     criteriaControl: new FormControl()
   });
   cliente: Cliente = null;
+  loading = false;
+
+  showMenu = false;
 
   constructor(public authService: AuthService,
               private productosService: ProductosService,
               private carritoCompraService: CarritoCompraService, private router: Router,
               private clientesService: ClientesService,
-              private avisoService: AvisoService) {}
+              private avisoService: AvisoService,
+              private menuService: MenuService) {}
 
   ngOnInit() {
     const criteriaControl = this.busquedaForm.get('criteriaControl');
@@ -84,5 +89,9 @@ export class NavbarComponent implements OnInit {
 
   goToLogin() {
     this.router.navigate(['login']);
+  }
+
+  toggleMenu() {
+    this.menuService.toggle();
   }
 }

@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {IImage} from 'ng-simple-slideshow';
-import {SlideshowService} from '../../services/slideshow.service';
+import { IImagen, SlideshowService } from '../../services/slideshow.service';
 import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
+import { ProductosService } from '../../services/productos.service';
 
 @Component({
   selector: 'sic-com-home',
@@ -10,9 +10,7 @@ import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
 })
 export class HomeComponent implements OnInit {
   isMobile = true;
-  urlBannerMP = '';
   height = '50vw';
-  imageUrls: (string | IImage)[] = [];
   marcas = [
     {
       url: 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1543814304/slideshow/gladiator-pro.png',
@@ -63,9 +61,11 @@ export class HomeComponent implements OnInit {
       nombre: 'Bulit'
     },
   ];
+  imageUrls: IImagen[] = [];
 
   constructor(private slideshowService: SlideshowService,
-              private breakpointObserver: BreakpointObserver) {}
+              private breakpointObserver: BreakpointObserver,
+              private productoService: ProductosService) {}
 
   ngOnInit(): void {
     this.breakpointObserver.observe([
@@ -81,5 +81,9 @@ export class HomeComponent implements OnInit {
         this.isMobile = false;
       }
     });
+  }
+
+  getLoadMoreObservable() {
+    return this.productoService.getProductosEnOferta();
   }
 }

@@ -1,6 +1,9 @@
+@import "../../../_colors.scss";
 footer {
-  font-size: 14px;
-  color: gray;
+  font-size: .85rem;
+  line-height: 1.2rem;
+  background: $color-1E222B;
+  color: white;
   padding-top: 2rem;
   .instagram {
     margin-right: 1rem;
@@ -12,5 +15,15 @@ footer {
   .centrado {
     text-align: center;
     margin-bottom: 1rem;
+    &.info {
+      margin-bottom: 1.7rem;
+    }
+    .seguinos {
+      font-weight: bold;
+      margin-bottom: .5rem;
+    }
+    a {
+      display: inline-block;
+    }
   }
 }

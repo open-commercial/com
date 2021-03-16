@@ -21,7 +21,6 @@
 
   .sic-com-listado {
     padding-top: 0;
-    background: whitesmoke;
   }
 
   .sic-com-oferta {
@@ -68,18 +67,6 @@
   .sic-com-mas-resultados {
     height: 90px;
     color: $color-primary;
-  }
-
-  .sic-com-paginator {
-    padding: .7rem;
-    .page {
-      padding: .5rem .9rem;
-      margin: 0 .3rem;
-      background: #DFDFDF;
-      -webkit-border-radius: 3px;
-      -moz-border-radius: 3px;
-      border-radius: 3px;
-    }
   }
 
   .sic-com-precio-lista {
