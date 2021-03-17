@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, HostListener, OnInit, Output, ViewChild } from '@angular/core';
 import {ProductosService} from '../../services/productos.service';
 import {Producto} from '../../models/producto';
 import {AuthService} from '../../services/auth.service';
@@ -31,6 +31,7 @@ export abstract class ProductosSliderComponent implements OnInit {
 
   scrolling = false;
 
+  @Output() cantidadUpdated = new EventEmitter<number>();
   @ViewChild('cardsContainer', { static: false }) cardsContainer: ElementRef;
 
   protected constructor(protected productosService: ProductosService,
@@ -61,7 +62,7 @@ export abstract class ProductosSliderComponent implements OnInit {
 
     this.loading = true;
     this.scrolling = true;
-    // this.productosService.getProductosEnOferta(this.pagina)
+
     this.getProductosObservableMethod(this.pagina)
       .pipe(finalize(() => { this.loading = false; this.firstLoading = false; }))
       .subscribe(
@@ -69,6 +70,7 @@ export abstract class ProductosSliderComponent implements OnInit {
           data['content'] = this.shuffle(data['content']);
           data['content'].forEach(p => this.productos.push(p));
           this.totalPaginas = data['totalPages'];
+          this.cantidadUpdated.emit(this.productos.length);
           if (this.cardsContainer && this.pagina > 1 && data['content'].length) {
             setTimeout(() => { this.scroll(1); }, 800);
           } else {

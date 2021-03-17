@@ -46,8 +46,8 @@
     </div>
   </div>
   <br>
-  <h2 class="title">También te puede interesar</h2>
-  <sic-com-productos-recomendados-slider [producto]="producto"></sic-com-productos-recomendados-slider>
+  <h2 class="title" *ngIf="recomendadosCount > 0">También te puede interesar</h2>
+  <sic-com-productos-recomendados-slider [producto]="producto" (cantidadUpdated)="recomendadosCount = $event"></sic-com-productos-recomendados-slider>
 </div>
 <div class="sic-com-spinner-container" fxLayoutAlign="center center" *ngIf="loadingProducto || loadingCliente">
   <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>

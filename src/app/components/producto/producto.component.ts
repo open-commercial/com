@@ -30,6 +30,7 @@ export class ProductoComponent implements OnInit, OnDestroy {
   windowLastTopPosition = 0;
 
   cantidadValida = false;
+  recomendadosCount = 0;
 
   @ViewChild('aacc', { static: false }) aacc: AgregarAlCarritoComponent;
   aaccLoading = false;
