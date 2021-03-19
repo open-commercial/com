@@ -78,6 +78,6 @@ export class ProductosService {
   }
 
   getProductosRecomendados(idProducto: number, pagina = 0): Observable<Pagination> {
-    return this.http.get<Pagination>(`${this.url}/${idProducto}/recomendados?pagina=${pagina}`);
+    return this.http.get<Pagination>(`${this.url}/${idProducto}/sucursales/${environment.idSucursal}/recomendados?pagina=${pagina}`);
   }
 }
