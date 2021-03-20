@@ -83,7 +83,7 @@
       <span>Siguiente</span><mat-icon aria-label="Página siguiente">navigate_next</mat-icon>
     </button>
   </div>
-  <div class="cantidades" fxLayout="column" fxLayout.gt-xs="row" *ngIf="!(loadingCarritoCompra || loadingTotales)">
+  <div class="cantidades" fxLayout="column" fxLayout.gt-xs="row" *ngIf="!(loadingCarritoCompra || loadingTotales || loadingRenglones || verificandoStock)">
     <div fxFlex></div>
     <div fxFlex fxFlex.gt-sm="40" fxLayout="column" fxLayoutGap="0.7rem">
       <div fxLayout="row" fxLayoutAlign="space-between center" class="cantidad-articulos">
