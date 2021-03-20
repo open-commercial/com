@@ -2,6 +2,7 @@ import { AfterViewInit, Component, HostListener, OnDestroy, OnInit } from '@angu
 import { MenuService } from '../../services/menu.service';
 import { Subscription } from 'rxjs';
 import { HelperService } from '../../services/helper.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'sic-com-container',
@@ -16,7 +17,8 @@ export class ContainerComponent implements OnInit, AfterViewInit, OnDestroy {
   private subscription: Subscription;
 
   constructor(private menuService: MenuService,
-              private helper: HelperService) {}
+              private helper: HelperService,
+              public authService: AuthService) {}
 
   ngOnInit() {
     this.subscription = this.menuService.getValue().subscribe(value => {
@@ -49,8 +51,9 @@ export class ContainerComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   updateMenuRight() {
-    const menuButton = document.getElementById('menu-button');
-    this.menuRight = this.menuIsFullScreen() ? 0 : document.body.clientWidth - menuButton.offsetLeft - menuButton.offsetWidth;
+    if (this.menu && this.menuButton) {
+      this.menuRight = this.menuIsFullScreen() ? 0 : document.body.clientWidth - this.menuButton.offsetLeft - this.menuButton.offsetWidth;
+    }
   }
 
 
@@ -62,15 +65,17 @@ export class ContainerComponent implements OnInit, AfterViewInit, OnDestroy {
     const menuButtonId = this.menuButton.id;
 
     if (!HelperService.isDescendant(event.target, menuId) && !HelperService.isDescendant(event.target, menuButtonId)) {
-      if (this.menuVisible ) { this.menuService.toggle(); }
+      if (this.menu && this.menuVisible ) { this.menuService.close(); }
     }
   }
 
   @HostListener('window:resize', ['$event'])
   onResize() {
-    this.updateMenuRight();
-    if (this.menuRight <= 0 && this.menuVisible) {
-      this.helper.lockBodyScroll();
+    if (this.menu) {
+      this.updateMenuRight();
+      if (this.menuRight <= 0 && this.menuVisible) {
+        this.helper.lockBodyScroll();
+      }
     }
   }
 }

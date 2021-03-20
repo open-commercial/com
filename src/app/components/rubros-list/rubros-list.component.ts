@@ -28,7 +28,7 @@ export class RubrosListComponent {
 
   goToProductos(r: Rubro = null) {
     const queryParams = r ? { r: r.idRubro } : {};
-    this.menuService.toggle();
+    this.menuService.close();
     this.router.navigate(['/productos'], { queryParams: queryParams });
   }
 

@@ -7,7 +7,8 @@
   </div>
   <div class="sic-com-content" ngClass.gt-xs="tablet" ngClass.gt-sm="desktop" fxFill>
       <div class="placement" ngClass.gt-xs="tablet" ngClass.gt-md="desktop">
-        <sic-com-menu id="sic-com-menu" class="menu" ngClass.lt-sm="full-screen" [class.show]="menuVisible" [ngStyle]="{'right.px': menuRight}"></sic-com-menu>
+        <sic-com-menu id="sic-com-menu" class="menu" ngClass.lt-sm="full-screen" [class.show]="menuVisible"
+                      [ngStyle]="{'right.px': menuRight}" *ngIf="authService.isAuthenticated()"></sic-com-menu>
         <router-outlet></router-outlet>
       </div>
   </div>

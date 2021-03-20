@@ -18,7 +18,17 @@ export class MenuService {
 
   toggle() {
     this.visible = !this.visible;
-    this.menuSubject.next(this.isVisible());
+    this.menuSubject.next(this.visible);
+  }
+
+  close() {
+    this.visible = false;
+    this.menuSubject.next(this.visible);
+  }
+
+  open() {
+    this.visible = true;
+    this.menuSubject.next(this.visible);
   }
 
   getValue(): Observable<boolean> {

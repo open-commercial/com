@@ -32,11 +32,11 @@ export class MenuComponent implements OnInit {
   }
 
   close() {
-    this.menuService.toggle();
+    this.menuService.close();
   }
 
   goToMiCuenta() {
     this.router.navigate(['/perfil']);
-    this.menuService.toggle();
+    this.menuService.close();
   }
 }
