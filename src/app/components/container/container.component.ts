@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, HostListener, OnDestroy, OnInit } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { MenuService } from '../../services/menu.service';
 import { Subscription } from 'rxjs';
 import { HelperService } from '../../services/helper.service';
@@ -9,9 +9,7 @@ import { AuthService } from '../../services/auth.service';
   templateUrl: './container.component.html',
   styleUrls: ['./container.component.scss']
 })
-export class ContainerComponent implements OnInit, AfterViewInit, OnDestroy {
-  menu = null;
-  menuButton = null;
+export class ContainerComponent implements OnInit, OnDestroy {
   menuVisible = false;
   menuRight = 0;
   private subscription: Subscription;
@@ -36,9 +34,12 @@ export class ContainerComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  ngAfterViewInit() {
-    this.menu = document.getElementById('sic-com-menu');
-    this.menuButton = document.getElementById('menu-button');
+  getMenu() {
+    return document.getElementById('sic-com-menu');
+  }
+
+  getMenuButton() {
+    return document.getElementById('menu-button');
   }
 
   ngOnDestroy() {
@@ -47,31 +48,37 @@ export class ContainerComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   menuIsFullScreen(): boolean {
-    return this.menu && this.menu.classList.contains('full-screen');
+    const menu = this.getMenu();
+    return menu && menu.classList.contains('full-screen');
   }
 
   updateMenuRight() {
-    if (this.menu && this.menuButton) {
-      this.menuRight = this.menuIsFullScreen() ? 0 : document.body.clientWidth - this.menuButton.offsetLeft - this.menuButton.offsetWidth;
+    const menu = this.getMenu();
+    const menuButton = this.getMenuButton();
+    if (menu && menuButton) {
+      this.menuRight = this.menuIsFullScreen() ? 0 : document.body.clientWidth - (menuButton.offsetLeft + menuButton.offsetWidth);
     }
   }
 
 
   @HostListener('document:click', ['$event'])
   onClick(event) {
-    if (!(this.menu && this.menuButton)) { return; }
+    const menu = this.getMenu();
+    const menuButton = this.getMenuButton();
+    if (!(menu && menuButton)) { return; }
 
-    const menuId = this.menu.id;
-    const menuButtonId = this.menuButton.id;
+    const menuId = menu.id;
+    const menuButtonId = menuButton.id;
 
     if (!HelperService.isDescendant(event.target, menuId) && !HelperService.isDescendant(event.target, menuButtonId)) {
-      if (this.menu && this.menuVisible ) { this.menuService.close(); }
+      if (this.menuVisible) { this.menuService.close(); }
     }
   }
 
   @HostListener('window:resize', ['$event'])
   onResize() {
-    if (this.menu) {
+    const menu = this.getMenu();
+    if (menu) {
       this.updateMenuRight();
       if (this.menuRight <= 0 && this.menuVisible) {
         this.helper.lockBodyScroll();
