@@ -15,6 +15,7 @@ import {RegistracionRealizadaComponent} from './components/registracion-realizad
 import {CheckoutStatusComponent} from './components/checkout-status/checkout-status.component';
 import { RubrosDialogComponent } from './components/rubros-dialog/rubros-dialog.component';
 import { FavoritosComponent } from './components/favoritos/favoritos.component';
+import { TransferenciaBancariaComponent } from './components/transferencia-bancaria/transferencia-bancaria.component';
 
 const sicComRoutes: Routes = [
   {path: 'login', component: LoginComponent},
@@ -37,6 +38,7 @@ const sicComRoutes: Routes = [
       {path: 'checkout', component: CheckoutComponent},
       {path: 'checkout/:status', component: CheckoutStatusComponent},
       {path: 'productos/favoritos', component: FavoritosComponent},
+      {path: 'pagos/transferencia', component: TransferenciaBancariaComponent},
     ]
   },
   {path: '**', redirectTo: ''}
