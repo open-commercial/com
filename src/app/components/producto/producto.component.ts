@@ -81,7 +81,7 @@ export class ProductoComponent implements OnInit, OnDestroy {
   @HostListener('window:popstate', ['$event'])
   onBrowserBackBtnClose(event: Event) {
     event.preventDefault();
-    const url = (event.target as Window).location.pathname;
+    const url = (event.target as Window).location.pathname + (event.target as Window).location.search;
     this.router.navigateByUrl('', {skipLocationChange: true})
       .then(() => this.router.navigateByUrl(url));
   }
