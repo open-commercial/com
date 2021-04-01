@@ -5,8 +5,6 @@ import {HttpClient} from '@angular/common/http';
 import {NuevoPagoMercadoPago} from '../models/mercadopago/nuevo-pago-mercado-pago';
 import {NuevaOrdenDePago} from '../models/nueva-orden-de-pago';
 import {MercadoPagoPreference} from '../models/mercadopago/mercado-pago-preference';
-import { NuevoRecibo } from '../models/nuevo-recibo';
-
 
 @Injectable()
 export class PagosService {
@@ -21,9 +19,5 @@ export class PagosService {
 
   getMercadoPagoPreference(nuevaOrdenDePago: NuevaOrdenDePago): Observable<MercadoPagoPreference> {
     return this.http.post<MercadoPagoPreference>(this.url + '/mercado-pago/preference', nuevaOrdenDePago);
-  }
-
-  pagoTransferencia(nr: NuevoRecibo): Observable<void> {
-    return this.http.post<void>(`${this.url}/transferencia`, nr);
   }
 }

@@ -5,8 +5,9 @@ import { finalize } from 'rxjs/operators';
 import { Pedido } from '../../models/pedido';
 import { AvisoService } from '../../services/aviso.service';
 import { EstadoPedido } from '../../models/estado.pedido';
-import { NuevoRecibo } from '../../models/nuevo-recibo';
-import { PagosService } from '../../services/pagos.service';
+import { NuevoReciboDeposito } from '../../models/nuevo-recibo-deposito';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { RecibosService } from '../../services/recibos.service';
 
 @Component({
   selector: 'sic-com-transferencia-bancaria',
@@ -15,15 +16,17 @@ import { PagosService } from '../../services/pagos.service';
 })
 export class TransferenciaBancariaComponent implements OnInit {
   imageDataUrl = '';
-  imagen: number[] = [];
+//  imagen: number[] = [];
   loading = false;
   pedido: Pedido = null;
+  form: FormGroup;
 
   constructor(private route: ActivatedRoute,
               private pedidosService: PedidosService,
               private avisoService: AvisoService,
               private router: Router,
-              private pagosService: PagosService) {
+              private fb: FormBuilder,
+              private recibosService: RecibosService) {
   }
 
   ngOnInit() {
@@ -45,6 +48,7 @@ export class TransferenciaBancariaComponent implements OnInit {
               );
             } else {
               this.pedido = pedido;
+              this.createForm();
             }
           },
           err => {
@@ -53,7 +57,21 @@ export class TransferenciaBancariaComponent implements OnInit {
           }
         )
       ;
+    } else {
+      this.createForm();
     }
+  }
+
+  createForm() {
+    const monto = this.pedido ? this.pedido.total : 0;
+    const concepto = this.pedido ? `Depósito por Pedido Nº ${this.pedido.nroPedido}` : 'Depósito para Cuenta Corriente';
+    const isMontoDisabled = !!this.pedido;
+
+    this.form = this.fb.group({
+      monto: [{ value: monto , disabled: isMontoDisabled }, [Validators.required, Validators.min(1)]],
+      concepto: concepto,
+      imagen: [[], Validators.required],
+    });
   }
 
   imageChange($event) {
@@ -67,7 +85,7 @@ export class TransferenciaBancariaComponent implements OnInit {
 
     readerBuffer.addEventListener('load', () => {
       const arr = new Uint8Array(readerBuffer.result as ArrayBuffer);
-      this.imagen = Array.from(arr);
+      this.form.get('imagen').setValue(Array.from(arr));
     });
 
     readerDataUrl.addEventListener('load', () => {
@@ -78,15 +96,20 @@ export class TransferenciaBancariaComponent implements OnInit {
     readerDataUrl.readAsDataURL(file);
   }
 
-  aceptar() {
-    if (this.imagen.length) {
-      const nr: NuevoRecibo = {
-        imagen: this.imagen,
+  submit() {
+    console.log(this.form.value);
+    if (this.form.valid) {
+      const formValues = this.form.value;
+      const nrd: NuevoReciboDeposito = {
+        idSucursal: null, // se completa en pagosService
         idPedido: this.pedido ? this.pedido.idPedido : null,
+        imagen: formValues.imagen,
+        monto: formValues.monto,
+        concepto: formValues.concepto,
       };
 
       this.loading = true;
-      this.pagosService.pagoTransferencia(nr)
+      this.recibosService.generarReciboDeposito(nrd)
         .pipe(finalize(() => this.loading = false))
         .subscribe(
           () => {
