@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ProductosService} from '../../services/productos.service';
-import {ActivatedRoute, Router} from '@angular/router';
+import { ActivatedRoute, NavigationStart, Router } from '@angular/router';
 import {AvisoService} from 'app/services/aviso.service';
 import {Subscription} from 'rxjs';
 import {AuthService} from '../../services/auth.service';
@@ -10,6 +10,10 @@ import {ClientesService} from '../../services/clientes.service';
 import { MatDialog } from '@angular/material/dialog';
 import {AgregarAlCarritoDialogComponent} from '../agregar-al-carrito-dialog/agregar-al-carrito-dialog.component';
 import { BusquedaProductoCriteria } from '../../models/criterias/BusquedaProductoCriteria';
+import { ScrollPositionService } from '../../services/scroll-position.service';
+import { finalize } from 'rxjs/operators';
+
+const SCROLL_POSITION_PAGE_KEY = 'productos';
 
 @Component({
   selector: 'sic-com-productos',
@@ -25,6 +29,7 @@ export class ProductosComponent implements OnInit, OnDestroy {
   busquedaCriteria: BusquedaProductoCriteria = null;
   buscarProductosSubscription: Subscription;
   cliente: Cliente = null;
+  routeSub: Subscription;
 
   constructor(private clienteService: ClientesService,
               private productosService: ProductosService,
@@ -32,7 +37,8 @@ export class ProductosComponent implements OnInit, OnDestroy {
               private avisoService: AvisoService,
               private authService: AuthService,
               private router: Router,
-              private dialog: MatDialog) {
+              private dialog: MatDialog,
+              private scrollPositionSevice: ScrollPositionService) {
   }
 
   ngOnInit() {
@@ -62,16 +68,32 @@ export class ProductosComponent implements OnInit, OnDestroy {
       this.clienteService.getClienteDelUsuario(this.authService.getLoggedInIdUsuario())
         .subscribe((c: Cliente) => this.cliente = c);
     }
+
+    this.routeSub = this.router.events.subscribe((event) => {
+      if (event instanceof NavigationStart) {
+        const url = document.location.pathname + document.location.search;
+        this.scrollPositionSevice.storeScrollPosition(SCROLL_POSITION_PAGE_KEY, url);
+      }
+    });
   }
 
   ngOnDestroy() {
     this.buscarProductosSubscription.unsubscribe();
+    this.routeSub.unsubscribe();
   }
 
   cargarProductos() {
     this.loadingProducts = true;
     this.productos = [];
-    this.productosService.getProductosSoloPublicos(this.pagina).subscribe(
+    this.productosService.getProductosSoloPublicos(this.pagina)
+      .pipe(finalize(() => {
+        this.loadingProducts = false;
+        const url = document.location.pathname + document.location.search;
+        setTimeout(() => {
+          this.scrollPositionSevice.restorePosition(SCROLL_POSITION_PAGE_KEY, url);
+        }, 200);
+      }))
+      .subscribe(
       data => {
         data['content'].forEach(p => {
           if (p.urlImagen == null || p.urlImagen === '') {
@@ -81,11 +103,9 @@ export class ProductosComponent implements OnInit, OnDestroy {
         });
         this.totalPaginas = data['totalPages'];
         this.totalElements = data['totalElements'];
-        this.loadingProducts = false;
       },
       err => {
         this.avisoService.openSnackBar(err.error, '', 3500);
-        this.loadingProducts = false;
       }
     );
   }
