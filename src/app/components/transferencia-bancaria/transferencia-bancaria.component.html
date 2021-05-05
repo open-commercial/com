@@ -15,8 +15,7 @@
           <li>
             <p>
               Adjunte el comprobante haciendo click en botón "Adjuntar comprobante".
-              El comprobante puede ser una foto del ticket emitido por el cajero o bien el archivo electrónico
-              si la transferencia se ha realizado via online.
+              El comprobante debe ser una foto del ticket emitido por el cajero o bien una captura del compobante electrónico.
               Una vez que se ha seleccionado el archivo, aparecerá previsualizado y se activará el botón "Enviar comprobante"
             </p>
           </li>
@@ -42,7 +41,7 @@
           </mat-error>
         </mat-form-field>
         <div fxLayout="column" fxLayoutAlign="center center">
-          <div class="preview" [class.no-border]="!!imageDataUrl">
+          <div class="preview" [class.no-border]="!!imageDataUrl" (click)="imageFile.click()">
             <img [src]="imageDataUrl ? imageDataUrl : 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1545616229/assets/sin_imagen.png'"
                  alt="Imagen del comprobante">
           </div>
@@ -50,7 +49,7 @@
         </div>
 
         <div fxLayoutAlign="center center">
-          <input type="file" class="file-input" accept="image/x-png,image/jpeg,application/pdf" id="imagen" lang="es" (change)="imageChange($event)" #imageFile>
+          <input type="file" class="file-input" accept="image/x-png,image/jpeg" id="imagen" lang="es" (change)="imageChange($event)" #imageFile>
           <button mat-flat-button class="bg-color-FFDA41" (click)="imageFile.click()">
             Adjuntar comprobante <mat-icon aria-hidden="false" aria-label="Seleccionar imágen del Comprobante de Transferencia">attach_file</mat-icon>
           </button>
@@ -58,7 +57,7 @@
       </div>
     </div>
     <div fxLayoutAlign="center center" fxLayoutGap="0.5rem" *ngIf="!loading">
-      <button type="button" mat-flat-button>Cancelar</button>
+      <button type="button" mat-flat-button routerLink="/perfil">Cancelar</button>
       <button type="submit" mat-flat-button class="bg-color-FFDA41" [disabled]="form.invalid">Enviar Comprobante</button>
     </div>
   </form>

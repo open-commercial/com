@@ -36,6 +36,9 @@
           <button mat-icon-button color="primary" aria-label="Descargar" (click)="downloadPedidoPdf(pedido)">
             <mat-icon>get_app</mat-icon>
           </button>
+          <button mat-icon-button color="primary" aria-label="Transferencia" (click)="transferenciaPedido(pedido)" *ngIf="pedido.estado === estadoPedido.ABIERTO">
+            <mat-icon>price_check</mat-icon>
+          </button>
         </div>
       </div>
       <mat-divider></mat-divider>

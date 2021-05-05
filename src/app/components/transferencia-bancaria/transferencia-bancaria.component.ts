@@ -44,7 +44,7 @@ export class TransferenciaBancariaComponent implements OnInit {
                 'Sole se pueden realizar transferencias a pedidos en estado ', EstadoPedido.ABIERTO, '.'
               ].join('');
               this.avisoService.openSnackBar(msg, 'Cerrar', 0).afterDismissed().subscribe(
-                () => this.router.navigate([''])
+                () => this.router.navigate(['/perfil'])
               );
             } else {
               this.pedido = pedido;
@@ -101,8 +101,8 @@ export class TransferenciaBancariaComponent implements OnInit {
     if (this.form.valid) {
       const formValues = this.form.value;
       const nrd: NuevoReciboDeposito = {
-        idSucursal: null, // se completa en pagosService
         idPedido: this.pedido ? this.pedido.idPedido : null,
+        idSucursal: null, /* se llena en el metodo generarReciboDeposito si se coloca null  */
         imagen: formValues.imagen,
         monto: formValues.monto,
         concepto: formValues.concepto,
@@ -114,9 +114,8 @@ export class TransferenciaBancariaComponent implements OnInit {
         .subscribe(
           () => {
             const msg = 'Comprobante recibido correctamente.';
-            this.avisoService.openSnackBar(msg, 'Cerrar', 0).afterDismissed().subscribe(
-              () => this.router.navigate(['/perfil'])
-            );
+            this.avisoService.openSnackBar(msg, 'Cerrar', 0);
+            this.router.navigate(['/perfil']);
           },
           err => this.avisoService.openSnackBar(err.error, 'Cerrar', 0),
         )

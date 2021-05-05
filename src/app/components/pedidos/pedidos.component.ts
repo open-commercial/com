@@ -7,6 +7,8 @@ import {ClientesService} from '../../services/clientes.service';
 import {AuthService} from '../../services/auth.service';
 import { saveAs } from 'file-saver';
 import {finalize} from 'rxjs/operators';
+import { Router } from '@angular/router';
+import { EstadoPedido } from '../../models/estado.pedido';
 
 @Component({
   selector: 'sic-com-pedidos',
@@ -21,7 +23,10 @@ export class PedidosComponent implements OnInit {
   isLoading = true;
   loading = true;
 
-  constructor(private pedidosService: PedidosService,
+  estadoPedido = EstadoPedido;
+
+  constructor(private router: Router,
+              private pedidosService: PedidosService,
               private avisoService: AvisoService,
               private authService: AuthService,
               private clientesService: ClientesService) {
@@ -88,5 +93,9 @@ export class PedidosComponent implements OnInit {
         saveAs(file, `pedido-${pedido.nroPedido}.pdf`);
       }
     );
+  }
+
+  transferenciaPedido(pedido: Pedido) {
+    this.router.navigate(['/pagos/transferencia'], { queryParams: { idPedido: pedido.idPedido}});
   }
 }
