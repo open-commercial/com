@@ -103,7 +103,7 @@ export class TransferenciaBancariaComponent implements OnInit {
         idPedido: this.pedido ? this.pedido.idPedido : null,
         idSucursal: null, /* se llena en el metodo generarReciboDeposito si se coloca null  */
         imagen: formValues.imagen,
-        monto: this.pedido && this.pedido.idPedido ? this.pedido.total : formValues.monto,
+        monto: Number(this.pedido && this.pedido.idPedido ? this.pedido.total : formValues.monto),
         concepto: formValues.concepto,
       };
 
