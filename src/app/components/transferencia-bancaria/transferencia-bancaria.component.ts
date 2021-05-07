@@ -97,14 +97,13 @@ export class TransferenciaBancariaComponent implements OnInit {
   }
 
   submit() {
-    console.log(this.form.value);
     if (this.form.valid) {
       const formValues = this.form.value;
       const nrd: NuevoReciboDeposito = {
         idPedido: this.pedido ? this.pedido.idPedido : null,
         idSucursal: null, /* se llena en el metodo generarReciboDeposito si se coloca null  */
         imagen: formValues.imagen,
-        monto: formValues.monto,
+        monto: this.pedido && this.pedido.idPedido ? this.pedido.total : formValues.monto,
         concepto: formValues.concepto,
       };
 
