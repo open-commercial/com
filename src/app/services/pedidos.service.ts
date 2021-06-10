@@ -13,6 +13,11 @@ export class PedidosService {
 
   constructor(private http: HttpClient) {}
 
+
+  getPedido(idPedido: number): Observable<Pedido> {
+    return this.http.get<Pedido>(`${this.url}/${idPedido}`);
+  }
+
   getPedidosCliente(cliente: Cliente, pagina: number) {
     return this.http.post(this.urlBusqueda, {idCliente: cliente.idCliente, pagina: pagina});
   }

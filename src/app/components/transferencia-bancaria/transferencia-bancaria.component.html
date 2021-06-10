@@ -1,0 +1,69 @@
+<div class="sic-com-transferencia-bancaria page-template" ngClass.gt-sm="desktop">
+  <form fxLayout="column" [formGroup]="form" (ngSubmit)="submit()" *ngIf="!loading && form">
+    <div class="contenido" fxLayout="column" fxLayout.gt-sm="row" *ngIf="!loading">
+      <div fxFlex>
+        <h1>Transferencia <span *ngIf="pedido">asociada al pedido #{{ pedido.nroPedido }}</span></h1>
+        <ol class="descripcion">
+          <li>
+            <p>Realice la transferencia por el monto especificado, a los datos de la siguiente cuenta:</p>
+            <ul class="datos-cuenta">
+              <li><span class="label">Alias: </span><span class="dato">globo.de.oro</span></li>
+              <li><span class="label">CBU: </span><span class="dato">123456789012345</span></li>
+              <li><span class="label">Nombre: </span><span class="dato">Globo Distribuciones S.R.L.</span></li>
+            </ul>
+          </li>
+          <li>
+            <p>
+              Adjunte el comprobante haciendo click en botón "Adjuntar comprobante".
+              El comprobante debe ser una foto del ticket emitido por el cajero o bien una captura del compobante electrónico.
+              Una vez que se ha seleccionado el archivo, aparecerá previsualizado y se activará el botón "Enviar comprobante"
+            </p>
+          </li>
+          <li>
+             <p>Para terminar con la operación haga click en el botón "Enviar Comprobante".</p>
+          </li>
+        </ol>
+      </div>
+      <div fxFlex fxLayout="column" fxLayoutAlign="stretch">
+        <mat-form-field>
+          <input type="number" matInput placeholder="Monto $" formControlName="monto">
+          <mat-error *ngIf="form.get('monto').hasError('required')">
+            Requerido
+          </mat-error>
+          <mat-error *ngIf="form.get('monto').hasError('min')">
+            Mínimo $ {{ form.get('monto').getError('min').min }}
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <textarea matInput placeholder="Concepto" formControlName="concepto"></textarea>
+          <mat-error *ngIf="form.get('concepto').hasError('required')">
+            Requerido
+          </mat-error>
+        </mat-form-field>
+        <div fxLayout="column" fxLayoutAlign="center center">
+          <div class="preview" [class.no-border]="!!imageDataUrl" (click)="imageFile.click()">
+            <img [src]="imageDataUrl ? imageDataUrl : 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1545616229/assets/sin_imagen.png'"
+                 alt="Imagen del comprobante">
+          </div>
+          <div class="custom-error" *ngIf="form.get('imagen').hasError('required')">Requerido</div>
+        </div>
+
+        <div fxLayoutAlign="center center">
+          <input type="file" class="file-input" accept="image/x-png,image/jpeg" id="imagen" lang="es" (change)="imageChange($event)" #imageFile>
+          <button mat-flat-button class="bg-color-FFDA41" (click)="imageFile.click()">
+            Adjuntar comprobante <mat-icon aria-hidden="false" aria-label="Seleccionar imágen del Comprobante de Transferencia">attach_file</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div fxLayoutAlign="center center" fxLayoutGap="0.5rem" *ngIf="!loading">
+      <button type="button" mat-flat-button routerLink="/perfil">Cancelar</button>
+      <button type="submit" mat-flat-button class="bg-color-FFDA41" [disabled]="form.invalid">Enviar Comprobante</button>
+    </div>
+  </form>
+  <div class="sic-com-spinner-container" fxLayoutAlign="center center" *ngIf="loading">
+    <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
+  </div>
+</div>
+
+

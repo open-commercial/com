@@ -71,6 +71,7 @@ import { SvgButtonComponent } from './components/svg-button/svg-button.component
 import { ProductosEnOfertaSliderComponent } from './components/productos-en-oferta-slider/productos-en-oferta-slider.component';
 import { ProductosRecomendadosSliderComponent } from './components/productos-recomendados-slider/productos-recomendados-slider.component';
 import { MenuComponent } from './components/menu/menu.component';
+import { TransferenciaBancariaComponent } from './components/transferencia-bancaria/transferencia-bancaria.component';
 
 registerLocaleData(localeEs, 'es-AR', localeEsExtra);
 
@@ -117,6 +118,7 @@ registerLocaleData(localeEs, 'es-AR', localeEsExtra);
     ProductosEnOfertaSliderComponent,
     ProductosRecomendadosSliderComponent,
     MenuComponent,
+    TransferenciaBancariaComponent,
   ],
   imports: [
     GtagModule.forRoot({ trackingId: 'UA-132433044-1', trackPageviews: true }),

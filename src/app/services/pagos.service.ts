@@ -6,7 +6,6 @@ import {NuevoPagoMercadoPago} from '../models/mercadopago/nuevo-pago-mercado-pag
 import {NuevaOrdenDePago} from '../models/nueva-orden-de-pago';
 import {MercadoPagoPreference} from '../models/mercadopago/mercado-pago-preference';
 
-
 @Injectable()
 export class PagosService {
 
