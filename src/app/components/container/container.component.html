@@ -1,5 +1,5 @@
 <div class="sic-com-container" fxLayout="column">
-
+  <sic-com-qa-banner></sic-com-qa-banner>
   <div class="navbar-container">
     <div class="placement" ngClass.gt-xs="tablet" ngClass.gt-md="desktop">
       <sic-com-navbar class="navbar"></sic-com-navbar>
@@ -9,6 +9,7 @@
       <div class="placement" ngClass.gt-xs="tablet" ngClass.gt-md="desktop">
         <sic-com-menu id="sic-com-menu" class="menu" ngClass.lt-sm="full-screen" [class.show]="menuVisible"
                       [ngStyle]="{'right.px': menuRight}" *ngIf="authService.isAuthenticated()"></sic-com-menu>
+        <sic-com-main-banner></sic-com-main-banner>
         <router-outlet></router-outlet>
       </div>
   </div>

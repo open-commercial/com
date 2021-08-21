@@ -1,0 +1,114 @@
+@import url('https://fonts.googleapis.com/css?family=Lato');
+.sic-com-main-banner {
+  text-align: right;
+  .banner {
+    text-align: center;
+    margin: 0.5rem 0.5rem 0.7rem 0.5rem;
+    color: #000000;
+    font-family: "Lato", sans-serif;
+    font-size: 0.8rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    word-spacing: 3px;
+    background: gold;
+    padding: 0.5rem 1rem;
+    position: relative;
+
+    -webkit-box-shadow: 2px 2px 3px 0 rgba(170, 170, 170, 0.75);
+    -moz-box-shadow:    2px 2px 3px 0 rgba(170, 170, 170, 0.75);
+    box-shadow:         2px 2px 3px 0 rgba(170, 170, 170, 0.75);
+
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+
+    &.tablet {
+      margin-right: 0;
+      display: inline-block;
+      &:before {
+        content: "";
+        position: absolute;
+        bottom: -38%;
+        left: 0;
+        border: 7px solid transparent;
+        border-top: 7px solid gold;
+        border-left: 7px solid gold;
+        transform: rotate(90deg);
+      }
+    }
+
+    &.desktop {
+      margin-right: 0;
+      display: inline-block;
+      font-size: 0.9rem;
+      &:before {
+        content: "";
+        position: absolute;
+        bottom: -38%;
+        left: 0;
+        border: 7px solid transparent;
+        border-top: 7px solid gold;
+        border-left: 7px solid gold;
+        transform: rotate(90deg);
+      }
+    }
+  }
+
+  p {
+    position: relative;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transition: all 0.3s;
+  }
+
+  p:after {
+    content: "";
+    border: 1px solid #34495e;
+    width: 100%;
+    height: 100%;
+    transform: scale3d(0, 0, 0);
+    transform-origin: center;
+    transition: all 0.3s;
+  }
+
+  p:before {
+    content: "";
+    position: absolute;
+    border: 4px solid gold;
+    height: 100%;
+    width: 30%;
+    z-index: 10;
+    top: -30%;
+    left: -30%;
+    transform: rotate(-50deg);
+    animation: shine 3s ease-in;
+    animation-iteration-count: infinite;
+  }
+
+  @keyframes shine {
+    0% {
+      opacity: 1;
+      top: -30%;
+      left: -30%;
+    }
+    75% {
+      top: 90%;
+      left: 90%;
+    }
+    76% {
+      opacity: 0;
+      top: -30%;
+      left: -30%;
+    }
+
+    100% {
+      opacity: 0;
+      top: -30%;
+      left: -30%;
+    }
+  }
+}
