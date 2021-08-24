@@ -4,9 +4,10 @@
   .banner {
     text-align: center;
     margin: 0.5rem 0.5rem 0.7rem 0.5rem;
-    color: #000000;
+    color: #34495e;
     font-family: "Lato", sans-serif;
-    font-size: 0.8rem;
+    font-size: 0.65rem;
+    // font-size: 2vw;
     font-weight: bold;
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -24,6 +25,7 @@
     border-radius: 5px;
 
     &.tablet {
+      font-size: 0.8rem;
       margin-right: 0;
       display: inline-block;
       &:before {
@@ -39,9 +41,9 @@
     }
 
     &.desktop {
+      font-size: 0.9rem;
       margin-right: 0;
       display: inline-block;
-      font-size: 0.9rem;
       &:before {
         content: "";
         position: absolute;
