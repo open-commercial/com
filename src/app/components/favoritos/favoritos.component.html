@@ -26,7 +26,7 @@
                  *ngIf="producto.oferta && producto.porcentajeBonificacionOferta > 0">
               <span class="oferta-label">OFERTA</span>
               <span class="oferta-descripcion">
-              <span *ngIf="producto.bulto > 1">Llevando {{producto.bulto | number:'1.0-2':'es-AR'}} o más</span>
+              <span *ngIf="producto.cantMinima > 1">Llevando {{producto.cantMinima | number:'1.0-2':'es-AR'}} o más</span>
                 $ {{ producto.precioBonificado | number:'1.0-2':'es-AR' }}
               </span>
             </div>
@@ -43,15 +43,15 @@
                 </span>
               </div>
               <div *ngIf="!producto.oferta">
-                <span *ngIf="!estaBonificado(producto) || producto.bulto > 1">
+                <span *ngIf="!estaBonificado(producto) || producto.cantMinima > 1">
                   P. U. $ {{ producto.precioLista | number:'1.0-2':'es-AR'}}<br>
                 </span>
                 <span *ngIf="producto.precioLista > producto.precioBonificado">
-                  P. U. Bonif. <span *ngIf="producto.bulto > 1"> x Cant.</span>&nbsp;$ {{ producto.precioBonificado | number:'1.0-2':'es-AR'}}
+                  P. U. Bonif. <span *ngIf="producto.cantMinima > 1"> x Cant.</span>&nbsp;$ {{ producto.precioBonificado | number:'1.0-2':'es-AR'}}
                 </span>
               </div>
-              <div *ngIf="!producto.oferta && (producto.precioLista > producto.precioBonificado) && producto.bulto > 1">
-                <span [class.seleccionado]="estaBonificado(producto)">Llevando {{producto.bulto | number:'1.0-2':'es-AR'}} o más</span>
+              <div *ngIf="!producto.oferta && (producto.precioLista > producto.precioBonificado) && producto.cantMinima > 1">
+                <span [class.seleccionado]="estaBonificado(producto)">Llevando {{producto.cantMinima | number:'1.0-2':'es-AR'}} o más</span>
               </div>
             </div>
           </div>

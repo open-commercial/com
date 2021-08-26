@@ -121,5 +121,8 @@
     "@schematics/angular:directive": {
       "prefix": "sic-com"
     }
+  },
+  "cli": {
+    "analytics": false
   }
 }

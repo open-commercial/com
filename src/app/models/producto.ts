@@ -10,7 +10,6 @@ export interface Producto {
   cantidadTotalEnSucursalesDisponible: number;
   cantidadReservada: number;
   cantMinima: number;
-  bulto: number;
   nombreMedida: string;
   precioCosto: number;
   gananciaPorcentaje: number;
