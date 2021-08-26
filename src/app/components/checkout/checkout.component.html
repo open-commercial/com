@@ -29,44 +29,6 @@
           <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
         </div>
         <div *ngIf="!isUbicacionesLoading">
-          <!--<br>
-          <mat-button-toggle-group formControlName="opcionEnvio" aria-label="Opción de Envío">
-            <mat-button-toggle class="btn-small" [value]="opcionEnvio.RETIRO_EN_SUCURSAL" [disabled]="!sucursales.length" color="primary">Retiro en Sucursal</mat-button-toggle>
-            <mat-button-toggle class="btn-small" [value]="opcionEnvio.ENVIO_A_DOMICILIO" color="primary">Envío a Domicilio</mat-button-toggle>
-          </mat-button-toggle-group>
-          <br><br>
-          <div *ngIf="opcionEnvioForm.get('opcionEnvio').value === opcionEnvio.RETIRO_EN_SUCURSAL && sucursales.length" fxLayout="column">
-            <div fxLayout="row">
-              <mat-form-field fxFlex="100" fxFlex.gt-sm="50">
-                <mat-select formControlName="sucursal" placeholder="Sucursal">
-                  <mat-option *ngFor="let s of sucursales" [value]="s">
-                    {{ s.detalleUbicacion }}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
-            </div>
-
-            <div *ngIf="opcionEnvioForm.get('sucursal').touched && opcionEnvioForm.errors?.requiredSucursal" class="sucursal-error">
-              Requerido
-            </div>
-            <div fxLayout="row" fxLayoutAlign="center center" *ngIf="isUbicacionSucursalLoading" class="sic-com-spinner-container">
-              <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
-            </div>
-            <div *ngIf="!isUbicacionSucursalLoading && ubicacionSucursal && ubicacionSucursal.latitud && ubicacionSucursal.longitud">
-              <agm-map class="mapa" [latitude]="ubicacionSucursal.latitud" [longitude]="ubicacionSucursal.longitud" [zoom]="15" [streetViewControl]="false">
-                <agm-marker [latitude]="ubicacionSucursal.latitud"
-                            [longitude]="ubicacionSucursal.longitud"
-                            [title]="getUbicacionStr(ubicacionSucursal)"
-                >
-                  <agm-snazzy-info-window [maxWidth]="200" [closeWhenOthersOpen]="true" [isOpen]="true">
-                    <ng-template>
-                      {{ getUbicacionStr(ubicacionSucursal) }}
-                    </ng-template>
-                  </agm-snazzy-info-window>
-                </agm-marker>
-              </agm-map>
-            </div>
-          </div>-->
           <div *ngIf="opcionEnvioForm.get('opcionEnvio').value === opcionEnvio.ENVIO_A_DOMICILIO" fxLayout="column">
             <div fxLayout="row">
               <mat-form-field fxFlex="100" fxFlex.gt-sm="50">

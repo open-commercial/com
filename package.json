@@ -7,8 +7,6 @@
   },
   "private": true,
   "dependencies": {
-    "@agm/core": "^3.0.0-beta.0",
-    "@agm/snazzy-info-window": "^3.0.0-beta.0",
     "@angular/animations": "^11.0.4",
     "@angular/cdk": "^11.0.3",
     "@angular/common": "^11.0.4",
@@ -31,7 +29,6 @@
     "ng-recaptcha": "^6.1.0",
     "rxjs": "^6.6.3",
     "secure-ls": "^1.2.6",
-    "snazzy-info-window": "^1.1.1",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.2"
   },

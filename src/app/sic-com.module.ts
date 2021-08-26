@@ -41,8 +41,6 @@ import {UbicacionComponent} from './components/ubicacion-component/ubicacion.com
 import {ClienteUbicacionesComponent} from './components/cliente-ubicaciones/cliente-ubicaciones.component';
 import {SlideshowService} from './services/slideshow.service';
 import {UbicacionesService} from './services/ubicaciones.service';
-import {AgmCoreModule} from '@agm/core';
-import {AgmSnazzyInfoWindowModule} from '@agm/snazzy-info-window';
 import {AgregarAlCarritoDialogComponent} from './components/agregar-al-carrito-dialog/agregar-al-carrito-dialog.component';
 import {registerLocaleData} from '@angular/common';
 import localeEs from '@angular/common/locales/es';
@@ -132,11 +130,6 @@ registerLocaleData(localeEs, 'es-AR', localeEsExtra);
     FlexLayoutModule,
     BrowserAnimationsModule,
     sicComRouting,
-    AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyCB4ieC2bSFgfWwHcpdFGegDH7vb8K5YG8',
-      libraries: ['places']
-    }),
-    AgmSnazzyInfoWindowModule,
     NgSelectModule,
     RecaptchaV3Module,
     RecaptchaModule,
