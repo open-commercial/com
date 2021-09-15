@@ -10,7 +10,7 @@ import { Pagination } from '../models/pagination';
 export class ProductosService {
 
   url = environment.apiUrl + '/api/v1/productos';
-  urlBusqueda = this.url + '/busqueda/criteria/sucursales/' + environment.idSucursal;
+  urlBusqueda = this.url + '/busqueda/criteria/sucursales/' + environment.idSucursal + '?movimiento=COMPRA';
 
   private buscarProductosSubject = new Subject<BusquedaProductoCriteria>();
   buscarProductos$ = this.buscarProductosSubject.asObservable();
