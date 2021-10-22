@@ -145,6 +145,6 @@ export class AgregarAlCarritoComponent implements OnInit, AfterViewInit {
     if (!cant || cant < 0) { return false; }
 
     return this.producto.precioBonificado && this.producto.precioBonificado < this.producto.precioLista
-      && cant >= this.producto.bulto;
+      && cant >= this.producto.cantMinima;
   }
 }

@@ -225,6 +225,6 @@ export class CarritoCompraComponent implements OnInit {
   }
 
   estaBonificado(icc: ItemCarritoCompra) {
-    return  icc.producto.precioLista > icc.producto.precioBonificado && icc.cantidad >= icc.producto.bulto;
+    return  icc.producto.precioLista > icc.producto.precioBonificado && icc.cantidad >= icc.producto.cantMinima;
   }
 }
