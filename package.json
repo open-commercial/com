@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "license": "MIT",
   "scripts": {
-    "build": "ng build --configuration ${ENV_NAME}"
+    "build": "ng build --configuration ${ENV_NAME}",
+    "start": "ng serve"
   },
   "private": true,
   "dependencies": {
