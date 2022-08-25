@@ -22,7 +22,7 @@
     "@angular/platform-server": "^11.0.4",
     "@angular/router": "^11.0.4",
     "@auth0/angular-jwt": "^3.0.1",
-    "@ng-select/ng-select": "^5.0.9",
+    "@ng-select/ng-select": "^6.1.0",
     "angular-gtag": "^1.0.4",
     "core-js": "^3.8.1",
     "file-saver": "^2.0.5",
