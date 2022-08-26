@@ -25,27 +25,31 @@
   </script>
 </head>
 <body class="mat-app-background">
-<sic-com class="sic-com-index">
-  <div class="sic-com-spinner">
-    <div class="sic-com-circulo-spinner"></div>
-    <img src="https://res.cloudinary.com/hf0vu1bg2/image/upload/v1588301552/assets/logo-globo-200x200px.png" alt="Logo de Globo de Oro">
-  </div>
-</sic-com>
-<!-- GetButton.io widget -->
-<script type="text/javascript">
-    (function () {
+  <sic-com class="sic-com-index">
+    <div class="sic-com-spinner">
+      <div class="sic-com-circulo-spinner"></div>
+      <img src="https://res.cloudinary.com/hf0vu1bg2/image/upload/v1588301552/assets/logo-globo-200x200px.png" alt="Logo de Globo de Oro">
+    </div>
+  </sic-com>
+  <!-- GetButton.io widget -->
+  <script type="text/javascript">
+      (function () {
         var options = {
-            whatsapp: "+5493794834638", // WhatsApp number
-            call_to_action: "¿Necesita ayuda?", // Call to action
-            button_color: "#FF6550", // Color of button
-            position: "left", // Position may be 'right' or 'left'
+          whatsapp: "+5493794834638",
+          call_to_action: "¿Necesita ayuda?",            
+          position: "left",
         };
         var proto = 'https:', host = "getbutton.io", url = proto + '//static.' + host;
-        var s = document.createElement('script'); s.type = 'text/javascript'; s.async = true; s.src = url + '/widget-send-button/js/init.js';
-        s.onload = function () { WhWidgetSendButton.init(host, proto, options); };
-        var x = document.getElementsByTagName('script')[0]; x.parentNode.insertBefore(s, x);
-    })();
-</script>
-<!-- /GetButton.io widget -->
+        var s = document.createElement('script');
+        s.type = 'text/javascript';
+        s.async = true; 
+        s.src = url + '/widget-send-button/js/init.js';
+        s.onload = function () {
+          WhWidgetSendButton.init(host, proto, options);
+        };
+        var x = document.getElementsByTagName('script')[0];
+        x.parentNode.insertBefore(s, x);
+      })();
+  </script>
 </body>
 </html>
