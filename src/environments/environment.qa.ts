@@ -1,7 +1,7 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://globo-sic-api-qa.herokuapp.com',
+  apiUrl: 'http://localhost:8080',
   idSucursal: 1,
-  appVersion: 16,
+  appVersion: 17,
   qa: true,
 };
