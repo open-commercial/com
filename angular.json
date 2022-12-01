@@ -115,7 +115,7 @@
   "schematics": {
     "@schematics/angular:component": {
       "prefix": "sic-com",
-      "styleext": "scss"
+      "style": "scss"
     },
     "@schematics/angular:directive": {
       "prefix": "sic-com"
