@@ -8,7 +8,7 @@
         <div class="encabezado" [class.fix-padding-top]="!authService.isAuthenticated()">
           <div fxLayout="row" fxLayoutAlign="space-between center">
             <div>
-              <span class="off" *ngIf="producto.oferta && producto.porcentajeBonificacionOferta">{{ producto.porcentajeBonificacionOferta }}% OFF!</span>
+              <span class="off" *ngIf="producto.oferta && producto.porcentajeBonificacionOferta">{{ producto.porcentajeBonificacionOferta | number:'2.0-0' }}% OFF!</span>
             </div>
             <div>
               <sic-com-favorito-button [producto]="producto"></sic-com-favorito-button>
