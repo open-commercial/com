@@ -5,7 +5,6 @@ import {PedidosService} from '../../services/pedidos.service';
 import {AvisoService} from '../../services/aviso.service';
 import {ClientesService} from '../../services/clientes.service';
 import {AuthService} from '../../services/auth.service';
-import { saveAs } from 'file-saver';
 import {finalize} from 'rxjs/operators';
 
 @Component({
@@ -84,8 +83,9 @@ export class PedidosComponent implements OnInit {
   downloadPedidoPdf(pedido: Pedido) {
     this.pedidosService.getPedidoPdf(pedido).subscribe(
       (res) => {
-        const file = new Blob([res], {type: 'application/pdf'});
-        saveAs(file, `pedido-${pedido.nroPedido}.pdf`);
+        const file = new Blob([res], {type: 'application/pdf'});          
+        const fileURL = URL.createObjectURL(file);
+        window.open(fileURL, '_blank');
       }
     );
   }
