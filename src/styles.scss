@@ -197,6 +197,10 @@ html, body {
   }
 }
 
+svg {
+  pointer-events: none;
+}
+
 .svg-button-wrapper {
   button.svg-button {
     cursor: pointer;
