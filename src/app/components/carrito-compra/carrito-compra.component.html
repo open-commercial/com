@@ -5,7 +5,7 @@
         <mat-icon>keyboard_arrow_left</mat-icon>
         <span>Volver</span>
       </a>
-      <button mat-icon-button (click)="vaciarCarritoCompra()" [disabled]="!itemsCarritoCompra.length || disabledButtons()"  matTooltip="Quitar todos los items">
+      <button mat-icon-button (click)="vaciarCarritoCompra()" [disabled]="!itemsCarritoCompra.length || disabledButtons()" matTooltip="Quitar todos los items" *ngIf="cantidadArticulos">
         <mat-icon>delete_sweep</mat-icon>
       </button>
     </div>
@@ -83,23 +83,9 @@
       <span>Siguiente</span><mat-icon aria-label="Página siguiente">navigate_next</mat-icon>
     </button>
   </div>
-  <div class="cantidades" fxLayout="column" fxLayout.gt-xs="row" *ngIf="!(loadingCarritoCompra || loadingTotales || loadingRenglones || verificandoStock)">
-    <div fxFlex></div>
-    <div fxFlex fxFlex.gt-sm="40" fxLayout="column" fxLayoutGap="0.7rem">
-      <div fxLayout="row" fxLayoutAlign="space-between center" class="cantidad-articulos">
-        <span class="label">Cant. de artículos</span><span class="cantidad">{{cantidadArticulos | number:'1.0-2':'es-AR' }}</span>
-      </div>
-      <div fxLayout="row" fxLayoutAlign="space-between center" class="cantidad-minima" *ngIf="cliente.montoCompraMinima > 0">
-        <span class="label">Compra mínima</span><span class="cantidad">$ {{ cliente.montoCompraMinima | number:'1.0-2':'es-AR' }}</span>
-      </div>
-      <div fxLayout="row" fxLayoutAlign="space-between center" class="total">
-        <span class="label">Total</span><span class="cantidad" [class.cumple-compra-minima]="total >= cliente.montoCompraMinima">$ {{total | number:'1.0-2':'es-AR' }}</span>
-      </div>
-      <button class="bg-color-FFDA41" mat-flat-button (click)="goToCheckout()" [disabled]="!itemsCarritoCompra.length || disabledButtons() || total < cliente.montoCompraMinima">
-        Enviar Pedido
-      </button>
-    </div>
-  </div>
+  <div class="mensaje" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="0.5rem" *ngIf="!(cantidadArticulos || loadingCarritoCompra || loadingTotales || loadingRenglones || verificandoStock)">
+     <mat-icon>shopping_cart</mat-icon>
+    <span>Agregue productos al carrito para verlos listados aquí</span></div>
   <div class="sic-com-spinner-container" fxLayoutAlign="center center" *ngIf="loadingCarritoCompra || loadingRenglones || loadingTotales || verificandoStock">
     <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
   </div>
