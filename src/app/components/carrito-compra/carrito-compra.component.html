@@ -5,7 +5,7 @@
         <mat-icon>keyboard_arrow_left</mat-icon>
         <span>Volver</span>
       </a>
-      <button mat-icon-button (click)="vaciarCarritoCompra()" [disabled]="!itemsCarritoCompra.length || disabledButtons()"  matTooltip="Quitar todos los items">
+      <button mat-icon-button (click)="vaciarCarritoCompra()" [disabled]="!itemsCarritoCompra.length || disabledButtons()"  matTooltip="Quitar todos los items" *ngIf="!cantidadArticulos ==0">
         <mat-icon>delete_sweep</mat-icon>
       </button>
     </div>
@@ -72,9 +72,12 @@
           </button>
         </div>
       </div>
-    </div>
+   </div>
+   <div class="mensaje" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="0.5rem" *ngIf="!cantidadArticulos">
+    <mat-icon class="shopping_cart">shopping_cart</mat-icon>     
+   <span>Agrega productos al carrito para verlos listados aquí</span></div>
   </div>
-  <div class="sic-com-paginator" *ngIf="!loadingCarritoCompra && !loadingRenglones && !loadingTotales && !verificandoStock && (totalPaginas > 1)" fxLayout="row" fxLayoutAlign="center center">
+    <div class="sic-com-paginator" *ngIf="!loadingCarritoCompra && !loadingRenglones && !loadingTotales && !verificandoStock && (totalPaginas > 1)" fxLayout="row" fxLayoutAlign="center center">
     <button mat-button [disabled]="pagina <= 0" (click)="paginaAnterior()">
       <mat-icon aria-label="Página anterior">navigate_before</mat-icon><span>Anterior</span>
     </button>
@@ -83,7 +86,7 @@
       <span>Siguiente</span><mat-icon aria-label="Página siguiente">navigate_next</mat-icon>
     </button>
   </div>
-  <div class="cantidades" fxLayout="column" fxLayout.gt-xs="row" *ngIf="!(loadingCarritoCompra || loadingTotales || loadingRenglones || verificandoStock)">
+    <div class="cantidades" fxLayout="column" fxLayout.gt-xs="row" *ngIf="!(cantidadArticulos ==0 || loadingCarritoCompra || loadingTotales || loadingRenglones || verificandoStock)">
     <div fxFlex></div>
     <div fxFlex fxFlex.gt-sm="40" fxLayout="column" fxLayoutGap="0.7rem">
       <div fxLayout="row" fxLayoutAlign="space-between center" class="cantidad-articulos">
@@ -100,7 +103,7 @@
       </button>
     </div>
   </div>
-  <div class="sic-com-spinner-container" fxLayoutAlign="center center" *ngIf="loadingCarritoCompra || loadingRenglones || loadingTotales || verificandoStock">
+  <div class="sic-com-spinner-container" fxLayoutAlign="center center" *ngIf="loadingcantidadArticulos || loadingCarritoCompra || loadingRenglones || loadingTotales || verificandoStock">
     <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
   </div>
 </div>

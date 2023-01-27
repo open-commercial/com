@@ -28,6 +28,7 @@ export class CarritoCompraComponent implements OnInit {
   loadingCarritoCompra = false;
   loadingRenglones = false;
   loadingTotales = false;
+  loadingcantidadArticulos = false;
   deleting = false;
 
   cantidadArticulos = 0;
