@@ -9,10 +9,10 @@
         <mat-icon>delete_sweep</mat-icon>
       </button>
     </div>
-  <div class="mensaje" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="0.5rem" *ngIf="!cantidadArticulos">
+    <div class="mensaje" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="0.5rem" *ngIf="!cantidadArticulos">
       <mat-icon class="shopping_cart">add_shopping_cart</mat-icon>     
       <span>Agrega productos al carrito para verlos listados aquí</span>
-  </div>
+    </div>
     <div class="carrito">
       <div *ngFor="let icc of itemsCarritoCompra" class="item-carrito" fxLayout="column" fxLayout.gt-sm="row" fxLayoutGap="0.5rem">
         <div fxFlex fxLayout="row" fxLayoutAlign="start center">
@@ -87,7 +87,7 @@
       <span>Siguiente</span><mat-icon aria-label="Página siguiente">navigate_next</mat-icon>
     </button>
   </div>
-    <div class="cantidades" fxLayout="column" fxLayout.gt-xs="row" *ngIf="!(cantidadArticulos == 0 || loadingCarritoCompra || loadingTotales || loadingRenglones || verificandoStock)">
+  <div class="cantidades" fxLayout="column" fxLayout.gt-xs="row" *ngIf="!(cantidadArticulos == 0 || loadingCarritoCompra || loadingTotales || loadingRenglones || verificandoStock)">
     <div fxFlex></div>
     <div fxFlex fxFlex.gt-sm="40" fxLayout="column" fxLayoutGap="0.7rem">
       <div fxLayout="row" fxLayoutAlign="space-between center" class="cantidad-articulos">
