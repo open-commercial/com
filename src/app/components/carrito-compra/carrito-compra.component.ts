@@ -1,11 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {CarritoCompraService} from '../../services/carrito-compra.service';
-import { MatDialog } from '@angular/material/dialog';
+import {MatDialog} from '@angular/material/dialog';
 import {ClientesService} from '../../services/clientes.service';
 import {AvisoService} from '../../services/aviso.service';
 import {AuthService} from '../../services/auth.service';
 import {ConfirmationDialogComponent} from '../confirmation-dialog/confirmation-dialog.component';
-import {ProductosService} from '../../services/productos.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Cliente} from '../../models/cliente';
 import {finalize} from 'rxjs/operators';
@@ -41,7 +40,6 @@ export class CarritoCompraComponent implements OnInit {
               private clientesService: ClientesService,
               private avisoService: AvisoService,
               private authService: AuthService,
-              private productosService: ProductosService,
               private dialog: MatDialog,
               private route: ActivatedRoute,
               private router: Router) {

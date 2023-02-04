@@ -2,6 +2,7 @@
 
 .sic-com-carrito-compra {
   color: $color-536070;
+  
   .carrito {
     margin-top: 1rem;
     font-weight: 500;
@@ -107,4 +108,11 @@
       font-size: unset;
     }
   }
+  
+  .mensaje {
+    height: 100px;
+    font-size: 1.2rem;
+    text-align: center;
+  }
+    
 }
