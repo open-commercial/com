@@ -86,8 +86,8 @@ export class AuthService {
     return this.http.get(this.urlPasswordRecovery + `&email=${email}`);
   }
 
-  cambiarPassword(k: string, i: number) {
-    return this.http.post(this.urlPasswordRecovery, {'key': k, 'id': i}, {responseType: 'text'});
+  cambiarPassword(k: string, i: number, newPassword: string) {
+    return this.http.post(this.urlPasswordRecovery, {'key': k, 'id': i, 'newPassword': newPassword}, {responseType: 'text'});
   }
 
   setAuthenticationInfo(token: string) {
