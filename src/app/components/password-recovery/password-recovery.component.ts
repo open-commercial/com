@@ -3,6 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { AvisoService } from '../../services/aviso.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { PasswordRecovery } from 'app/models/password-recovery';
 
 @Component({
   selector: 'sic-com-password-reset',
@@ -17,13 +18,13 @@ export class PasswordRecoveryComponent implements OnInit {
 
 
   constructor(private router: Router,
-              private route: ActivatedRoute,
-              private authService: AuthService,
-              private avisoService: AvisoService,
-              private fb: FormBuilder) {
+    private route: ActivatedRoute,
+    private authService: AuthService,
+    private avisoService: AvisoService,
+    private fb: FormBuilder) {
     this.passwordReset = this.fb.group({
       password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(20)]],
-      confirmPassword: ['', [Validators.minLength(6), Validators.maxLength(20), Validators.required]],
+      confirmPassword: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(20)]],
     }, {
       validators: this.passwordsMatchValidator
     });
@@ -32,54 +33,55 @@ export class PasswordRecoveryComponent implements OnInit {
   ngOnInit() {
     const key = this.route.snapshot.queryParams.key;
     const id = this.route.snapshot.queryParams.id;
-
-     if (key && id) {
-       this.authService.cambiarPassword(key, id, this.passwordReset.get('password').value).subscribe(
-         (token: string) => {
-            this.router.navigate(['password-recovery']);
-            this.avisoService.openSnackBar('Por favor ingrese su nueva contraseña', 'Cerrar', 0);
-            this.authService.setAuthenticationInfo(token);
-            this.loading = true;            
-            this.router.navigate(['login'])
-          
-         },
-         err => {
-           this.avisoService.openSnackBar(err.error, '', 3500);
-           //this.router.navigate(['login']); una vez que se cambie el enpoint correcto descomentar el comentario.
-         }
-       );
-     } else {
-          //this.router.navigate(['login']); una vez que se cambie el enpoint correcto descomentar el comentario.
-     }
+    if (!key || !id) {
+      this.router.navigate(['login']);
+    }
   }
-  
-  newPassword() {
+
+  changePassword() {
     if (this.passwordReset.valid) {
       const key = this.route.snapshot.queryParams.key;
       const id = this.route.snapshot.queryParams.id;
       const newPassword = this.passwordReset.get('password').value;
 
-      this.authService.cambiarPassword(key, id, this.passwordReset.get('password').value).subscribe(
+      const passwordRecoveryData: PasswordRecovery = {
+        key: key,
+        id: id,
+        newPassword: newPassword
+      };
+
+      this.authService.cambiarPassword(passwordRecoveryData).subscribe(
         () => {
-          this.avisoService.openSnackBar('Contraseña cambiada con éxito', 'Cerrar', 0);
+          this.avisoService.openSnackBar('Por favor ingrese su nueva contraseña', 'Cerrar', 0);
+          this.loading = true;
+          console.log('Contraseña modificada')
+          this.avisoService.openSnackBar('Contraseña cambiada con éxito', '', 0);
           this.router.navigate(['login']);
         },
         err => {
-          this.avisoService.openSnackBar('Error al cambiar la contraseña', '', 3500);
+          if (err.status === 400) {
+            this.avisoService.openSnackBar('Error al cambiar la contraseña', '', 3500);
+          } else if (err.status === 401) {
+            this.avisoService.openSnackBar('Sus datos de recuperación ya expiraron', '', 3500);
+          } else if (err.status === 0) {
+            this.avisoService.openSnackBar('Error de conexión. Por favor, inténtelo de nuevo más tarde', '', 3500);
+          } else {
+            this.avisoService.openSnackBar('Error al cambiar la contraseña. Por favor, inténtelo de nuevo más tarde', '', 3500);
+          }
         }
       );
     }
   }
 
-  passwordsMatchValidator(formGroup: FormGroup) {
+  passwordsMatchValidator = (formGroup: FormGroup) => {
     const password = formGroup.get('password').value;
     const confirmPassword = formGroup.get('confirmPassword').value;
-  
+
     if (password !== confirmPassword) {
       formGroup.get('confirmPassword').setErrors({ passwordsNotMatching: true });
     } else {
       formGroup.get('confirmPassword').setErrors(null);
     }
-  }
+  };
 }
 

@@ -1,28 +1,29 @@
-import {Injectable} from '@angular/core';
-import {environment} from 'environments/environment';
-import {HttpClient} from '@angular/common/http';
-import {throwError, Observable, Subject} from 'rxjs';
-import {map, catchError} from 'rxjs/operators';
-import {JwtHelperService} from '@auth0/angular-jwt';
-import {Router} from '@angular/router';
-import {Usuario} from '../models/usuario';
-import {UsuariosService} from './usuarios.service';
-import {StorageService} from './storage.service';
+import { Injectable } from '@angular/core';
+import { environment } from 'environments/environment';
+import { HttpClient } from '@angular/common/http';
+import { throwError, Observable, Subject } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
+import { JwtHelperService } from '@auth0/angular-jwt';
+import { Router } from '@angular/router';
+import { Usuario } from '../models/usuario';
+import { UsuariosService } from './usuarios.service';
+import { StorageService } from './storage.service';
+import { PasswordRecovery } from '../models/password-recovery'
 
 @Injectable()
 export class AuthService {
 
   urlLogin = environment.apiUrl + '/api/v1/login';
   urlLogout = environment.apiUrl + '/api/v1/logout';
-  urlPasswordRecovery = environment.apiUrl + '/api/v1/password-recovery?idSucursal=' + environment.idSucursal;
+  urlPasswordRecovery = environment.apiUrl + '/api/v1/password-recovery';
   jwtHelper = new JwtHelperService();
   private nombreUsuarioLoggedInSubject = new Subject<string>();
   nombreUsuarioLoggedIn$ = this.nombreUsuarioLoggedInSubject.asObservable();
 
   constructor(private http: HttpClient,
-              private router: Router,
-              private usuariosService: UsuariosService,
-              private storageService: StorageService) {
+    private router: Router,
+    private usuariosService: UsuariosService,
+    private storageService: StorageService) {
   }
 
   setNombreUsuarioLoggedIn(nombre: string) {
@@ -30,8 +31,8 @@ export class AuthService {
   }
 
   login(user: string, pass: string) {
-    const credential = {username: user, password: pass};
-    return this.http.post(this.urlLogin, credential, {responseType: 'text'})
+    const credential = { username: user, password: pass };
+    return this.http.post(this.urlLogin, credential, { responseType: 'text' })
       .pipe(
         map(data => {
           this.setAuthenticationInfo(data);
@@ -52,7 +53,7 @@ export class AuthService {
     this.http.put(this.urlLogout, null)
       .subscribe(() => {
         this.cleanAccessTokenInLocalStorage();
-        this.router.navigate(['/login'], {queryParams: {return: this.router.routerState.snapshot.url}});
+        this.router.navigate(['/login'], { queryParams: { return: this.router.routerState.snapshot.url } });
       });
   }
 
@@ -83,11 +84,11 @@ export class AuthService {
   }
 
   solicitarCambioContrasenia(email: string) {
-    return this.http.get(this.urlPasswordRecovery + `&email=${email}`);
+    return this.http.get(this.urlPasswordRecovery + '?idSucursal=' + `&email=${email}`);
   }
 
-  cambiarPassword(k: string, i: number, newPassword: string) {
-    return this.http.post(this.urlPasswordRecovery, {'key': k, 'id': i, 'newPassword': newPassword}, {responseType: 'text'});
+  cambiarPassword(passwordRecoveryData: PasswordRecovery) {
+    return this.http.post(this.urlPasswordRecovery, passwordRecoveryData, { responseType: 'text' });
   }
 
   setAuthenticationInfo(token: string) {
