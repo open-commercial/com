@@ -54,17 +54,13 @@ export class PasswordRecoveryComponent implements OnInit {
         () => {
           this.avisoService.openSnackBar('Por favor ingrese su nueva contraseña', 'Cerrar', 0);
           this.loading = true;
-          console.log('Contraseña modificada')
           this.avisoService.openSnackBar('Contraseña cambiada con éxito', '', 0);
+          console.log('Contraseña modificada')
           this.router.navigate(['login']);
         },
         err => {
-          if (err.status === 400) {
-            this.avisoService.openSnackBar('Error al cambiar la contraseña', '', 3500);
-          } else if (err.status === 401) {
+          if (err.status === 401) {
             this.avisoService.openSnackBar('Sus datos de recuperación ya expiraron', '', 3500);
-          } else if (err.status === 0) {
-            this.avisoService.openSnackBar('Error de conexión. Por favor, inténtelo de nuevo más tarde', '', 3500);
           } else {
             this.avisoService.openSnackBar('Error al cambiar la contraseña. Por favor, inténtelo de nuevo más tarde', '', 3500);
           }
