@@ -4,7 +4,6 @@ import { AuthService } from '../../services/auth.service';
 import { AvisoService } from '../../services/aviso.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PasswordRecovery } from 'app/models/password-recovery';
-
 @Component({
   selector: 'sic-com-password-reset',
   templateUrl: './password-recovery.component.html',
@@ -15,7 +14,6 @@ export class PasswordRecoveryComponent implements OnInit {
   model: any = {};
   loading = false;
   returnUrl = '';
-
 
   constructor(private router: Router,
     private route: ActivatedRoute,
@@ -54,8 +52,7 @@ export class PasswordRecoveryComponent implements OnInit {
         () => {
           this.avisoService.openSnackBar('Por favor ingrese su nueva contraseña', 'Cerrar', 0);
           this.loading = true;
-          this.avisoService.openSnackBar('Contraseña cambiada con éxito', '', 0);
-          console.log('Contraseña modificada')
+          this.avisoService.openSnackBar('Contraseña cambiada con éxito', 'Cerrar', 0);
           this.router.navigate(['login']);
         },
         err => {
@@ -77,6 +74,10 @@ export class PasswordRecoveryComponent implements OnInit {
       formGroup.get('confirmPassword').setErrors({ passwordsNotMatching: true });
     } else {
       formGroup.get('confirmPassword').setErrors(null);
+    }
+
+    if (!confirmPassword) {
+      formGroup.get('confirmPassword').setErrors({ required: true });
     }
   };
 }
