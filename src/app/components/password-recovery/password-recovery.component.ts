@@ -4,6 +4,8 @@ import { AuthService } from '../../services/auth.service';
 import { AvisoService } from '../../services/aviso.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PasswordRecovery } from 'app/models/password-recovery';
+import { passwordsMatchValidator } from 'app/validators/confirm-password.validator';
+
 @Component({
   selector: 'sic-com-password-reset',
   templateUrl: './password-recovery.component.html',
@@ -21,11 +23,10 @@ export class PasswordRecoveryComponent implements OnInit {
     private avisoService: AvisoService,
     private fb: FormBuilder) {
     this.passwordReset = this.fb.group({
-      password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(20)]],
+      newPassword: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(20)]],
       confirmPassword: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(20)]],
-    }, {
-      validators: this.passwordsMatchValidator
     });
+    this.passwordReset.setValidators(passwordsMatchValidator);
   }
 
   ngOnInit() {
@@ -40,7 +41,7 @@ export class PasswordRecoveryComponent implements OnInit {
     if (this.passwordReset.valid) {
       const key = this.route.snapshot.queryParams.key;
       const id = this.route.snapshot.queryParams.id;
-      const newPassword = this.passwordReset.get('password').value;
+      const newPassword = this.passwordReset.get('newPassword').value;
 
       const passwordRecoveryData: PasswordRecovery = {
         key: key,
@@ -48,37 +49,18 @@ export class PasswordRecoveryComponent implements OnInit {
         newPassword: newPassword
       };
 
+      this.passwordReset.disable();
       this.authService.cambiarPassword(passwordRecoveryData).subscribe(
         () => {
-          this.avisoService.openSnackBar('Por favor ingrese su nueva contraseña', 'Cerrar', 0);
           this.loading = true;
           this.avisoService.openSnackBar('Contraseña cambiada con éxito', 'Cerrar', 0);
           this.router.navigate(['login']);
         },
-        err => {
-          if (err.status === 401) {
-            this.avisoService.openSnackBar('Sus datos de recuperación ya expiraron', '', 3500);
-          } else {
-            this.avisoService.openSnackBar('Error al cambiar la contraseña. Por favor, inténtelo de nuevo más tarde', '', 3500);
-          }
-        }
-      );
-    }
+        () => {
+          this.loading = false;
+          this.passwordReset.enable()
+          this.avisoService.openSnackBar('Sus datos de recuperación ya expiraron', '', 3500);
+        });
+    };
   }
-
-  passwordsMatchValidator = (formGroup: FormGroup) => {
-    const password = formGroup.get('password').value;
-    const confirmPassword = formGroup.get('confirmPassword').value;
-
-    if (password !== confirmPassword) {
-      formGroup.get('confirmPassword').setErrors({ passwordsNotMatching: true });
-    } else {
-      formGroup.get('confirmPassword').setErrors(null);
-    }
-
-    if (!confirmPassword) {
-      formGroup.get('confirmPassword').setErrors({ required: true });
-    }
-  };
 }
-
