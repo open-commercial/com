@@ -31,7 +31,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}      
-
       - name: Generate changelog
         uses: Bullrich/generate-release-changelog@master
         id: changelog
@@ -39,7 +38,7 @@ jobs:
           REPO: ${{ github.repository }}
       - name: Get release version
         run: |
-          echo "RELEASE_VERSION=$(npm pkg get version)" >> $GITHUB_ENV
+          echo "RELEASE_VERSION=$(npm pkg get version | sed 's/"//g')" >> $GITHUB_ENV
       - name: Create Release
         if: ${{ github.ref == 'refs/heads/master' }}
         uses: actions/create-release@v1
@@ -50,7 +49,6 @@ jobs:
           release_name: ${{ env.RELEASE_VERSION }}
           body: |
             ${{ steps.changelog.outputs.changelog }}
-          
       - name: Set up QEMU
         if: ${{ github.ref == 'refs/heads/master' }}
         uses: docker/setup-qemu-action@v2
