@@ -67,4 +67,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: opencommercial/com:latest
+          tags: opencommercial/com:${{ env.RELEASE_VERSION }}
