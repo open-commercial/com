@@ -32,11 +32,13 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}      
       - name: Generate changelog
+        if: ${{ github.ref == 'refs/heads/master' }}
         uses: Bullrich/generate-release-changelog@master
         id: changelog
         env:
           REPO: ${{ github.repository }}
       - name: Get release version
+        if: ${{ github.ref == 'refs/heads/master' }}
         run: |
           echo "RELEASE_VERSION=$(npm pkg get version | sed 's/"//g')" >> $GITHUB_ENV
       - name: Create Release
