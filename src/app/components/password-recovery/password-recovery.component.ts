@@ -18,10 +18,10 @@ export class PasswordRecoveryComponent implements OnInit {
   returnUrl = '';
 
   constructor(private router: Router,
-    private route: ActivatedRoute,
-    private authService: AuthService,
-    private avisoService: AvisoService,
-    private fb: FormBuilder) {
+              private route: ActivatedRoute,
+              private authService: AuthService,
+              private avisoService: AvisoService,
+              private fb: FormBuilder) {
     this.passwordReset = this.fb.group({
       newPassword: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(20)]],
       confirmPassword: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(20)]],
@@ -39,27 +39,25 @@ export class PasswordRecoveryComponent implements OnInit {
 
   changePassword() {
     if (this.passwordReset.valid) {
-      const key = this.route.snapshot.queryParams.key;
-      const id = this.route.snapshot.queryParams.id;
-      const newPassword = this.passwordReset.get('newPassword').value;
-
+      
       const passwordRecoveryData: PasswordRecovery = {
-        key: key,
-        id: id,
-        newPassword: newPassword
+        key: this.route.snapshot.queryParams.key,
+        id: this.route.snapshot.queryParams.id,
+        newPassword: this.passwordReset.get('newPassword').value
       };
 
       this.passwordReset.disable();
+      this.loading = true;
       this.authService.cambiarPassword(passwordRecoveryData).subscribe(
         () => {
-          this.loading = true;
+          this.loading = false;
           this.avisoService.openSnackBar('Contraseña cambiada con éxito', 'Cerrar', 0);
           this.router.navigate(['login']);
         },
-        () => {
+        error => {
           this.loading = false;
           this.passwordReset.enable()
-          this.avisoService.openSnackBar('Sus datos de recuperación ya expiraron', '', 3500);
+          this.avisoService.openSnackBar(error, '', 3500);
         });
     };
   }
