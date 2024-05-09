@@ -16,7 +16,8 @@ export class PasswordRecoveryComponent implements OnInit {
   model: any = {};
   loading = false;
   returnUrl = '';
-
+  showError: boolean = false;
+  
   constructor(private router: Router,
               private route: ActivatedRoute,
               private authService: AuthService,
@@ -25,6 +26,7 @@ export class PasswordRecoveryComponent implements OnInit {
     this.passwordReset = this.fb.group({
       newPassword: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(20)]],
       confirmPassword: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(20)]],
+
     });
     this.passwordReset.setValidators(passwordsMatchValidator);
   }
@@ -39,6 +41,11 @@ export class PasswordRecoveryComponent implements OnInit {
 
   changePassword() {
     if (this.passwordReset.valid) {
+      if (this.passwordReset.get('newPassword').value !== this.passwordReset.get('confirmPassword').value) {
+          this.passwordReset.get('confirmPassword').setErrors({ passwordsNotMatching: true });
+          this.showError = true;
+        return; 
+      }
       
       const passwordRecoveryData: PasswordRecovery = {
         key: this.route.snapshot.queryParams.key,
@@ -59,6 +66,8 @@ export class PasswordRecoveryComponent implements OnInit {
           this.passwordReset.enable()
           this.avisoService.openSnackBar(error, '', 3500);
         });
-    };
+    } else {
+      this.showError = true;
+    }
   }
 }
