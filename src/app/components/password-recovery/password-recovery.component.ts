@@ -6,6 +6,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PasswordRecovery } from 'app/models/password-recovery';
 import { passwordsMatchValidator } from 'app/validators/confirm-password.validator';
 
+
 @Component({
   selector: 'sic-com-password-reset',
   templateUrl: './password-recovery.component.html',
@@ -23,12 +24,7 @@ export class PasswordRecoveryComponent implements OnInit {
               private authService: AuthService,
               private avisoService: AvisoService,
               private fb: FormBuilder) {
-    this.passwordReset = this.fb.group({
-      newPassword: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(20)]],
-      confirmPassword: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(20)]],
-
-    });
-    this.passwordReset.setValidators(passwordsMatchValidator);
+      this.createNewPassword();
   }
 
   ngOnInit() {
@@ -39,20 +35,23 @@ export class PasswordRecoveryComponent implements OnInit {
     }
   }
 
+  createNewPassword(){
+    this.passwordReset = this.fb.group({
+      newPassword: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(20)]],
+      confirmPassword: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(20)]],
+
+    });
+     this.passwordReset.setValidators(passwordsMatchValidator);
+  }
+
   changePassword() {
     if (this.passwordReset.valid) {
-      if (this.passwordReset.get('newPassword').value !== this.passwordReset.get('confirmPassword').value) {
-          this.passwordReset.get('confirmPassword').setErrors({ passwordsNotMatching: true });
-          this.showError = true;
-        return; 
-      }
-      
       const passwordRecoveryData: PasswordRecovery = {
         key: this.route.snapshot.queryParams.key,
         id: this.route.snapshot.queryParams.id,
         newPassword: this.passwordReset.get('newPassword').value
       };
-
+  
       this.passwordReset.disable();
       this.loading = true;
       this.authService.cambiarPassword(passwordRecoveryData).subscribe(
@@ -63,11 +62,17 @@ export class PasswordRecoveryComponent implements OnInit {
         },
         error => {
           this.loading = false;
-          this.passwordReset.enable()
+          this.passwordReset.enable();
           this.avisoService.openSnackBar(error, '', 3500);
         });
     } else {
       this.showError = true;
     }
   }
+
+  passwordsNotMatching(): boolean {
+  console.log('funciona')
+  return this.showError && this.passwordReset.get('newPassword').value !== this.passwordReset.get('confirmPassword').value;
+ }
+
 }
