@@ -31,7 +31,7 @@
           </div>
           <div *ngIf="(producto.oferta && producto.porcentajeBonificacionOferta) || producto.porcentajeBonificacionPrecio">
             <span class="bonificado">
-              <span *ngIf="producto.cantMinima > 1">Llevando {{ producto.cantMinima }} o más <span class="nowrap">$ {{ producto.precioBonificado | number:'1.0-2':'es-AR' }}</span></span>
+              <span *ngIf="producto.cantMinima > 1"><span class="nowrap">$ {{ producto.precioBonificado | number:'1.0-2':'es-AR' }}</span> (llevando {{ producto.cantMinima }} o más)</span>
             </span>
           </div>
         </div>
