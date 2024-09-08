@@ -40,7 +40,7 @@ export class RubrosEnHomeComponent implements OnInit {
       .subscribe(
         rubros => {
           this.rubros = rubros;
-          this.calcularFit();
+          setTimeout(() => { this.calcularFit(); }, 500);
         },
         err => this.avisoService.openSnackBar(err.error, '', 3500),
       )
