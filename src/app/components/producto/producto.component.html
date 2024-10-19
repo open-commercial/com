@@ -14,7 +14,7 @@
     <div class="img-viewer" *ngIf="imgViewerVisible">
       <div fxLayout="column" fxLayoutAlign="center center" fxFill>
         <img [src]="producto.urlImagen" (click)="toggleImgViewer()" [alt]="'Imágen del producto ' + producto.descripcion">
-        <button mat-button color="primary" (click)="toggleImgViewer()">
+        <button mat-button class="bg-color-FFDA41" (click)="toggleImgViewer()">
           <mat-icon aria-label="Cerrar imagen">close</mat-icon> CERRAR
         </button>
       </div>
@@ -25,7 +25,7 @@
                                   (validStatusChanged)="onValidadStatusChanged($event)" #aacc></sic-com-agregar-al-carrito>
       <br>
       <div fxLayout="column" fxLayoutAlign="center stretch" fxLayoutAlign.gt-xs="center start" *ngIf="authService.isAuthenticated()">
-        <button class="boton" type="button" mat-flat-button color="primary" (click)="aaccSubmit()" [disabled]="aaccLoading || !cantidadValida || favoritoToggling" *ngIf="producto.cantidadTotalEnSucursalesDisponible">
+        <button class="boton" type="button" mat-flat-button class="bg-color-FFDA41" (click)="aaccSubmit()" [disabled]="aaccLoading || !cantidadValida || favoritoToggling" *ngIf="producto.cantidadTotalEnSucursalesDisponible">
           Agregar al Carrito <mat-icon>add_shopping_cart</mat-icon>
         </button>
         <br>
@@ -39,7 +39,7 @@
         </button>
       </div>
       <div fxLayout="column" fxLayoutAlign="center stretch" fxLayoutAlign.gt-xs="center start" class="sic-com-controles-cantidad" *ngIf="!authService.isAuthenticated()">
-        <button mat-flat-button [routerLink]="['/login']" [queryParams]="{'return': '/producto/' + producto.idProducto}" color="primary">
+        <button mat-flat-button [routerLink]="['/login']" [queryParams]="{'return': '/producto/' + producto.idProducto}" class="bg-color-FFDA41">
           Comprar <mat-icon>shopping_cart</mat-icon>
         </button>
       </div>

@@ -7,7 +7,7 @@
       <div *ngIf="cliente && !cliente.email" class="error">Debe completar el email para poder continuar</div>
       <form [formGroup]="datosDelClienteForm">
         <ng-template matStepLabel>
-          <div class="cliente-label">Datos de cuenta</div>
+          <div class="cliente-label">Mis Datos</div>
         </ng-template>
         <div fxLayout="row" fxLayoutAlign="center center" *ngIf="isUbicacionesLoading" class="sic-com-spinner-container">
           <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
@@ -23,7 +23,7 @@
     <mat-step [stepControl]="opcionEnvioForm" *ngIf="opcionEnvioForm">
       <form [formGroup]="opcionEnvioForm">
         <ng-template matStepLabel>
-          <div class="cliente-label">Envío: <strong *ngIf="!isUbicacionesLoading">{{ getEnvioLabel() }}</strong></div>
+          <div class="cliente-label">Envío</div>
         </ng-template>
         <div fxLayout="row" fxLayoutAlign="center center" *ngIf="isUbicacionesLoading" class="sic-com-spinner-container">
           <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>

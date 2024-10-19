@@ -75,7 +75,6 @@ export class CheckoutComponent implements OnInit {
   sucursales: Sucursal[] = [];
   sucursal: Sucursal = null;
   ubicacionSucursal: Ubicacion = null;
-  isUbicacionSucursalLoading = false;
 
   ubicacionFacturacion: Ubicacion = null;
   ubicacionFacturacionUpdating = false;
@@ -84,8 +83,6 @@ export class CheckoutComponent implements OnInit {
   ubicacionEnvio: Ubicacion = null;
   ubicacionEnvioUpdating = false;
   ubicacionEnvioInEdition = false;
-
-  isUbicacionesLoading = false;
 
   cantidadArticulos = 0;
   total = 0;
@@ -137,6 +134,10 @@ export class CheckoutComponent implements OnInit {
 
       this.getSucursales();
     });
+  }
+
+  get isUbicacionesLoading() {
+    return this.isLoading || this.ubicacionFacturacionUpdating || this.ubicacionEnvioUpdating;
   }
 
   verificarStockCarrito(successCallback: () => void) {
@@ -216,14 +217,23 @@ export class CheckoutComponent implements OnInit {
 
   modeStatusChanged(inEdition) {
     this.clienteEditionMode = inEdition;
-    this.datosDelClienteForm.get('continueStepValidator').setValue(inEdition || !this.cliente || !this.cliente.email ? null : 'whatever');
+    this.datosDelClienteForm.get('continueStepValidator').setValue(inEdition || !this.cliente?.email ? null : 'whatever');
   }
 
   asignarCliente(c: Cliente | null) {
     this.cliente = c;
     this.ubicacionFacturacion = c ? c.ubicacionFacturacion : null;
     this.ubicacionEnvio = c ? c.ubicacionEnvio : null;
-    this.datosDelClienteForm.get('continueStepValidator').setValue(!this.cliente || !this.cliente.email ? null : 'whatever');
+
+    if (this.opcionEnvioForm.get('opcionEnvio').value === OpcionEnvio.ENVIO_A_DOMICILIO) {
+      if (this.ubicacionFacturacion) {
+        this.opcionEnvioForm.get('opcionEnvioUbicacion').setValue(OpcionEnvioUbicacion.USAR_UBICACION_FACTURACION);
+      } else if (this.ubicacionEnvio) {
+        this.opcionEnvioForm.get('opcionEnvioUbicacion').setValue(OpcionEnvioUbicacion.USAR_UBICACION_ENVIO);
+      }
+    }
+
+    this.datosDelClienteForm.get('continueStepValidator').setValue(!this.cliente?.email ? null : 'whatever');
     this.getTotalesInfo();
   }
 
@@ -404,25 +414,26 @@ export class CheckoutComponent implements OnInit {
 
   getEnvioLabel() {
     const dataEnvio = this.opcionEnvioForm.value;
-    let ret = '';
-    if (dataEnvio) {
-      if (dataEnvio.opcionEnvio === OpcionEnvio.RETIRO_EN_SUCURSAL) {
-        ret = dataEnvio.sucursal
-          ? `Retiro en Sucursal: ${dataEnvio.sucursal.nombre}`
-            + (dataEnvio.sucursal.detalleUbicacion ? ` (${dataEnvio.sucursal.detalleUbicacion})` : '')
-          : ''
-        ;
-      }
+    if (!dataEnvio) { return ''; }
 
-      if (dataEnvio.opcionEnvio === OpcionEnvio.ENVIO_A_DOMICILIO) {
-        if (dataEnvio.opcionEnvioUbicacion === OpcionEnvioUbicacion.USAR_UBICACION_FACTURACION) {
-          ret = this.getUbicacionStr(this.ubicacionFacturacion);
-        }
-        if (dataEnvio.opcionEnvioUbicacion === OpcionEnvioUbicacion.USAR_UBICACION_ENVIO) {
-          ret = this.getUbicacionStr(this.ubicacionEnvio);
-        }
+    let ret = '';
+    if (dataEnvio.opcionEnvio === OpcionEnvio.RETIRO_EN_SUCURSAL) {
+      if (dataEnvio.sucursal) {
+        ret = `Retiro en Sucursal: ${dataEnvio.sucursal.nombre}`;
+      } else {
+        ret = dataEnvio.sucursal.detalleUbicacion ? ` (${dataEnvio.sucursal.detalleUbicacion})` : ''
       }
     }
+
+    if (dataEnvio.opcionEnvio === OpcionEnvio.ENVIO_A_DOMICILIO) {
+      if (dataEnvio.opcionEnvioUbicacion === OpcionEnvioUbicacion.USAR_UBICACION_FACTURACION) {
+        ret = this.getUbicacionStr(this.ubicacionFacturacion);
+      }
+      if (dataEnvio.opcionEnvioUbicacion === OpcionEnvioUbicacion.USAR_UBICACION_ENVIO) {
+        ret = this.getUbicacionStr(this.ubicacionEnvio);
+      }
+    }
+
     return ret;
   }
 

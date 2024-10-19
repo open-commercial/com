@@ -3,4 +3,13 @@
   .r-b {
     margin-right: 0.5rem;
   }
+
+  // Para el plus button ya que necesitar estar para calcular el ancho
+  // pero no debe estar visible y no se puede usar display: none ya que da el ancho 0
+  // El calculo del ancho es para ver cuantos botones caben en la pantalla
+  .visually-hidden {
+    position: absolute;
+    left: -10000px;
+    top: -10000px;
+  }
 }
