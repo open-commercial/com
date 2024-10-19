@@ -1,11 +1,11 @@
 <div class="sic-com-rubros-en-home">
   <div *ngIf="!loading" fxLayout="row wrap" fxLayoutAlign="center center" #container>
     <sic-com-rubro-button *ngFor="let r of rubrosToShow" [rubro]="r" (rubroClick)="irAProductosConRubro(r)" class="r-b"></sic-com-rubro-button>
-    <div class="rubro-button" #plusButton>
-      <sic-com-svg-button (buttonClick)="verTodos()" title="Más" [svg]="plusSvgIcon"></sic-com-svg-button>
-    </div>
   </div>
   <div *ngIf="loading" fxLayoutAlign="center center" class="spinner">
     <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
+  </div>
+  <div *ngIf="!loading" class="rubro-button visually-hidden" #plusButton>
+    <sic-com-svg-button title="Más" [svg]="plusSvgIcon"></sic-com-svg-button>
   </div>
 </div>
