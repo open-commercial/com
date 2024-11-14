@@ -1,6 +1,5 @@
 import {Component} from '@angular/core';
 import {Gtag} from 'angular-gtag';
-import {StorageService} from './services/storage.service';
 import {environment} from '../environments/environment';
 
 @Component({
@@ -10,14 +9,14 @@ import {environment} from '../environments/environment';
 })
 export class SicComComponent {
   // gtag es para google analitys: se usa la lib https://github.com/codediodeio/angular-gtag
-  constructor(gtag: Gtag, private storageService: StorageService) {
+  constructor(gtag: Gtag) {
     this.checkAppVersion();
   }
 
   checkAppVersion() {
-    if (environment.appVersion !== this.storageService.getItem('appVersion')) {
-      this.storageService.clear();
-      this.storageService.setItem('appVersion', environment.appVersion);
+    if (environment.appVersion.toString() !== localStorage.getItem('appVersion')) {
+      localStorage.clear();
+      localStorage.setItem('appVersion', environment.appVersion.toString());
     }
   }
 }

@@ -14,14 +14,14 @@ export class SlideshowService {
   getSlideshowDataForDesktop(): IImagen[] {
     return [
       /*{
-        url: 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1601508662/slideshow/stanley-1280x550.jpg',
+        url: 'assets/images/stanley-1280x550.jpg',
         clickAction: () => this.router.navigate(['/productos'], {queryParams: {q: 'termo stanley'}})
       },*/
       {
-        url: 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1558410150/slideshow/redes-1280x550.jpg'
+        url: 'assets/images/redes-1280x550.jpg'
       },
       {
-        url: 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1584392155/slideshow/1280x550-mercadopago.jpg'
+        url: 'assets/images/1280x550-mercadopago.jpg'
       }
     ];
   }
@@ -29,14 +29,14 @@ export class SlideshowService {
   getSlideshowDataForMobile(): IImagen[] {
     return [
       /*{
-        url: 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1601508662/slideshow/stanley-mobile-800x450.jpg',
+        url: 'assets/images/stanley-mobile-800x450.jpg',
         clickAction: () => this.router.navigate(['/productos'], {queryParams: {q: 'termo stanley'}})
       },*/
       {
-        url: 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1558410141/slideshow/redes-800x450.jpg'
+        url: 'assets/images/redes-800x450.jpg'
       },
       {
-        url: 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1584468529/slideshow/mobile-800x450.jpg'
+        url: 'assets/images/mobile-800x450.jpg'
       }
     ];
   }
