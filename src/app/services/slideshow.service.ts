@@ -1,5 +1,5 @@
-import {Injectable} from '@angular/core';
-import {environment} from 'environments/environment';
+import { Injectable } from '@angular/core';
+import { environment } from 'environments/environment';
 
 export interface IImagen {
   url: string;
@@ -13,10 +13,6 @@ export class SlideshowService {
 
   getSlideshowDataForDesktop(): IImagen[] {
     return [
-      /*{
-        url: 'assets/images/stanley-1280x550.jpg',
-        clickAction: () => this.router.navigate(['/productos'], {queryParams: {q: 'termo stanley'}})
-      },*/
       {
         url: 'assets/images/redes-1280x550.jpg'
       },
@@ -27,11 +23,7 @@ export class SlideshowService {
   }
 
   getSlideshowDataForMobile(): IImagen[] {
-    return [
-      /*{
-        url: 'assets/images/stanley-mobile-800x450.jpg',
-        clickAction: () => this.router.navigate(['/productos'], {queryParams: {q: 'termo stanley'}})
-      },*/
+    return [      
       {
         url: 'assets/images/redes-800x450.jpg'
       },
