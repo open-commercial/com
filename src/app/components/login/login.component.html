@@ -5,7 +5,7 @@
   </a>
   <div fxLayout="row" fxLayoutAlign="center center">
     <form [formGroup]="loginForm" (ngSubmit)="login()" class="sic-com-form">
-      <img src="https://res.cloudinary.com/hf0vu1bg2/image/upload/v1588301481/assets/logo-globo-500x500px.png" alt="logo">
+      <img src="assets/images/logo-globo-500x500px.png" alt="logo">
       <div fxLayout="column">
         <mat-form-field fxFlex fxFill>
           <input matInput autofocus name="username" required type="text" formControlName="username"
@@ -35,7 +35,7 @@
         <span>&nbsp;</span>
       </div>
       <div *ngIf="!loading" fxLayout="column" fxLayoutGap=".7em">
-        <button fxFill mat-flat-button color="primary" >Ingresar</button>
+        <button fxFill mat-flat-button class="bg-color-FFDA41">Ingresar</button>
         <a fxFill mat-flat-button routerLink="/registracion">Registrarme</a>
       </div>
       <div *ngIf="loading" fxLayout="row" fxLayoutAlign="center center">

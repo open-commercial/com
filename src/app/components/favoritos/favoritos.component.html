@@ -18,7 +18,7 @@
         <div fxFlex fxLayout="row" fxLayoutAlign="start center">
           <div fxFlex="50" fxFlex.gt-sm="30">
             <div class="img-container">
-              <img [src]="producto.urlImagen" alt="">
+              <img [src]="producto.urlImagen ? producto.urlImagen : 'assets/images/sin_imagen.png'" alt="">
             </div>
           </div>
           <div fxFlex class="info">
@@ -58,7 +58,7 @@
         </div>
         <div fxFlex="50" fxFlex.gt-sm="40" fxLayout="row" fxLayoutAlign="space-between center" fxLayoutAlign.gt-sm="space-evenly center">
           <div fxLayout="column" fxLayoutAlign="center center">
-            <button mat-flat-button (click)="showDialogCantidad($event, producto)" class ="bg-color-FFDA41">
+            <button mat-flat-button (click)="showDialogCantidad($event, producto)" class="bg-color-FFDA41">
               Agregar al carrito
             </button>
           </div>

@@ -1,26 +1,37 @@
 import { Injectable } from '@angular/core';
-import * as SecureLS from 'secure-ls';
+import * as crypto from 'crypto-js';
 
 @Injectable({
   providedIn: 'root'
 })
 export class StorageService {
-  private ls = new SecureLS({ encodingType: 'aes' });
-  constructor() { }
-
   getItem(key: string) {
-    return this.ls.get(key);
+    return this.decrypt(localStorage.getItem(key));
   }
 
   setItem(key: string, data: any) {
-    this.ls.set(key, data);
+    localStorage.setItem(key, this.encrypt(data));
   }
 
   removeItem(key: string) {
-    this.ls.remove(key);
+    localStorage.removeItem(key);
   }
 
   clear() {
-    this.ls.clear();
+    localStorage.clear();
+  }
+
+  private static getSK() {
+    return 'OtraVezMaritoPagaElAsado2025!';
+  }
+
+  private encrypt(data: any): string {
+    return crypto.AES.encrypt(JSON.stringify(data), StorageService.getSK()).toString();
+  }
+
+  private decrypt(data: string) {
+    if (data === null || data === undefined) { return null; }
+    const bytes = crypto.AES.decrypt(data, StorageService.getSK());
+    return JSON.parse(bytes.toString(crypto.enc.Utf8));
   }
 }

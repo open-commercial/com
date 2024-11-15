@@ -154,7 +154,7 @@ export class CarritoCompraComponent implements OnInit {
           this.itemsCarritoCompra = [];
           data['content'].forEach(item => {
             if (item.producto.urlImagen == null || item.producto.urlImagen === '') {
-              item.producto.urlImagen = 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1545616229/assets/sin_imagen.png';
+              item.producto.urlImagen = 'assets/images/sin_imagen.png';
             }
             this.itemsCarritoCompra.push(item);
           });

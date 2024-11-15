@@ -2,12 +2,12 @@
   "name": "Globo de Oro",
   "icons": [
     {
-      "src": "https://res.cloudinary.com/hf0vu1bg2/image/upload/v1588301552/assets/logo-globo-200x200px.png",
+      "src": "assets/images/logo-globo-200x200px.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "https://res.cloudinary.com/hf0vu1bg2/image/upload/v1588301481/assets/logo-globo-500x500px.png",
+      "src": "assets/images/logo-globo-500x500px.png",
       "sizes": "512x512",
       "type": "image/png"
     }

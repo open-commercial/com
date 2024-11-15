@@ -1,7 +1,7 @@
 <a (click)="irAlProducto($event, producto)" class="producto">
   <mat-card>
     <div class="img-container" fxLayout="column" fxLayoutAlign="center center">
-      <img [src]="producto.urlImagen ? producto.urlImagen : 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1545616229/assets/sin_imagen.png'" alt="Imagen del producto">
+      <img [src]="producto.urlImagen ? producto.urlImagen : 'assets/images/sin_imagen.png'" alt="Imagen del producto">
     </div>
     <div class="info" fxLayout="column" fxLayoutAlign="start stretch">
       <div fxFlex="55">
@@ -31,7 +31,7 @@
           </div>
           <div *ngIf="(producto.oferta && producto.porcentajeBonificacionOferta) || producto.porcentajeBonificacionPrecio">
             <span class="bonificado">
-              <span *ngIf="producto.cantMinima > 1">Llevando {{ producto.cantMinima }} o más <span class="nowrap">$ {{ producto.precioBonificado | number:'1.0-2':'es-AR' }}</span></span>
+              <span *ngIf="producto.cantMinima > 1"><span class="nowrap">$ {{ producto.precioBonificado | number:'1.0-2':'es-AR' }}</span> (llevando {{ producto.cantMinima }} o más)</span>
             </span>
           </div>
         </div>

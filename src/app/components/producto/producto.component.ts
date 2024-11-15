@@ -55,7 +55,7 @@ export class ProductoComponent implements OnInit, OnDestroy {
         data => {
           this.producto = data;
           if (this.producto.urlImagen == null || this.producto.urlImagen === '') {
-            this.producto.urlImagen = 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1545616229/assets/sin_imagen.png';
+            this.producto.urlImagen = 'assets/images/sin_imagen.png';
           }
         },
         err => {

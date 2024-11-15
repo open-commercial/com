@@ -13,49 +13,49 @@ export class HomeComponent implements OnInit {
   height = '50vw';
   marcas = [
     {
-      url: 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1543814304/slideshow/gladiator-pro.png',
+      url: 'assets/images/gladiator-pro.png',
       routeLink: ['/productos'],
       queryParams: { q: 'gladiator' },
       nombre: 'Gladiator'
     },
     {
-      url: 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1543814304/slideshow/suprabond.jpg',
+      url: 'assets/images/suprabond.jpg',
       routeLink: ['/productos'],
       queryParams: { q: 'suprabond' },
       nombre: 'Suprabond'
     },
     {
-      url: 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1543814304/slideshow/tacsa.jpg',
+      url: 'assets/images/tacsa.jpg',
       routeLink: ['/productos'],
       queryParams: { q: 'tacsa'},
       nombre: 'Tacsa'
     },
     {
-      url: 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1544154497/slideshow/interelec.jpg',
+      url: 'assets/images/interelec.jpg',
       routeLink: ['/productos'],
       queryParams: { q: 'interelec'},
       nombre: 'Interelec'
     },
     {
-      url: 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1544153960/slideshow/Poxipol.png',
+      url: 'assets/images/Poxipol.png',
       routeLink: ['/productos'],
       queryParams: { q: 'pxp'},
       nombre: 'Poxipol'
     },
     {
-      url: 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1544153960/slideshow/tramontina.png',
+      url: 'assets/images/tramontina.png',
       routeLink: ['/productos'],
       queryParams: { q: 'tramontina'},
       nombre: 'Tramontina'
     },
     {
-      url: 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1544153960/slideshow/brogas.jpg',
+      url: 'assets/images/brogas.jpg',
       routeLink: ['/productos'],
       queryParams:  { q: 'brogas'},
       nombre: 'Brogas'
     },
     {
-      url: 'https://res.cloudinary.com/hf0vu1bg2/image/upload/v1544153960/slideshow/bulit.jpg',
+      url: 'assets/images/bulit.jpg',
       routeLink: ['/productos'],
       queryParams: { q: 'bulit'},
       nombre: 'Bulit'
