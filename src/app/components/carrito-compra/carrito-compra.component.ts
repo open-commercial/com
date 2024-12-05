@@ -1,17 +1,17 @@
-import {Component, OnInit} from '@angular/core';
-import {CarritoCompraService} from '../../services/carrito-compra.service';
-import {MatDialog} from '@angular/material/dialog';
-import {ClientesService} from '../../services/clientes.service';
-import {AvisoService} from '../../services/aviso.service';
-import {AuthService} from '../../services/auth.service';
-import {ConfirmationDialogComponent} from '../confirmation-dialog/confirmation-dialog.component';
-import {ActivatedRoute, Router} from '@angular/router';
-import {Cliente} from '../../models/cliente';
-import {finalize} from 'rxjs/operators';
-import {Producto} from '../../models/producto';
-import {AgregarAlCarritoDialogComponent} from '../agregar-al-carrito-dialog/agregar-al-carrito-dialog.component';
-import {ItemCarritoCompra} from '../../models/item-carrito-compra';
-import {ProductoFaltante} from '../../models/producto-faltante';
+import { Component, OnInit } from '@angular/core';
+import { CarritoCompraService } from '../../services/carrito-compra.service';
+import { MatDialog } from '@angular/material/dialog';
+import { ClientesService } from '../../services/clientes.service';
+import { AvisoService } from '../../services/aviso.service';
+import { AuthService } from '../../services/auth.service';
+import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Cliente } from '../../models/cliente';
+import { finalize } from 'rxjs/operators';
+import { Producto } from '../../models/producto';
+import { AgregarAlCarritoDialogComponent } from '../agregar-al-carrito-dialog/agregar-al-carrito-dialog.component';
+import { ItemCarritoCompra } from '../../models/item-carrito-compra';
+import { ProductoFaltante } from '../../models/producto-faltante';
 
 @Component({
   selector: 'sic-com-carrito-compra',
@@ -20,7 +20,6 @@ import {ProductoFaltante} from '../../models/producto-faltante';
 })
 export class CarritoCompraComponent implements OnInit {
   itemsCarritoCompra = [];
-
   pagina = 0;
   totalPaginas = 0;
   totalElements = 0;
@@ -28,21 +27,19 @@ export class CarritoCompraComponent implements OnInit {
   loadingRenglones = false;
   loadingTotales = false;
   deleting = false;
-
   cantidadArticulos = 0;
   total = 0;
   cliente: Cliente = null;
-
   verificandoStock = false;
   vsForzado = true;
 
-  constructor(private carritoCompraService: CarritoCompraService,
-              private clientesService: ClientesService,
-              private avisoService: AvisoService,
-              private authService: AuthService,
-              private dialog: MatDialog,
-              private route: ActivatedRoute,
-              private router: Router) {
+  constructor(private readonly carritoCompraService: CarritoCompraService,
+              private readonly clientesService: ClientesService,
+              private readonly avisoService: AvisoService,
+              private readonly authService: AuthService,
+              private readonly dialog: MatDialog,
+              private readonly route: ActivatedRoute,
+              private readonly router: Router) {
   }
 
   ngOnInit() {
@@ -58,19 +55,20 @@ export class CarritoCompraComponent implements OnInit {
               auxp = isNaN(auxp) ? 1 : (auxp < 1 ? 1 : auxp);
               this.pagina = auxp - 1;
               this.cargarItemsCarritoCompra();
-
               if (this.vsForzado) {
                 this.verificarStock((faltantes: ProductoFaltante[]) => {
                   this.verificandoStock = false;
                   if (faltantes.length) {
-                    const msg = 'La cantidad solicitada supera la disponibilidad de stock. Revise los items del carrito';
+                    const msg = 'No hay stock disponible para algunos productos. Revise el carrito';
                     this.avisoService.openSnackBar(msg, 'Cerrar', 0);
                   }
                 });
               }
             }
           );
-        } else { this.loadingCarritoCompra = false; }
+        } else {
+          this.loadingCarritoCompra = false;
+        }
       },
       err => {
         this.loadingCarritoCompra = false;
@@ -106,12 +104,10 @@ export class CarritoCompraComponent implements OnInit {
         this.deleting = true;
         this.loadingCarritoCompra = true;
         this.carritoCompraService.eliminarTodosLosItems()
-          .pipe(
-            finalize(() => {
-              this.deleting = false;
-              this.loadingCarritoCompra = false;
-            })
-          )
+          .pipe(finalize(() => {
+            this.deleting = false;
+            this.loadingCarritoCompra = false;
+          }))
           .subscribe(
             () => {
               this.cargarCarritoCompra();
@@ -127,16 +123,15 @@ export class CarritoCompraComponent implements OnInit {
   cargarCarritoCompra() {
     this.loadingTotales = true;
     this.carritoCompraService.getCarritoCompra()
-      .pipe(
-        finalize(() =>  {
-          this.loadingTotales = false;
-          this.loadingCarritoCompra = false;
-          this.loadingRenglones = false;
-        })
+      .pipe(finalize(() => {
+        this.loadingTotales = false;
+        this.loadingCarritoCompra = false;
+        this.loadingRenglones = false;
+      })
       )
       .subscribe(data => {
-          this.cantidadArticulos = data.cantArticulos;
-          this.total = data.total;
+        this.cantidadArticulos = data.cantArticulos;
+        this.total = data.total;
       },
       err => this.avisoService.openSnackBar(err.error, '', 3500));
   }
@@ -204,7 +199,11 @@ export class CarritoCompraComponent implements OnInit {
 
   goToCheckout() {
     this.verificarStock((faltantes: ProductoFaltante[]) => {
-      if (faltantes.length) { this.reloadPage(); } else { this.router.navigate(['/checkout']); }
+      if (faltantes.length) {
+        this.reloadPage();
+      } else {
+        this.router.navigate(['/checkout']);
+      }
     });
   }
 
