@@ -26,8 +26,8 @@
                  *ngIf="icc.producto.oferta && icc.producto.porcentajeBonificacionOferta > 0">
               <span class="oferta-label">OFERTA</span>
               <span class="oferta-descripcion">
-              <span *ngIf="icc.producto.cantMinima > 1">Llevando {{icc.producto.cantMinima | number:'1.0-2':'es-AR'}} o más</span>
                 $ {{ icc.producto.precioBonificado | number:'1.0-2':'es-AR' }}
+                <span *ngIf="icc.producto.cantMinima > 1">llevando {{icc.producto.cantMinima | number:'1.0-2':'es-AR'}} o más</span>
               </span>
             </div>
             <div class="producto">

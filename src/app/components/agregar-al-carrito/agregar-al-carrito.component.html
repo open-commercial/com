@@ -3,8 +3,8 @@
        *ngIf="producto.oferta && producto.porcentajeBonificacionOferta > 0">
     <span class="oferta-label">OFERTA</span>
     <span class="oferta-descripcion">
-      <span *ngIf="producto.cantMinima > 1">Llevando {{producto.cantMinima | number:'1.0-2':'es-AR'}} o más</span>
       $ {{ producto.precioBonificado | number:'1.0-2':'es-AR' }}
+      <span *ngIf="producto.cantMinima > 1">llevando {{producto.cantMinima | number:'1.0-2':'es-AR'}} o más</span>
     </span>
   </div>
   <div class="producto">
