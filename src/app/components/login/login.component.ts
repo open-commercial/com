@@ -1,12 +1,12 @@
-import {Component, OnInit} from '@angular/core';
-import {AuthService} from '../../services/auth.service';
-import {AvisoService} from '../../services/aviso.service';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {Usuario} from '../../models/usuario';
-import {ActivatedRoute, Router} from '@angular/router';
-import {Cliente} from '../../models/cliente';
-import {ClientesService} from '../../services/clientes.service';
-import {finalize} from 'rxjs/operators';
+import { Component, OnInit } from '@angular/core';
+import { AuthService } from '../../services/auth.service';
+import { AvisoService } from '../../services/aviso.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Usuario } from '../../models/usuario';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Cliente } from '../../models/cliente';
+import { ClientesService } from '../../services/clientes.service';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'sic-com-login',
@@ -14,18 +14,19 @@ import {finalize} from 'rxjs/operators';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
+
   model: any = {};
   loading = false;
   returnUrl = '';
   loginForm: FormGroup;
   usuario: Usuario;
 
-  constructor(private router: Router,
-              private authService: AuthService,
-              private avisoService: AvisoService,
-              private clientesService: ClientesService,
-              private fb: FormBuilder,
-              private route: ActivatedRoute) {
+  constructor(private readonly router: Router,
+    private readonly authService: AuthService,
+    private readonly avisoService: AvisoService,
+    private readonly clientesService: ClientesService,
+    private readonly fb: FormBuilder,
+    private readonly route: ActivatedRoute) {
     this.buildForm();
   }
 
@@ -34,7 +35,9 @@ export class LoginComponent implements OnInit {
       this.router.navigate(['']);
     } else {
       this.route.queryParamMap.subscribe(params => {
-        if (params.has('return')) { this.returnUrl = params.get('return'); }
+        if (params.has('return')) {
+          this.returnUrl = params.get('return');
+        }
       });
     }
   }
@@ -69,8 +72,8 @@ export class LoginComponent implements OnInit {
                     this.router.navigate(['']);
                   }
                 } else {
-                  this.avisoService.openSnackBar(
-                    'Su usuario no posee cuenta de cliente asociada. Por favor, comuníquese con nosotros.', '', 3500);
+                  let msjError = 'Su usuario no posee cuenta de cliente asociada. Por favor, comuníquese con nosotros.';
+                  this.avisoService.openSnackBar(msjError, '', 3500);
                   this.authService.logout();
                 }
                 this.loading = false;
@@ -87,7 +90,7 @@ export class LoginComponent implements OnInit {
           this.loginForm.enable();
           this.avisoService.openSnackBar(err, '', 3500);
         })
-      ;
+        ;
     }
   }
 }

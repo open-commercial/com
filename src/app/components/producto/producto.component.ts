@@ -1,15 +1,14 @@
 import { Component, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import {ProductosService} from '../../services/productos.service';
-import {CarritoCompraService} from '../../services/carrito-compra.service';
-import {ActivatedRoute, Router} from '@angular/router';
-import {AvisoService} from '../../services/aviso.service';
-import {AuthService} from '../../services/auth.service';
-import {Producto} from '../../models/producto';
-import {ClientesService} from '../../services/clientes.service';
-import {Cliente} from '../../models/cliente';
-import {Location} from '@angular/common';
-import {finalize} from 'rxjs/operators';
-import {AgregarAlCarritoComponent} from '../agregar-al-carrito/agregar-al-carrito.component';
+import { ProductosService } from '../../services/productos.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { AvisoService } from '../../services/aviso.service';
+import { AuthService } from '../../services/auth.service';
+import { Producto } from '../../models/producto';
+import { ClientesService } from '../../services/clientes.service';
+import { Cliente } from '../../models/cliente';
+import { Location } from '@angular/common';
+import { finalize } from 'rxjs/operators';
+import { AgregarAlCarritoComponent } from '../agregar-al-carrito/agregar-al-carrito.component';
 import { Observable } from 'rxjs';
 import { HelperService } from '../../services/helper.service';
 
@@ -19,30 +18,26 @@ import { HelperService } from '../../services/helper.service';
   styleUrls: ['producto.component.scss']
 })
 export class ProductoComponent implements OnInit, OnDestroy {
+
   producto: Producto;
   loadingProducto = false;
   favoritoToggling = false;
-
   cliente: Cliente = null;
   loadingCliente = false;
-
   imgViewerVisible = false;
   windowLastTopPosition = 0;
-
   cantidadValida = false;
   recomendadosCount = 0;
-
   @ViewChild('aacc', { static: false }) aacc: AgregarAlCarritoComponent;
   aaccLoading = false;
 
-  constructor(private productosService: ProductosService,
-              private carritoCompraService: CarritoCompraService,
-              private avisoService: AvisoService,
-              public authService: AuthService,
-              private clientesService: ClientesService,
-              private router: Router,
-              private route: ActivatedRoute,
-              private location: Location,
+  constructor(private readonly productosService: ProductosService,
+              private readonly avisoService: AvisoService,
+              public readonly authService: AuthService,
+              private readonly clientesService: ClientesService,
+              private readonly router: Router,
+              private readonly route: ActivatedRoute,
+              private readonly location: Location,
               public helper: HelperService) {
   }
 
@@ -128,13 +123,13 @@ export class ProductoComponent implements OnInit, OnDestroy {
           .pipe(finalize(() => this.favoritoToggling = false))
           .subscribe(
             (cantidad: number) => this.productosService.setCantidadEnFavoritos(cantidad),
-            err => this.avisoService.openSnackBar(err.error, 'Cerrar', 0),
+            err => this.avisoService.openSnackBar(err.error, '', 3500),
           )
         ;
       },
       err => {
         this.favoritoToggling = false;
-        this.avisoService.openSnackBar(err.error, 'Cerrar', 0);
+        this.avisoService.openSnackBar(err.error, '', 3500);
       },
     );
   }

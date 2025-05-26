@@ -153,7 +153,7 @@ export class CheckoutComponent implements OnInit {
         },
         err => {
           this.verificandoStock = false;
-          this.avisoService.openSnackBar(err.error, 'Cerrar', 0)
+          this.avisoService.openSnackBar(err.error, '', 3500)
             .afterDismissed().subscribe(() => this.router.navigate(['/carrito-compra']))
           ;
         }

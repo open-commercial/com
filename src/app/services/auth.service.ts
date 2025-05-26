@@ -17,13 +17,13 @@ export class AuthService {
   urlLogout = environment.apiUrl + '/api/v1/logout';
   urlPasswordRecovery = environment.apiUrl + '/api/v1/password-recovery';
   jwtHelper = new JwtHelperService();
-  private nombreUsuarioLoggedInSubject = new Subject<string>();
+  private readonly nombreUsuarioLoggedInSubject = new Subject<string>();
   nombreUsuarioLoggedIn$ = this.nombreUsuarioLoggedInSubject.asObservable();
 
-  constructor(private http: HttpClient,
-    private router: Router,
-    private usuariosService: UsuariosService,
-    private storageService: StorageService) {
+  constructor(private readonly http: HttpClient,
+    private readonly router: Router,
+    private readonly usuariosService: UsuariosService,
+    private readonly storageService: StorageService) {
   }
 
   setNombreUsuarioLoggedIn(nombre: string) {
@@ -38,7 +38,7 @@ export class AuthService {
           this.setAuthenticationInfo(data);
         }),
         catchError(err => {
-          let msjError;
+          let msjError: string;
           if (err.status === 0) {
             msjError = 'Servicio no disponible :(';
           } else {
@@ -53,7 +53,7 @@ export class AuthService {
     this.http.put(this.urlLogout, null)
       .subscribe(() => {
         this.cleanAccessTokenInLocalStorage();
-        this.router.navigate(['/login'], { queryParams: { return: this.router.routerState.snapshot.url } });
+        this.router.navigate(['/login']);
       });
   }
 
@@ -67,7 +67,9 @@ export class AuthService {
 
   isAuthenticated(): boolean {
     const isExpired = this.jwtHelper.isTokenExpired(this.storageService.getItem('token'));
-    if (isExpired) { this.cleanAccessTokenInLocalStorage(); }
+    if (isExpired) {
+      this.cleanAccessTokenInLocalStorage();
+    }
     return !isExpired;
   }
 
@@ -77,7 +79,9 @@ export class AuthService {
 
   getLoggedInIdUsuario(): string {
     const token = this.storageService.getItem('token');
-    if (!token) { return null; }
+    if (!token) {
+      return null;
+    }
 
     const decodedToken = this.jwtHelper.decodeToken(token);
     return decodedToken.idUsuario;

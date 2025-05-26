@@ -1,8 +1,8 @@
-import {Component, OnInit} from '@angular/core';
-import {Router} from '@angular/router';
-import {AuthService} from '../../services/auth.service';
-import {AvisoService} from '../../services/aviso.service';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
+import { AvisoService } from '../../services/aviso.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'sic-com-password-recovery-request',
@@ -14,10 +14,10 @@ export class PasswordRecoveryRequestComponent implements OnInit {
   requestForm: FormGroup;
   loading = false;
 
-  constructor(private router: Router,
-              private authService: AuthService,
-              private avisoService: AvisoService,
-              private fb: FormBuilder) {
+  constructor(private readonly router: Router,
+              private readonly authService: AuthService,
+              private readonly avisoService: AvisoService,
+              private readonly fb: FormBuilder) {
   }
 
   ngOnInit() {
@@ -43,7 +43,7 @@ export class PasswordRecoveryRequestComponent implements OnInit {
           this.loading = false;
           let message = 'El pedido para recuperar su contraseña ha sido realizado correctamente.';
           message += ' En breve recibirá un correo electrónico con instrucciones';
-          this.avisoService.openSnackBar(message, 'Cerrar', 0);
+          this.avisoService.openSnackBar(message, '', 3500);
           this.router.navigate(['']);
         },
         err => {
