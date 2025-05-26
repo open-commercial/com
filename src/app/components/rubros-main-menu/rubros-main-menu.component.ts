@@ -14,42 +14,40 @@ import { HelperService } from '../../services/helper.service';
   styleUrls: ['./rubros-main-menu.component.scss']
 })
 export class RubrosMainMenuComponent implements OnInit {
+
   rubros: Rubro[] = [];
   loading = false;
   selected: Rubro = null;
-
   isOpen = false;
 
-  constructor(private rubrosService: RubrosService,
-              private productosService: ProductosService,
-              private avisoService: AvisoService,
-              private router: Router,
-              public helper: HelperService) { }
+  constructor(private readonly rubrosService: RubrosService,
+              private readonly productosService: ProductosService,
+              private readonly avisoService: AvisoService,
+              private readonly router: Router,
+              public helper: HelperService) {}
 
   ngOnInit() {
     this.loading = true;
     this.rubrosService.getRubros()
       .pipe(finalize(() => this.loading = false))
       .subscribe(
-        rubros => {
-          this.rubros = rubros;
+        data => {
+          this.rubros = data;
           this.init();
         },
-        err => this.avisoService.openSnackBar(err.error, 'Cerrar', 0),
-      )
-    ;
+        err => this.avisoService.openSnackBar(err.error, '', 3500),
+      );
   }
 
   init() {
     this.setBusquedaCriteriaAsSelected(this.productosService.getCriteria());
-
     this.productosService.buscarProductos$.subscribe(data => {
       this.setBusquedaCriteriaAsSelected(data);
     });
   }
 
   setBusquedaCriteriaAsSelected(bCriteria: BusquedaProductoCriteria) {
-    if (bCriteria && bCriteria.idRubro) {
+    if (bCriteria?.idRubro) {
       const aux = this.rubros.filter(r => r.idRubro === bCriteria.idRubro);
       if (aux.length) {
         this.selected = aux[0];

@@ -15,17 +15,17 @@ export class MenuComponent implements OnInit {
   loading = false;
   rubros: Rubro[] = [];
 
-  constructor(private rubrosService: RubrosService,
-              private avisoService: AvisoService,
-              private menuService: MenuService,
-              private router: Router) { }
+  constructor(private readonly rubrosService: RubrosService,
+              private readonly avisoService: AvisoService,
+              private readonly menuService: MenuService,
+              private readonly router: Router) {}
 
   ngOnInit(): void {
     this.loading = true;
     this.rubrosService.getRubros()
       .pipe(finalize(() => this.loading = false))
       .subscribe(
-        rubros => this.rubros = rubros,
+        data => this.rubros = data,
         err => this.avisoService.openSnackBar(err.error, 'Cerrar', 0),
       )
     ;

@@ -19,6 +19,7 @@ import { ProductoFaltante } from '../../models/producto-faltante';
   styleUrls: ['./carrito-compra.component.scss']
 })
 export class CarritoCompraComponent implements OnInit {
+
   itemsCarritoCompra = [];
   pagina = 0;
   totalPaginas = 0;
@@ -60,7 +61,7 @@ export class CarritoCompraComponent implements OnInit {
                   this.verificandoStock = false;
                   if (faltantes.length) {
                     const msg = 'No hay stock disponible para algunos productos. Revise el carrito';
-                    this.avisoService.openSnackBar(msg, 'Cerrar', 0);
+                    this.avisoService.openSnackBar(msg, '', 3500);
                   }
                 });
               }
@@ -85,7 +86,7 @@ export class CarritoCompraComponent implements OnInit {
         callback,
         err => {
           this.verificandoStock = false;
-          this.avisoService.openSnackBar(err.error, 'Cerrar', 0);
+          this.avisoService.openSnackBar(err.error, '', 3500);
         }
       )
     ;

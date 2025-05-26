@@ -38,13 +38,13 @@ export class FavoritoButtonComponent {
           .pipe(finalize(() => this.toggling = false))
           .subscribe(
             (cantidad: number) => this.productosService.setCantidadEnFavoritos(cantidad),
-            err => this.avisoService.openSnackBar(err.error, 'Cerrar', 0),
+            err => this.avisoService.openSnackBar(err.error, '', 3500),
           )
         ;
       },
       err => {
         this.toggling = false;
-        this.avisoService.openSnackBar(err.error, 'Cerrar', 0);
+        this.avisoService.openSnackBar(err.error, '', 3500);
       },
     );
   }
