@@ -20,9 +20,11 @@ export class ProductoCardComponent {
   @Input() set cliente(value: Cliente) { this.pCliente = value; }
   get cliente() { return this.pCliente; }
 
-  constructor(public authService: AuthService,
-              private dialog: MatDialog,
-              private router: Router) { }
+  constructor(
+    public readonly authService: AuthService,
+    private readonly dialog: MatDialog,
+    private readonly router: Router
+  ) { }
 
   showDialogCantidad($event, producto: Producto) {
     const dialogRef = this.dialog.open(AgregarAlCarritoDialogComponent);

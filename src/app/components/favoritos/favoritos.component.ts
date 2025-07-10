@@ -18,6 +18,7 @@ import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation
   styleUrls: ['./favoritos.component.scss']
 })
 export class FavoritosComponent implements OnInit {
+
   loading = false;
   cliente: Cliente = null;
   productos = [];
@@ -25,13 +26,15 @@ export class FavoritosComponent implements OnInit {
   totalElements = 0;
   pagina = 0;
 
-  constructor(private productosService: ProductosService,
-              private route: ActivatedRoute,
-              private router: Router,
-              private clientesService: ClientesService,
-              private authService: AuthService,
-              private avisoService: AvisoService,
-              private dialog: MatDialog) { }
+  constructor(
+    private readonly productosService: ProductosService,
+    private readonly route: ActivatedRoute,
+    private readonly router: Router,
+    private readonly clientesService: ClientesService,
+    private readonly authService: AuthService,
+    private readonly avisoService: AvisoService,
+    private readonly dialog: MatDialog
+  ) { }
 
   ngOnInit() {
     this.route.queryParamMap.subscribe((params) => {
@@ -39,11 +42,10 @@ export class FavoritosComponent implements OnInit {
       if (isNaN(p)) { p = 1; }
       p = p < 1 ? 1 : p;
       this.pagina = p - 1;
-
       this.loading = true;
       this.clientesService.getClienteDelUsuario(this.authService.getLoggedInIdUsuario())
         .subscribe(
-        (cliente: Cliente) => {
+          (cliente: Cliente) => {
             if (cliente) {
               this.cliente = cliente;
               this.cargarProductosFavoritos();
@@ -58,8 +60,7 @@ export class FavoritosComponent implements OnInit {
             this.router.navigate(['']);
             this.loading = false;
           },
-        )
-      ;
+        );
     });
   }
 
@@ -79,8 +80,7 @@ export class FavoritosComponent implements OnInit {
           this.avisoService.openSnackBar(err.error);
           this.router.navigate(['']);
         }
-      )
-    ;
+      );
   }
 
   showDialogCantidad($event, producto: Producto) {
@@ -108,8 +108,7 @@ export class FavoritosComponent implements OnInit {
               this.loading = false;
               this.avisoService.openSnackBar(err.error);
             },
-          )
-        ;
+          );
       }
     });
   }
@@ -125,23 +124,27 @@ export class FavoritosComponent implements OnInit {
           .subscribe(
             () => this.cargarProductosFavoritos(),
             err => this.avisoService.openSnackBar(err.error),
-          )
-        ;
+          );
       }
     });
   }
 
   paginaAnterior() {
-    if (this.pagina <= 0) { return; }
+    if (this.pagina <= 0) {
+      return;
+    }
     this.router.navigate(['/productos/favoritos'], { queryParams: { p: this.pagina } });
   }
 
   paginaSiguiente() {
-    if (this.pagina + 1 >= this.totalPaginas) { return; }
+    if (this.pagina + 1 >= this.totalPaginas) {
+      return;
+    }
     this.router.navigate(['/productos/favoritos'], { queryParams: { p: this.pagina + 2 } });
   }
 
   estaBonificado(producto: Producto): boolean {
     return !!(producto && producto.precioLista > producto.precioBonificado);
   }
+  
 }

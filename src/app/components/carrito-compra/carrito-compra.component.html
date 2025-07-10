@@ -5,53 +5,68 @@
         <mat-icon>keyboard_arrow_left</mat-icon>
         <span>Volver</span>
       </a>
-      <button mat-icon-button (click)="vaciarCarritoCompra()" [disabled]="!itemsCarritoCompra.length || disabledButtons()"  matTooltip="Quitar todos los items" *ngIf="!cantidadArticulos == 0">
+      <button mat-icon-button (click)="vaciarCarritoCompra()"
+        [disabled]="!itemsCarritoCompra.length || disabledButtons()" matTooltip="Quitar todos los items"
+        *ngIf="!cantidadArticulos == 0">
         <mat-icon>delete_sweep</mat-icon>
       </button>
     </div>
     <div class="mensaje" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="0.5rem" *ngIf="!cantidadArticulos">
-      <mat-icon class="shopping_cart">add_shopping_cart</mat-icon>     
+      <mat-icon class="shopping_cart">add_shopping_cart</mat-icon>
       <span>Agrega productos al carrito para verlos listados aquí</span>
     </div>
     <div class="carrito">
-      <div *ngFor="let icc of itemsCarritoCompra" class="item-carrito" fxLayout="column" fxLayout.gt-sm="row" fxLayoutGap="0.5rem">
+      <div *ngFor="let icc of itemsCarritoCompra" class="item-carrito" fxLayout="column" fxLayout.gt-sm="row"
+        fxLayoutGap="0.5rem">
         <div fxFlex fxLayout="row" fxLayoutAlign="start center">
           <div fxFlex="50" fxFlex.gt-sm="30">
             <div class="img-container">
-              <img [src]="icc.producto.urlImagen" alt="">
+              <img [routerLink]="['/producto', icc.producto.idProducto]"
+                [src]="icc.producto.urlImagen ? icc.producto.urlImagen : 'assets/images/sin_imagen.png'"
+                alt="Foto de Producto">
             </div>
           </div>
           <div fxFlex class="info">
             <div class="oferta" fxLayout="row" fxLayoutGap=".75rem" fxLayoutAlign="start center"
-                 *ngIf="icc.producto.oferta && icc.producto.porcentajeBonificacionOferta > 0">
+              *ngIf="icc.producto.oferta && icc.producto.porcentajeBonificacionOferta > 0">
               <span class="oferta-label">OFERTA</span>
               <span class="oferta-descripcion">
                 $ {{ icc.producto.precioBonificado | number:'1.0-2':'es-AR' }}
-                <span *ngIf="icc.producto.cantMinima > 1">llevando {{icc.producto.cantMinima | number:'1.0-2':'es-AR'}} o más</span>
+                <span *ngIf="icc.producto.cantMinima > 1">
+                  llevando {{ icc.producto.cantMinima | number:'1.0-2':'es-AR' }} o más
+                </span>
               </span>
             </div>
             <div class="producto">
-              <div class="producto-descripcion">{{ icc.producto.descripcion }}</div>
+              <a class="producto-descripcion" [routerLink]="['/producto', icc.producto.idProducto]">
+                {{ icc.producto.descripcion }}
+              </a>
             </div>
             <div class="precios">
               <div *ngIf="icc.producto.oferta">
-                  <span [class.seleccionado]="!estaBonificado(icc)" [class.tachado]="!(icc.producto.cantMinima > 1)">
-                    P. U. $ {{ icc.producto.precioLista | number:'1.0-2':'es-AR'}}
-                  </span><br>
+                <span [class.seleccionado]="!estaBonificado(icc)" [class.tachado]="!(icc.producto.cantMinima > 1)">
+                  P. U. $ {{ icc.producto.precioLista | number:'1.0-2':'es-AR' }}
+                </span><br>
                 <span [class.seleccionado]="estaBonificado(icc)">
-                    P. U. Oferta $ {{ icc.producto.precioBonificado | number:'1.0-2':'es-AR'}}
-                  </span>
+                  P. U. Oferta $ {{ icc.producto.precioBonificado | number:'1.0-2':'es-AR' }}
+                </span>
               </div>
               <div *ngIf="!icc.producto.oferta">
-                  <span *ngIf="!estaBonificado(icc) || icc.producto.cantMinima > 1" [class.seleccionado]="!estaBonificado(icc)">
-                    P. U. $ {{ icc.producto.precioLista | number:'1.0-2':'es-AR'}}<br>
-                  </span>
-                <span [class.seleccionado]="estaBonificado(icc)" *ngIf="icc.producto.precioLista > icc.producto.precioBonificado">
-                    P. U. Bonif. <span *ngIf="icc.producto.cantMinima > 1"> x Cant.</span>$ {{ icc.producto.precioBonificado | number:'1.0-2':'es-AR'}}
-                  </span>
+                <span *ngIf="!estaBonificado(icc) || icc.producto.cantMinima > 1"
+                  [class.seleccionado]="!estaBonificado(icc)">
+                  P. U. $ {{ icc.producto.precioLista | number:'1.0-2':'es-AR'}}<br>
+                </span>
+                <span [class.seleccionado]="estaBonificado(icc)"
+                  *ngIf="icc.producto.precioLista > icc.producto.precioBonificado">
+                  P. U. Bonif. <span *ngIf="icc.producto.cantMinima > 1"> x Cant.</span>
+                  $ {{ icc.producto.precioBonificado | number:'1.0-2':'es-AR' }}
+                </span>
               </div>
-              <div *ngIf="!icc.producto.oferta && (icc.producto.precioLista > icc.producto.precioBonificado) && icc.producto.cantMinima > 1">
-                <span [class.seleccionado]="estaBonificado(icc)">Llevando {{icc.producto.cantMinima | number:'1.0-2':'es-AR'}} o más</span>
+              <div
+                *ngIf="!icc.producto.oferta && (icc.producto.precioLista > icc.producto.precioBonificado) && icc.producto.cantMinima > 1">
+                <span [class.seleccionado]="estaBonificado(icc)">
+                  Llevando {{ icc.producto.cantMinima | number:'1.0-2':'es-AR'}} o más
+                </span>
               </div>
             </div>
           </div>
@@ -59,26 +74,31 @@
         <div fxFlex="50" fxFlex.gt-sm="40" fxLayout="row" fxLayoutAlign="space-between center">
           <div fxLayout="column" fxLayoutAlign="center center">
             <button mat-flat-button (click)="showDialogCantidad($event, icc.producto)" [disabled]="disabledButtons()"
-                    [ngClass]="icc.cantidad > icc.producto.cantidadTotalEnSucursalesDisponible ? 'bg-color-EB5757' : 'bg-color-FFDA41'">
-              Cantidad {{icc.cantidad | number:'1.0-2':'es-AR' }}
+              [ngClass]="icc.cantidad > icc.producto.cantidadTotalEnSucursalesDisponible ? 'bg-color-EB5757' : 'bg-color-FFDA41'">
+              Cantidad {{ icc.cantidad | number:'1.0-2':'es-AR' }}
             </button>
-            <div class="stock-no-disponible" *ngIf="icc.cantidad > icc.producto.cantidadTotalEnSucursalesDisponible" fxLayout="column" fxLayoutAlign="center center">
+            <div class="stock-no-disponible" *ngIf="icc.cantidad > icc.producto.cantidadTotalEnSucursalesDisponible"
+              fxLayout="column" fxLayoutAlign="center center">
               <span>Solicitado ({{ icc.cantidad + ' ' + icc.producto.nombreMedida }})</span>
-              <span>Disponible ({{ icc.producto.cantidadTotalEnSucursalesDisponible + ' ' + icc.producto.nombreMedida }})</span>
+              <span>
+                Disponible ({{ icc.producto.cantidadTotalEnSucursalesDisponible + ' ' + icc.producto.nombreMedida }})
+              </span>
             </div>
           </div>
-
           <div class="monto">
-            $ {{(icc.importeBonificado > 0 ? icc.importeBonificado : icc.importe) | number:'1.0-2':'es-AR'}}
+            $ {{ (icc.importeBonificado > 0 ? icc.importeBonificado : icc.importe) | number:'1.0-2':'es-AR' }}
           </div>
-          <button mat-icon-button (click)="eliminarItemDelCarrito(icc)" matTooltip="Quitar del listado" [disabled]="disabledButtons()">
+          <button mat-icon-button (click)="eliminarItemDelCarrito(icc)" matTooltip="Quitar del listado"
+            [disabled]="disabledButtons()">
             <mat-icon>delete</mat-icon>
           </button>
         </div>
       </div>
-   </div>
- </div>
-  <div class="sic-com-paginator" *ngIf="!loadingCarritoCompra && !loadingRenglones && !loadingTotales && !verificandoStock && (totalPaginas > 1)" fxLayout="row" fxLayoutAlign="center center">
+    </div>
+  </div>
+  <div class="sic-com-paginator"
+    *ngIf="!loadingCarritoCompra && !loadingRenglones && !loadingTotales && !verificandoStock && (totalPaginas > 1)"
+    fxLayout="row" fxLayoutAlign="center center">
     <button mat-button [disabled]="pagina <= 0" (click)="paginaAnterior()">
       <mat-icon aria-label="Página anterior">navigate_before</mat-icon><span>Anterior</span>
     </button>
@@ -87,24 +107,33 @@
       <span>Siguiente</span><mat-icon aria-label="Página siguiente">navigate_next</mat-icon>
     </button>
   </div>
-  <div class="cantidades" fxLayout="column" fxLayout.gt-xs="row" *ngIf="!(cantidadArticulos == 0 || loadingCarritoCompra || loadingTotales || loadingRenglones || verificandoStock)">
+  <div class="cantidades" fxLayout="column" fxLayout.gt-xs="row"
+    *ngIf="!(cantidadArticulos == 0 || loadingCarritoCompra || loadingTotales || loadingRenglones || verificandoStock)">
     <div fxFlex></div>
     <div fxFlex fxFlex.gt-sm="40" fxLayout="column" fxLayoutGap="0.7rem">
       <div fxLayout="row" fxLayoutAlign="space-between center" class="cantidad-articulos">
-        <span class="label">Cant. de artículos</span><span class="cantidad">{{cantidadArticulos | number:'1.0-2':'es-AR' }}</span>
+        <span class="label">
+          Cant. de artículos
+        </span>
+        <span class="cantidad">{{ cantidadArticulos | number:'1.0-2':'es-AR' }}</span>
       </div>
-      <div fxLayout="row" fxLayoutAlign="space-between center" class="cantidad-minima" *ngIf="cliente.montoCompraMinima > 0">
-        <span class="label">Compra mínima</span><span class="cantidad">$ {{ cliente.montoCompraMinima | number:'1.0-2':'es-AR' }}</span>
+      <div fxLayout="row" fxLayoutAlign="space-between center" class="cantidad-minima"
+        *ngIf="cliente.montoCompraMinima > 0">
+        <span class="label">Compra mínima</span>
+        <span class="cantidad">$ {{ cliente.montoCompraMinima | number:'1.0-2':'es-AR' }}</span>
       </div>
       <div fxLayout="row" fxLayoutAlign="space-between center" class="total">
-        <span class="label">Total</span><span class="cantidad" [class.cumple-compra-minima]="total >= cliente.montoCompraMinima">$ {{total | number:'1.0-2':'es-AR' }}</span>
+        <span class="label">Total</span><span class="cantidad"
+          [class.cumple-compra-minima]="total >= cliente.montoCompraMinima">$ {{total | number:'1.0-2':'es-AR' }}</span>
       </div>
-      <button class="bg-color-FFDA41" mat-flat-button (click)="goToCheckout()" [disabled]="!itemsCarritoCompra.length || disabledButtons() || total < cliente.montoCompraMinima">
-        Enviar Pedido
+      <button class="bg-color-FFDA41" mat-flat-button (click)="goToCheckout()"
+        [disabled]="!itemsCarritoCompra.length || disabledButtons() || total < cliente.montoCompraMinima">
+        Tramitar Pedido
       </button>
     </div>
   </div>
-  <div class="sic-com-spinner-container" fxLayoutAlign="center center" *ngIf="loadingCarritoCompra || loadingRenglones || loadingTotales || verificandoStock">
+  <div class="sic-com-spinner-container" fxLayoutAlign="center center"
+    *ngIf="loadingCarritoCompra || loadingRenglones || loadingTotales || verificandoStock">
     <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>
   </div>
 </div>

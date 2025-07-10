@@ -35,13 +35,12 @@ export class CarritoCompraComponent implements OnInit {
   vsForzado = true;
 
   constructor(private readonly carritoCompraService: CarritoCompraService,
-              private readonly clientesService: ClientesService,
-              private readonly avisoService: AvisoService,
-              private readonly authService: AuthService,
-              private readonly dialog: MatDialog,
-              private readonly route: ActivatedRoute,
-              private readonly router: Router) {
-  }
+    private readonly clientesService: ClientesService,
+    private readonly avisoService: AvisoService,
+    private readonly authService: AuthService,
+    private readonly dialog: MatDialog,
+    private readonly route: ActivatedRoute,
+    private readonly router: Router) { }
 
   ngOnInit() {
     this.loadingCarritoCompra = true;
@@ -88,13 +87,12 @@ export class CarritoCompraComponent implements OnInit {
           this.verificandoStock = false;
           this.avisoService.openSnackBar(err.error, '', 3500);
         }
-      )
-    ;
+      );
   }
 
   reloadPage() {
     this.vsForzado = true;
-    this.router.navigate(['/carrito-compra'], { queryParams: { p: this.pagina, refresh: new Date().getTime() }});
+    this.router.navigate(['/carrito-compra'], { queryParams: { p: this.pagina, refresh: new Date().getTime() } });
   }
 
   vaciarCarritoCompra() {
@@ -134,7 +132,7 @@ export class CarritoCompraComponent implements OnInit {
         this.cantidadArticulos = data.cantArticulos;
         this.total = data.total;
       },
-      err => this.avisoService.openSnackBar(err.error, '', 3500));
+        err => this.avisoService.openSnackBar(err.error, '', 3500));
   }
 
   cargarItemsCarritoCompra() {
@@ -159,8 +157,7 @@ export class CarritoCompraComponent implements OnInit {
           this.cargarCarritoCompra();
         },
         err => this.avisoService.openSnackBar(err.error, '', 3500)
-      )
-    ;
+      );
   }
 
   eliminarItemDelCarrito(itemCarritoCompra) {
@@ -170,7 +167,7 @@ export class CarritoCompraComponent implements OnInit {
       if (result) {
         this.deleting = true;
         this.loadingCarritoCompra = true;
-        this.loadingTotales =  true;
+        this.loadingTotales = true;
         this.carritoCompraService.eliminarItem(itemCarritoCompra.producto.idProducto)
           .pipe(finalize(() => this.deleting = false))
           .subscribe(
@@ -213,16 +210,20 @@ export class CarritoCompraComponent implements OnInit {
   }
 
   paginaAnterior() {
-    if (this.pagina <= 0) { return; }
+    if (this.pagina <= 0) {
+      return;
+    }
     this.router.navigate(['/carrito-compra'], { queryParams: { p: this.pagina } });
   }
 
   paginaSiguiente() {
-    if (this.pagina + 1 >= this.totalPaginas) { return; }
+    if (this.pagina + 1 >= this.totalPaginas) {
+      return;
+    }
     this.router.navigate(['/carrito-compra'], { queryParams: { p: this.pagina + 2 } });
   }
 
   estaBonificado(icc: ItemCarritoCompra) {
-    return  icc.producto.precioLista > icc.producto.precioBonificado && icc.cantidad >= icc.producto.cantMinima;
+    return icc.producto.precioLista > icc.producto.precioBonificado && icc.cantidad >= icc.producto.cantMinima;
   }
 }

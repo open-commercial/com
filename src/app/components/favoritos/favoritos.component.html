@@ -5,33 +5,41 @@
         <mat-icon>keyboard_arrow_left</mat-icon>
         <span>Volver</span>
       </a>
-      <button mat-icon-button (click)="vaciarFavoritos()" [disabled]="!productos.length"  matTooltip="Quitar todos los items" *ngIf="productos.length">
+      <button mat-icon-button (click)="vaciarFavoritos()" [disabled]="!productos.length"
+        matTooltip="Quitar todos los items" *ngIf="productos.length">
         <mat-icon>delete_sweep</mat-icon>
       </button>
     </div>
     <div class="mensaje" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="0.5rem" *ngIf="!productos.length">
-        <mat-icon>favorite</mat-icon>
-        <span>Marca tus productos favoritos para verlos listados aquí</span>
+      <mat-icon>favorite</mat-icon>
+      <span>Marca tus productos favoritos para verlos listados aquí</span>
     </div>
     <div class="favoritos">
-      <div *ngFor="let producto of productos" class="favorito" fxLayout="column" fxLayout.gt-sm="row" fxLayoutGap="0.5rem">
+      <div *ngFor="let producto of productos" class="favorito" fxLayout="column" fxLayout.gt-sm="row"
+        fxLayoutGap="0.5rem">
         <div fxFlex fxLayout="row" fxLayoutAlign="start center">
           <div fxFlex="50" fxFlex.gt-sm="30">
             <div class="img-container">
-              <img [src]="producto.urlImagen ? producto.urlImagen : 'assets/images/sin_imagen.png'" alt="">
+              <img [routerLink]="['/producto', producto.idProducto]"
+                [src]="producto.urlImagen ? producto.urlImagen : 'assets/images/sin_imagen.png'" 
+                alt="Foto de Producto">
             </div>
           </div>
           <div fxFlex class="info">
             <div class="oferta" fxLayout="row" fxLayoutGap=".75rem" fxLayoutAlign="start center"
-                 *ngIf="producto.oferta && producto.porcentajeBonificacionOferta > 0">
+              *ngIf="producto.oferta && producto.porcentajeBonificacionOferta > 0">
               <span class="oferta-label">OFERTA</span>
               <span class="oferta-descripcion">
                 $ {{ producto.precioBonificado | number:'1.0-2':'es-AR' }}
-                <span *ngIf="producto.cantMinima > 1">llevando {{producto.cantMinima | number:'1.0-2':'es-AR'}} o más</span>
+                <span *ngIf="producto.cantMinima > 1">
+                  llevando {{producto.cantMinima | number:'1.0-2':'es-AR'}} o más
+                </span>
               </span>
             </div>
             <div class="producto">
-              <div class="producto-descripcion">{{ producto.descripcion }}</div>
+              <a class="producto-descripcion" [routerLink]="['/producto', producto.idProducto]">
+                {{ producto.descripcion }}
+              </a>
             </div>
             <div class="precios">
               <div *ngIf="producto.oferta">
@@ -47,16 +55,20 @@
                   P. U. $ {{ producto.precioLista | number:'1.0-2':'es-AR'}}<br>
                 </span>
                 <span *ngIf="producto.precioLista > producto.precioBonificado">
-                  P. U. Bonif. <span *ngIf="producto.cantMinima > 1"> x Cant.</span>&nbsp;$ {{ producto.precioBonificado | number:'1.0-2':'es-AR'}}
+                  P. U. Bonif. <span *ngIf="producto.cantMinima > 1"> x Cant.</span>&nbsp;
+                  $ {{ producto.precioBonificado | number:'1.0-2':'es-AR' }}
                 </span>
               </div>
-              <div *ngIf="!producto.oferta && (producto.precioLista > producto.precioBonificado) && producto.cantMinima > 1">
-                <span [class.seleccionado]="estaBonificado(producto)">Llevando {{producto.cantMinima | number:'1.0-2':'es-AR'}} o más</span>
+              <div
+                *ngIf="!producto.oferta && (producto.precioLista > producto.precioBonificado) && producto.cantMinima > 1">
+                <span [class.seleccionado]="estaBonificado(producto)">Llevando {{producto.cantMinima |
+                  number:'1.0-2':'es-AR'}} o más</span>
               </div>
             </div>
           </div>
         </div>
-        <div fxFlex="50" fxFlex.gt-sm="40" fxLayout="row" fxLayoutAlign="space-between center" fxLayoutAlign.gt-sm="space-evenly center">
+        <div fxFlex="50" fxFlex.gt-sm="40" fxLayout="row" fxLayoutAlign="space-between center"
+          fxLayoutAlign.gt-sm="space-evenly center">
           <div fxLayout="column" fxLayoutAlign="center center">
             <button mat-flat-button (click)="showDialogCantidad($event, producto)" class="bg-color-FFDA41">
               Agregar al carrito
