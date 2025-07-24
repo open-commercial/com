@@ -1,0 +1,17 @@
+# Detectar automáticamente archivos de texto y convertir los finales de línea (EOL)
+* text=auto
+
+# Forzar uso de LF para archivos comunes del proyecto
+*.ts     text eol=lf
+*.js     text eol=lf
+*.json   text eol=lf
+*.html   text eol=lf
+*.css    text eol=lf
+*.scss   text eol=lf
+*.md     text eol=lf
+*.yml    text eol=lf
+*.yaml   text eol=lf
+*.sh     text eol=lf
+*.conf   text eol=lf
+*.dockerfile text eol=lf
+*.env    text eol=lf
