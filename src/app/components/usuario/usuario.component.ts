@@ -1,5 +1,5 @@
 import {Component, OnInit, Input} from '@angular/core';
-import {FormBuilder, Validators, FormGroup} from '@angular/forms';
+import {UntypedFormBuilder, Validators, UntypedFormGroup} from '@angular/forms';
 import {Usuario} from '../../models/usuario';
 import {UsuariosService} from '../../services/usuarios.service';
 import {AvisoService} from '../../services/aviso.service';
@@ -16,10 +16,10 @@ export class UsuarioComponent implements OnInit {
   @Input()
   inEdition = false;
   isLoading = false;
-  usuarioForm: FormGroup;
+  usuarioForm: UntypedFormGroup;
   usuario: Usuario = null;
 
-  constructor(private fb: FormBuilder,
+  constructor(private fb: UntypedFormBuilder,
               private usuariosService: UsuariosService,
               private avisoService: AvisoService,
               private authService: AuthService) {

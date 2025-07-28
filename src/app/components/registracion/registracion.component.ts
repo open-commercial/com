@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import {AuthService} from '../../services/auth.service';
 import {AvisoService} from '../../services/aviso.service';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
 import {Usuario} from '../../models/usuario';
 import {RegistracionService} from '../../services/registracion.service';
 import {Router} from '@angular/router';
@@ -20,7 +20,7 @@ import { Subscription } from 'rxjs';
 export class RegistracionComponent implements OnInit, OnDestroy {
   loading = false;
   usuario: Usuario;
-  registracionForm: FormGroup;
+  registracionForm: UntypedFormGroup;
   keys = Object.keys;
   categoriasIVA = CategoriaIVA;
 
@@ -30,7 +30,7 @@ export class RegistracionComponent implements OnInit, OnDestroy {
               private router: Router,
               private registracionService: RegistracionService,
               private avisoService: AvisoService,
-              private fb: FormBuilder,
+              private fb: UntypedFormBuilder,
               private recaptchaV3Service: ReCaptchaV3Service) {
     this.createForm();
   }

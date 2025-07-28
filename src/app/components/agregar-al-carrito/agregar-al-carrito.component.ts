@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {CarritoCompraService} from '../../services/carrito-compra.service';
 import {AvisoService} from '../../services/aviso.service';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
 import {Cliente} from '../../models/cliente';
 import {Producto} from '../../models/producto';
 import {finalize} from 'rxjs/operators';
@@ -33,7 +33,7 @@ export class AgregarAlCarritoComponent implements OnInit, AfterViewInit {
 
   cantidadEnCarrito = 0;
 
-  form: FormGroup;
+  form: UntypedFormGroup;
   @Output() cantidadUpdated = new EventEmitter<number>();
   @Output() loadingStatusUpdated = new EventEmitter<boolean>();
   @Output() validStatusChanged = new EventEmitter<boolean>();
@@ -54,7 +54,7 @@ export class AgregarAlCarritoComponent implements OnInit, AfterViewInit {
 
   constructor(private carritoCompraService: CarritoCompraService,
               private avisoService: AvisoService,
-              private fb: FormBuilder,
+              private fb: UntypedFormBuilder,
               public helper: HelperService) { }
 
   ngOnInit() {

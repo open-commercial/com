@@ -96,7 +96,6 @@
       }
     }
   },
-  "defaultProject": "sic-com",
   "schematics": {
     "@schematics/angular:component": {
       "prefix": "sic-com",

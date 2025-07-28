@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { AvisoService } from '../../services/aviso.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Usuario } from '../../models/usuario';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Cliente } from '../../models/cliente';
@@ -18,14 +18,14 @@ export class LoginComponent implements OnInit {
   model: any = {};
   loading = false;
   returnUrl = '';
-  loginForm: FormGroup;
+  loginForm: UntypedFormGroup;
   usuario: Usuario;
 
   constructor(private readonly router: Router,
     private readonly authService: AuthService,
     private readonly avisoService: AvisoService,
     private readonly clientesService: ClientesService,
-    private readonly fb: FormBuilder,
+    private readonly fb: UntypedFormBuilder,
     private readonly route: ActivatedRoute) {
     this.buildForm();
   }

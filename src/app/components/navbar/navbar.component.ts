@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {FormControl, FormGroup} from '@angular/forms';
+import {UntypedFormControl, UntypedFormGroup} from '@angular/forms';
 import {ProductosService} from '../../services/productos.service';
 import {CarritoCompraService} from '../../services/carrito-compra.service';
 import {AuthService} from '../../services/auth.service';
@@ -20,8 +20,8 @@ export class NavbarComponent implements OnInit {
   cantidadItemsEnCarrito = 0;
   cantidadEnFavoritos = 0;
   usuarioConectado = '';
-  busquedaForm = new FormGroup ({
-    criteriaControl: new FormControl()
+  busquedaForm = new UntypedFormGroup ({
+    criteriaControl: new UntypedFormControl()
   });
   cliente: Cliente = null;
   loading = false;

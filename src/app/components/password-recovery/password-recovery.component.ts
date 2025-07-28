@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { AvisoService } from '../../services/aviso.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { PasswordRecovery } from 'app/models/password-recovery';
 import { passwordsMatchValidator } from 'app/validators/confirm-password.validator';
 
@@ -13,14 +13,14 @@ import { passwordsMatchValidator } from 'app/validators/confirm-password.validat
 })
 export class PasswordRecoveryComponent implements OnInit {
 
-  passwordResetForm: FormGroup;
+  passwordResetForm: UntypedFormGroup;
   loading = false;
   
   constructor(private router: Router,
               private route: ActivatedRoute,
               private authService: AuthService,
               private avisoService: AvisoService,
-              private fb: FormBuilder) {
+              private fb: UntypedFormBuilder) {
     this.passwordResetForm = this.fb.group({
       newPassword: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(20)]],
       confirmPassword: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(20)]]
