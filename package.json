@@ -10,19 +10,19 @@
     "start": "ng serve"
   },
   "dependencies": {
-    "@angular/animations": "^14.3.0",
+    "@angular/animations": "^15.2.10",
     "@angular/cdk": "^14.2.7",
-    "@angular/common": "^14.3.0",
-    "@angular/compiler": "^14.3.0",
-    "@angular/core": "^14.3.0",
+    "@angular/common": "^15.2.10",
+    "@angular/compiler": "^15.2.10",
+    "@angular/core": "^15.2.10",
     "@angular/flex-layout": "^12.0.0-beta.35",
-    "@angular/forms": "^14.3.0",
-    "@angular/localize": "^14.3.0",
+    "@angular/forms": "^15.2.10",
+    "@angular/localize": "^15.2.10",
     "@angular/material": "^14.2.7",
-    "@angular/platform-browser": "^14.3.0",
-    "@angular/platform-browser-dynamic": "^14.3.0",
-    "@angular/platform-server": "^14.3.0",
-    "@angular/router": "^14.3.0",
+    "@angular/platform-browser": "^15.2.10",
+    "@angular/platform-browser-dynamic": "^15.2.10",
+    "@angular/platform-server": "^15.2.10",
+    "@angular/router": "^15.2.10",
     "@auth0/angular-jwt": "^3.0.1",
     "@ng-select/ng-select": "^7.4.0",
     "angular-gtag": "^1.0.4",
@@ -35,15 +35,15 @@
     "zone.js": "~0.11.8"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^14.2.13",
-    "@angular/cli": "^14.2.13",
-    "@angular/compiler-cli": "^14.3.0",
-    "@angular/language-service": "^14.3.0",
+    "@angular-devkit/build-angular": "^15.2.11",
+    "@angular/cli": "^15.2.11",
+    "@angular/compiler-cli": "^15.2.10",
+    "@angular/language-service": "^15.2.10",
     "@types/googlemaps": "3.39.12",
     "codelyzer": "^6.0.0",
     "sass": "^1.30.0",
     "ts-node": "~8.5.4",
     "tslint": "~6.1.0",
-    "typescript": "~4.6.4"
+    "typescript": "~4.9.5"
   }
 }
