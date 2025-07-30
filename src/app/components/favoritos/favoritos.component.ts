@@ -8,7 +8,7 @@ import { AgregarAlCarritoDialogComponent } from '../agregar-al-carrito-dialog/ag
 import { Cliente } from '../../models/cliente';
 import { AuthService } from '../../services/auth.service';
 import { ClientesService } from '../../services/clientes.service';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { Producto } from '../../models/producto';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 

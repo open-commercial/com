@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CarritoCompraService } from '../../services/carrito-compra.service';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { ClientesService } from '../../services/clientes.service';
 import { AvisoService } from '../../services/aviso.service';
 import { AuthService } from '../../services/auth.service';

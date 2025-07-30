@@ -1,7 +1,7 @@
 import {Component, Input} from '@angular/core';
 import {Producto} from '../../models/producto';
 import {AgregarAlCarritoDialogComponent} from '../agregar-al-carrito-dialog/agregar-al-carrito-dialog.component';
-import {MatDialog} from '@angular/material/dialog';
+import {MatLegacyDialog as MatDialog} from '@angular/material/legacy-dialog';
 import {Cliente} from '../../models/cliente';
 import {AuthService} from '../../services/auth.service';
 import { Router } from '@angular/router';

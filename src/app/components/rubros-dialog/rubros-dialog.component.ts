@@ -4,7 +4,7 @@ import { RubrosService } from '../../services/rubros.service';
 import { finalize } from 'rxjs/operators';
 import { AvisoService } from '../../services/aviso.service';
 import { Router } from '@angular/router';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
 
 @Component({
   selector: 'sic-com-rubros-dialog',
