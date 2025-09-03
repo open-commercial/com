@@ -1,8 +1,8 @@
-@import "../../../_colors.scss";
+@use '../../../colors' as colors;
 footer {
   font-size: .85rem;
   line-height: 1.2rem;
-  background: $color-1E222B;
+  background: colors.$color-1E222B;
   color: white;
   padding-top: 2rem;
   .instagram {

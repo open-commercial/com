@@ -1,11 +1,11 @@
-@import "../../../_colors.scss";
+@use '../../../colors' as colors;
 
 .sic-com-checkout-status {
   padding: 4rem 1rem 1.5rem 1rem;
   height: 100%;
 
   .icono-container {
-    background-color: $color-30CC81;
+    background-color: colors.$color-30CC81;
     border-radius: 50%;
     display: flex;
     padding: 0.8rem 0.9rem;

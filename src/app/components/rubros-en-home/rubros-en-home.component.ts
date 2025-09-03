@@ -4,7 +4,7 @@ import { RubrosService } from '../../services/rubros.service';
 import { AvisoService } from '../../services/aviso.service';
 import { Router } from '@angular/router';
 import { finalize } from 'rxjs/operators';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { RubrosDialogComponent } from '../rubros-dialog/rubros-dialog.component';
 
 const plusSvgIcon = [

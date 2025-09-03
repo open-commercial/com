@@ -43,9 +43,9 @@
     </button>
     <mat-form-field class="input-cantidad">
       <input id="input-cantidad" matInput type="number" formControlName="cantidad" required #cantInput>
-      <mat-hint *ngIf="cantidadEnCarrito" fxLayoutAlign="center center">
+      <mat-hint *ngIf="cantidadEnCarrito" fxLayoutAlign="center center" class="cantidad-en-carrito">
         <mat-icon>shopping_cart</mat-icon>: {{ cantidadEnCarrito | number:'1.0-2':'es-AR' }}
-      </mat-hint>
+      </mat-hint>     
       <mat-error *ngIf="form.get('cantidad').hasError('required')">
         Requerido
       </mat-error>

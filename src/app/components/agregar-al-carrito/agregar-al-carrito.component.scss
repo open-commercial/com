@@ -1,7 +1,7 @@
-@import "../../../colors";
+@use '../../../colors' as colors;
 
 .sic-com-agregar-al-carrito {
-  color: $color-536070;
+  color: colors.$color-536070;
   .oferta {
     margin-bottom: 1.3rem;
     font-size: 0.86em;
@@ -9,12 +9,12 @@
     .oferta-label {
       font-weight: bold;
       padding: .65em 1em .5em 1em;
-      background: $color-30CC81;
+      background: colors.$color-30CC81;
       color: white;
       border-radius: 1.2em;
     }
     .oferta-descripcion {
-      color: $color-30CC81;
+      color: colors.$color-30CC81;
     }
   }
   .producto {
@@ -29,10 +29,10 @@
     font-weight: 500;
     font-size: 1.2em;
     margin-bottom: 1.3rem;
-    color: $color-828282;
+    color: colors.$color-828282;
     .seleccionado {
       font-size: 1.3em;
-      color: $color-1E222B;
+      color: colors.$color-1E222B;
     }
   }
 
@@ -41,10 +41,10 @@
     font-size: 0.86em;
     font-weight: 500;
     &.no-disponible {
-      color: $color-EB5757;
+      color: colors.$color-EB5757;
     }
     &.disponible {
-      color: $color-30CC81;
+      color: colors.$color-30CC81;
     }
   }
 
@@ -57,4 +57,11 @@
     width: 5rem;
     padding: 0 0.5rem;
   }
+}
+
+.cantidad-en-carrito {
+  display: flex;
+  align-items: start;
+  font-size: 0.9em;
+  padding: 0%;
 }

@@ -1,6 +1,6 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {Producto} from '../../models/producto';
-import { MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
+import { MatDialogRef } from '@angular/material/dialog';
 import {Cliente} from '../../models/cliente';
 import {AgregarAlCarritoComponent} from '../agregar-al-carrito/agregar-al-carrito.component';
 

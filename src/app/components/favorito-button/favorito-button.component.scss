@@ -1,15 +1,15 @@
-@import "../../../_colors.scss";
+@use "../../../colors" as colors;
 
 .sic-com-favorito-button {
   padding: 0;
-  color: $color-BDBDBD;
+  color: colors.$color-BDBDBD;
   &:hover {
-    color: $color-828282
+    color: colors.$color-828282
   }
   &.on {
-    color: $color-FFDA41;
+    color: colors.$color-FFDA41;
     &:hover {
-      color: $color-F0C71B;
+      color: colors.$color-F0C71B;
     }
   }
 }

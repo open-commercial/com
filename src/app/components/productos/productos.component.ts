@@ -7,7 +7,7 @@ import {AuthService} from '../../services/auth.service';
 import {Producto} from '../../models/producto';
 import {Cliente} from '../../models/cliente';
 import {ClientesService} from '../../services/clientes.service';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import {AgregarAlCarritoDialogComponent} from '../agregar-al-carrito-dialog/agregar-al-carrito-dialog.component';
 import { BusquedaProductoCriteria } from '../../models/criterias/BusquedaProductoCriteria';
 import { ScrollPositionService } from '../../services/scroll-position.service';

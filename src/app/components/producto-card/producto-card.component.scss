@@ -1,4 +1,4 @@
-@import "../../../_colors.scss";
+@use '../../../colors' as colors;
 
 $mat-card-padding: 0.7rem;
 :host {
@@ -42,7 +42,7 @@ $mat-card-padding: 0.7rem;
       z-index: 2;
       .off {
         display: inline-block;
-        background: $color-30CC81;
+        background: colors.$color-30CC81;
         color: white;
         padding: 0.6em 1em 0.4em 1em;
         border-radius: 1.5rem;
@@ -51,9 +51,9 @@ $mat-card-padding: 0.7rem;
       }
       .add-to-cart {
         padding: 0;
-        color: $color-BDBDBD;
+        color: colors.$color-BDBDBD;
         &:hover {
-          color: $color-828282;
+          color: colors.$color-828282;
         }
       }
     }
@@ -75,11 +75,12 @@ $mat-card-padding: 0.7rem;
       min-height: 80px;
       margin: 0;
       font-weight: 500;
-      color: $color-536070;
+      color: colors.$color-536070;
       p {
         margin: 0 0 0.7rem 0;
         padding: 0.3rem 0 0 0;
         -webkit-line-clamp: 3;
+        line-clamp: 3;
         -webkit-box-orient: vertical;
         overflow:hidden;
         text-overflow: ellipsis;
@@ -105,7 +106,7 @@ $mat-card-padding: 0.7rem;
       }
       .bonificado {
         font-weight: 500;
-        color: $color-30CC81;
+        color: colors.$color-30CC81;
       }
     }
   }

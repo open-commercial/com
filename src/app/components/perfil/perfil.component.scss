@@ -1,4 +1,4 @@
-@import "../../../_colors.scss";
+@use '../../../colors' as colors;
 
 .sic-com-perfil {
   .mat-expansion-panel-header {
@@ -6,6 +6,10 @@
     font-weight: 500;
   }
   .mat-expansion-panel-header-title {
-    color: $color-536070;
+    color: colors.$color-536070;
+  }
+  
+  .button-sesion {
+    height: 52px;
   }
 }

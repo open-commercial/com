@@ -40,13 +40,15 @@
     </div>
     <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.5rem">
       <mat-form-field fxFlex>
-        <input matInput placeholder="Calle" formControlName="calle">
+        <mat-label>Calle</mat-label>
+        <input matInput formControlName="calle">
         <mat-error *ngIf="ubicacionForm.get('calle').hasError('required')">
           Requerido
         </mat-error>
       </mat-form-field>
       <mat-form-field fxFlex>
-        <input type="number" matInput placeholder="Número" formControlName="numero">
+        <mat-label>Número</mat-label>
+        <input type="number" matInput formControlName="numero">
         <mat-error *ngIf="ubicacionForm.get('numero').hasError('required')">
           Requerido
         </mat-error>
@@ -54,10 +56,12 @@
     </div>
     <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.5rem">
       <mat-form-field fxFlex>
-        <input matInput placeholder="Piso" formControlName="piso">
+        <mat-label>Piso</mat-label>
+        <input matInput formControlName="piso">
       </mat-form-field>
       <mat-form-field fxFlex>
-        <input matInput placeholder="Dpto." formControlName="departamento">
+        <mat-label>Dpto.</mat-label>
+        <input matInput formControlName="departamento">
       </mat-form-field>
     </div>
     <mat-form-field class="example-full-width">

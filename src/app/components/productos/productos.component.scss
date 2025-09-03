@@ -1,4 +1,4 @@
-@import "../../../_colors.scss";
+@use '../../../colors' as colors;
 
 .sic-com-productos {
   height: 100%;
@@ -10,11 +10,13 @@
   .sic-com-sin-resultados {
     span {
       height: 100px;
-      color: $color-primary;
+      color: colors.$color-primary;
       font-size: 30px;
 
-      mat-icon {
+      .mat-mdc-icon {
         font-size: 30px;
+        color: colors.$color-primary;
+        vertical-align: middle;
       }
     }
   }
@@ -61,12 +63,12 @@
   .sic-com-descripcion {
     white-space: normal;
     font-size: 15px;
-    color: $color-primary;
+    color: colors.$color-primary;
   }
 
   .sic-com-mas-resultados {
     height: 90px;
-    color: $color-primary;
+    color: colors.$color-primary;
   }
 
   .sic-com-precio-lista {

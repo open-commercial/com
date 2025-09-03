@@ -1,4 +1,4 @@
-@import "../../../_colors.scss";
+@use '../../../colors' as colors;
 .sic-com-rubros-main-menu {
   h2 {
     margin-top: 0;
@@ -9,7 +9,7 @@
     text-align: left;
     font-weight: normal;
     cursor: pointer;
-    color: $color-536070;
+    color: colors.$color-536070;
   }
 
   .name {

@@ -4,7 +4,7 @@ import {PagosService} from '../../services/pagos.service';
 import {NuevaOrdenDePago} from '../../models/nueva-orden-de-pago';
 import {AvisoService} from '../../services/aviso.service';
 import {MercadoPagoDialogComponent} from '../mercado-pago-dialog/mercado-pago-dialog.component';
-import {MatLegacyDialog as MatDialog} from '@angular/material/legacy-dialog';
+import {MatDialog} from '@angular/material/dialog';
 import {CarritoCompraService} from '../../services/carrito-compra.service';
 import {Movimiento} from '../../models/movimiento';
 import {ProductoFaltante} from '../../models/producto-faltante';
