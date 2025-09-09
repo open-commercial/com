@@ -54,7 +54,7 @@ export class AgregarAlCarritoComponent implements OnInit, AfterViewInit {
 
   constructor(private carritoCompraService: CarritoCompraService,
               private avisoService: AvisoService,
-              private fb: UntypedFormBuilder,
+              private readonly fb: UntypedFormBuilder,
               public helper: HelperService) { }
 
   ngOnInit() {

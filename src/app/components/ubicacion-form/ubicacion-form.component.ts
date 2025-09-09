@@ -25,7 +25,7 @@ export class UbicacionFormComponent implements OnInit {
   isProvinciasLoading = false;
   isLocalidadesLoading = false;
 
-  constructor(private fb: UntypedFormBuilder,
+  constructor(private readonly fb: UntypedFormBuilder,
               private ubicacionesService: UbicacionesService,
               private avisoService: AvisoService) {}
 

@@ -20,7 +20,7 @@ export class PasswordRecoveryComponent implements OnInit {
               private route: ActivatedRoute,
               private authService: AuthService,
               private avisoService: AvisoService,
-              private fb: UntypedFormBuilder) {
+              private readonly fb: UntypedFormBuilder) {
     this.passwordResetForm = this.fb.group({
       newPassword: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(20)]],
       confirmPassword: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(20)]]

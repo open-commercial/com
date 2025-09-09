@@ -19,7 +19,7 @@ export class UsuarioComponent implements OnInit {
   usuarioForm: UntypedFormGroup;
   usuario: Usuario = null;
 
-  constructor(private fb: UntypedFormBuilder,
+  constructor(private readonly fb: UntypedFormBuilder,
               private usuariosService: UsuariosService,
               private avisoService: AvisoService,
               private authService: AuthService) {

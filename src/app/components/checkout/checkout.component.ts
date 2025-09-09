@@ -101,7 +101,7 @@ export class CheckoutComponent implements OnInit {
               private clientesService: ClientesService,
               private sucursalService: SucursalesService,
               private ubicacionesService: UbicacionesService,
-              private fb: UntypedFormBuilder,
+              private readonly fb: UntypedFormBuilder,
               private router: Router) {
   }
 

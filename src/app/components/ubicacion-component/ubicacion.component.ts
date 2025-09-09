@@ -29,7 +29,7 @@ export class UbicacionComponent implements OnInit, OnChanges {
   isLocalidadesLoading = false;
 
   constructor(private authService: AuthService,
-              private fb: UntypedFormBuilder,
+              private readonly fb: UntypedFormBuilder,
               private avisoService: AvisoService,
               private ubicacionesService: UbicacionesService) {}
 

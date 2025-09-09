@@ -30,7 +30,7 @@ export class RegistracionComponent implements OnInit, OnDestroy {
               private router: Router,
               private registracionService: RegistracionService,
               private avisoService: AvisoService,
-              private fb: UntypedFormBuilder,
+              private readonly fb: UntypedFormBuilder,
               private recaptchaV3Service: ReCaptchaV3Service) {
     this.createForm();
   }

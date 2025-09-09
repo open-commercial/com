@@ -31,7 +31,7 @@ export class ClienteComponent implements OnInit, OnChanges {
   categoriasIVA = CategoriaIVA;
 
   constructor(private authService: AuthService,
-              private fb: UntypedFormBuilder,
+              private readonly fb: UntypedFormBuilder,
               private avisoService: AvisoService,
               private clientesService: ClientesService) {
   }
