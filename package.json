@@ -40,7 +40,6 @@
     "@angular/compiler-cli": "^15.2.10",
     "@angular/language-service": "^15.2.10",
     "@types/googlemaps": "3.39.12",
-    "codelyzer": "^6.0.0",
     "sass": "^1.30.0",
     "ts-node": "~8.5.4",
     "tslint": "~6.1.0",

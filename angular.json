@@ -26,6 +26,10 @@
               "src/theme.scss",
               "src/styles.scss"
             ],
+            "allowedCommonJsDependencies": [
+              "crypto-js",
+              "url"
+            ],
             "scripts": []
           },
           "configurations": {

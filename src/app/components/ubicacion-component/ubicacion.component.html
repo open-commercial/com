@@ -64,8 +64,9 @@
         <input matInput formControlName="departamento">
       </mat-form-field>
     </div>
-    <mat-form-field class="example-full-width">
-      <textarea matInput #descripcion maxlength="256" placeholder="Descripción" formControlName="descripcion"></textarea>
+    <mat-form-field appearance="fill" class="example-full-width">
+      <mat-label>Descripción</mat-label>
+      <textarea matInput #descripcion maxlength="256" formControlName="descripcion"></textarea>
       <mat-hint align="end">{{descripcion.value.length}} / 256</mat-hint>
     </mat-form-field>
     <div fxLayoutGap="0.5rem">

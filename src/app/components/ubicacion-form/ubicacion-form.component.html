@@ -46,7 +46,7 @@
         <input matInput formControlName="departamento">
       </mat-form-field>
     </div>
-    <mat-form-field>
+    <mat-form-field appearance="fill">
       <mat-label>Descripción</mat-label>
       <textarea matInput #descripcion maxlength="256" formControlName="descripcion"></textarea>
       <mat-hint align="end">{{descripcion.value.length}} / 256</mat-hint>
