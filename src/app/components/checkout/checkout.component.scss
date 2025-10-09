@@ -1,4 +1,4 @@
-@import "../../../_colors.scss";
+@use '../../../colors' as colors;
 
 .sic-com-checkout {
   background-color: white;
@@ -42,7 +42,7 @@
   }
 
   .sic-com-mas-resultados {
-    color: $color-primary;
+    color: colors.$color-primary;
     cursor: pointer;
     height: 90px;
     font-size: 14px;
@@ -50,7 +50,7 @@
 
   .cliente-label {
     white-space: normal;
-    color: $color-536070;
+    color: colors.$color-536070;
     font-weight: 500;
   }
 
@@ -59,11 +59,11 @@
   }
 
   .seleccionado {
-    color: $color-primary;
+    color: colors.$color-primary;
   }
 
   .seleccionado .nombre-fantasia {
-    color: $color-primary;
+    color: colors.$color-primary;
   }
 
   .observaciones {
@@ -93,17 +93,17 @@
 
   .boton-pago {
     min-width: 13rem;
-    color: $color-536070;
+    color: colors.$color-536070;
   }
 
   .cantidades {
-    color: $color-828282;
+    color: colors.$color-828282;
     padding: 0 1rem;
     font-size: 1.2rem;
     margin: 1rem 0;
     font-weight: 500;
     .total {
-        color: $color-1E222B;
+        color: colors.$color-1E222B;
     }
   }
 

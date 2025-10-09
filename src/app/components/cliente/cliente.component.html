@@ -3,7 +3,8 @@
     <form fxLayout="column" [formGroup]="clienteForm" (ngSubmit)="submit()" *ngIf="!cliente || (cliente && inEdition)" fxLayoutGap="0.7rem">
       <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.7rem">
         <mat-form-field fxFlex>
-          <input matInput type="number" placeholder="CUIT o DNI" formControlName="idFiscal">
+          <mat-label>CUIT o DNI</mat-label>
+          <input matInput type="number" formControlName="idFiscal">
           <mat-error *ngIf="clienteForm.get('idFiscal').hasError('pattern')">
             Solo números
           </mat-error>
@@ -22,7 +23,8 @@
       </div>
       <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.7rem">
         <mat-form-field fxFlex>
-          <input matInput placeholder="Nombre Fiscal" formControlName="nombreFiscal" required>
+          <mat-label>Nombre Fiscal</mat-label>
+          <input matInput formControlName="nombreFiscal" required>
           <mat-error *ngIf="clienteForm.get('nombreFiscal').hasError('required')">
             Requerido
           </mat-error>
@@ -34,13 +36,15 @@
       </div>
       <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.7rem">
         <mat-form-field fxFlex>
-          <input matInput placeholder="Teléfono" formControlName="telefono" required>
+          <mat-label>Teléfono</mat-label>
+          <input matInput formControlName="telefono" required>
           <mat-error *ngIf="clienteForm.get('telefono').hasError('required')">
             Requerido
           </mat-error>
         </mat-form-field>
         <mat-form-field fxFlex>
-          <input matInput placeholder="Email" formControlName="email">
+          <mat-label>Email</mat-label>
+          <input matInput formControlName="email" required>
           <mat-error *ngIf="clienteForm.get('email').hasError('email')">
             Email inválido
           </mat-error>

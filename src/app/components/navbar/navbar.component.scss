@@ -1,8 +1,8 @@
-@import "../../../_colors.scss";
+@use '../../../colors' as colors;
 
 .sic-com-navbar {
   mat-toolbar {
-    background: $color-FFDA41;
+    background: colors.$color-FFDA41;
     padding: 0 .1rem;
     &.desktop {
       height: 90px;
@@ -11,8 +11,6 @@
 
   #buscador-form {
     //border: 1.5px solid $color-primary;
-    -webkit-border-radius: 7rem;
-    -moz-border-radius: 7rem;
     border-radius: 7rem;
     background: white;
     padding: 0 0.3rem 0 0.7rem;
@@ -30,13 +28,15 @@
       &:focus {
         outline: none;
       }
+      &::placeholder {
+        width: 100%;
+      }
     }
-    &::placeholder {
-      width: 100%;
-    }
-    #lupa-button.mat-icon-button {
+    #lupa-button.mat-mdc-icon-button {
       //width: 30px;
-      color: $color-BDBDBD;
+      color: colors.$color-BDBDBD;
+      background-color: transparent;
+      box-shadow: none;
     }
   }
 
@@ -60,17 +60,20 @@
   }
 
   .contador {
-    border-radius: 200px;
-    -moz-border-radius: 200px;
-    -webkit-border-radius: 200px;
+    border-radius: 50%;
+    min-width: 10px;
+    min-height: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     border: 1px solid #fff;
     position: absolute;
     background-color: white;
     top: 5px;
     right: 2px;
     padding: 0 3px;
-    font-size: 0.7em;
+    font-size: 0.7rem;
     font-weight: bold;
-    line-height: 12px;
+    line-height: 1rem
   }
 }

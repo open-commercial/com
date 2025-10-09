@@ -2,7 +2,8 @@
   <form fxLayout="column" [formGroup]="usuarioForm" (ngSubmit)="submit()" *ngIf="!isLoading && inEdition" fxLayoutGap="0.7rem">
     <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.7rem">
       <mat-form-field fxFlex="50">
-        <input matInput placeholder="Usuario" formControlName="username" oninput="this.value = this.value.toLowerCase()">
+        <mat-label>Usuario</mat-label>
+        <input matInput formControlName="username" oninput="this.value = this.value.toLowerCase()">
         <mat-error *ngIf="usuarioForm.get('username').hasError('required')">
           Requerido
         </mat-error>
@@ -14,7 +15,8 @@
         </mat-error>
       </mat-form-field>
       <mat-form-field fxFlex="50">
-        <input matInput placeholder="Email" type="email" formControlName="email">
+        <mat-label>Email</mat-label>
+        <input matInput type="email" formControlName="email">
         <mat-error *ngIf="usuarioForm.get('email').hasError('email') && !usuarioForm.get('email').hasError('required')">
           Por favor, ingrese un email válido
         </mat-error>
@@ -25,7 +27,8 @@
     </div>
     <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.7rem">
       <mat-form-field fxFlex="50">
-        <input matInput placeholder="Nombre" formControlName="nombre">
+        <mat-label>Nombre</mat-label>
+        <input matInput formControlName="nombre">
         <mat-error *ngIf="usuarioForm.get('nombre').hasError('required')">
           Requerido
         </mat-error>
@@ -37,7 +40,8 @@
         </mat-error>
       </mat-form-field>
       <mat-form-field fxFlex="50">
-        <input matInput placeholder="Apellido" formControlName="apellido">
+        <mat-label>Apellido</mat-label>
+        <input matInput formControlName="apellido">
         <mat-error *ngIf="usuarioForm.get('apellido').hasError('required')">
           Requerido
         </mat-error>
@@ -51,7 +55,8 @@
     </div>
     <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0.7rem">
       <mat-form-field fxFlex="50">
-        <input matInput placeholder="Contraseña" type="password" formControlName="password">
+        <mat-label>Contraseña</mat-label>
+        <input matInput type="password" formControlName="password">
         <mat-hint>Dejar en blanco para mantener la actual</mat-hint>
         <mat-error *ngIf="usuarioForm.get('password').hasError('minlength')">
           Mínimo {{ usuarioForm.get('password').getError('minlength').requiredLength }} caracteres.
@@ -64,7 +69,7 @@
     <br>
     <div fxLayoutGap="0.7rem" *ngIf="inEdition">
       <button class="small bg-color-FFDA41" mat-flat-button type="submit">Guardar</button>
-      <button class="small" mat-flat-button type="button" (click)="toggleEdit()">Cancelar</button>
+      <button class="small bg-color-E0E0E0" mat-flat-button type="button" (click)="toggleEdit()">Cancelar</button>
     </div>
   </form>
   <div *ngIf="!isLoading && usuario && !inEdition" class="info">

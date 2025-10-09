@@ -1,4 +1,4 @@
-@import "../../../_colors.scss";
+@use '../../../colors' as colors;
 
 .sic-com-container {
   .navbar-container {
@@ -7,7 +7,7 @@
     left: 0;
     right: 0;
     z-index: 3;
-    background: $color-FFDA41;
+    background: colors.$color-FFDA41;
   }
   .sic-com-content {
     min-height: 100%;

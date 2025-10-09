@@ -1,9 +1,9 @@
-@import "../../../_colors.scss";
+@use '../../../colors' as colors;
 
 .sic-com-cuenta-corriente {
   font-size: 1.1rem;
   font-weight: 500;
-  color: $color-536070;
+  color: colors.$color-536070;
 
   .saldo {
     margin: 1rem 0;
@@ -11,10 +11,10 @@
 
   .monto {
     white-space: nowrap;
-    color: $color-30CC81;
+    color: colors.$color-30CC81;
     font-weight: bold;
     &.negativo {
-      color: $color-EB5757;
+      color: colors.$color-EB5757;
     }
   }
 
@@ -26,6 +26,9 @@
     }
     .renglon-row-content {
       padding: .7rem 0;
+      .pedido-column{
+        color: colors.$color-536070;
+      }
       .pedido-column-content {
         text-align: center;
         font-weight: 500;
@@ -37,22 +40,22 @@
   .mas-resultados {
     cursor: pointer;
     height: 60px;
-    color: $color-primary;
+    color: colors.$color-primary;
   }
 
   .sic-com-sin-cliente {
     span {
       height: 100px;
-      color: $color-primary;
+      color: colors.$color-primary;
       font-size: 18px;
     }
   }
   .error {
-    color: $color-EB5757;
+    color: colors.$color-EB5757;
     padding: 0.7rem 0;
   }
 
-  .mat-list-base .mat-list-item {
-    color: inherit;
+  .mat-mdc-list-item {
+    color: colors.$color-536070 !important;
   }
 }

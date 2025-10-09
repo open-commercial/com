@@ -1,5 +1,5 @@
 import {Component, Input, OnChanges, SimpleChange, OnInit, EventEmitter, Output} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
 import {AuthService} from '../../services/auth.service';
 import {Cliente} from '../../models/cliente';
 import {ClientesService} from '../../services/clientes.service';
@@ -20,7 +20,7 @@ export class ClienteComponent implements OnInit, OnChanges {
   @Output() modeStatusChanged = new EventEmitter<boolean>(true);
 
   inEdition = false;
-  clienteForm: FormGroup;
+  clienteForm: UntypedFormGroup;
   cliente: Cliente = null;
   isLoading = false;
 
@@ -31,7 +31,7 @@ export class ClienteComponent implements OnInit, OnChanges {
   categoriasIVA = CategoriaIVA;
 
   constructor(private authService: AuthService,
-              private fb: FormBuilder,
+              private readonly fb: UntypedFormBuilder,
               private avisoService: AvisoService,
               private clientesService: ClientesService) {
   }

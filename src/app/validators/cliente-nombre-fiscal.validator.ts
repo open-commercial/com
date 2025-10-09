@@ -1,6 +1,6 @@
-import {FormGroup, ValidationErrors, ValidatorFn} from '@angular/forms';
+import {UntypedFormGroup, ValidationErrors, ValidatorFn} from '@angular/forms';
 
-export const nombreFiscalValidator: ValidatorFn = (control: FormGroup): ValidationErrors | null => {
+export const nombreFiscalValidator: ValidatorFn = (control: UntypedFormGroup): ValidationErrors | null => {
   const categoriaIVA = control.get('categoriaIVA');
   const nombreFiscal = control.get('nombreFiscal');
 

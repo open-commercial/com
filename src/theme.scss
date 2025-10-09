@@ -1,7 +1,7 @@
-@import '~@angular/material/theming';
-@import 'colors';
+@use '@angular/material' as mat;
+@use './colors' as colors;
 
-@include mat-core();
+@include mat.core();
+@include mat.all-component-themes(colors.$app-theme);
 
-@include angular-material-theme($app-theme);
 

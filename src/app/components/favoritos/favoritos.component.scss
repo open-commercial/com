@@ -1,4 +1,4 @@
-@import "../../../_colors.scss";
+@use '../../../colors' as colors;
 
 .sic-com-favoritos {
   .mensaje {
@@ -42,12 +42,12 @@
     .oferta-label {
       font-weight: bold;
       padding: .65em 1em .5em 1em;
-      background: $color-30CC81;
+      background: colors.$color-30CC81;
       color: white;
       border-radius: 1.2em;
     }
     .oferta-descripcion {
-      color: $color-30CC81;
+      color: colors.$color-30CC81;
     }
   }
 
@@ -56,6 +56,7 @@
     .producto-descripcion {
       font-weight: 500;
       -webkit-line-clamp: 3;
+      line-clamp: 3;
       -webkit-box-orient: vertical;
       overflow:hidden;
       text-overflow: ellipsis;
@@ -65,7 +66,7 @@
 
   .precios {
     font-weight: 500;
-    color: $color-1E222B;
+    color: colors.$color-1E222B;
   }
 
   &.desktop {

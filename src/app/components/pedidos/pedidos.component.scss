@@ -1,9 +1,9 @@
-@import "../../../_colors.scss";
+@use '../../../colors' as colors;
 
 .sic-com-pedidos {
   font-size: 1.1rem;
   font-weight: 500;
-  color: $color-536070;
+  color: colors.$color-536070;
 
   .pedido-row {
     padding: .65rem 0;
@@ -25,7 +25,7 @@
   .sic-com-sin-cliente {
     span {
       height: 100px;
-      color: $color-primary;
+      color: colors.$color-primary;
       font-size: 18px;
     }
   }
@@ -35,19 +35,19 @@
   }
 
   .abierto {
-    color: $color-536070;
+    color: colors.$color-536070;
   }
 
   .cancelado {
-    color: $color-EB5757;
+    color: colors.$color-EB5757;
   }
   .cerrado {
-    color: $color-30CC81;
+    color: colors.$color-30CC81;
   }
 
   .mas-resultados {
     cursor: pointer;
     height: 60px;
-    color: $color-primary;
+    color: colors.$color-primary;
   }
 }

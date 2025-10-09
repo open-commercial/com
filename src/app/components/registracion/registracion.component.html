@@ -9,7 +9,8 @@
     <form [formGroup]="registracionForm" (ngSubmit)="registrar()" fxLayout="column">
       <div fxLayout="column" fxLayoutGap=".5rem">
         <mat-form-field fxFlex>
-          <input matInput placeholder="Nombre" formControlName="nombre" required>
+          <mat-label>Nombre</mat-label>
+          <input matInput formControlName="nombre" required>
           <mat-error *ngIf="registracionForm.get('nombre').hasError('required')">
             Requerido
           </mat-error>
@@ -21,7 +22,8 @@
           </mat-error>
         </mat-form-field>
         <mat-form-field fxFlex>
-          <input matInput placeholder="Apellido" formControlName="apellido" required>
+          <mat-label>Apellido</mat-label>
+          <input matInput formControlName="apellido" required>
           <mat-error *ngIf="registracionForm.get('apellido').hasError('required')">
             Requerido
           </mat-error>
@@ -33,7 +35,8 @@
           </mat-error>
         </mat-form-field>
         <mat-form-field fxFlex>
-          <input matInput placeholder="Teléfono" type="tel" formControlName="telefono" required>
+          <mat-label>Teléfono</mat-label>
+          <input matInput type="tel" formControlName="telefono" required>
           <mat-error *ngIf="registracionForm.get('telefono').hasError('required')">
             Requerido
           </mat-error>
@@ -42,7 +45,8 @@
           </mat-error>
         </mat-form-field>
         <mat-form-field fxFlex>
-          <input matInput placeholder="Email" type="email" formControlName="email" required>
+          <mat-label>Email</mat-label>
+          <input matInput type="email" formControlName="email" required>
           <mat-error *ngIf="registracionForm.get('email').hasError('email') && !registracionForm.get('email').hasError('required')">
             Ingrese un email válido
           </mat-error>
@@ -61,13 +65,15 @@
           </mat-error>
         </mat-form-field>
         <mat-form-field fxFlex *ngIf="registracionForm.get('categoriaIVA').value !== 'CONSUMIDOR_FINAL'">
-          <input matInput placeholder="Nombre Fiscal" formControlName="nombreFiscal" required>
+          <mat-label>Nombre Fiscal</mat-label>
+          <input matInput formControlName="nombreFiscal" required>
           <mat-error *ngIf="registracionForm.errors?.requiredNombreFiscal">
             Requerido
           </mat-error>
         </mat-form-field>
         <mat-form-field fxFlex>
-          <input matInput placeholder="Contraseña" type="password" formControlName="password" required>
+          <mat-label>Contraseña</mat-label>
+          <input matInput type="password" formControlName="password" required>
           <mat-error *ngIf="registracionForm.get('password').hasError('required')">
             Requerido
           </mat-error>

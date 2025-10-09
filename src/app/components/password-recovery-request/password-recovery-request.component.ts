@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { AvisoService } from '../../services/aviso.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'sic-com-password-recovery-request',
@@ -11,13 +11,13 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class PasswordRecoveryRequestComponent implements OnInit {
 
-  requestForm: FormGroup;
+  requestForm: UntypedFormGroup;
   loading = false;
 
   constructor(private readonly router: Router,
               private readonly authService: AuthService,
               private readonly avisoService: AvisoService,
-              private readonly fb: FormBuilder) {
+              private readonly fb: UntypedFormBuilder) {
   }
 
   ngOnInit() {

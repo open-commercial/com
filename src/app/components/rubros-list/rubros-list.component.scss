@@ -1,4 +1,4 @@
-@import "../../../_colors.scss";
+@use '../../../colors' as colors;
 .sic-com-rubros-list {
   padding: .5rem 0 0 0;
   margin: 0;
@@ -11,15 +11,15 @@
         display: block;
         padding: .5rem 1rem;
       }
-      color: $color-536070;
+      color: colors.$color-536070;
       &.selected {
-        color: $color-1E222B;
+        color: colors.$color-1E222B;
         font-weight: bold;
       }
     }
     &.li-hover {
       li:hover {
-        background: $color-E0E0E0;
+        background: colors.$color-E0E0E0;
       }
     }
   }

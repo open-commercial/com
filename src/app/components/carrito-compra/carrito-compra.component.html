@@ -104,7 +104,7 @@
     </button>
     <span class="page">{{ this.pagina + 1 }}/{{ totalPaginas }}</span>
     <button mat-button [disabled]="pagina + 1 >= totalPaginas" (click)="paginaSiguiente()">
-      <span>Siguiente</span><mat-icon aria-label="Página siguiente">navigate_next</mat-icon>
+      <span>Siguiente</span><mat-icon aria-label="Página siguiente" iconPositionEnd>navigate_next</mat-icon>
     </button>
   </div>
   <div class="cantidades" fxLayout="column" fxLayout.gt-xs="row"
@@ -126,7 +126,7 @@
         <span class="label">Total</span><span class="cantidad"
           [class.cumple-compra-minima]="total >= cliente.montoCompraMinima">$ {{total | number:'1.0-2':'es-AR' }}</span>
       </div>
-      <button class="bg-color-FFDA41" mat-flat-button (click)="goToCheckout()"
+      <button mat-flat-button class="bg-color-FFDA41" (click)="goToCheckout()"
         [disabled]="!itemsCarritoCompra.length || disabledButtons() || total < cliente.montoCompraMinima">
         Tramitar Pedido
       </button>

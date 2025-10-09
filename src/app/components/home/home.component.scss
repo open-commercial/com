@@ -1,4 +1,4 @@
-@import "../../../_colors.scss";
+@use '../../../colors' as colors;
 .sic-com-home {
   &.tablet {
     // padding-top: 2rem; // antes del main-banner
@@ -26,11 +26,11 @@
   }
 
   .bg-gray {
-    background-color: $color-E0E0E0;
+    background-color: colors.$color-E0E0E0;
   }
 
   .label {
-    background: $color-primary;
+    background: colors.$color-primary;
     margin-bottom: 0;
     margin-top: 0;
     padding: .2rem .5rem;

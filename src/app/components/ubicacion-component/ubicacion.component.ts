@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {AuthService} from '../../services/auth.service';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
 import {AvisoService} from '../../services/aviso.service';
 import {UbicacionesService} from '../../services/ubicaciones.service';
 import {finalize} from 'rxjs/operators';
@@ -19,7 +19,7 @@ export class UbicacionComponent implements OnInit, OnChanges {
   @Output() updated = new EventEmitter<Ubicacion>(true);
   @Output() editionStateChange = new EventEmitter<boolean>(true);
 
-  ubicacionForm: FormGroup;
+  ubicacionForm: UntypedFormGroup;
 
   provincias: Provincia[] = [];
 
@@ -29,7 +29,7 @@ export class UbicacionComponent implements OnInit, OnChanges {
   isLocalidadesLoading = false;
 
   constructor(private authService: AuthService,
-              private fb: FormBuilder,
+              private readonly fb: UntypedFormBuilder,
               private avisoService: AvisoService,
               private ubicacionesService: UbicacionesService) {}
 
