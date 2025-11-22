@@ -42,25 +42,40 @@ jobs:
         id: previoustag
         run: |
           # Try to get the last git tag
-          PREV_TAG=$(git describe --tags --abbrev=0 2>/dev/null || true)
-
-          # Fallback if no tags exist
-          if [ -z "$PREV_TAG" ]; then
+          PREV=$(git describe --tags --abbrev=0 2>/dev/null || true)
+          if [ -z "$PREV" ]; then
             echo "No previous tag found. Using first commit as fallback."
-            PREV_TAG=$(git rev-list --max-parents=0 HEAD)
+            PREV=$(git rev-list --max-parents=0 HEAD)
+          fi
+          echo "PREV_TAG=$PREV" >> $GITHUB_ENV
+          echo "Using PREV_TAG=$PREV"
+
+      - name: Check if there are commits between previous tag and HEAD
+        if: ${{ github.ref == 'refs/heads/master' }}
+        id: checkcommits
+        run: |
+          COMMITS=$(git rev-list ${{ env.PREV_TAG }}..HEAD --count)
+          echo "COMMITS=$COMMITS"
+          if [ "$COMMITS" -eq 0 ]; then
+            echo "NO_CHANGES=true" >> $GITHUB_ENV
+          else
+            echo "NO_CHANGES=false" >> $GITHUB_ENV
           fi
 
-          echo "Using PREV_TAG=$PREV_TAG"
-          echo "PREV_TAG=$PREV_TAG" >> $GITHUB_ENV
-
       - name: Generate changelog
-        if: ${{ github.ref == 'refs/heads/master' }}
+        if: ${{ github.ref == 'refs/heads/master' && env.NO_CHANGES == 'false' }}
         id: changelog
         uses: requarks/changelog-action@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           fromTag: ${{ env.PREV_TAG }}
           toTag: HEAD
+
+      - name: Fallback empty changelog
+        if: ${{ github.ref == 'refs/heads/master' && env.NO_CHANGES == 'true' }}
+        id: changelog
+        run: |
+          echo "changes=No changes since previous release." >> $GITHUB_OUTPUT
 
       - name: Get release version
         if: ${{ github.ref == 'refs/heads/master' }}
