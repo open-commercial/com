@@ -4,20 +4,20 @@ on:
     branches:
       - master
   pull_request:
-    types: [ opened, synchronize, reopened ]
+    types: [opened, synchronize, reopened]
 
 jobs:
   build-analyze-deploy:
     name: Build, analyze, dockerize, and publish
     runs-on: ubuntu-latest
 
-    steps:
+    steps:      
       - name: Git checkout
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-
-      - name: Setup Node.js environment
+      
+      - name: Setup Node.js
         uses: actions/setup-node@v3.5.1
         with:
           node-version: 16.13
@@ -26,11 +26,11 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          ENV_NAME: "production"
+          ENV_NAME: production
         run: |
           npm install
           npm run build
-
+      
       - name: SonarCloud Scan
         uses: sonarsource/sonarcloud-github-action@master
         env:
@@ -38,32 +38,31 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
       - name: Get previous tag (with fallback)
-        if: ${{ github.ref == 'refs/heads/master' }}
-        id: previoustag
         run: |
-          # Try to get the last git tag
-          PREV=$(git describe --tags --abbrev=0 2>/dev/null || true)
-          if [ -z "$PREV" ]; then
-            echo "No previous tag found. Using first commit as fallback."
-            PREV=$(git rev-list --max-parents=0 HEAD)
+          PREV_TAG=$(git describe --tags --abbrev=0 2>/dev/null || true)
+          if [ -z "$PREV_TAG" ]; then
+            echo "No previous tag found. Using first commit."
+            PREV_TAG=$(git rev-list --max-parents=0 HEAD)
           fi
-          echo "PREV_TAG=$PREV" >> $GITHUB_ENV
-          echo "Using PREV_TAG=$PREV"
+          echo "PREV_TAG=$PREV_TAG" >> $GITHUB_ENV
+          echo "Previous tag: $PREV_TAG"
 
-      - name: Check if there are commits between previous tag and HEAD
-        if: ${{ github.ref == 'refs/heads/master' }}
-        id: checkcommits
+      - name: Get release version
         run: |
-          COMMITS=$(git rev-list ${{ env.PREV_TAG }}..HEAD --count)
-          echo "COMMITS=$COMMITS"
-          if [ "$COMMITS" -eq 0 ]; then
+          echo "RELEASE_VERSION=$(npm pkg get version | sed 's/"//g')" >> $GITHUB_ENV
+          echo "Release version: $RELEASE_VERSION"
+
+      - name: Check for new commits
+        run: |
+          COUNT=$(git rev-list --count ${{ env.PREV_TAG }}..HEAD)
+          if [ "$COUNT" -eq 0 ]; then
             echo "NO_CHANGES=true" >> $GITHUB_ENV
           else
             echo "NO_CHANGES=false" >> $GITHUB_ENV
           fi
 
       - name: Generate changelog
-        if: ${{ github.ref == 'refs/heads/master' && env.NO_CHANGES == 'false' }}
+        if: ${{ env.NO_CHANGES == 'false' }}
         id: changelog
         uses: requarks/changelog-action@v1
         with:
@@ -72,18 +71,12 @@ jobs:
           toTag: HEAD
 
       - name: Fallback empty changelog
-        if: ${{ github.ref == 'refs/heads/master' && env.NO_CHANGES == 'true' }}
-        id: changelog
+        if: ${{ env.NO_CHANGES == 'true' }}
+        id: changelog_fallback
         run: |
           echo "changes=No changes since previous release." >> $GITHUB_OUTPUT
 
-      - name: Get release version
-        if: ${{ github.ref == 'refs/heads/master' }}
-        run: |
-          echo "RELEASE_VERSION=$(npm pkg get version | sed 's/"//g')" >> $GITHUB_ENV
-
       - name: Create Release
-        if: ${{ github.ref == 'refs/heads/master' }}
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -94,22 +87,18 @@ jobs:
             ${{ steps.changelog.outputs.changes }}
 
       - name: Set up QEMU
-        if: ${{ github.ref == 'refs/heads/master' }}
         uses: docker/setup-qemu-action@v2
 
       - name: Set up Docker Buildx
-        if: ${{ github.ref == 'refs/heads/master' }}
         uses: docker/setup-buildx-action@v2
 
       - name: Login to DockerHub
-        if: ${{ github.ref == 'refs/heads/master' }}
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Build and push Docker image
-        if: ${{ github.ref == 'refs/heads/master' }}
         uses: docker/build-push-action@v3
         with:
           context: .
