@@ -37,12 +37,30 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
+      - name: Get previous tag (with fallback)
+        if: ${{ github.ref == 'refs/heads/master' }}
+        id: previoustag
+        run: |
+          # Try to get the last git tag
+          PREV_TAG=$(git describe --tags --abbrev=0 2>/dev/null || true)
+
+          # Fallback if no tags exist
+          if [ -z "$PREV_TAG" ]; then
+            echo "No previous tag found. Using first commit as fallback."
+            PREV_TAG=$(git rev-list --max-parents=0 HEAD)
+          fi
+
+          echo "Using PREV_TAG=$PREV_TAG"
+          echo "PREV_TAG=$PREV_TAG" >> $GITHUB_ENV
+
       - name: Generate changelog
         if: ${{ github.ref == 'refs/heads/master' }}
         id: changelog
         uses: requarks/changelog-action@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+          fromTag: ${{ env.PREV_TAG }}
+          toTag: HEAD
 
       - name: Get release version
         if: ${{ github.ref == 'refs/heads/master' }}
