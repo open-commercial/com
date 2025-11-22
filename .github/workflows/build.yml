@@ -30,7 +30,7 @@ jobs:
         run: |
           npm install
           npm run build
-      
+
       - name: SonarCloud Scan
         uses: sonarsource/sonarcloud-github-action@master
         env:
@@ -52,29 +52,21 @@ jobs:
           echo "RELEASE_VERSION=$(npm pkg get version | sed 's/"//g')" >> $GITHUB_ENV
           echo "Release version: $RELEASE_VERSION"
 
-      - name: Check for new commits
-        run: |
-          COUNT=$(git rev-list --count ${{ env.PREV_TAG }}..HEAD)
-          if [ "$COUNT" -eq 0 ]; then
-            echo "NO_CHANGES=true" >> $GITHUB_ENV
-          else
-            echo "NO_CHANGES=false" >> $GITHUB_ENV
-          fi
-
-      - name: Generate changelog
-        if: ${{ env.NO_CHANGES == 'false' }}
+      - name: Generate changelog (or fallback)
+        if: ${{ github.ref == 'refs/heads/master' }}
         id: changelog
-        uses: requarks/changelog-action@v1
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          fromTag: ${{ env.PREV_TAG }}
-          toTag: HEAD
-
-      - name: Fallback empty changelog
-        if: ${{ env.NO_CHANGES == 'true' }}
-        id: changelog_fallback
         run: |
-          echo "changes=No changes since previous release." >> $GITHUB_OUTPUT
+          # Count commits since previous tag
+          COUNT=$(git rev-list ${{ env.PREV_TAG }}..HEAD --count)
+          if [ "$COUNT" -eq 0 ]; then
+            echo "No changes since previous release."
+            echo "changes=No changes since previous release." >> $GITHUB_OUTPUT
+          else
+            # Generate changelog using requarks/changelog-action locally
+            npx changelog-action --from ${{ env.PREV_TAG }} --to HEAD > CHANGELOG.tmp.md
+            cat CHANGELOG.tmp.md
+            echo "changes=$(cat CHANGELOG.tmp.md)" >> $GITHUB_OUTPUT
+          fi
 
       - name: Create Release
         uses: actions/create-release@v1
@@ -83,8 +75,7 @@ jobs:
         with:
           tag_name: ${{ env.RELEASE_VERSION }}
           release_name: ${{ env.RELEASE_VERSION }}
-          body: |
-            ${{ steps.changelog.outputs.changes }}
+          body: ${{ steps.changelog.outputs.changes }}
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
