@@ -58,6 +58,7 @@ jobs:
           else
             npx changelog-action --from ${{ env.PREV_TAG }} --to HEAD > CHANGELOG.tmp.md
             echo "changes=$(cat CHANGELOG.tmp.md)" >> $GITHUB_OUTPUT
+          fi
 
       - name: Create Release
         uses: actions/create-release@v1
