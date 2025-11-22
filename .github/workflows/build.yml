@@ -1,8 +1,7 @@
 name: Open Commercial CI
 on:
   push:
-    branches:
-      - master
+    branches: [ master ]
   pull_request:
     types: [opened, synchronize, reopened]
 
@@ -11,12 +10,12 @@ jobs:
     name: Build, analyze, dockerize, and publish
     runs-on: ubuntu-latest
 
-    steps:      
+    steps:
       - name: Git checkout
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@v3.5.1
         with:
@@ -37,36 +36,28 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
-      - name: Get previous tag (with fallback)
+      - name: Get previous tag
         run: |
           PREV_TAG=$(git describe --tags --abbrev=0 2>/dev/null || true)
           if [ -z "$PREV_TAG" ]; then
-            echo "No previous tag found. Using first commit."
             PREV_TAG=$(git rev-list --max-parents=0 HEAD)
           fi
           echo "PREV_TAG=$PREV_TAG" >> $GITHUB_ENV
-          echo "Previous tag: $PREV_TAG"
 
       - name: Get release version
         run: |
           echo "RELEASE_VERSION=$(npm pkg get version | sed 's/"//g')" >> $GITHUB_ENV
-          echo "Release version: $RELEASE_VERSION"
 
       - name: Generate changelog (or fallback)
         if: ${{ github.ref == 'refs/heads/master' }}
         id: changelog
         run: |
-          # Count commits since previous tag
           COUNT=$(git rev-list ${{ env.PREV_TAG }}..HEAD --count)
           if [ "$COUNT" -eq 0 ]; then
-            echo "No changes since previous release."
             echo "changes=No changes since previous release." >> $GITHUB_OUTPUT
           else
-            # Generate changelog using requarks/changelog-action locally
             npx changelog-action --from ${{ env.PREV_TAG }} --to HEAD > CHANGELOG.tmp.md
-            cat CHANGELOG.tmp.md
             echo "changes=$(cat CHANGELOG.tmp.md)" >> $GITHUB_OUTPUT
-          fi
 
       - name: Create Release
         uses: actions/create-release@v1
