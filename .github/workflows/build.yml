@@ -1,87 +1,82 @@
 name: Open Commercial CI
+
 on:
   push:
-    branches: [ master ]
+    branches:
+      - master
   pull_request:
-    types: [opened, synchronize, reopened]
-
+    types: [ opened, synchronize, reopened ]
+    
 jobs:
   build-analyze-deploy:
     name: Build, analyze, dockerize, and publish
     runs-on: ubuntu-latest
-
     steps:
       - name: Git checkout
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-
-      - name: Setup Node.js
+          
+      - name: Setup Node.js environment
         uses: actions/setup-node@v3.5.1
         with:
           node-version: 16.13
-
+          
       - name: Build
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          ENV_NAME: production
+          ENV_NAME: "production"
         run: |
           npm install
           npm run build
-
+          
       - name: SonarCloud Scan
         uses: sonarsource/sonarcloud-github-action@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-
-      - name: Get previous tag
-        run: |
-          PREV_TAG=$(git describe --tags --abbrev=0 2>/dev/null || true)
-          if [ -z "$PREV_TAG" ]; then
-            PREV_TAG=$(git rev-list --max-parents=0 HEAD)
-          fi
-          echo "PREV_TAG=$PREV_TAG" >> $GITHUB_ENV
-
+          
+      - name: Generate changelog
+        if: ${{ github.ref == 'refs/heads/master' }}
+        uses: Bullrich/generate-release-changelog@master
+        id: changelog
+        env:
+          REPO: ${{ github.repository }}
+          
       - name: Get release version
+        if: ${{ github.ref == 'refs/heads/master' }}
         run: |
           echo "RELEASE_VERSION=$(npm pkg get version | sed 's/"//g')" >> $GITHUB_ENV
-
-      - name: Generate changelog (or fallback)
-        if: ${{ github.ref == 'refs/heads/master' }}
-        id: changelog
-        run: |
-          COUNT=$(git rev-list ${{ env.PREV_TAG }}..HEAD --count)
-          if [ "$COUNT" -eq 0 ]; then
-            echo "changes=No changes since previous release." >> $GITHUB_OUTPUT
-          else
-            npx changelog-action --from ${{ env.PREV_TAG }} --to HEAD > CHANGELOG.tmp.md
-            echo "changes=$(cat CHANGELOG.tmp.md)" >> $GITHUB_OUTPUT
-          fi
-
+          
       - name: Create Release
+        if: ${{ github.ref == 'refs/heads/master' }}
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ env.RELEASE_VERSION }}
           release_name: ${{ env.RELEASE_VERSION }}
-          body: ${{ steps.changelog.outputs.changes }}
-
+          body: |
+            ${{ steps.changelog.outputs.changelog }}
+            
       - name: Set up QEMU
+        if: ${{ github.ref == 'refs/heads/master' }}
         uses: docker/setup-qemu-action@v2
-
+        
       - name: Set up Docker Buildx
+        if: ${{ github.ref == 'refs/heads/master' }}
         uses: docker/setup-buildx-action@v2
-
+        
       - name: Login to DockerHub
+        if: ${{ github.ref == 'refs/heads/master' }}
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-
+          
       - name: Build and push Docker image
+        if: ${{ github.ref == 'refs/heads/master' }}
         uses: docker/build-push-action@v3
         with:
           context: .
