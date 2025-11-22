@@ -11,7 +11,7 @@ jobs:
     name: Build, analyze, dockerize, and publish
     runs-on: ubuntu-latest
 
-    steps:      
+    steps:
       - name: Git checkout
         uses: actions/checkout@v2
         with:
