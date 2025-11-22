@@ -37,12 +37,20 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           
-      - name: Generate changelog
+      #- name: Generate changelog
+      #  if: ${{ github.ref == 'refs/heads/master' }}
+      #  uses: Bullrich/generate-release-changelog@master
+      #  id: changelog
+      #  env:
+      #    REPO: ${{ github.repository }}
+
+      - name: Update CHANGELOG
         if: ${{ github.ref == 'refs/heads/master' }}
-        uses: Bullrich/generate-release-changelog@master
         id: changelog
-        env:
-          REPO: ${{ github.repository }}
+        uses: requarks/changelog-action@v1
+        with:
+          token: ${{ github.token }}
+          tag: ${{ github.ref_name }}
           
       - name: Get release version
         if: ${{ github.ref == 'refs/heads/master' }}
