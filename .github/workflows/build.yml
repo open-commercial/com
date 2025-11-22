@@ -37,7 +37,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
-      # ✅ NEW — Non-committing changelog generator
       - name: Generate changelog
         if: ${{ github.ref == 'refs/heads/master' }}
         id: changelog
