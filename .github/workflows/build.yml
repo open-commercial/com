@@ -37,28 +37,11 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           
-      #- name: Generate changelog
-      #  if: ${{ github.ref == 'refs/heads/master' }}
-      #  uses: Bullrich/generate-release-changelog@master
-      #  id: changelog
-      #  env:
-      #    REPO: ${{ github.repository }}
-          
       - name: Get release version
         if: ${{ github.ref == 'refs/heads/master' }}
         run: |
           echo "RELEASE_VERSION=$(npm pkg get version | sed 's/"//g')" >> $GITHUB_ENV
-          
-      #- name: Create Release
-      #  if: ${{ github.ref == 'refs/heads/master' }}
-      #  uses: actions/create-release@v1
-      #  env:
-      #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #  with:
-      #    tag_name: ${{ env.RELEASE_VERSION }}
-      #    release_name: ${{ env.RELEASE_VERSION }}
-      #    body: |
-      #      ${{ steps.changelog.outputs.changelog }}
+          echo "New release version: $RELEASE_VERSION"
 
       - name: Create tag
         if: ${{ github.ref == 'refs/heads/master' }}
@@ -77,8 +60,7 @@ jobs:
             PREV_TAG=$(git rev-list --max-parents=0 HEAD)
           fi
           echo "Previous tag: $PREV_TAG"
-          echo "Current tag: ${RELEASE_VERSION}"
-          echo "Changes in ${RELEASE_VERSION}" > CHANGELOG.md
+          echo "Current tag: ${RELEASE_VERSION}"          
           echo "" >> CHANGELOG.md
           git log ${PREV_TAG}..HEAD \
             --pretty=format:"- [%h](https://github.com/${{ github.repository }}/commit/%h) %s" \
