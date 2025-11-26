@@ -41,7 +41,7 @@ jobs:
         if: ${{ github.ref == 'refs/heads/master' }}
         run: |
           echo "RELEASE_VERSION=$(npm pkg get version | sed 's/"//g')" >> $GITHUB_ENV
-          echo "New release version: $RELEASE_VERSION"
+          echo "New release version: ${RELEASE_VERSION}"
 
       - name: Create tag
         if: ${{ github.ref == 'refs/heads/master' }}
