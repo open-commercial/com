@@ -43,30 +43,58 @@ jobs:
       #  id: changelog
       #  env:
       #    REPO: ${{ github.repository }}
-
-      #- name: Update CHANGELOG
-      #  if: ${{ github.ref == 'refs/heads/master' }}
-      #  id: changelog
-      #  uses: requarks/changelog-action@v1
-      #  with:
-      #    token: ${{ github.token }}
-      #    tag: ${{ github.ref_name }}
           
       - name: Get release version
         if: ${{ github.ref == 'refs/heads/master' }}
         run: |
           echo "RELEASE_VERSION=$(npm pkg get version | sed 's/"//g')" >> $GITHUB_ENV
           
-      - name: Create Release
+      #- name: Create Release
+      #  if: ${{ github.ref == 'refs/heads/master' }}
+      #  uses: actions/create-release@v1
+      #  env:
+      #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #  with:
+      #    tag_name: ${{ env.RELEASE_VERSION }}
+      #    release_name: ${{ env.RELEASE_VERSION }}
+      #    body: |
+      #      ${{ steps.changelog.outputs.changelog }}
+
+      - name: Create tag
         if: ${{ github.ref == 'refs/heads/master' }}
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"          
+          echo "Tagging version: ${RELEASE_VERSION}"
+          git tag "${RELEASE_VERSION}"
+          git push origin "${RELEASE_VERSION}"
+          
+      - name: Generate changelog
+        if: ${{ github.ref == 'refs/heads/master' }}
+        run: |          
+          PREV_TAG=$(git tag --sort=-creatordate | sed -n '2p')
+          if [ -z "$PREV_TAG" ]; then
+            PREV_TAG=$(git rev-list --max-parents=0 HEAD)
+          fi
+          echo "Previous tag: $PREV_TAG"
+          echo "Current tag: ${RELEASE_VERSION}"
+          echo "Changes in ${RELEASE_VERSION}" > CHANGELOG.md
+          echo "" >> CHANGELOG.md
+          git log ${PREV_TAG}..HEAD \
+            --pretty=format:"- [%h](https://github.com/${{ github.repository }}/commit/%h) %s" \
+            >> CHANGELOG.md
+          echo "" >> CHANGELOG.md
+          cat CHANGELOG.md
+
+      - name: Create release
+        if: ${{ github.ref == 'refs/heads/master' }}
+        uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ env.RELEASE_VERSION }}
-          release_name: ${{ env.RELEASE_VERSION }}
-          body: |
-            ${{ steps.changelog.outputs.changelog }}
+          name: ${{ env.RELEASE_VERSION }}
+          body_path: CHANGELOG.md
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
             
       - name: Set up QEMU
         if: ${{ github.ref == 'refs/heads/master' }}
