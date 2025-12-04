@@ -16,10 +16,10 @@ export class PasswordRecoveryComponent implements OnInit {
   passwordResetForm: UntypedFormGroup;
   loading = false;
   
-  constructor(private router: Router,
-              private route: ActivatedRoute,
-              private authService: AuthService,
-              private avisoService: AvisoService,
+  constructor(private readonly router: Router,
+              private readonly route: ActivatedRoute,
+              private readonly authService: AuthService,
+              private readonly avisoService: AvisoService,
               private readonly fb: UntypedFormBuilder) {
     this.passwordResetForm = this.fb.group({
       newPassword: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(20)]],

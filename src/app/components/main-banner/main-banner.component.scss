@@ -1,13 +1,11 @@
-@import url('https://fonts.googleapis.com/css?family=Lato');
 .sic-com-main-banner {
   text-align: center;
+
   .banner {
     text-align: center;
     margin: 0.5rem 0.5rem 0.7rem 0.5rem;
     color: #34495e;
-    font-family: "Lato", sans-serif;
     font-size: 0.65rem;
-    // font-size: 2vw;
     font-weight: bold;
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -17,8 +15,8 @@
     position: relative;
 
     -webkit-box-shadow: 2px 2px 3px 0 rgba(170, 170, 170, 0.75);
-    -moz-box-shadow:    2px 2px 3px 0 rgba(170, 170, 170, 0.75);
-    box-shadow:         2px 2px 3px 0 rgba(170, 170, 170, 0.75);
+    -moz-box-shadow: 2px 2px 3px 0 rgba(170, 170, 170, 0.75);
+    box-shadow: 2px 2px 3px 0 rgba(170, 170, 170, 0.75);
 
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
@@ -28,6 +26,7 @@
       font-size: 0.8rem;
       margin-right: 0;
       display: inline-block;
+
       &:before {
         content: "";
         position: absolute;
@@ -44,6 +43,7 @@
       font-size: 0.9rem;
       margin-right: 0;
       display: inline-block;
+
       &:before {
         content: "";
         position: absolute;
@@ -97,10 +97,12 @@
       top: -30%;
       left: -30%;
     }
+
     75% {
       top: 90%;
       left: 90%;
     }
+
     76% {
       opacity: 0;
       top: -30%;

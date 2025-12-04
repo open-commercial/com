@@ -10,7 +10,8 @@
     </span>
   </div>
   <div *ngIf="!isLoading && cuentaCorriente && !isPagoLoading">
-    <div fxLayout.gt-sm="row" fxLayoutAlign="start center" fxLayoutGap="0.7rem" *ngIf="this.cliente && this.cliente.email">
+    <div fxLayout.gt-sm="row" fxLayoutAlign="start center" fxLayoutGap="0.7rem"
+      *ngIf="this.cliente && this.cliente.email">
       <sic-com-boton-mercado-pago [nuevaOrdenDePago]="nuevaOrdenDePago" [showMontoInput]="true" [montoMinimo]="10"
         (preCheckout)="isPagoLoading = true"></sic-com-boton-mercado-pago>
     </div>
@@ -20,7 +21,8 @@
     <br>
     <div fxLayout="row" fxLayoutAlign="start center" class="saldo">
       <span fxFlex></span>
-      <span>SALDO: <span class="monto" [class.negativo]="cuentaCorriente.saldo < 0">$ {{ cuentaCorriente.saldo | number:'1.0-2':'es-AR' }}</span></span>
+      <span>SALDO: <span class="monto" [class.negativo]="cuentaCorriente.saldo < 0">$ {{ cuentaCorriente.saldo |
+          number:'1.0-2':'es-AR' }}</span></span>
     </div>
     <mat-list *ngIf="!isPagoLoading">
       <ng-container *ngFor="let renglon of renglones">

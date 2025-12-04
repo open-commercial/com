@@ -1,14 +1,14 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {MercadoPagoPreference} from '../../models/mercadopago/mercado-pago-preference';
-import {PagosService} from '../../services/pagos.service';
-import {NuevaOrdenDePago} from '../../models/nueva-orden-de-pago';
-import {AvisoService} from '../../services/aviso.service';
-import {MercadoPagoDialogComponent} from '../mercado-pago-dialog/mercado-pago-dialog.component';
-import {MatDialog} from '@angular/material/dialog';
-import {CarritoCompraService} from '../../services/carrito-compra.service';
-import {Movimiento} from '../../models/movimiento';
-import {ProductoFaltante} from '../../models/producto-faltante';
-import {Router} from '@angular/router';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { MercadoPagoPreference } from '../../models/mercadopago/mercado-pago-preference';
+import { PagosService } from '../../services/pagos.service';
+import { NuevaOrdenDePago } from '../../models/nueva-orden-de-pago';
+import { AvisoService } from '../../services/aviso.service';
+import { MercadoPagoDialogComponent } from '../mercado-pago-dialog/mercado-pago-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
+import { CarritoCompraService } from '../../services/carrito-compra.service';
+import { Movimiento } from '../../models/movimiento';
+import { ProductoFaltante } from '../../models/producto-faltante';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'sic-com-boton-mercado-pago',
@@ -16,9 +16,10 @@ import {Router} from '@angular/router';
   styleUrls: ['./boton-mercado-pago.component.scss']
 })
 export class BotonMercadoPagoComponent implements OnInit {
-  loading = false;
 
+  loading = false;
   private _montoMinimo = 1;
+
   @Input()
   set montoMinimo(value: number) {
     this._montoMinimo = value;
@@ -29,6 +30,7 @@ export class BotonMercadoPagoComponent implements OnInit {
   }
 
   private pNuevaOrdenDePago: NuevaOrdenDePago;
+
   @Input()
   set nuevaOrdenDePago(value: NuevaOrdenDePago) {
     this.pNuevaOrdenDePago = value;
@@ -52,12 +54,12 @@ export class BotonMercadoPagoComponent implements OnInit {
   preCheckout = new EventEmitter<void>();
 
   constructor(private pagosService: PagosService,
-              private avisoService: AvisoService,
-              private dialog: MatDialog,
-              private carritoCompraService: CarritoCompraService,
-              private router: Router) { }
+    private avisoService: AvisoService,
+    private dialog: MatDialog,
+    private carritoCompraService: CarritoCompraService,
+    private router: Router) { }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   goToInitPoint() {
     if (!this.pNuevaOrdenDePago) { return; }
@@ -115,7 +117,7 @@ export class BotonMercadoPagoComponent implements OnInit {
           this.router.navigate(['/carrito-compra']);
         }
       )
-    ;
+      ;
   }
 
   isDisabled() {

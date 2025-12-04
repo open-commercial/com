@@ -1,19 +1,20 @@
 @use 'sass:math';
 @use './colors' as colors;
-
 @import "~@ng-select/ng-select/themes/material.theme.css";
 
 $mat-mdc-dialog-padding: 1rem;
 
 .mat-mdc-dialog-surface {
-  padding: $mat-mdc-dialog-padding!important;
+  padding: $mat-mdc-dialog-padding !important;
 }
+
 .mat-mdc-dialog-content {
   margin: 0 !important;
-  padding: 0 $mat-mdc-dialog-padding!important;
+  padding: 0 $mat-mdc-dialog-padding !important;
 }
+
 .mat-mdc-dialog-actions {
-  margin-bottom: (-$mat-mdc-dialog-padding)!important;
+  margin-bottom: (-$mat-mdc-dialog-padding) !important;
 }
 
 .ng-select-wrapper {
@@ -23,9 +24,11 @@ $mat-mdc-dialog-padding: 1rem;
 
 .ng-select {
   padding-bottom: 0;
+
   .ng-select-container {
     align-items: center;
     min-height: 2.82195em;
+
     .ng-value-container {
       padding: 0;
       align-items: center;
@@ -37,9 +40,11 @@ $mat-mdc-dialog-padding: 1rem;
       &:after {
         border-bottom-color: colors.$color-primary;
       }
+
       .ng-value-container .ng-placeholder {
         color: colors.$color-primary;
       }
+
       .ng-arrow-wrapper .ng-arrow {
         color: colors.$color-primary;
       }
@@ -51,16 +56,18 @@ $mat-mdc-dialog-padding: 1rem;
       &:after {
         border-bottom-color: colors.$color-primary;
       }
+
       .ng-value-container .ng-placeholder {
         color: colors.$color-primary;
       }
+
       .ng-arrow-wrapper .ng-arrow {
         color: colors.$color-primary;
       }
     }
   }
 
-  & + mat-error {
+  &+mat-error {
     font-size: 75%;
     margin-top: 0.2em;
     position: absolute;
@@ -71,7 +78,8 @@ $mat-mdc-dialog-padding: 1rem;
   top: 100%;
 }
 
-html, body {
+html,
+body {
   height: 100%;
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
@@ -113,7 +121,10 @@ html, body {
     }
 
     @-webkit-keyframes sk-scaleout {
-      0% { -webkit-transform: scale(0) }
+      0% {
+        -webkit-transform: scale(0)
+      }
+
       100% {
         -webkit-transform: scale(1.0);
         opacity: 0;
@@ -124,11 +135,13 @@ html, body {
       0% {
         -webkit-transform: scale(0);
         transform: scale(0);
-      } 100% {
-          -webkit-transform: scale(1.0);
-          transform: scale(1.0);
-          opacity: 0;
-        }
+      }
+
+      100% {
+        -webkit-transform: scale(1.0);
+        transform: scale(1.0);
+        opacity: 0;
+      }
     }
   }
 }
@@ -138,6 +151,7 @@ html, body {
     width: 90%;
     margin: 0 auto;
   }
+
   &.desktop {
     width: 1250px;
     margin: 0 auto;
@@ -191,6 +205,7 @@ html, body {
 .page-template {
   color: colors.$color-536070 !important;
   padding: 1rem;
+
   a {
     text-decoration: none;
     font-size: 0.9em;
@@ -210,37 +225,44 @@ svg {
     height: 70px;
     padding: 1.2em;
     margin-bottom: 0.7rem;
+
     &.md {
       width: 135px;
       height: 135px;
       padding: 2.7em;
       margin-bottom: 0.7rem;
     }
+
     border-radius: 50%;
     -webkit-box-shadow: 1px 0 5px 0 rgba(25, 25, 25, 0.3);
-    -moz-box-shadow:    1px 0 5px 0 rgba(25, 25, 25, 0.3);
-    box-shadow:         1px 0 5px 0 rgba(25, 25, 25, 0.3);
+    -moz-box-shadow: 1px 0 5px 0 rgba(25, 25, 25, 0.3);
+    box-shadow: 1px 0 5px 0 rgba(25, 25, 25, 0.3);
     background-color: white;
     border: none;
     color: colors.$color-FFDA41;
     outline: none;
+
     svg {
       max-width: 100%;
       max-height: 100%;
       object-fit: contain;
     }
-    &:focus, &:hover {
+
+    &:focus,
+    &:hover {
       color: colors.$color-F0C71B;
       -webkit-box-shadow: 1px 0 7px 0 rgba(25, 25, 25, 0.5);
-      -moz-box-shadow:    1px 0 7px 0 rgba(25, 25, 25, 0.5);
-      box-shadow:         1px 0 7px 0 rgba(25, 25, 25, 0.5);
+      -moz-box-shadow: 1px 0 7px 0 rgba(25, 25, 25, 0.5);
+      box-shadow: 1px 0 7px 0 rgba(25, 25, 25, 0.5);
     }
   }
+
   .name {
     font-size: .9em;
     font-weight: 500;
     color: #323232;
     text-align: center;
+
     &.md {
       font-size: 1.1em;
     }
@@ -254,9 +276,11 @@ svg {
 .sic-com-paginator {
   padding: .7rem;
   color: colors.$color-536070;
+
   button {
     font-weight: 500;
   }
+
   .page {
     padding: .5rem .9rem;
     margin: 0 .3rem;
@@ -264,11 +288,13 @@ svg {
     border-radius: 3px;
     letter-spacing: normal;
   }
+
   span {
     color: colors.$color-536070;
     letter-spacing: normal;
     font-weight: 500;
   }
+
   mat-icon {
     color: colors.$color-536070;
     font-weight: 500;
@@ -281,6 +307,7 @@ svg {
   display: inline-block;
   text-align: center;
   margin: 0 0.1em;
+
   svg {
     max-height: 100%;
     max-width: 100%;
@@ -299,16 +326,17 @@ mat-icon.spin {
   animation-iteration-count: infinite;
   animation-timing-function: linear;
 }
+
 @keyframes spin {
   from {
-    transform:rotate(0deg);
+    transform: rotate(0deg);
   }
+
   to {
-    transform:rotate(360deg);
+    transform: rotate(360deg);
   }
 }
 
-//Form override
 .mat-mdc-form-field.mat-form-field-invalid .mdc-line-ripple::after {
   border-color: colors.$color-BDBDBD;
 }
@@ -334,8 +362,7 @@ mat-icon.spin {
   color: colors.$color-828282;
 }
 
-.mat-mdc-form-field.mat-form-field-invalid
-  .mdc-floating-label .mat-form-field-required-marker {
+.mat-mdc-form-field.mat-form-field-invalid .mdc-floating-label .mat-form-field-required-marker {
   color: colors.$color-828282;
 }
 
@@ -348,7 +375,7 @@ mat-icon.spin {
 }
 
 .mat-mdc-unelevated-button,
- a.mat-mdc-unelevated-button {
+a.mat-mdc-unelevated-button {
   color: inherit !important;
   line-height: 50px !important;
   font-size: 1.1rem !important;
@@ -367,7 +394,7 @@ mat-icon.spin {
 .mdc-button.bg-color-FFDA41,
 .mat-mdc-unelevated-button.bg-color-FFDA41,
 .mat-mdc-raised-button.bg-color-FFDA41 {
-  background-color: colors.$color-FFDA41 !important; 
+  background-color: colors.$color-FFDA41 !important;
   color: colors.$color-536070 !important;
 
   &:hover,

@@ -1,5 +1,5 @@
-import {Component, OnInit} from '@angular/core';
-import {MatDialogRef} from '@angular/material/dialog';
+import { Component, OnInit } from '@angular/core';
+import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'sic-com-mercado-pago-dialog',
@@ -11,7 +11,7 @@ export class MercadoPagoDialogComponent implements OnInit {
   montoMinimo = 10.00;
   loading = false;
 
-  constructor(private dialogRef: MatDialogRef<MercadoPagoDialogComponent>) {
+  constructor(private readonly dialogRef: MatDialogRef<MercadoPagoDialogComponent>) {
     this.dialogRef.disableClose = true;
   }
 

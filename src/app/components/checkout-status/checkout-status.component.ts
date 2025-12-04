@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
-import {Usuario} from '../../models/usuario';
-import {AuthService} from '../../services/auth.service';
-import {AvisoService} from '../../services/aviso.service';
-import {finalize} from 'rxjs/operators';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Usuario } from '../../models/usuario';
+import { AuthService } from '../../services/auth.service';
+import { AvisoService } from '../../services/aviso.service';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'sic-com-checkout-status',
@@ -16,10 +16,10 @@ export class CheckoutStatusComponent implements OnInit {
   usuario: Usuario;
   loading = false;
 
-  constructor(private route: ActivatedRoute,
-              private router: Router,
-              private authService: AuthService,
-              private avisoService: AvisoService) { }
+  constructor(private readonly route: ActivatedRoute,
+    private readonly router: Router,
+    private readonly authService: AuthService,
+    private readonly avisoService: AvisoService) { }
 
   ngOnInit() {
     const status = this.route.snapshot.paramMap.get('status');
@@ -41,6 +41,6 @@ export class CheckoutStatusComponent implements OnInit {
           this.authService.logout();
         },
       )
-    ;
+      ;
   }
 }
