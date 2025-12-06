@@ -10,6 +10,7 @@
     display: flex;
     padding: 0.8rem 0.9rem;
     margin-bottom: 1.5rem;
+
     .icono {
       font-size: 1.7rem;
       color: white;
@@ -24,13 +25,16 @@
     font-size: 1.1rem;
     margin-bottom: 1.5rem;
     max-width: 27rem;
+
     p {
       margin: 0 0 1.5rem 0;
     }
+
     .nombre {
       font-style: italic;
       font-weight: 500;
     }
+
     .correo {
       font-weight: 500;
     }
@@ -39,12 +43,15 @@
   &.desktop {
     .info {
       font-size: 1.3rem;
+
       p {
         margin: 0 0 1.8rem 0;
       }
     }
+
     .icono-container {
       padding: 1.2rem 1.3rem;
+
       .icono {
         font-size: 2.6rem;
       }

@@ -1,23 +1,23 @@
-import {Injectable} from '@angular/core';
-import {environment} from 'environments/environment';
-import {Subject, Observable} from 'rxjs';
-import {HttpClient} from '@angular/common/http';
-import {Cliente} from '../models/cliente';
-import {StorageService} from './storage.service';
+import { Injectable } from '@angular/core';
+import { environment } from 'environments/environment';
+import { Subject, Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { Cliente } from '../models/cliente';
+import { StorageService } from './storage.service';
 
 @Injectable()
 export class ClientesService {
 
   uriClientes = environment.apiUrl + '/api/v1/clientes';
-  private clienteSeleccionadoSubject = new Subject<any>();
+  private readonly clienteSeleccionadoSubject = new Subject<any>();
   clienteSeleccionado$ = this.clienteSeleccionadoSubject.asObservable();
 
-  constructor(private http: HttpClient,
-              private storageService: StorageService) {}
+  constructor(private readonly http: HttpClient,
+    private readonly storageService: StorageService) { }
 
   getClientes(nombre, pagina) {
     return this.http.post(this.uriClientes + '/busqueda/criteria?',
-      {nombreFiscal: nombre, nombreFantasia: nombre, nroCliente: nombre, pagina: pagina});
+      { nombreFiscal: nombre, nombreFantasia: nombre, nroCliente: nombre, pagina: pagina });
   }
 
   setClienteSeleccionado(cliente) {

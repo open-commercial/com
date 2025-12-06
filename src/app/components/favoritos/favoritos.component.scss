@@ -10,12 +10,13 @@
   .favoritos {
     margin-top: 1rem;
     font-weight: 500;
+
     .favorito {
       background: white;
       padding: 0.7rem;
       margin-bottom: 0.7rem;
-      -webkit-box-shadow: 1px 1px 5px 0 rgba(160,160,160,0.5);
-      box-shadow: 1px 1px 5px 0 rgba(160,160,160,0.5);
+      -webkit-box-shadow: 1px 1px 5px 0 rgba(160, 160, 160, 0.5);
+      box-shadow: 1px 1px 5px 0 rgba(160, 160, 160, 0.5);
     }
   }
 
@@ -24,6 +25,7 @@
     text-align: center;
     padding: .5rem .5rem .5rem 0;
     cursor: pointer;
+
     img {
       max-width: 100%;
       max-height: 100%;
@@ -39,13 +41,15 @@
     margin-bottom: 1.3rem;
     font-size: 0.86em;
     font-weight: 500;
+
     .oferta-label {
       font-weight: bold;
-      padding: .65em 1em .5em 1em;
+      padding: .4em 1em .5em 1em;
       background: colors.$color-30CC81;
       color: white;
       border-radius: 1.2em;
     }
+
     .oferta-descripcion {
       color: colors.$color-30CC81;
     }
@@ -53,12 +57,13 @@
 
   .producto {
     margin-bottom: 1.3rem;
+
     .producto-descripcion {
       font-weight: 500;
       -webkit-line-clamp: 3;
       line-clamp: 3;
       -webkit-box-orient: vertical;
-      overflow:hidden;
+      overflow: hidden;
       text-overflow: ellipsis;
       display: -webkit-box;
     }
@@ -69,12 +74,13 @@
     color: colors.$color-1E222B;
   }
 
-  &.desktop {
+  &.desktop {    
     .producto {
       .producto-descripcion {
         font-size: 1.2em;
       }
     }
+
     .precios {
       font-size: 1.2em;
     }

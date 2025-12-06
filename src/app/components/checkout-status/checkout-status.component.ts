@@ -11,6 +11,7 @@ import { finalize } from 'rxjs/operators';
   styleUrls: ['./checkout-status.component.scss']
 })
 export class CheckoutStatusComponent implements OnInit {
+
   status = '';
   statusOptions = ['aprobado', 'pendiente'];
   usuario: Usuario;
@@ -23,24 +24,19 @@ export class CheckoutStatusComponent implements OnInit {
 
   ngOnInit() {
     const status = this.route.snapshot.paramMap.get('status');
-    if (this.statusOptions.indexOf(status) < 0) {
+    if (!this.statusOptions.includes(status)) {
       this.router.navigate(['']);
     }
-
     this.status = status;
-
     this.loading = true;
     this.authService.getLoggedInUsuario()
-      .pipe(
-        finalize(() => this.loading = false)
-      )
+      .pipe(finalize(() => this.loading = false))
       .subscribe(
         (usuario: Usuario) => this.usuario = usuario,
-        err => {
+        (err) => {
           this.avisoService.openSnackBar(err.error, '', 3500);
           this.authService.logout();
         },
-      )
-      ;
+      );
   }
 }

@@ -1,6 +1,6 @@
 <div class="sic-com-agregar-al-carrito">
   <div class="oferta" fxLayout="row" fxLayoutGap=".75rem" fxLayoutAlign="start center"
-       *ngIf="producto.oferta && producto.porcentajeBonificacionOferta > 0">
+    *ngIf="producto.oferta && producto.porcentajeBonificacionOferta > 0">
     <span class="oferta-label">OFERTA</span>
     <span class="oferta-descripcion">
       $ {{ producto.precioBonificado | number:'1.0-2':'es-AR' }}
@@ -28,39 +28,40 @@
         $ {{ producto.precioBonificado | number:'1.0-2':'es-AR' }}
       </div>
     </div>
-    <div *ngIf="!producto.oferta && (producto.precioLista > producto.precioBonificado) && producto.cantMinima > 1" [class.seleccionado]="esCantidadBonificada()">
+    <div *ngIf="!producto.oferta && (producto.precioLista > producto.precioBonificado) && producto.cantMinima > 1"
+      [class.seleccionado]="esCantidadBonificada()">
       Llevando {{producto.cantMinima | number:'1.0-2':'es-AR'}} o más
     </div>
   </div>
-  <div class="stock" [ngClass]="producto.cantidadTotalEnSucursalesDisponible > 0 ? 'disponible' : 'no-disponible'" *ngIf="cliente">
-    {{ producto.cantidadTotalEnSucursalesDisponible > 0 ? "Stock Disponible: "+ (producto.cantidadTotalEnSucursalesDisponible | number:'1.0-2':'es-AR') + ' ' + producto.nombreMedida : "Sin Stock" }}
+  <div class="stock" [ngClass]="producto.cantidadTotalEnSucursalesDisponible > 0 ? 'disponible' : 'no-disponible'"
+    *ngIf="cliente">
+    {{ producto.cantidadTotalEnSucursalesDisponible > 0 ? "Stock Disponible: "+
+    (producto.cantidadTotalEnSucursalesDisponible | number:'1.0-2':'es-AR') + ' ' + producto.nombreMedida : "Sin Stock"
+    }}
   </div>
-  <form [formGroup]="form" (ngSubmit)="submit()" *ngIf="cliente && producto.cantidadTotalEnSucursalesDisponible > 0 && !loading"
-        fxLayout="row" fxLayoutAlign="start center">
+  <form [formGroup]="form" (ngSubmit)="submit()"
+    *ngIf="cliente && producto.cantidadTotalEnSucursalesDisponible > 0 && !loading" fxLayout="row"
+    fxLayoutAlign="start center">
     <label for="input-cantidad">Cantidad</label>
-    <button type="button" mat-icon-button (click)="decCantidad()">
+    <button type="button" mat-icon-button (click)="decCantidad()" tabindex="-1">
       <mat-icon>remove</mat-icon>
     </button>
     <mat-form-field class="input-cantidad">
-      <input id="input-cantidad" matInput type="number" formControlName="cantidad" required #cantInput>
+      <input id="input-cantidad" matInput type="number" formControlName="cantidad" required min="0" #cantInput tabindex="0">
       <mat-hint *ngIf="cantidadEnCarrito" fxLayoutAlign="center center" class="cantidad-en-carrito">
         <mat-icon>shopping_cart</mat-icon>: {{ cantidadEnCarrito | number:'1.0-2':'es-AR' }}
-      </mat-hint>     
-      <mat-error *ngIf="form.get('cantidad').hasError('required')">
-        Requerido
-      </mat-error>
-      <mat-error *ngIf="form.get('cantidad').hasError('min')">
-        Mínimo: {{ form.get('cantidad').getError('min').min }}
-      </mat-error>
-      <mat-error *ngIf="form.get('cantidad').hasError('max')">
-        Máximo: {{ form.get('cantidad').getError('max').max }}
-      </mat-error>
-      <mat-error *ngIf="form.get('cantidad').hasError('pattern')">
-        Cantidad inválida
-      </mat-error>
+      </mat-hint>
+      <mat-error *ngIf="form.get('cantidad')
+        .hasError('required')">Requerido</mat-error>
+      <mat-error *ngIf="form.get('cantidad')
+        .hasError('min')">Mínimo {{ form.get('cantidad').getError('min').min }}</mat-error>
+      <mat-error *ngIf="form.get('cantidad')
+        .hasError('max')">Máximo {{ form.get('cantidad').getError('max').max }}</mat-error>
+      <mat-error *ngIf="form.get('cantidad')
+        .hasError('pattern')">Cantidad inválida</mat-error>
       <br>
     </mat-form-field>
-    <button type="button" mat-icon-button (click)="incCantidad()">
+    <button type="button" mat-icon-button (click)="incCantidad()" tabindex="-1">
       <mat-icon>add</mat-icon>
     </button>
   </form>

@@ -10,7 +10,7 @@
 
     .oferta-label {
       font-weight: bold;
-      padding: .65em 1em .5em 1em;
+      padding: .4em 1em .5em 1em;
       background: colors.$color-30CC81;
       color: white;
       border-radius: 1.2em;
@@ -63,14 +63,15 @@
   }
 
   .input-cantidad {
-    width: 5rem;
-    padding: 0 0.5rem;
+    width: 9rem;
   }
-}
 
-.cantidad-en-carrito {
-  display: flex;
-  align-items: flex-start;
-  font-size: 0.9em;
-  padding: 0%;
+  .cantidad-en-carrito {
+    display: flex;
+    align-items: flex-start;
+    font-size: 0.9em;
+    padding: 0%;
+  }
+
+
 }

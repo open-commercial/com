@@ -2,7 +2,7 @@
   <h3>Ingrese el monto a depositar</h3>
   <mat-form-field fxFill>
     <mat-label>Monto ($)</mat-label>
-    <input matInput type="number" [(ngModel)]="monto" (keyup)="montoChange($event)">
+    <input matInput type="number" min="0" [(ngModel)]="monto" (keyup)="montoChange($event)">
     <mat-hint>Mínimo $ {{ montoMinimo }}</mat-hint>
   </mat-form-field>
   <br>

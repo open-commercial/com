@@ -1,12 +1,12 @@
-import {AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
-import {CarritoCompraService} from '../../services/carrito-compra.service';
-import {AvisoService} from '../../services/aviso.service';
-import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
-import {Cliente} from '../../models/cliente';
-import {Producto} from '../../models/producto';
-import {finalize} from 'rxjs/operators';
-import {ItemCarritoCompra} from '../../models/item-carrito-compra';
-import {CarritoCompra} from '../../models/carrito-compra';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { CarritoCompraService } from '../../services/carrito-compra.service';
+import { AvisoService } from '../../services/aviso.service';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { Cliente } from '../../models/cliente';
+import { Producto } from '../../models/producto';
+import { finalize } from 'rxjs/operators';
+import { ItemCarritoCompra } from '../../models/item-carrito-compra';
+import { CarritoCompra } from '../../models/carrito-compra';
 import { HelperService } from '../../services/helper.service';
 
 @Component({
@@ -14,48 +14,43 @@ import { HelperService } from '../../services/helper.service';
   templateUrl: './agregar-al-carrito.component.html',
   styleUrls: ['./agregar-al-carrito.component.scss']
 })
-export class AgregarAlCarritoComponent implements OnInit, AfterViewInit {
-  private pCliente: Cliente;
-  @Input() set cliente(value: Cliente) {
-    this.pCliente = value;
-  }
-  get cliente(): Cliente {
-    return this.pCliente;
-  }
+export class AgregarAlCarritoComponent implements OnInit {
 
-  private pProducto: Producto;
-  @Input() set producto(value: Producto) {
-    this.pProducto = value;
-  }
-  get producto(): Producto {
-    return this.pProducto;
-  }
-
-  cantidadEnCarrito = 0;
-
-  form: UntypedFormGroup;
+  @Input() set cliente(value: Cliente) { this.pCliente = value; }
+  @Input() set producto(value: Producto) { this.pProducto = value; }
   @Output() cantidadUpdated = new EventEmitter<number>();
   @Output() loadingStatusUpdated = new EventEmitter<boolean>();
   @Output() validStatusChanged = new EventEmitter<boolean>();
 
+  private pCliente: Cliente;
+  private pProducto: Producto;
+  cantidadEnCarrito = 0;
+  form: UntypedFormGroup;
   private pLoading = false;
+  valid = false;
+  defaultValidatos = [Validators.required, Validators.min(1), Validators.pattern('[0-9]*')];
+
+  get cliente(): Cliente {
+    return this.pCliente;
+  }
+
+  get producto(): Producto {
+    return this.pProducto;
+  }
+
   set loading(value: boolean) {
     this.pLoading = value;
     this.loadingStatusUpdated.emit(value);
   }
+
   get loading(): boolean {
     return this.pLoading;
   }
 
-  valid = false;
-  defaultValidatos = [Validators.required, Validators.min(1), Validators.pattern('[0-9]*')];
-
-  @ViewChild('cantInput', { static: false }) cantInput: ElementRef;
-
-  constructor(private carritoCompraService: CarritoCompraService,
-              private avisoService: AvisoService,
-              private readonly fb: UntypedFormBuilder,
-              public helper: HelperService) { }
+  constructor(private readonly carritoCompraService: CarritoCompraService,
+    private readonly avisoService: AvisoService,
+    private readonly fb: UntypedFormBuilder,
+    public helper: HelperService) { }
 
   ngOnInit() {
     this.createForm();
@@ -69,15 +64,8 @@ export class AgregarAlCarritoComponent implements OnInit, AfterViewInit {
           this.form.get('cantidad').setValidators(validators);
           this.form.get('cantidad').setValue(icc ? icc.cantidad : 1);
           this.cantidadEnCarrito = icc ? icc.cantidad : 0;
-        })
-      ;
+        });
     }
-  }
-
-  ngAfterViewInit(): void {
-    setTimeout(() => {
-      if (this.cantInput) { this.cantInput.nativeElement.focus(); }
-    }, 1000);
   }
 
   createForm() {
@@ -124,8 +112,7 @@ export class AgregarAlCarritoComponent implements OnInit, AfterViewInit {
                   err => {
                     this.avisoService.openSnackBar(err.error, '', 3500);
                   }
-                )
-              ;
+                );
             } else {
               this.cantidadUpdated.emit(cantidad);
               this.loading = false;
@@ -135,15 +122,13 @@ export class AgregarAlCarritoComponent implements OnInit, AfterViewInit {
             this.loading = false;
             this.avisoService.openSnackBar(err.error, '', 3500);
           }
-        )
-      ;
+        );
     }
   }
 
   esCantidadBonificada() {
     const cant = this.form && this.form.get('cantidad') ? this.form.get('cantidad').value : null;
     if (!cant || cant < 0) { return false; }
-
     return this.producto.precioBonificado && this.producto.precioBonificado < this.producto.precioLista
       && cant >= this.producto.cantMinima;
   }
