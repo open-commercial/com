@@ -1,20 +1,20 @@
-import {Injectable} from '@angular/core';
-import {Observable, Subject} from 'rxjs';
-import {environment} from 'environments/environment';
-import {HttpClient} from '@angular/common/http';
-import {CarritoCompra} from '../models/carrito-compra';
-import {ItemCarritoCompra} from '../models/item-carrito-compra';
-import {NuevaOrdenDePago} from '../models/nueva-orden-de-pago';
-import {ProductoFaltante} from '../models/producto-faltante';
+import { Injectable } from '@angular/core';
+import { Observable, Subject } from 'rxjs';
+import { environment } from 'environments/environment';
+import { HttpClient } from '@angular/common/http';
+import { CarritoCompra } from '../models/carrito-compra';
+import { ItemCarritoCompra } from '../models/item-carrito-compra';
+import { NuevaOrdenDePago } from '../models/nueva-orden-de-pago';
+import { ProductoFaltante } from '../models/producto-faltante';
 
 @Injectable()
 export class CarritoCompraService {
 
   uri = environment.apiUrl + '/api/v1/carrito-compra';
-  private cantidadItemsEnCarritoSubject = new Subject<number>();
+  private readonly cantidadItemsEnCarritoSubject = new Subject<number>();
   cantidadItemsEnCarrito$ = this.cantidadItemsEnCarritoSubject.asObservable();
 
-  constructor(private http: HttpClient) {}
+  constructor(private readonly http: HttpClient) { }
 
   getCarritoCompra(): Observable<CarritoCompra> {
     return this.http.get<CarritoCompra>(`${this.uri}`);

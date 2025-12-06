@@ -1,13 +1,15 @@
 <mat-dialog-content fxLayout="column">
+  <h3>Ingrese el monto a depositar</h3>
   <mat-form-field fxFill>
-    <mat-label>Ingrese el monto a depositar ($)</mat-label>
-    <input matInput type="number" [(ngModel)]="monto" (keyup)="montoChange($event)">
+    <mat-label>Monto ($)</mat-label>
+    <input matInput type="number" min="0" [(ngModel)]="monto" (keyup)="montoChange($event)">
     <mat-hint>Mínimo $ {{ montoMinimo }}</mat-hint>
   </mat-form-field>
   <br>
 </mat-dialog-content>
 <div fxLayout="row" fxLayoutGap="0.7rem" fxLayoutAlign="center center">
-  <button mat-raised-button class="bg-color-FFDA41" (click)="aceptar()" *ngIf="!loading" [disabled]="!monto || monto < montoMinimo">Aceptar</button>
+  <button mat-raised-button class="bg-color-FFDA41" (click)="aceptar()" *ngIf="!loading"
+    [disabled]="!monto || monto < montoMinimo">Aceptar</button>
   <button mat-raised-button mat-dialog-close *ngIf="!loading">Cancelar</button>
   <div *ngIf="loading" fxLayout="row" fxLayoutAlign="center center">
     <mat-spinner [diameter]="50" [strokeWidth]="6"></mat-spinner>

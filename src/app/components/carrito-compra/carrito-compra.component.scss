@@ -1,17 +1,18 @@
-@import "../../../_colors.scss";
+@use '../../../colors' as colors;
 
 .sic-com-carrito-compra {
-  color: $color-536070;
-  
+  color: colors.$color-536070;
+
   .carrito {
     margin-top: 1rem;
     font-weight: 500;
+
     .item-carrito {
       background: white;
       padding: 0.7rem;
       margin-bottom: 0.7rem;
-      -webkit-box-shadow: 1px 1px 5px 0px rgba(160,160,160,0.5);
-      box-shadow: 1px 1px 5px 0px rgba(160,160,160,0.5);
+      -webkit-box-shadow: 1px 1px 5px 0px rgba(160, 160, 160, 0.5);
+      box-shadow: 1px 1px 5px 0px rgba(160, 160, 160, 0.5);
     }
   }
 
@@ -20,6 +21,7 @@
     text-align: center;
     padding: .5rem .5rem .5rem 0;
     cursor: pointer;
+
     img {
       max-width: 100%;
       max-height: 100%;
@@ -35,25 +37,29 @@
     margin-bottom: 1.3rem;
     font-size: 0.86em;
     font-weight: 500;
+
     .oferta-label {
       font-weight: bold;
-      padding: .65em 1em .5em 1em;
-      background: $color-30CC81;
+      padding: .4em 1em .5em 1em;
+      background: colors.$color-30CC81;
       color: white;
       border-radius: 1.2em;
     }
+
     .oferta-descripcion {
-      color: $color-30CC81;
+      color: colors.$color-30CC81;
     }
   }
 
   .producto {
     margin-bottom: 1.3rem;
+
     .producto-descripcion {
       font-weight: 500;
       -webkit-line-clamp: 3;
+      line-clamp: 3;
       -webkit-box-orient: vertical;
-      overflow:hidden;
+      overflow: hidden;
       text-overflow: ellipsis;
       display: -webkit-box;
     }
@@ -61,16 +67,17 @@
 
   .precios {
     font-weight: 500;
-    color: $color-828282;
+    color: colors.$color-828282;
+
     .seleccionado {
-      color: $color-1E222B;
+      color: colors.$color-1E222B;
     }
   }
 
   .stock-no-disponible {
     text-align: center;
     margin-top: 0.5rem;
-    color: $color-EB5757;
+    color: colors.$color-EB5757;
     font-size: 0.85em;
     font-weight: 600;
   }
@@ -83,13 +90,15 @@
 
     .cantidad-minima {
       font-size: 0.9rem;
-      color: $color-828282;
+      color: colors.$color-828282;
     }
+
     .total {
       .cantidad {
-        color: $color-828282;
+        color: colors.$color-828282;
+
         &.cumple-compra-minima {
-          color: $color-30CC81;
+          color: colors.$color-30CC81;
         }
       }
     }
@@ -101,19 +110,21 @@
         font-size: 1.2em;
       }
     }
+
     .precios {
       font-size: 1.2em;
     }
+
     .stock-no-disponible {
       margin-top: 1rem;
       font-size: unset;
     }
   }
-  
+
   .mensaje {
     height: 100px;
     font-size: 1.2rem;
     text-align: center;
   }
-    
+
 }

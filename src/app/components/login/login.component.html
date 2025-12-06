@@ -7,9 +7,9 @@
     <form [formGroup]="loginForm" (ngSubmit)="login()" class="sic-com-form">
       <img src="assets/images/logo-globo-500x500px.png" alt="logo">
       <div fxLayout="column">
-        <mat-form-field fxFlex fxFill>
-          <input matInput autofocus name="username" required type="text" formControlName="username"
-                 placeholder="Email o Usuario">
+        <mat-form-field fxFlex fxFill appearance="fill">
+          <mat-label>Email o Usuario</mat-label>
+          <input matInput autofocus name="username" required type="text" formControlName="username">
           <mat-error *ngIf="loginForm.get('username').hasError('required')">
             Requerido
           </mat-error>
@@ -17,9 +17,9 @@
             Máximo {{ loginForm.get('username').getError('maxlength').requiredLength }} caracteres
           </mat-error>
         </mat-form-field>
-        <mat-form-field fxFlex fxFill>
-          <input matInput name="password" required type="password" formControlName="password"
-                 placeholder="Contraseña">
+        <mat-form-field fxFlex fxFill appearance="fill">
+          <mat-label>Contraseña</mat-label>
+          <input matInput name="password" required type="password" formControlName="password">
           <mat-error *ngIf="loginForm.get('password').hasError('required')">
             Requerido
           </mat-error>

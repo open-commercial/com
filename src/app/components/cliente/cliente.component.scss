@@ -1,11 +1,11 @@
-@import "../../../_colors.scss";
+@use '../../../colors' as colors;
 
 .sic-com-cliente {
-  color: $color-536070;
+  color: colors.$color-536070;
   font-size: 1.1rem;
   .info {
     mat-icon {
-      color: $color-BDBDBD;
+      color: colors.$color-BDBDBD;
     }
     /*.user-word-break {
       word-break: break-all;

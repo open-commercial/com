@@ -6,7 +6,7 @@
     </div>
     <form id="buscador-form" fxFlex fxFlex.gt-sm="70" fxLayout="row" fxLayoutAlign="center center" [formGroup]="busquedaForm" (ngSubmit)="submit()" ngClass.gt-sm="desktop">
       <input class="sic-com-buscador-input" type="search" placeholder="¿Qué buscás?" formControlName="criteriaControl">
-      <button id="lupa-button" mat-icon-button type="submit">
+      <button id="lupa-button" mat-icon-button type="submit" [disableRipple]="true" aria-label="Buscar">
         <mat-icon>search</mat-icon>
       </button>
     </form>

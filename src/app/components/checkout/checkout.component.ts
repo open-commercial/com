@@ -1,5 +1,5 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators} from '@angular/forms';
+import {UntypedFormBuilder, UntypedFormGroup, ValidationErrors, ValidatorFn, Validators} from '@angular/forms';
 import {ProductosService} from '../../services/productos.service';
 import {CarritoCompraService} from '../../services/carrito-compra.service';
 import {AvisoService} from '../../services/aviso.service';
@@ -35,7 +35,7 @@ enum OpcionPago {
   PAGAR_LUEGO = 'PAGAR_LUEGO',
 }
 
-const sucursalValidator: ValidatorFn = (control: FormGroup): ValidationErrors | null => {
+const sucursalValidator: ValidatorFn = (control: UntypedFormGroup): ValidationErrors | null => {
   const oe = control.get('opcionEnvio');
   const sucursal = control.get('sucursal');
 
@@ -43,7 +43,7 @@ const sucursalValidator: ValidatorFn = (control: FormGroup): ValidationErrors | 
     { 'requiredSucursal': true } : null;
 };
 
-const opcionEnvioUbicacionValidator: ValidatorFn = (control: FormGroup): ValidationErrors | null => {
+const opcionEnvioUbicacionValidator: ValidatorFn = (control: UntypedFormGroup): ValidationErrors | null => {
   const oe = control.get('opcionEnvio');
   const oeu = control.get('opcionEnvioUbicacion');
 
@@ -60,9 +60,9 @@ export class CheckoutComponent implements OnInit {
   isLoading = false;
   usuario: Usuario = null;
 
-  datosDelClienteForm: FormGroup = null;
-  opcionEnvioForm: FormGroup = null;
-  pagoForm: FormGroup = null;
+  datosDelClienteForm: UntypedFormGroup = null;
+  opcionEnvioForm: UntypedFormGroup = null;
+  pagoForm: UntypedFormGroup = null;
 
   // Cliente
   cliente: Cliente = null;
@@ -101,7 +101,7 @@ export class CheckoutComponent implements OnInit {
               private clientesService: ClientesService,
               private sucursalService: SucursalesService,
               private ubicacionesService: UbicacionesService,
-              private fb: FormBuilder,
+              private readonly fb: UntypedFormBuilder,
               private router: Router) {
   }
 

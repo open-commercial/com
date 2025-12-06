@@ -1,14 +1,14 @@
-import {Component, OnInit} from '@angular/core';
-import {AuthService} from '../../services/auth.service';
-import {Cliente} from '../../models/cliente';
-import {ClientesService} from '../../services/clientes.service';
-import {AvisoService} from '../../services/aviso.service';
-import {CuentasCorrienteService} from '../../services/cuentas-corriente.service';
-import {RenglonCuentaCorriente} from '../../models/renglon-cuenta-corriente';
-import {finalize} from 'rxjs/operators';
-import {NuevaOrdenDePago} from '../../models/nueva-orden-de-pago';
-import {Movimiento} from '../../models/movimiento';
-import {environment} from '../../../environments/environment';
+import { Component, OnInit } from '@angular/core';
+import { AuthService } from '../../services/auth.service';
+import { Cliente } from '../../models/cliente';
+import { ClientesService } from '../../services/clientes.service';
+import { AvisoService } from '../../services/aviso.service';
+import { CuentasCorrienteService } from '../../services/cuentas-corriente.service';
+import { RenglonCuentaCorriente } from '../../models/renglon-cuenta-corriente';
+import { finalize } from 'rxjs/operators';
+import { NuevaOrdenDePago } from '../../models/nueva-orden-de-pago';
+import { Movimiento } from '../../models/movimiento';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'sic-com-cuenta-corriente',
@@ -34,9 +34,9 @@ export class CuentaCorrienteComponent implements OnInit {
   };
 
   constructor(private authService: AuthService,
-              private avisoService: AvisoService,
-              private clientesService: ClientesService,
-              private cuentasCorrienteService: CuentasCorrienteService) {
+    private avisoService: AvisoService,
+    private clientesService: ClientesService,
+    private cuentasCorrienteService: CuentasCorrienteService) {
   }
 
   ngOnInit() {
@@ -56,7 +56,7 @@ export class CuentaCorrienteComponent implements OnInit {
           this.isLoading = false;
         }
       )
-    ;
+      ;
   }
 
   reloadCuentaCorriente() {

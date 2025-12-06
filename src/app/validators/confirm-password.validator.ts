@@ -1,6 +1,6 @@
-import { ValidationErrors, ValidatorFn, FormGroup } from "@angular/forms";
+import { ValidationErrors, ValidatorFn, UntypedFormGroup } from "@angular/forms";
 
-export const passwordsMatchValidator: ValidatorFn = (control: FormGroup): ValidationErrors | null => {
+export const passwordsMatchValidator: ValidatorFn = (control: UntypedFormGroup): ValidationErrors | null => {
   const newPassword = control.get('newPassword').value;
   const confirmPassword = control.get('confirmPassword').value;
 

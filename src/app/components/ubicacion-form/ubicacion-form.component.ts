@@ -1,5 +1,5 @@
 import {Component, OnInit, EventEmitter, Output} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
 import {Ubicacion} from '../../models/ubicacion';
 import {Provincia} from '../../models/provincia';
 import {Localidad} from '../../models/localidad';
@@ -14,10 +14,10 @@ import {finalize} from 'rxjs/operators';
 })
 export class UbicacionFormComponent implements OnInit {
   @Output()
-  formReady = new EventEmitter<FormGroup>(true);
+  formReady = new EventEmitter<UntypedFormGroup>(true);
 
   private ubicacion: Ubicacion;
-  ubicacionForm: FormGroup;
+  ubicacionForm: UntypedFormGroup;
 
   provincias: Provincia[] = [];
   localidades: Localidad[] = [];
@@ -25,7 +25,7 @@ export class UbicacionFormComponent implements OnInit {
   isProvinciasLoading = false;
   isLocalidadesLoading = false;
 
-  constructor(private fb: FormBuilder,
+  constructor(private readonly fb: UntypedFormBuilder,
               private ubicacionesService: UbicacionesService,
               private avisoService: AvisoService) {}
 
